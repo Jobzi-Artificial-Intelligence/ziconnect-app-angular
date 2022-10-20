@@ -1,0 +1,32 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+nbactions-dev.xml
+
+### VS Code ###
+.vscode/
+
+target/*
+process.json
+
+# TODO Remove this after generate sample versions of the csv tables
+src/main/resources/

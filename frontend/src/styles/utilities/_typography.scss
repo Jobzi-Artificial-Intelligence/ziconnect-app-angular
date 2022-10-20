@@ -1,0 +1,120 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+// Colors
+.color-tp-body {
+  color: $tp-body;
+}
+.color-tp-label {
+  color: $tp-label;
+}
+.color-tp-title {
+  color: $tp-title;
+}
+.color-blue {
+  color: $blue;
+}
+.color-green {
+  color: $green;
+}
+.color-green-dark {
+  color: $green-dark;
+}
+.color-feat-green {
+  color: $feat-green;
+}
+.color-feat-red {
+  color: $feat-red;
+}
+.color-feat-orange {
+  color: $feat-orange;
+}
+.color-white {
+  color: $white;
+}
+
+// Sizes
+.f-size-12 {
+  font-size: 12px;
+}
+.f-size-13 {
+  font-size: 13px;
+}
+.f-size-16 {
+  font-size: 16px;
+}
+.f-size-18 {
+  font-size: 18px;
+}
+.f-size-20 {
+  font-size: 20px;
+}
+.f-size-24 {
+  font-size: 24px;
+}
+.f-size-32 {
+  font-size: 32px;
+}
+.f-size-48 {
+  font-size: 48px;
+}
+.f-size-64 {
+  font-size: 64px;
+}
+.f-size-128 {
+  font-size: 128px;
+}
+
+// Weight
+.f-weight-bold {
+  font-weight: bold;
+}
+
+.f-weight-300 {
+  font-weight: 300;
+}
+.f-weight-400 {
+  font-weight: 400;
+}
+.f-weight-500 {
+  font-weight: 500;
+}
+.f-weight-bold {
+  font-weight: bold;
+}
+.f-weight-normal {
+  font-weight: bold;
+}
+
+// line-height
+.line-height-1 {
+  line-height: 1;
+}
+
+.line-height-1-5 {
+  line-height: 1.5;
+}
+
+// Align
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.text-transform-uppercase {
+  text-transform: uppercase;
+}

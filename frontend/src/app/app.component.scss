@@ -1,0 +1,7 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../styles/variables";
+
+.page-container {
+  height: 100%;
+  min-height: 100vh;
+}

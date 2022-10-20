@@ -1,0 +1,271 @@
+<div class="page-container flex direction-column">
+  <header>
+    <section class="bar flex items-center justify-between">
+      <div>
+        <ol class="breadcrumb">
+          <li (click)="onCountryClick()"><span>Brazil</span></li>
+          <li *ngIf="mapFilter.selectedRegion" (click)="onSelectRegion(mapFilter.selectedRegion)">
+            <span>{{mapFilter.selectedRegion?.name}}</span>
+          </li>
+          <li *ngIf="mapFilter.selectedState" (click)="onSelectState(mapFilter.selectedState)">
+            <span>{{mapFilter.selectedState?.name}}</span>
+          </li>
+          <li *ngIf="mapFilter.selectedCity" (click)="onSelectCity(mapFilter.selectedCity)">
+            <span>{{mapFilter.selectedCity?.name}}</span>
+          </li>
+        </ol>
+      </div>
+      <div class="map-legend flex items-center">
+        <div class="legend-items">
+          <div *ngFor="let item of getSelectedViewOption.rangeColors; let i = index"
+            [ngStyle]="{'background-color': item.backgroundColor, 'color': item.color}"
+            class="flex items-center justify-center legend-item" (mouseenter)="onLegendItemMouseEnter(i)"
+            (mouseleave)="onLegendItemMouseLeave()" [matTooltip]="getRangeColorTooltipMessage(i)"
+            matTooltipPosition="above">
+            {{item.min}}-{{item.max}}%
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+  <div class="container flex items-strecth justify-center flex-auto">
+    <div class="box-loading flex items-center justify-center direction-column" *ngIf="loadingMap.getValue()">
+      <mat-spinner [diameter]="50"></mat-spinner><br>
+      <div class="color-tp-body f-size-14 text-center">{{loadingMessage}}</div>
+    </div>
+    <div class="filters-container" [ngClass]="{expanded: filterSettingsExpanded}">
+      <form [formGroup]="filterForm" class="filter-form" #filterFormElement>
+        <div class="field field-icon" id="field-autocomplete-location">
+          <mat-icon class="material-icons-outlined color-tp-body cursor-pointer menu-icon"
+            (click)="toggleFilterSettingsExpanded(true)" *ngIf="!filterSettingsExpanded">menu</mat-icon>
+          <mat-icon class="material-icons-outlined color-tp-body cursor-pointer menu-icon"
+            (click)="toggleFilterSettingsExpanded(false)" *ngIf="filterSettingsExpanded">close</mat-icon>
+          <mat-icon class="material-icons-outlined color-tp-body input-icon">
+            search
+          </mat-icon>
+          <div class="separator"></div>
+          <input matInput placeholder="Region, State or city" formControlName="searchFilter" [matAutocomplete]="auto" (focus)="toggleFilterSettingsExpanded(false)" />
+        </div>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getSearchLocationAutocompleteText"
+          (optionSelected)="onSelectLocationSearchOption($event)">
+          <mat-option *ngFor="let searchLocationOption of searchLocationFilteredOptions | async"
+            [value]="searchLocationOption">
+            <span class="color-tp-body f-size-14">{{searchLocationOption.name}} <span
+                class="color-tp-label f-size-13">({{searchLocationOption.locationType}})</span></span>
+          </mat-option>
+        </mat-autocomplete>
+      </form>
+      <div class="filter-settings-container">
+        <form [formGroup]="filterForm" class="filter-form" #filterFormElement>
+          <div class="flex direction-column items-start flex-wrap">
+            <div class="filter-item field-block">
+              <div class="filter-label">Region</div>
+              <mat-form-field class="field-block" appearance="legacy">
+                <mat-label>Select</mat-label>
+                <mat-select [(value)]="mapFilter.selectedRegion" (selectionChange)="onRegionSelectionChange()"
+                  [disabled]="loadingMap.getValue()" [compareWith]="matSelectCompareCodes">
+                  <mat-option [value]=""> All </mat-option>
+                  <mat-option [value]="region" *ngFor="let region of mapFilter.regionOptions">{{ region.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="filter-item field-block">
+              <div class="filter-label">State</div>
+              <mat-form-field class="field-block" appearance="legacy">
+                <mat-label>Select</mat-label>
+                <mat-select [(value)]="mapFilter.selectedState" (selectionChange)="onStateSelectionChange()"
+                  [disabled]="loadingMap.getValue()" [compareWith]="matSelectCompareCodes">
+                  <mat-option [value]=""> All </mat-option>
+                  <mat-option [value]="state" *ngFor="let state of mapFilter.stateOptions">{{ state.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="filter-item field-block">
+              <div class="filter-label radio-group-label">Map View</div>
+              <mat-radio-group aria-labelledby="radio-group-label" class="flex direction-column items-start"
+                formControlName="selectedViewOption" (change)="onChangeSelectedViewOption($event)">
+                <mat-radio-button *ngFor="let viewOption of mapFilter.viewOptions" class="mrbViewOption"
+                  [value]="viewOption" [matTooltip]="viewOption.description">
+                  {{viewOption.name}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <google-map #googleMap height="100%" width="100%" [options]="mapOptions">
+      <map-marker #marker="mapMarker" *ngFor="let markerItem of schoolMarkers" [position]="markerItem.position"
+        [label]="markerItem.label" [title]="markerItem.title" [options]="markerItem.options"
+        (mapClick)="openSchoolInfo(marker, markerItem.schoolInfo)">
+      </map-marker>
+      <map-info-window id="marker-info-window">
+        <div id="infowindow-container" *ngIf="selectedSchool">
+          <div class="infowindow-left">
+            <div class="infowindow-title">{{selectedSchool!.school_name}}</div>
+            <div class="infowindow-subtitle">School</div>
+            <br />
+            <div class="infowindow-stats-container">
+              <div>
+                <div class="infowindow-title">{{selectedSchool!.school_region}}</div>
+                <div class="infowindow-subtitle">Region</div>
+              </div>
+              <div>
+                <div class="infowindow-title">{{selectedSchool!.school_type}}</div>
+                <div class="infowindow-subtitle">Type</div>
+              </div>
+            </div>
+          </div>
+          <div class="infowindow-right">
+            <div class="infowindow-stats-container">
+              <div>
+                <div class="infowindow-title">{{ selectedSchool!.student_count | number:'1.0-0' }}</div>
+                <div class="infowindow-subtitle">Students</div>
+              </div>
+              <div>
+                <div class="infowindow-title">{{ selectedSchool!.computer_availability_str }}</div>
+                <div class="infowindow-subtitle">Computer Availability</div>
+              </div>
+            </div>
+            <br />
+            <div class="infowindow-title">{{ selectedSchool!.internet_availability_str }}</div>
+            <div class="infowindow-subtitle">Internet Availability</div>
+            <br />
+            <div class="infowindow-title">{{ selectedSchool!.internet_availability_prediction_str }}</div>
+            <div class="infowindow-subtitle">Internet Availability Prediction</div>
+          </div>
+        </div>
+        <div id="infowindow-container" *ngIf="!selectedSchool">
+          <div class="infowindow-left">
+            <div class="infowindow-title">{{infoContent.content.name}}</div>
+            <div class="infowindow-subtitle">{{infoContent.content.type | titlecase}}</div>
+            <br>
+            <div class="infowindow-stats-container">
+              <div>
+                <div class="infowindow-title">{{infoContent.content.stats?.schoolsConnectedPercentage}}%</div>
+                <div class="infowindow-subtitle">Connectivity</div>
+              </div>
+              <div>
+                <div class="infowindow-title">
+                  {{infoContent.content.stats?.schoolsInternetAvailabilityPredictionPercentage}}%</div>
+                <div class="infowindow-subtitle">Prediction</div>
+              </div>
+            </div>
+          </div>
+          <div class="infowindow-right">
+            <div>
+              <div class="infowindow-title">Connectivity</div>
+              <div class="infowindow-subtitle">{{infoContent.content.stats?.schoolsConnectedCount | number:'1.0-0'}}
+                connected school(s)
+                with approximately
+                {{infoContent.content.stats?.studentCount | number:'1.0-0'}} students with internet access</div>
+            </div>
+            <br>
+            <div>
+              <div class="infowindow-title">Prediction</div>
+              <div class="infowindow-subtitle"
+                *ngIf="infoContent.content.stats && infoContent.content.stats.schoolsInternetAvailabilityPredictionCount > 0">
+                {{infoContent.content.stats?.schoolsWithoutConnectivityDataCount | number:'1.0-0'}}
+                school(s) without connectivity data,
+                {{infoContent.content.stats?.schoolsInternetAvailabilityPredictionCount | number:'1.0-0'}} with
+                internet
+                access
+                prediction</div>
+              <div class="infowindow-subtitle"
+                *ngIf="infoContent.content.stats && infoContent.content.stats.schoolsInternetAvailabilityPredictionCount === 0">
+                Not available</div>
+            </div>
+          </div>
+        </div>
+      </map-info-window>
+    </google-map>
+    <div class="stats-panel-container" [ngClass]="{'open': mapStatsPanel.open}">
+      <div class="inner-container" id="stats-panel-inner-container">
+        <header class="flex items-center justify-between text-transform-uppercase f-size-13">
+          <div *ngIf="mapStatsPanel.itemType === 'region'">
+            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.statesCount | shortNumber}}
+            states)
+          </div>
+          <div *ngIf="mapStatsPanel.itemType === 'state'">
+            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.citiesCount | shortNumber}} cities)
+          </div>
+          <div *ngIf="mapStatsPanel.itemType === 'city'">
+            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.schoolsCount | shortNumber}} schools)
+          </div>
+          <!-- TOOLBAR BUTTONS -->
+          <div class="flex items-center justify-end">
+            <button mat-icon-button class="color-white" aria-label="Show schools table" matTooltip="Show schools table"
+              (click)="onOpenSchoolTableClick()">
+              <mat-icon>table_view</mat-icon>
+            </button>
+            <button mat-icon-button class="color-white" aria-label="Show explanation of numbers"
+              matTooltip="Show explanation of numbers">
+              <mat-icon>info</mat-icon>
+            </button>
+          </div>
+        </header>
+        <section *ngIf="mapStatsPanel.open">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Internet Availability Prediction</header>
+          <div style="height: 150px;">
+            <ngx-charts-linear-gauge [view]="[480, 120]" scheme="vivid" [valueFormatting]="numberCardFormatPercentage"
+              [value]="mapStatsPanel.internetAvailabityPrediction" [previousValue]="0" [min]="0" [max]="100"
+              [units]="mapStatsPanel.internetAvailabityPredictionUnits">
+            </ngx-charts-linear-gauge>
+          </div>
+        </section>
+        <section *ngIf="mapStatsPanel.open">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">General stats</header>
+          <div style="height: 230px;">
+            <ngx-charts-number-card [view]="[480, 120]" scheme="vivid" [innerPadding]="mapStatsPanel.cardsInnerPadding"
+              [results]="mapStatsPanel.generalCardsData" cardColor="#232837"
+              [valueFormatting]="numberCardFormatShortNumber">
+            </ngx-charts-number-card>
+            <ngx-charts-number-card [view]="[480, 120]" scheme="forest" [innerPadding]="mapStatsPanel.cardsInnerPadding"
+              [results]="mapStatsPanel.generalCardsConnectivityData" cardColor="#232837"
+              [valueFormatting]="numberCardFormatPercentage">
+            </ngx-charts-number-card>
+          </div>
+        </section>
+        <section style="height: 150px;" *ngIf="mapStatsPanel.open">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Schools Connectivity</header>
+          <div>
+            <ngx-charts-pie-grid [view]="[500, 130]" [scheme]="schoolsConnectivityColorScheme"
+              [results]="mapStatsPanel.schoolsConnectivity">
+            </ngx-charts-pie-grid>
+          </div>
+        </section>
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity by type</header>
+          <div>
+            <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
+              [results]="mapStatsPanel.connectivityBySchoolType" [xAxis]="true" [yAxis]="true" [legend]="true"
+              [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Type'" [yAxisLabel]="'Schools'"
+              [legendTitle]="'Internet'">
+            </ngx-charts-bar-vertical-2d>
+          </div>
+        </section>
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity by region</header>
+          <div>
+            <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
+              [results]="mapStatsPanel.connectivityBySchoolRegion" [xAxis]="true" [yAxis]="true" [legend]="true"
+              [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Region'" [yAxisLabel]="'Schools'"
+              [legendTitle]="'Internet'">
+            </ngx-charts-bar-vertical-2d>
+          </div>
+        </section>
+      </div>
+      <div class="toggle-button flex items-center justify-center" (click)="toggleStatsPanel()"
+        *ngIf="mapStatsPanel.item">
+        <mat-icon class="material-icons-outlined color-white" *ngIf="mapStatsPanel.open">
+          chevron_right
+        </mat-icon>
+        <mat-icon class="material-icons-outlined color-white" *ngIf="!mapStatsPanel.open">
+          chevron_left
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

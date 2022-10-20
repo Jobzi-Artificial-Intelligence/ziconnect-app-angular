@@ -1,0 +1,18 @@
+@mixin snackbar-variant($background, $color) {
+  background: $background;
+  color: $color;
+}
+
+.mat-snack-bar-container {
+  &.danger {
+    @include snackbar-variant(#f95e5d, $white);
+  }
+
+  &.success {
+    @include snackbar-variant(#00bea4, $white);
+  }
+
+  &.warning {
+    @include snackbar-variant(#ffc03d, #8c5b00);
+  }
+}

@@ -1,0 +1,100 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+::ng-deep app-navigation-bar {
+  @include box-shadow(
+    0 3px 6px 0 rgb(10 31 68 / 10%),
+    0 0 1px 0 rgb(10 31 68 / 8%)
+  );
+  background-color: $white;
+  height: $navigation-bar-height-mobile;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    height: $navigation-bar-height;
+  }
+
+  .inner-container {
+    height: 100%;
+    padding: 0 16px;
+  }
+
+  .logos {
+    .separator {
+      background: $border-color;
+      margin: 0 16px;
+      height: 48px;
+      width: 1px;
+    }
+
+    #jobzi-logo {
+      height: 32px;
+      width: auto;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        height: 38px;
+      }
+    }
+
+    #unicef-logo {
+      height: 32px;
+      width: auto;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        height: 38px;
+      }
+    }
+  }
+
+  .menu {
+    height: 100%;
+
+    @include breakpoint($min: 0, $max: $navigation-bar-width-breakpoint) {
+      display: none;
+    }
+
+    .menu-item {
+      cursor: pointer;
+      font-size: 16px;
+      height: 100%;
+      padding: 0 25px;
+      transition: all 0.3s ease;
+
+      a {
+        text-decoration: none;
+
+        &:not(.mat-mini-fab) {
+          color: $tp-body;
+          line-height: $navigation-bar-height-mobile;
+        }
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      &:hover {
+        &:not(:last-child) {
+          background-color: #f1f1f1;
+
+          a {
+            color: $tp-title;
+          }
+        }
+      }
+    }
+  }
+
+  .mobile-toggle {
+    display: inline-block;
+
+    @include breakpoint(768px) {
+      display: none;
+    }
+  }
+}

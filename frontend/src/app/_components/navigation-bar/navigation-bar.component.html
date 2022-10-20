@@ -1,0 +1,51 @@
+<div class="inner-container flex items-center justify-between">
+  <div class="logos flex items-center">
+    <a href="https://jobzi.com" target="_blank" matTooltip="Jobzi">
+      <img class="cursor-pointer" src="assets/img/logo-zi.png"
+      srcset="assets/img/logo-js-md.png 1x, assets/img/logo-js-md@2x.png 2x" alt="Jobzi Logo" width="80" height="38" id="jobzi-logo" />
+    </a>
+    <div class="separator"></div>
+    <a href="https://unicef.org" target="_blank" matTooltip="UNICEF">
+      <img class="cursor-pointer" src="assets/img/logo_unicef.png" alt="Unicef Logo" width="auto" height="38" id="unicef-logo" />
+    </a>
+  </div>
+  <div class="menu flex items-center">
+    <div class="menu-item flex items-center">
+      <a routerLink="" class="flex items-center">Map</a>
+    </div>
+    <div class="menu-item flex items-center">
+      <a routerLink="/data-source-reference" class="flex items-center">Data Sources</a>
+    </div>
+    <div class="menu-item flex items-center">
+      <a class="flex items-center" href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Schools Connectivity">Contact</a>
+    </div>
+    <div class="menu-item flex items-center">
+      <a mat-mini-fab color="primary" aria-label="Bitbucket" matTooltip="Bitbucket" href="https://bitbucket.org/atlz/unicef-project" target="_blank">
+        <mat-icon svgIcon="code-fork"></mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="mobile-toggle">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon class="material-icons-outlined">menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <a routerLink="" mat-menu-item>
+        <mat-icon>public</mat-icon>
+        <span>Map</span>
+      </a>
+      <a routerLink="/data-source-reference" mat-menu-item>
+        <mat-icon>source</mat-icon>
+        <span>Data Sources</span>
+      </a>
+      <a href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Schools Connectivity" mat-menu-item>
+        <mat-icon>email</mat-icon>
+        <span>Contact</span>
+      </a>
+      <a href="https://bitbucket.org/atlz/unicef-project" target="_blank" mat-menu-item>
+        <mat-icon svgIcon="code-fork"></mat-icon>
+        <span>Bitbucket</span>
+      </a>
+    </mat-menu>
+  </div>
+</div>

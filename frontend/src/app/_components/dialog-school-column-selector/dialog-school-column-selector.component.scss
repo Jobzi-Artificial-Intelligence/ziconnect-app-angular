@@ -1,0 +1,45 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.dialog-title-container {
+  .subtitle {
+    color: $tp-body;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: normal;
+  }
+}
+
+.dialog-content-container {
+  padding-bottom: 12px;
+}
+
+.accordion-headers-aligned {
+  ::ng-deep .mat-expansion-panel-header-title,
+  ::ng-deep .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  }
+
+  ::ng-deep .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.group-columns {
+  > ul {
+    @include reset-list;
+    padding-left: 24px;
+  }
+
+  ::ng-deep .mat-checkbox-label {
+    font-weight: 500;
+  }
+
+  .column-description {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 24px;
+  }
+}
