@@ -1,0 +1,31 @@
+#  Template NodeJS build
+
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: node:16
+
+pipelines:
+  default:
+        - step:
+            name: Install Unicef project dependencies
+            caches:
+              - node
+            script:
+              - npm install
+              - npm test
+        - step:
+            name: Code linting
+            script:
+              - npm install eslint
+              - npx eslint .
+            caches:
+              - node
+        - step:
+            name: Build Unicef project
+            script:
+              - npm run build
+            caches:
+              - node
+            artifacts:
+              - dist/**
