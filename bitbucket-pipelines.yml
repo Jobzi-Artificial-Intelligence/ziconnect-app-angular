@@ -12,6 +12,7 @@ pipelines:
             caches:
               - node
             script:
+              - cd frontend
               - npm install
               - npm test
         - step:
