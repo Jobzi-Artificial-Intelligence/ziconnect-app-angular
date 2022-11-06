@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DataSourceReferenceComponent } from './_pages/data-source-reference/data-source-reference.component';
-import { HomeComponent } from './_pages/home/home.component';
-import { InteractiveMapComponent } from './_pages/interactive-map/interactive-map.component';
+import { CodeConductComponent, DataSourceReferenceComponent, HomeComponent, InteractiveMapComponent } from './_pages';
 
 const routes: Routes = [{
   path: 'home',
@@ -43,6 +41,20 @@ const routes: Routes = [{
         { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning, data source' },
         { property: 'og:title', content: 'Jobzi | Data Source' },
         { property: 'og:description', content: 'How We Got the Map Data' }
+      ]
+    }
+  }
+}, {
+  path: 'code-of-conduct',
+  component: CodeConductComponent,
+  data: {
+    seo: {
+      title: 'Jobzi | Code of Conduct',
+      metaTags: [
+        { name: 'description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' },
+        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning, conduct, code, tools, connectivity' },
+        { property: 'og:title', content: 'Jobzi | Code of Conduct' },
+        { property: 'og:description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' }
       ]
     }
   }

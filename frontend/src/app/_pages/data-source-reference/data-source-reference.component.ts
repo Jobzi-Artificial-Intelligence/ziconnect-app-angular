@@ -23,7 +23,7 @@ export class DataSourceReferenceComponent implements OnInit {
 
   public sourceItems = [{
     color: '#4c67aa',
-    description: 'We use geographic data from regions, states and municipalities provided by the institute. We use Geo Json files generated in intermediate quality to include geographic elements in the map view.',
+    description: 'We use geographic data from regions, states and municipalities provided by the institute and also Geo Json files generated in intermediate quality to include geographic elements in the map view. In addition to data from CEMPRE (CENTRAL REGISTER OF COMPANIES in loose translation), an electronic form filled out annually by Legal Entities in Brazil. Among other information, companies are required to declare all people employed in any time period of that year. This report is later grouped in different ways such as by sector and/or location and made publicly available.',
     name: 'IBGE',
     fullName: 'Instituto Brasileiro de Geografia e Estatística',
     image: 'assets/img/sources/logo_ibge.png',
@@ -31,6 +31,9 @@ export class DataSourceReferenceComponent implements OnInit {
     references: [{
       description: 'Geographic API',
       url: 'https://servicodados.ibge.gov.br/api/docs/malhas?versao=3'
+    }, {
+      description: 'CEMPRE',
+      url: 'https://www.ibge.gov.br/estatisticas/economicas/comercio/9016-estatisticas-do-cadastro-central-de-empresas.html?=&t=downloads'
     }],
     opacity: 0,
     degrees: 0

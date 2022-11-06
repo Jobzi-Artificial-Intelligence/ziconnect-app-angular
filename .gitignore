@@ -53,5 +53,6 @@ Thumbs.db
 #Angular cache
 */.angular/cache
 
-#Frontend local index html
+#Frontend local configuration files
 */src/index.local.html
+*/src/environments/environment.local.ts

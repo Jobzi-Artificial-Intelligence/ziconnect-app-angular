@@ -1,0 +1,700 @@
+uuid,country,source,source_school_id,school_name,latitude,longitude,dq_score,student_count,computer_availability,school_type,school_region,internet_availability,internet_speed_Mbps,region,region_code,state,state_code,city,city_code,internet_availability_prediction
+894ec20b-58e8-37db-9895-58a52b187e77,Brazil,government,53000200,CEE 02 DE BRASILIA,-15.8322,-47.9081,1.0,39,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e6ff72df-0050-3377-845a-177959458062,Brazil,government,53000234,CEJA ASA SUL - CESAS,-15.8094,-47.8821,1.0,2079,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0e2e4d09-f7ce-3a02-91c4-e0c89633b61c,Brazil,government,53000714,CEE DE DEFICIENTES VISUAIS,-15.8319,-47.9084,1.0,134,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8cc856be-a18d-3bb3-8c00-29d20b1c62a5,Brazil,government,53000846,CEF 01 DE BRASILIA,-15.8128,-47.8979,1.0,364,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4dd398b3-3c6f-3b8b-a996-994536998fba,Brazil,government,53000854,CEF 01 DO PLANALTO,-15.8282,-47.9245,1.0,388,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+965d28ee-4351-3f51-8533-cccdc0269880,Brazil,government,53000862,CEF 02 DE BRASILIA,-15.8153,-47.9012,1.0,194,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f3b1f75c-d835-3127-9794-0bdbff0d398a,Brazil,government,53000870,CEF 03 DE BRASILIA,-15.8054,-47.8914,1.0,420,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e0791f35-7d4c-34c4-9949-3fa1d18e6eb2,Brazil,government,53000889,CEF 04 DE BRASILIA,-15.8273,-47.9171,1.0,349,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d0a172a1-1dd4-372a-9291-90c4e2269f64,Brazil,government,53000897,CEF 05 DE BRASILIA,-15.8233,-47.8998,1.0,424,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+52db8164-4086-31c2-b9ae-ea0791118ab5,Brazil,government,53000919,CEF GAN,-15.7761,-47.8736,1.0,431,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b9af8cfa-96f0-3c30-9740-d58386278987,Brazil,government,53000927,CEF POLIVALENTE,-15.8196,-47.9231,1.0,1077,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e1932241-e2b5-3494-8be6-92bee5fc8e6b,Brazil,government,53000986,CEM PAULO FREIRE,-15.7559,-47.8783,1.0,942,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+de10e5eb-4d8f-387e-b28f-36e214ccc903,Brazil,government,53001010,CEM ASA NORTE - CEAN,-15.7665,-47.8751,1.0,859,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9911408a-4d9f-3c51-9486-655c31114f4e,Brazil,government,53001036,CEM ELEFANTE BRANCO,-15.8086,-47.9094,1.0,1628,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ed761494-9198-35f0-94fa-545d96d7aea2,Brazil,government,53001044,CED GISNO,-15.7693,-47.8947,1.0,1056,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ea51ac4b-2e08-3e66-8f3a-08a9032062e9,Brazil,government,53001206,CEM SETOR LESTE,-15.8312,-47.9066,1.0,1638,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+70490995-e505-336a-aa5e-3ff4a615b8e8,Brazil,government,53001214,CEM SETOR OESTE,-15.8159,-47.9198,1.0,966,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6fe881f5-4bd3-3a54-a37c-b72624aa9317,Brazil,government,53001257,CIL 01 DE BRASILIA,-15.8081,-47.9089,1.0,3579,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a5e19c68-63c3-3b87-8374-f2ca9a5df1af,Brazil,government,53001265,CEF CASEB,-15.8116,-47.9119,1.0,683,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c6a5e2ae-26ed-3cbc-9698-64d67e46593e,Brazil,government,53001354,COL MILITAR DE BRASILIA,-15.7807,-47.892,0.94,2598,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+78255219-da30-3c8f-9e37-a496e6c5c262,Brazil,government,53001435,EC DA VILA DO RCG,-15.7626,-47.95,0.89,150,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+82d68ebe-9d20-39fd-ad03-8adb4a36ee9f,Brazil,government,53001443,CEF 102 NORTE,-15.7817,-47.8834,1.0,395,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b5224dd4-b9c9-3da7-97d2-d4030fa30af3,Brazil,government,53001451,EC 102 SUL,-15.803,-47.8906,0.94,323,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b203ed5d-d423-3fc3-9347-91cc4e8bcda1,Brazil,government,53001460,CEF 104 NORTE,-15.7751,-47.8837,1.0,389,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dd36b1cd-9f32-3533-a7a7-eac5751a4922,Brazil,government,53001478,EC 106 NORTE,-15.7692,-47.884,0.94,351,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+17e32d7c-41bd-3b43-afd5-40d67fe5c903,Brazil,government,53001486,EC 108 SUL,-15.8171,-47.9033,1.0,250,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e215775b-dd03-3e6c-b807-ffb49cca18ab,Brazil,government,53001494,EC 111 SUL,-15.8232,-47.9121,1.0,328,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5b5df3c7-6b45-3b26-89ff-c9791d6499d5,Brazil,government,53001508,EC 113 NORTE,-15.7474,-47.8906,1.0,337,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+787129c0-6e5d-3758-84c7-d7568b96cd97,Brazil,government,53001516,EC 114 SUL,-15.8279,-47.9197,1.0,309,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6372d4d2-e581-3434-a523-bf3a07bca5dd,Brazil,government,53001524,EC 115 NORTE,-15.7411,-47.8928,1.0,306,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a2fe32cf-cb7e-3117-8bc9-c7e0a39ff78a,Brazil,government,53001532,EC 204 SUL,-15.8115,-47.8918,1.0,378,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38f50a5e-2549-3083-af44-e0c22b572758,Brazil,government,53001540,EC 206 SUL,-15.8163,-47.8966,1.0,267,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d34f6ee6-d938-34ed-bdfb-0c8d1761befe,Brazil,government,53001559,EC 209 SUL,-15.8216,-47.9031,1.0,323,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1a2f347e-7ac2-3797-83bb-c2b5ff8a159c,Brazil,government,53001567,CEF 214 SUL,-15.8323,-47.9178,1.0,391,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+611126ef-af59-3c93-90c6-e53212e4af47,Brazil,government,53001575,EC 302 NORTE,-15.7821,-47.8856,1.0,280,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ba863b1d-d41f-3713-b0a2-ac0978069438,Brazil,government,53001583,EC 304 NORTE,-15.7763,-47.8863,1.0,310,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eaf2dabb-4fdf-3b45-963b-1fb8452e9d83,Brazil,government,53001591,EC 304 SUL,-15.8056,-47.8963,1.0,242,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e3b91580-2a00-3dea-a80f-c2f745060499,Brazil,government,53001605,EC 305 SUL,-15.8078,-47.8985,1.0,353,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+74158dde-bda0-3bb7-9da2-6d606c5512a7,Brazil,government,53001613,CEF 306 NORTE,-15.771,-47.887,0.89,436,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e50163ff-e048-32df-a694-59e573aade92,Brazil,government,53001621,EC 308 SUL,-15.8136,-47.9053,1.0,354,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+21c73e9e-788c-37e2-a1fd-05d18a6a8783,Brazil,government,53001630,EC 312 NORTE,-15.7524,-47.8929,1.0,328,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0ad78b26-c865-3f31-a9bf-3a9fa8d9437f,Brazil,government,53001648,EC 314 SUL,-15.8272,-47.9219,1.0,574,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0d6de18c-536f-383f-a4ba-e8c54d222933,Brazil,government,53001656,EC 315 SUL,-15.7807,-47.7974,1.0,0,,Estadual,Urban,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f94eac6d-321b-3064-8342-6435dbc9b7cf,Brazil,government,53001664,CEI 316 NORTE,-15.7389,-47.8966,1.0,317,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+791475b3-e305-3045-b26b-c3713609e722,Brazil,government,53001672,EC 316 SUL,-15.8304,-47.9271,1.0,319,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b4de0ebb-0cd1-3c90-9faa-cf4e358c8db1,Brazil,government,53001680,EC 403 NORTE,-15.7774,-47.8763,1.0,357,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4b9114de-5e74-391e-b670-98c714a133ec,Brazil,government,53001699,EC 405 NORTE,-15.7707,-47.877,0.94,228,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f865cdac-4f29-3f64-877a-472e3854d6cc,Brazil,government,53001702,CEF 405 SUL,-15.8159,-47.8922,1.0,424,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d96eae16-d83a-34cf-b50f-1024c6f169c5,Brazil,government,53001710,EC 407 NORTE,-15.7623,-47.8785,1.0,292,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+afa8a263-c831-3d1e-8bf2-2f6e06f66dc5,Brazil,government,53001729,CEF 410 NORTE,-15.755,-47.8816,0.94,469,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+27b35597-ee66-3eac-965c-47461209af1e,Brazil,government,53001737,EC 410 SUL,-15.8268,-47.9051,1.0,276,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+99245c90-0ff7-3985-8096-28f8a4483634,Brazil,government,53001745,EC 411 NORTE,-15.7528,-47.8822,1.0,246,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+29431f13-f977-3905-85dc-05a7e4006747,Brazil,government,53001753,EC 413 SUL,-15.8313,-47.913,0.94,443,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6775b75c-8c81-358b-858f-542ccb2580b1,Brazil,government,53001761,EC 415 NORTE,-15.7398,-47.8863,1.0,335,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5bedd923-9830-39ee-b1df-b8739f0f2f77,Brazil,government,53001770,EC 416 SUL,-15.8377,-47.9218,1.0,191,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1756a2bb-7222-3346-8c5d-95afd08b5fd3,Brazil,government,53001788,EC 708 NORTE,-15.7681,-47.8919,1.0,256,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a4bdc29c-ebcb-36ea-ab74-32f4ef808046,Brazil,government,53001800,EC DO SMU,-15.7749,-47.9309,1.0,230,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7723342c-c81f-3b45-beff-656600c9488b,Brazil,government,53001818,EC GRANJA DO TORTO,-15.7052,-47.9118,1.0,184,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+542d3c09-4b50-3696-91b6-54e8ba56b9a9,Brazil,government,53001842,EP 210-211 NORTE,-15.7543,-47.8837,1.0,570,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8fc2adf4-eeff-365b-9d33-03678dbd89a2,Brazil,government,53001850,EP 210-211 SUL,-15.8253,-47.9077,1.0,389,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+877dfdbb-8f9e-30e7-90fc-372504a38b4c,Brazil,government,53001869,EP 303-304 NORTE,-15.6585,-47.7935,1.0,656,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+40ad61fb-8bc4-3275-84cd-c122270fd0eb,Brazil,government,53001877,EP 307-308 SUL,-15.813,-47.9046,0.94,810,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1061f029-c6ac-33bf-8ad5-9634aabf3d33,Brazil,government,53001885,EP 313-314 SUL,-15.8245,-47.9209,1.0,627,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38ce0b08-0a5e-390a-943f-7687604ba250,Brazil,government,53001893,ESC DO PARQUE DA CIDADE - PROEM,-15.8091,-47.9134,1.0,88,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f624cde5-e4a8-3002-942f-e950f9d3a764,Brazil,government,53001966,EC DA ACAO SOCIAL DO PLANALTO,-15.7807,-47.7974,1.0,0,,Estadual,Urban,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6ef6e801-55d4-30c9-b30a-ededc7c39ebc,Brazil,government,53001990,CEP - ESC DE MUSICA DE BRASILIA,-15.8083,-47.8812,1.0,844,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+488e3ac5-11c5-3fe6-8563-8e1e6b9f73e6,Brazil,government,53002121,ESC TECNICA DE SAUDE DE BRASILIA - ETESB,-15.7807,-47.7974,0.67,97,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+21579dcc-f90a-3f21-b77e-dc0cfbd71342,Brazil,government,53002148,ESC MENINOS E MENINAS DO PARQUE,-15.81,-47.9251,0.89,170,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b7cf3207-ff44-3f20-aa18-7f550fb89626,Brazil,government,53002210,JI 21 DE ABRIL,-15.8103,-47.9068,1.0,117,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cb81623a-4b86-390f-99ea-3d763b865843,Brazil,government,53002237,JI 102 SUL,-15.804,-47.8898,0.94,127,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+37fe376b-5ef1-3a0b-a457-4cafb53364ab,Brazil,government,53002245,JI 106 NORTE,-15.7697,-47.8833,1.0,196,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+08203d4d-267c-3c38-827a-ee6b2de077a2,Brazil,government,53002253,JI 108 SUL,-15.8174,-47.9044,1.0,111,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5974dd64-8044-38ae-9422-7920e253329c,Brazil,government,53002261,JI 114 SUL,-15.8287,-47.9208,1.0,136,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e1015a02-bf5f-3b83-82b0-2a02942704e3,Brazil,government,53002270,JI 208 SUL,-15.8206,-47.9016,1.0,150,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+75dd0f22-94d7-32ec-995b-12e64db1f983,Brazil,government,53002288,JI 302 NORTE,-15.782,-47.8859,0.94,132,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9f0f54db-c3a7-3514-940a-e00c1abb0615,Brazil,government,53002296,JI 303 SUL,-15.8031,-47.8938,1.0,144,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+00c75bcd-d717-3523-9bbd-a1d4478637e3,Brazil,government,53002300,JI 304 NORTE,-15.7762,-47.8858,1.0,158,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7d911b1f-d4bb-3d9a-abcc-abf5a1e2f2c1,Brazil,government,53002318,JI 305 SUL,-15.8085,-47.8987,1.0,127,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1bf4fdf2-3542-3762-96cd-48daef5d65d7,Brazil,government,53002326,JI 308 SUL,-15.8142,-47.9064,1.0,152,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+827c1b5c-60f0-33f4-aa32-1a2b925fb87d,Brazil,government,53002334,JI 312 NORTE,-15.7515,-47.8924,1.0,220,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d6aa8ba2-dd71-38e4-957f-2b649988d5c0,Brazil,government,53002342,JI 314 SUL,-15.8262,-47.9226,1.0,114,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6618328d-cb3f-37d7-9a07-b97c06be2c95,Brazil,government,53002350,JI 316 SUL,-15.8289,-47.9272,1.0,141,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8e85aa0b-5500-3979-a539-63b9cf288092,Brazil,government,53002369,JI 404 NORTE,-15.7752,-47.8764,1.0,148,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+471dc588-59fc-3cb7-a306-28e51f7a9745,Brazil,government,53002458,CAIC CARLOS CASTELLO BRANCO,-16.0399,-48.0596,1.0,335,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+100cc140-89c0-30a7-a55f-c02eb4afc606,Brazil,government,53002466,CEF PONTE ALTA DO BAIXO,-16.0253,-48.1313,1.0,228,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cd16962a-61fa-393f-b72f-6b127191d7e4,Brazil,government,53002474,CED GESNER TEIXEIRA,-16.0487,-48.0469,1.0,1432,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7e3fe807-469a-3f54-9f17-8130911eb71c,Brazil,government,53002482,CED 08 DO GAMA,-16.0232,-48.0783,1.0,1201,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+143f4f73-211f-386a-8e9f-c7e0d76128e4,Brazil,government,53002490,CEF 04 DO GAMA,-16.0271,-48.0563,1.0,998,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+99ab1c26-02fa-3d50-a85b-b3543ddd9be3,Brazil,government,53002504,CEF 05 DO GAMA,-16.0158,-48.0785,1.0,828,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a7b7af44-7878-393c-b594-6843e977beeb,Brazil,government,53002512,CEF 08 DO GAMA,-16.0257,-48.074,0.94,831,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bd0a8c5d-e085-369e-91b2-96f576e7ba91,Brazil,government,53002520,EC 29 DO GAMA,-16.0404,-48.0589,1.0,714,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f82ca052-7022-3c0e-9c71-f75d48f4d65b,Brazil,government,53002539,CEF 10 DO GAMA,-16.0142,-48.0754,1.0,997,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d03502b8-8aa2-3c67-a6e9-e4967b0d8418,Brazil,government,53002547,CEF 11 DO GAMA,-16.0282,-48.0697,1.0,1466,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+edf535f5-93b6-3759-b81c-5c122f20cd18,Brazil,government,53002555,CEF 12 DO GAMA,-15.7807,-47.7974,1.0,0,,Estadual,Urban,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5c138bde-46fe-34fc-8d9d-39e47ed2b617,Brazil,government,53002563,CED 07 DO GAMA,-16.0201,-48.0648,1.0,1555,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+23232be2-b304-323e-86b8-cf5c0458e65e,Brazil,government,53002580,CEM 01 DO GAMA,-16.0188,-48.0543,1.0,2368,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+93c8bd4e-f789-3097-ab1b-634f573d40c1,Brazil,government,53002598,CEM 02 DO GAMA,-16.0153,-48.0711,1.0,2105,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2f925e77-f64b-36d7-9d10-239fce7648ff,Brazil,government,53002601,CEM 03 DO GAMA,-16.0367,-48.0637,1.0,1189,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5dc3ce16-78e9-37e4-9826-54dd5ba08312,Brazil,government,53002610,CED 06 DO GAMA,-16.0073,-48.0506,1.0,1218,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8c26bb73-025c-3669-82f6-1ca63cc07184,Brazil,government,53002784,CEF 01 DO GAMA,-16.0071,-48.062,0.94,841,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e41f3aa6-49b1-3cec-82fa-f268ea4501ec,Brazil,government,53002814,EC 01 DO GAMA,-16.0176,-48.0548,1.0,645,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b9e7be25-89eb-33a9-9b77-04be6e9227fd,Brazil,government,53002822,EC 02 DO GAMA,-16.0052,-48.0719,1.0,536,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a47dfe22-11e6-30eb-9710-615dda90de37,Brazil,government,53002830,EC 03 DO GAMA,-16.0144,-48.051,0.94,510,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7c521d2a-98eb-3a2f-a9dd-9e3efc32aa90,Brazil,government,53002849,JI 04 DO GAMA,-16.017,-48.0764,0.94,321,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+277338b0-8876-356f-96f4-7c269db8bd57,Brazil,government,53002857,EC 06 DO GAMA,-16.0118,-48.0733,1.0,254,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+982e8bd5-9d86-3e0e-8b5e-653d473d1fbb,Brazil,government,53002865,EC 07 DO GAMA,-16.0241,-48.0846,1.0,312,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b8d9da8f-b5e2-345b-9224-5fce448beb7f,Brazil,government,53002873,EC 09 DO GAMA,-16.0305,-48.0657,1.0,637,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7398d429-6375-398c-a459-3e11a1e14092,Brazil,government,53002881,EC 10 DO GAMA,-16.008,-48.0788,0.94,344,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7925800a-145b-32c1-aa81-232406af0236,Brazil,government,53002890,EC 12 DO GAMA,-16.0103,-48.0654,1.0,369,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3942381c-8930-3279-802a-e60942f70c9a,Brazil,government,53002903,JI 03 DO GAMA,-16.0066,-48.0514,1.0,355,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a4019631-e5f0-37f9-b30d-e8525030473d,Brazil,government,53002911,EC 14 DO GAMA,-16.027,-48.0554,0.94,393,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c4407a59-0d0f-306b-b2ca-2e07e1b0597f,Brazil,government,53002920,EC 15 DO GAMA,-16.0035,-48.061,0.94,458,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0a4fe200-b006-3962-baed-e445c4926dac,Brazil,government,53002938,EC 16 DO GAMA,-16.0205,-48.0822,1.0,339,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+55ed42c6-9896-390d-9b01-6bc1883c89dc,Brazil,government,53002946,EC 17 DO GAMA,-16.0313,-48.0717,1.0,305,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+98330334-1c87-33ac-b1cc-1cea36c03407,Brazil,government,53002954,EC 18 DO GAMA,-16.0333,-48.0615,1.0,397,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+743a618a-635a-33ff-a58a-1a7f8494180f,Brazil,government,53002962,EC 19 DO GAMA,-16.0253,-48.0508,1.0,350,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e4831fd2-2ff6-3d4e-8a9e-c29763d60340,Brazil,government,53002970,JI 02 DO GAMA,-16.0307,-48.0543,1.0,336,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1f80b335-7b6f-3033-b761-b3b73dd82482,Brazil,government,53002989,EC 21 DO GAMA,-15.9994,-48.0555,1.0,317,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+64d65ecf-b86c-3b9a-8a2b-33654ce29a30,Brazil,government,53002997,EC 22 DO GAMA,-16.0223,-48.068,0.94,521,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+db12616f-8a75-3b56-8536-9eaabdc7f9c2,Brazil,government,53003004,CEF 03 DO GAMA,-16.011,-48.0506,0.94,1343,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+879accd2-aa24-38e0-b8be-9fe78bf433bc,Brazil,government,53003012,JI 05 DO GAMA,-16.0263,-48.0806,1.0,255,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9a97b8e1-7a04-36fb-b13c-5b7f5f28aa77,Brazil,government,53003020,EC 28 DO GAMA,-16.0072,-48.0831,1.0,271,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b03f0d7b-8d51-33f1-a48c-89d50b294bd0,Brazil,government,53003047,CED ENGENHO DAS LAJES,-16.0419,-48.2571,1.0,739,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+45f4521a-158e-3bdb-b63c-3de46a1b0897,Brazil,government,53003055,EC PONTE ALTA DE CIMA,-16.0475,-48.147,0.94,157,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1629ffaa-18e1-33fa-a5d4-df638f74ff89,Brazil,government,53003063,CEF PONTE ALTA NORTE,-15.9808,-48.0723,1.0,294,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4ece4623-a249-30ae-974f-7cf54c5b13a0,Brazil,government,53003071,CEF 15 DO GAMA,-16.0345,-48.0624,1.0,535,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+023680d7-aac3-312a-ba3e-57375bd7b2ff,Brazil,government,53003381,CAIC PROF WALTER JOSE DE MOURA,-15.8626,-48.027,0.94,1522,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+972eab5e-0085-3b4a-a1e9-4667d274078a,Brazil,government,53003446,CEF 03 DE TAGUATINGA,-15.8403,-48.0489,1.0,1179,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6fbad38e-3573-3a9c-9b17-6abf04e670a9,Brazil,government,53003454,CEF 04 DE TAGUATINGA,-15.823,-48.083,0.89,598,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+139435d8-60a7-3f2b-84a7-19c6f821a5e3,Brazil,government,53003462,CEF 05 DE TAGUATINGA,-15.8595,-48.0465,1.0,695,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4a29ea60-036f-38e4-91a5-4994bab298a8,Brazil,government,53003470,CEF 08 DE TAGUATINGA,-15.8174,-48.0584,1.0,842,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4b296f62-b595-3f45-9790-4ffa8fcd0325,Brazil,government,53003489,CEF 09 DE TAGUATINGA,-15.8426,-48.0502,1.0,553,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0c7d0b38-5e7f-3f10-aa13-6b30c78d3324,Brazil,government,53003497,CEF 10 DE TAGUATINGA,-15.8567,-48.0414,1.0,844,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e5179898-36b9-3067-a426-7603012fb8b3,Brazil,government,53003500,CEF 11 DE TAGUATINGA,-15.8088,-48.0632,1.0,901,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2b36b10a-31e6-3ccc-93cf-d13d1970c0cc,Brazil,government,53003519,CEF 12 DE TAGUATINGA,-15.8034,-48.0726,1.0,1245,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6ea48a80-25c3-3a18-a804-4d9bf9d2cde3,Brazil,government,53003527,CEF 14 DE TAGUATINGA,-15.8188,-48.0637,1.0,1131,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4eb2addb-ddfb-35a2-b818-d1f7af84fa10,Brazil,government,53003535,CEF 15 DE TAGUATINGA,-15.8345,-48.0548,1.0,1024,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+caec40b3-0220-3e21-b6d6-511f7b26a78e,Brazil,government,53003578,CED 02 DE TAGUATINGA,-15.8419,-48.0475,1.0,2235,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d70eede1-cf6d-3f22-a443-4427cf9feaca,Brazil,government,53003586,CEM 03 DE TAGUATINGA,-15.8599,-48.0397,1.0,1339,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c39277f9-29bf-387c-9f39-be338385cc15,Brazil,government,53003594,CED 04 DE TAGUATINGA,-15.7955,-48.0575,1.0,1030,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c9ba5639-7212-33e6-be0b-767ed340adac,Brazil,government,53003608,CED 05 DE TAGUATINGA,-15.8149,-48.0877,1.0,1062,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8ea19c46-2e0a-3fe8-bf3f-3203b49f47b8,Brazil,government,53003616,CED 06 DE TAGUATINGA,-15.8315,-48.0786,1.0,1662,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1ba45694-138c-3bb5-a132-45ee1401f507,Brazil,government,53003624,CED 07 DE TAGUATINGA,-15.8044,-48.1003,1.0,1312,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dc9da377-c4bb-3084-864e-48fa62dd89b6,Brazil,government,53003632,CEM AVE BRANCA,-15.8359,-48.054,0.94,2801,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+babdc804-719f-3d60-beb4-8ec1e46fc52d,Brazil,government,53003683,CEM TAGUATINGA NORTE,-15.8195,-48.0659,1.0,2156,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+611fd5a7-6c01-32e5-8987-f7a7bc85c7ef,Brazil,government,53003691,CEM EIT,-15.8326,-48.0586,1.0,1906,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+49e4fb12-7ec2-3248-b316-f762ae8d9541,Brazil,government,53003802,CEE 01 DE CEILANDIA,-15.8399,-48.1139,1.0,60,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6a4ae17a-808b-3e90-989c-abb802aee841,Brazil,government,53003810,CEE 01 DE TAGUATINGA,-15.8163,-48.0855,1.0,56,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1e71fe16-9752-3c8f-a1cd-4d50bc37e5df,Brazil,government,53003969,CIL DE CEILANDIA,-15.8239,-48.1,0.83,4812,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2c2054bd-1c4d-3b1b-9830-249016840a83,Brazil,government,53003977,CIL DE TAGUATINGA,-15.8364,-48.0586,1.0,4349,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+641cf902-8240-317c-bf8e-ce8494b33216,Brazil,government,53004027,EC 01 DE TAGUATINGA,-15.8359,-48.0621,1.0,404,Yes,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4f255b01-cb6b-32d1-8fb6-f96cabe96a48,Brazil,government,53004035,EC 06 DE TAGUATINGA,-15.8199,-48.0623,1.0,430,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bbd520f1-b225-345f-bfa3-bfbe47093f13,Brazil,government,53004043,EC 08 DE TAGUATINGA,-15.8016,-48.0654,1.0,616,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6d5902f2-e013-395d-8239-ae6506959d0e,Brazil,government,53004051,EC 10 DE TAGUATINGA,-15.8502,-48.0476,1.0,663,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+327feb0b-b64f-3472-80aa-3379ab426cbe,Brazil,government,53004060,EC 11 DE TAGUATINGA,-15.8566,-48.044,0.94,607,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b61d0c70-3f15-39a2-9cc9-5882e4980923,Brazil,government,53004078,EC 12 DE TAGUATINGA,-15.806,-48.0797,0.94,421,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f09aef2e-cf17-33d6-9a24-0f2445efde4e,Brazil,government,53004086,EC 13 DE TAGUATINGA,-15.8642,-48.0372,1.0,366,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1be20169-a25b-3774-bb99-fcc00ca02c4f,Brazil,government,53004094,EC 15 DE TAGUATINGA,-15.806,-48.0591,0.94,477,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+23a149fa-b819-32d8-9660-e35f354c9600,Brazil,government,53004108,EC 16 DE TAGUATINGA,-15.7963,-48.0602,1.0,446,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8705022c-e0cb-3abf-955e-24bae0efe62f,Brazil,government,53004116,EC 17 DE TAGUATINGA,-15.8347,-48.0551,1.0,380,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d2d7212b-d23c-359c-a057-6f0f74a0d95c,Brazil,government,53004124,EC 18 DE TAGUATINGA,-15.8124,-48.0595,1.0,589,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5ad4441d-eb51-3fc3-882c-9011f9b5886c,Brazil,government,53004132,EC 19 DE TAGUATINGA,-15.8228,-48.0566,1.0,280,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1ae9bec9-d579-3059-ba8d-a3e4bc6dd94a,Brazil,government,53004140,ESC BILINGUE LIBRAS E PORTUGUES ESCRITO DE TAGUATINGA,-15.8022,-48.0768,1.0,283,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ee86c0c1-7746-37ff-b98b-3feb84f2db03,Brazil,government,53004159,CEI 04 DE TAGUATINGA,-15.8268,-48.0578,1.0,274,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b9993657-9c69-30b0-90a0-0446f14e7d45,Brazil,government,53004167,CEI 05 DE TAGUATINGA,-15.8155,-48.0815,1.0,217,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eb572fa9-8504-3627-be53-771613e29a64,Brazil,government,53004175,EC 27 DE TAGUATINGA,-15.8134,-48.0684,1.0,835,Yes,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c41b7962-8af6-3608-92a6-c4d3ac5437ab,Brazil,government,53004183,CEI 01 DE TAGUATINGA,-15.855,-48.045,0.89,330,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0eee55bd-27ca-3dff-addc-e08889f1d2ef,Brazil,government,53004191,EC 29 DE TAGUATINGA,-15.8148,-48.0859,1.0,381,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4f3be0b9-fea1-3695-8be5-563aa7463a20,Brazil,government,53004205,CEI 02 DE TAGUATINGA,-15.8003,-48.0574,1.0,417,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+61ca6b36-4442-370d-8785-7bb8839662d2,Brazil,government,53004213,EC 39 DE TAGUATINGA,-15.8243,-48.0673,1.0,496,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2f6bb57f-d860-33b7-b4bf-46e43bc6c78e,Brazil,government,53004221,CEF 19 DE TAGUATINGA,-15.8203,-48.0792,1.0,755,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+78d93e38-b9ed-38da-afac-c85242ce7f8e,Brazil,government,53004230,EC 41 DE TAGUATINGA,-15.8245,-48.0875,1.0,621,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b6fb8dca-9ed0-3370-9753-ce6a58d6915d,Brazil,government,53004248,EC 42 DE TAGUATINGA,-15.8076,-48.0957,1.0,513,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dfb65469-743d-31fd-b591-863073724540,Brazil,government,53004256,CEF 17 DE TAGUATINGA,-15.7967,-48.1024,1.0,844,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a42bb852-8fb2-33c0-8504-62a85811fb61,Brazil,government,53004264,EC 45 DE TAGUATINGA,-15.7946,-48.107,0.94,393,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0758c908-5c63-3d4d-98b1-af5099103873,Brazil,government,53004272,EC 46 DE TAGUATINGA,-15.8142,-48.0912,1.0,376,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+955aa1ec-5e40-38de-a357-357ec0ceebc6,Brazil,government,53004280,CEF 16 DE TAGUATINGA,-15.8251,-48.0909,1.0,678,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cd879359-7a61-3b79-9ece-39648cd368b6,Brazil,government,53004299,CEF 21 DE TAGUATINGA,-15.8159,-48.0943,1.0,538,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+75ae161f-3c07-39f7-b0c6-a5f6d201f45b,Brazil,government,53004302,CEI 06 DE TAGUATINGA,-15.8197,-48.0894,1.0,247,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+edd92a8d-b789-3c5c-b9db-c750d4082929,Brazil,government,53004310,EC 50 DE TAGUATINGA,-15.8314,-48.0753,1.0,494,No,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+59dfb1f9-94eb-39f2-a2f1-49bf31dfef8c,Brazil,government,53004329,CEI 03 DE TAGUATINGA,-15.8068,-48.0981,1.0,370,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+76ca00f5-6142-3755-bd45-7ad354aecf72,Brazil,government,53004337,EC 52 DE TAGUATINGA,-15.8012,-48.1024,1.0,348,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9f71659f-588e-3947-9ebd-b9bf520abba2,Brazil,government,53004345,EC 53 DE TAGUATINGA,-15.8316,-48.0884,1.0,546,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+958ed487-8984-396a-9da5-4840ecfb8ec0,Brazil,government,53004353,EC 55 DE CEILANDIA,-15.7906,-48.1418,1.0,699,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+187a39a8-84a4-3960-b18a-a7249631f80f,Brazil,government,53004361,EC ARNIQUEIRA,-15.8622,-48.0007,1.0,294,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0fdd13c0-9064-3d05-bd06-e2eb67420b0b,Brazil,government,53004370,EC COLONIA AGRICOLA VICENTE PIRES,-15.8131,-48.0146,1.0,327,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7218435e-a7c8-3f43-b680-3a831a914ae4,Brazil,government,53004388,CEF VILA AREAL,-15.8601,-48.0249,1.0,474,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+126e10c5-83f7-31e2-9a3d-ad84ebc3608f,Brazil,government,53004396,EC 54 DE TAGUATINGA,-15.853,-48.0491,0.94,866,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9d54657d-d149-3b71-b9ee-fba6892eafd7,Brazil,government,53004973,CAIC PROF BENEDITO CARLOS DE OLIVEIRA,-15.6773,-48.2031,1.0,622,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+61fb931c-4e4c-34f3-8794-bad93b2ef8bd,Brazil,government,53004981,CED INCRA 08,-15.7436,-48.1698,1.0,1030,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5f5a15a5-9977-38dd-91cc-a70274a2e383,Brazil,government,53004990,CEF 01 DE BRAZLANDIA,-15.6667,-48.2009,1.0,972,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e997a45f-e059-36c2-a57c-303823d83738,Brazil,government,53005007,CEF VENDINHA,-15.621,-48.1994,0.94,602,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3deb5458-fe74-34a7-af88-dfd7c311b4e6,Brazil,government,53005015,CEM 01 DE BRAZLANDIA,-15.6882,-48.1959,1.0,1307,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0fcf2814-01c5-31c9-a18a-07babdcf37a1,Brazil,government,53005023,CED 02 DE BRAZLANDIA,-15.6807,-48.1982,1.0,1281,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7a4ccfd8-c4d6-3f84-9455-f516e0d0096d,Brazil,government,53005074,EC 01 DE BRAZLANDIA,-15.6819,-48.202,0.94,279,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+be6771af-d4b4-37a2-87c5-8958448a2ecc,Brazil,government,53005082,EC 03 DE BRAZLANDIA,-15.6772,-48.1929,1.0,546,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1d9cbb73-91b3-3c62-85eb-7c11b71c8a91,Brazil,government,53005090,CEF 02 DE BRAZLANDIA,-15.6721,-48.1943,1.0,1267,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e5429aca-372d-302c-b59e-4d3772be591b,Brazil,government,53005104,EC 05 DE BRAZLANDIA,-15.6876,-48.1915,1.0,455,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+39a387f5-06fc-304c-8d2b-87a45470755e,Brazil,government,53005112,EC 06 DE BRAZLANDIA,-15.6651,-48.2008,1.0,406,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6ab7baeb-108b-3fc6-b062-5f4321fc2fad,Brazil,government,53005120,EC 07 DE BRAZLANDIA,-15.6649,-48.2023,1.0,536,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e2095bb9-ee57-3d01-b5fe-21557adea003,Brazil,government,53005139,EC 08 DE BRAZLANDIA,-15.6705,-48.2022,1.0,343,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38d8d3b5-acc7-3d0a-854d-1a0f7cefb840,Brazil,government,53005147,EC ALMECEGAS,-15.5389,-48.1688,1.0,317,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1f1df88c-b3ef-39f6-8849-78d4bd267d9d,Brazil,government,53005155,EC BUCANHAO,-15.637,-48.1695,0.94,200,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+568d4983-4266-3960-87ba-783339209895,Brazil,government,53005163,EC CHAPADINHA,-15.675,-48.1517,0.94,233,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+169b9e76-93df-3d4d-a757-21f21fa92d1c,Brazil,government,53005171,CED 04 DE BRAZLANDIA,-15.5342,-48.1903,1.0,221,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+df609e31-46fe-308c-a9dd-1d0ca89947d2,Brazil,government,53005180,EC INCRA 06,-15.7281,-48.1924,1.0,249,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8cadf5b4-c846-34b2-b2e0-a30ba190a184,Brazil,government,53005198,EC INCRA 07,-15.7489,-48.115,0.94,389,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+20bf343f-49ac-3848-b803-d84f196044c4,Brazil,government,53005201,EC POLO AGRICOLA DA TORRE,-15.6736,-48.1994,1.0,338,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3c5e2a01-946d-3f46-8902-854cf6992ef0,Brazil,government,53005210,CED IRMA MARIA REGINA VELANES REGIS,-15.6753,-48.1031,1.0,1187,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fe118d15-d813-3ede-934d-dc5a5c870af1,Brazil,government,53005252,CEI 01 DE BRAZLANDIA,-15.6674,-48.199,0.94,388,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0e94048b-22ab-3e5d-be7e-49bf386fb386,Brazil,government,53005309,CAIC JULIA KUBITSCHEK DE OLIVEIRA,-15.6431,-47.8232,1.0,1408,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+88886c18-7109-3eb3-9bbb-6b1dd1a4e2ad,Brazil,government,53005333,CEF 01 DE SOBRADINHO,-15.6576,-47.7929,1.0,827,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fbc9de4c-7018-3a46-82e1-9279350b814f,Brazil,government,53005341,CED 03 DE SOBRADINHO,-15.7807,-47.7974,0.67,1708,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d7e139e1-0f89-3896-839d-59ebdfa88265,Brazil,government,53005350,CEF 03 DE SOBRADINHO,-15.6509,-47.7994,1.0,1144,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+98f3cbe7-34b2-3724-b61e-030952901b85,Brazil,government,53005368,CEF 04 DE SOBRADINHO,-15.6461,-47.7786,1.0,1696,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d8ffc361-2b51-3c2c-8140-f60569240794,Brazil,government,53005376,CEF 05 DE SOBRADINHO,-15.6438,-47.7972,1.0,1486,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d344a766-496e-3aee-9535-c3a03cfcc9fd,Brazil,government,53005384,EC 15 DE SOBRADINHO,-15.6523,-47.8094,1.0,1034,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+788dba04-dcc6-3ddf-9ae9-31b510f420fd,Brazil,government,53005392,CED FERCAL,-15.5907,-47.8809,1.0,525,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+873f704e-085a-3437-848b-2f04ff59dd03,Brazil,government,53005406,CEF QUEIMA LENCOL,-15.589,-47.8433,0.94,811,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4a6759de-229a-3486-af94-7aadd2b5226b,Brazil,government,53005465,CEM 01 DE SOBRADINHO,-15.6537,-47.7988,1.0,1926,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2663230b-8dc3-3c13-bfac-d477990fad51,Brazil,government,53005473,CED 02 DE SOBRADINHO,-15.6479,-47.7864,1.0,1301,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a30df3ec-6186-31fb-9894-4509fa6cb4c9,Brazil,government,53005600,CIL DE SOBRADINHO,-15.6445,-47.7885,1.0,3232,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+872dafa3-3c22-319c-ad4d-6bdd29f682af,Brazil,government,53005627,EC 01 DE SOBRADINHO,-15.6497,-47.7988,1.0,563,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9cdc3b7b-52a9-3e27-b20e-b24a0aa42d11,Brazil,government,53005635,EC 05 DE SOBRADINHO,-15.6402,-47.802,0.94,697,Yes,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f75faecd-ae2c-3755-877c-9c1824b7aaeb,Brazil,government,53005643,CEI 03 DE SOBRADINHO,-15.6473,-47.7742,1.0,331,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+72439aa2-6e28-3c87-9101-896d278fbc3e,Brazil,government,53005651,EC 10 DE SOBRADINHO,-15.6589,-47.797,0.94,397,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+905af39d-4d54-36c6-9e1f-30dda04ce470,Brazil,government,53005660,EC 11 DE SOBRADINHO,-15.6454,-47.7885,1.0,390,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d40df746-8729-3abc-9f5c-8b54575ec73d,Brazil,government,53005678,EC 12 DE SOBRADINHO,-15.6589,-47.8089,1.0,386,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0a46ed4a-795c-3195-84ae-cd30cc2d986d,Brazil,government,53005686,EC 13 DE SOBRADINHO,-15.6538,-47.8634,1.0,448,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eb5db352-e268-374e-a22d-aa76f1dc2190,Brazil,government,53005694,EC BOA VISTA,-15.5886,-47.9225,1.0,174,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0c104aef-ba4a-3ee8-8257-1fdb84ccb2b3,Brazil,government,53005708,EC CATINGUEIRO,-15.5636,-47.9354,1.0,103,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4fff00b6-1ed1-3fc6-a902-7cffba52754c,Brazil,government,53005716,EC CORA CORALINA,-15.7291,-47.7496,1.0,359,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2ba36d07-1410-3bb6-a99a-8ec9ea3b271b,Brazil,government,53005724,EC CORREGO DO OURO,-15.5133,-47.9229,1.0,35,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+8c6b2ef5-39a4-3773-859d-5bdcd5955d2e,Brazil,government,53005732,EC ENGENHO VELHO,-15.6017,-47.8692,1.0,384,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4f1e897c-ff02-3366-a0fd-546e9ee1d442,Brazil,government,53005740,CED PROF CARLOS RAMOS MOTA,-15.6179,-47.9507,1.0,1217,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4011d51a-dfb7-3219-90d7-27b7abb7618e,Brazil,government,53005759,EC MORRO DO SANSAO,-15.6195,-47.8233,1.0,172,Yes,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+689273dd-d5ee-3baa-bbeb-1c501f2efdb6,Brazil,government,53005767,EC RIBEIRAO,-15.7807,-47.7974,0.67,77,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+543323bd-e561-3d8e-94bb-41a44b2b8e1d,Brazil,government,53005775,EC RUA DO MATO,-15.6112,-47.8772,1.0,203,No,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6efccf5d-0971-3040-8e79-771e0b774929,Brazil,government,53005783,EC SANTA HELENA,-15.7065,-47.7991,1.0,119,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ff27bf09-53df-3933-9216-09d77acf1208,Brazil,government,53005791,EC SITIO DAS ARAUCARIAS,-15.698,-47.743,0.89,161,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+72736174-c4f4-38d6-ac8c-4a8678162f3f,Brazil,government,53005805,EC SONHEM DE CIMA,-15.5075,-47.8455,1.0,176,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+587b8a7f-b27a-3298-833d-544f2c99e9fb,Brazil,government,53005848,CEE 01 DE SOBRADINHO,-15.6503,-47.779,0.94,180,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a96b7b68-6aeb-39da-a29b-a86eaa5f8e7b,Brazil,government,53005929,CEI 01 DE SOBRADINHO,-15.6602,-47.8056,1.0,248,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bed02190-8a4d-3ec4-bb27-9f1b55418f3f,Brazil,government,53005937,CEI 02 DE SOBRADINHO,-15.6516,-47.8088,1.0,443,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+50997e3f-386e-343c-95c4-0fb76edaed44,Brazil,government,53005953,CAIC ASSIS CHATEAUBRIAND,-15.6181,-47.6422,1.0,1226,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4271fa53-f062-3e67-99d6-65d15917b033,Brazil,government,53005961,CEF 03 DE PLANALTINA,-15.616,-47.6405,0.94,1066,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+92092d82-f19c-36a5-b6ce-664f87ba27d2,Brazil,government,53005970,CEF JUSCELINO KUBITSCHEK,-15.6012,-47.688,0.94,914,Yes,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+ea1287f8-7bd1-391c-bc9c-8c6fe470f159,Brazil,government,53005988,CED PIPIRIPAU II,-15.601,-47.6501,0.94,566,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4f3025da-ecf0-3c93-8179-2c0fc3f7e03c,Brazil,government,53005996,CEF 01 DE PLANALTINA,-15.6229,-47.6541,1.0,1268,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0e0e720f-a37b-33a3-863c-4a4ad657f071,Brazil,government,53006003,CEF 02 DE PLANALTINA,-15.6222,-47.6569,1.0,1297,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+750ab2d1-44b3-370b-bb8f-555f32bf053c,Brazil,government,53006011,EC MESTRE DARMAS,-15.6724,-47.6466,1.0,775,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c66abfa2-f505-38cf-8663-a63195a55159,Brazil,government,53006020,CEF RIO PRETO,-15.7633,-47.4929,1.0,316,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+209b9bd0-6af9-302b-bc6e-ddf520494457,Brazil,government,53006038,CEF SAO JOSE,-15.7038,-47.3737,1.0,190,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0921dcd5-4468-39d1-8b0b-9c0598e723c6,Brazil,government,53006046,CED TAQUARA,-15.6338,-47.5222,1.0,939,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+76813071-da1f-3c81-9dc2-2adb0ba3fc79,Brazil,government,53006054,CED VARZEAS,-15.821,-47.5705,0.94,633,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+685bd95c-5ac6-386d-8a0d-f93d8232d8da,Brazil,government,53006062,CEM 01 DE PLANALTINA,-15.6197,-47.6518,1.0,2305,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+785e55a8-fa60-3c99-86d5-9aae72ca0e1e,Brazil,government,53006070,CEM 02 DE PLANALTINA,-15.6217,-47.6536,1.0,1814,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c3d84f50-89ce-3dc2-92d7-25e9c3d645bf,Brazil,government,53006097,CEE 01 DE PLANALTINA,-15.6197,-47.6538,1.0,49,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+74552b30-21cc-343d-a80c-c3b3604e1446,Brazil,government,53006160,CEF 04 DE PLANALTINA,-15.6222,-47.6518,1.0,1904,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+571c3daa-9d2d-3b2a-b3c2-1188184aff4b,Brazil,government,53006178,IFB - CAMPUS PLANALTINA,-15.6566,-47.6946,1.0,699,Yes,Federal,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1dd6c901-1181-38a4-9ca5-e1e109b83f3a,Brazil,government,53006186,EC 01 DE PLANALTINA,-15.6259,-47.655,0.94,492,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+44fc0607-1f13-3da6-a702-430fe287c448,Brazil,government,53006194,EC 03 DE PLANALTINA,-15.615,-47.6462,0.94,510,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+66b88a7a-d7ad-3594-a8a2-99bdb7bba0f7,Brazil,government,53006208,EC 04 DE PLANALTINA,-15.621,-47.6465,0.94,623,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ab151b55-faf1-31f6-992e-9a98400d7851,Brazil,government,53006216,EC 05 DE PLANALTINA,-15.6315,-47.6544,1.0,691,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d9b3786d-2c9a-3b11-a57a-adc3b7955a33,Brazil,government,53006224,EC 06 DE PLANALTINA,-15.6274,-47.6468,1.0,530,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c0cdbb97-29fa-3829-bf7c-0030541d17e1,Brazil,government,53006232,EC 07 DE PLANALTINA,-15.6418,-47.6637,1.0,447,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7713264b-9ef1-3747-9061-1158a1722240,Brazil,government,53006240,CEF 08 DE PLANALTINA,-15.6214,-47.6459,1.0,729,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+23d4eb42-5ff0-37a9-b440-a163c9482dba,Brazil,government,53006259,EC 09 DE PLANALTINA,-15.6105,-47.645,0.94,386,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b50ec6ad-63ac-3b4d-864a-b3f85806d268,Brazil,government,53006267,EC 10 DE PLANALTINA,-15.6027,-47.6535,1.0,511,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+37f77935-e143-3a19-be72-302467e1c377,Brazil,government,53006275,CEI 02 DE PLANALTINA,-15.6036,-47.6462,1.0,482,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1e6a8187-9d53-3a1a-afcc-bea33cdea675,Brazil,government,53006283,CED 03 DE PLANALTINA,-15.6032,-47.65,0.89,1606,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bc8e88bd-fe47-36d5-8cd1-18b816297b92,Brazil,government,53006291,EC 13 DE PLANALTINA,-15.6037,-47.6423,1.0,447,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6e601ec1-f5a1-331a-ab7e-5db350b76110,Brazil,government,53006305,EC 14 DE PLANALTINA,-15.6137,-47.6323,1.0,561,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3abb6a90-799e-35ff-af18-0f186745204f,Brazil,government,53006313,EC ALTA-MIR,-15.6332,-47.6812,1.0,251,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+22c35ccc-c8ea-33b8-a233-08b54fe1ca9e,Brazil,government,53006321,EC APRODARMAS,-15.6642,-47.6574,1.0,282,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6ab32b26-cef3-368b-ac75-63e9a700bbb7,Brazil,government,53006348,EC BARRA ALTA,-15.8481,-47.4569,1.0,36,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0edf369a-96cb-32f3-925e-95799a69396e,Brazil,government,53006356,EC BROCHADO DA ROCHA,-15.6213,-47.7126,1.0,121,Yes,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+abe63541-143f-3e96-ae05-6494bcdb730c,Brazil,government,53006364,CEF CERAMICAS REUNIDAS DOM BOSCO,-15.5731,-47.3858,1.0,206,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cac0f528-d3b4-3f44-ad65-0d3651f04eec,Brazil,government,53006372,EC COPERBRAS,-15.7611,-47.5458,1.0,155,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f8b214c0-f5ac-3db1-988e-1d67d8cc83fe,Brazil,government,53006380,EC CORREGO DO MEIO,-15.6956,-47.7075,1.0,147,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+318c95fe-63bb-34d0-8e89-e2f66850c937,Brazil,government,53006399,EC CURRAL QUEIMADO,-15.7807,-47.7974,1.0,0,,Estadual,Rural,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+48236bed-2fc7-38d4-adf4-6d62a01cd776,Brazil,government,53006402,EC ESTANCIA DO PIPIRIPAU,-15.6097,-47.5638,1.0,44,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2f97341e-250b-3cf4-ad9b-7cc46811ef42,Brazil,government,53006410,EC ESTANCIA DE PLANALTINA,-15.6058,-47.67,0.89,655,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+aebe20f6-6ec2-3f75-adc0-8e689acf561c,Brazil,government,53006429,EC ETA 44,-15.5928,-47.7298,1.0,121,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dfad294b-bf01-3e80-8ffe-215468d4853b,Brazil,government,53006437,EC FRIGORIFICO INDUSTRIAL,-15.655,-47.6254,0.94,199,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a75a8934-bccc-3cee-bfbf-89107cb22ea0,Brazil,government,53006461,EC MONJOLO,-15.5378,-47.6862,1.0,211,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9b85c7f3-85e9-30b8-ab9f-b5b9ee74f7d0,Brazil,government,53006488,EC NUCLEO RURAL CORREGO DO ATOLEIRO,-15.6242,-47.6148,1.0,193,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bb8f1fd9-a611-3e1b-8c7f-e3168aa1391a,Brazil,government,53006496,CED OSORIO BACCHIN,-15.5269,-47.6304,1.0,287,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+868b3ada-b948-3010-9b10-963cbf8c226d,Brazil,government,53006500,EC PALMEIRAS,-15.5285,-47.741,0.94,86,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+31f8cb44-c053-33ce-98f6-56e019cdc01a,Brazil,government,53006518,EC PARANA,-15.6152,-47.6455,1.0,483,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2a744cf6-0483-39a4-8920-e4cc0f40e96c,Brazil,government,53006526,EC PEDRA FUNDAMENTAL,-15.6737,-47.6726,1.0,87,Yes,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7feac7c1-745d-3421-9cfc-d8dd47d656d3,Brazil,government,53006534,EC RAJADINHA,-15.6413,-47.6388,1.0,176,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2931ed4f-f029-36d6-aeb2-62c06ee6cef9,Brazil,government,53006550,EC SANTOS DUMONT,-15.679,-47.6484,0.94,192,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+791af5c9-4f3b-3348-b20e-5d6bcc7121d0,Brazil,government,53006569,EC SAO GONCALO,-15.7807,-47.7974,1.0,0,,Estadual,Rural,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+fa113c5f-68e6-3b0f-8c18-e80d5aea16e5,Brazil,government,53006682,JI CASA DE VIVENCIA,-15.6124,-47.6506,1.0,323,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+30a1220d-fff5-331f-ab7e-68a65e59c564,Brazil,government,53006712,CAIC SANTA PAULINA,-15.7783,-47.7844,1.0,1418,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cfc83b96-ab27-3a84-abe5-ce83f1a41f1f,Brazil,government,53006720,CED DO PAD-DF,-16.0098,-47.5572,1.0,1184,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+39cef18a-4303-3dd3-bee5-059dde8a3154,Brazil,government,53006739,CEM 01 DO PARANOA,-15.7829,-47.7797,1.0,2058,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a8ec54d0-afbe-3dcf-a3e6-5f9b4f645cb7,Brazil,government,53006747,EC 01 DO PARANOA,-15.7647,-47.7785,1.0,1025,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+401545ac-4803-3ada-88a7-84a973791545,Brazil,government,53006755,EC 02 DO PARANOA,-15.7638,-47.7782,1.0,1089,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d8ace2e8-fe69-3b21-a2e5-01a017280162,Brazil,government,53006763,EC 03 DO PARANOA,-15.7731,-47.7809,1.0,929,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6fce801b-01ad-3344-8a95-7dd66ae8c211,Brazil,government,53006771,EC 04 DO PARANOA,-15.7731,-47.7763,1.0,679,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e451ec5b-edbb-39ce-b809-9100ea9920c3,Brazil,government,53006780,EC 05 DO PARANOA,-15.7667,-47.7765,1.0,701,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e77870a3-131e-39c0-a7bb-4b8890d5aa84,Brazil,government,53006798,EC ALTO INTERLAGOS,-15.8267,-47.744,0.94,161,Yes,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+b38587a0-bb9b-3ca5-8fc7-24b7220431bf,Brazil,government,53006801,EC BOQUEIRAO,-15.7854,-47.7486,1.0,101,No,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e7e1d9a6-6d4e-36e4-9e1e-2f05310e77a8,Brazil,government,53006810,CEF BURITI VERMELHO,-15.8986,-47.407,0.94,213,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9ae657b4-13fb-39d5-aca7-b8676c84554c,Brazil,government,53006828,EC CAFE SEM TROCO,-15.9192,-47.6058,1.0,429,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3f5ad191-e792-34f7-9cd0-0e91b6cc79f8,Brazil,government,53006836,EC CAPAO SECO,-15.9631,-47.5575,1.0,174,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+549daebb-9f6d-319f-8de4-5f597ff23241,Brazil,government,53006844,EC CARIRU,-15.9064,-47.5175,1.0,208,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e4fb466a-0d03-3717-97d6-55d08dae2f6e,Brazil,government,53006852,EC ITAPETI,-15.9289,-47.3809,1.0,92,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+918ff91e-5473-39a6-b8ff-430e4e4af7b9,Brazil,government,53006860,CEF JARDIM II,-16.0169,-47.3805,1.0,198,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+97858c00-6790-35a1-b6a0-9460e5fbc8f2,Brazil,government,53006879,EC LAMARAO,-15.9655,-47.5008,1.0,257,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cf48f6a5-4503-3716-9b37-c80dcd1cb12e,Brazil,government,53006887,EC NATUREZA,-15.7524,-47.7149,1.0,372,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4be967ab-148b-3268-a9ff-e6d5e67c7150,Brazil,government,53006895,EC QUEBRADA DOS NERIS,-15.962,-47.6607,0.94,106,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+23dc6592-ed23-3612-aa64-0d317f0de139,Brazil,government,53006917,EC SOBRADINHO DOS MELOS,-15.797,-47.694,0.89,270,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d4eb1684-d38f-31cb-bcab-363c9436e9c1,Brazil,government,53006925,EC SUSSUARANA,-15.9519,-47.4228,1.0,56,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+896a867d-5e82-38ff-a8c3-b9415ac70863,Brazil,government,53006968,CED AGROURBANO IPE RIACHO FUNDO,-15.9475,-48.015,0.94,620,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ae955218-4563-33f1-a872-3f35d714fdf1,Brazil,government,53006976,CEF TELEBRASILIA,-15.8799,-48.0059,1.0,1207,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2bcdc7ec-b84f-3319-bc51-8844db95e551,Brazil,government,53006984,CEM 01 DO RIACHO FUNDO,-15.8881,-48.0143,1.0,1083,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7e0cc9bd-fd0b-330d-96f8-ac2b4a96c061,Brazil,government,53006992,EC AGROVILA II,-15.9394,-48.0348,1.0,367,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cc1f23a7-4dcf-3435-bf86-f81e6d1f530e,Brazil,government,53007000,EC IPE,-15.9207,-47.9881,1.0,417,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+03d269ab-758d-34ad-a99e-9456a59992c6,Brazil,government,53007018,EC KANEGAE,-15.8872,-47.9996,1.0,122,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dd73fb1d-8754-3f98-8452-deb8cd721bd5,Brazil,government,53007026,EC VERDE DO RIACHO FUNDO I,-15.8846,-48.0144,1.0,727,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9f5d31f8-40cb-3816-980e-c60c726e3ec8,Brazil,government,53007034,CAIC JUSCELINO KUBITSCHEK,-15.8774,-47.9627,1.0,862,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+52f7db29-9bd4-327d-bfc4-58b42972c103,Brazil,government,53007042,CEF 01 DO NUCLEO BANDEIRANTE,-15.8771,-47.9764,1.0,942,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a9155a25-7295-3c06-896d-7dc3799061ce,Brazil,government,53007069,CEF METROPOLITANA,-15.8817,-47.9751,1.0,542,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7b685f9b-2713-384e-b99f-a3b36bad7d29,Brazil,government,53007077,CEM URSO BRANCO,-15.8724,-47.969,0.94,1428,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ee12671e-523f-3f56-980f-bb8a47ec43ec,Brazil,government,53007123,EC 03 DO NUCLEO BANDEIRANTE,-15.8745,-47.9737,1.0,391,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+52e2f742-470f-337b-b943-8d76ddfc569f,Brazil,government,53007131,EC 04 DO NUCLEO BANDEIRANTE,-15.8676,-47.9654,1.0,353,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9a1676e3-f42d-3fd3-aaa1-4687b6b6135e,Brazil,government,53007140,EC 05 DO NUCLEO BANDEIRANTE,-15.8728,-47.9762,1.0,271,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5eb8f091-cc8a-347d-8efc-252466d53ce0,Brazil,government,53007204,CEI DO NUCLEO BANDEIRANTE,-15.8701,-47.971,0.94,430,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5f7780ae-9164-3fc4-a078-402256cab5e5,Brazil,government,53007255,CAIC BERNARDO SAYAO,-15.8321,-48.1146,1.0,1244,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bcec39ca-a0f5-39fd-a16f-b3b7545f0361,Brazil,government,53007263,CAIC PROF ANISIO TEIXEIRA,-15.7979,-48.1302,1.0,706,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f3cc2d7b-78d9-3ade-9e50-94950484bcd1,Brazil,government,53007280,CEF 02 DE CEILANDIA,-15.8211,-48.1047,1.0,1537,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+726cd515-8401-3e30-91b7-7bdcc1be1eb8,Brazil,government,53007298,CEF 04 DE CEILANDIA,-15.8285,-48.0946,1.0,860,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4d1ecd8b-67c9-3bf9-b94b-970e3ddb13cd,Brazil,government,53007301,CEF 07 DE CEILANDIA,-15.8306,-48.0995,1.0,1019,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5c384017-1e74-35fd-a234-801e637477bb,Brazil,government,53007310,CEF 10 DE CEILANDIA,-15.8053,-48.125,0.94,709,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2c1d348b-1466-3d3b-a651-64a053ecefa5,Brazil,government,53007328,CEF 11 DE CEILANDIA,-15.8399,-48.1045,1.0,752,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eea0299d-4a0f-31ca-9c13-ecfbf6505c14,Brazil,government,53007336,CEF 12 DE CEILANDIA,-15.7959,-48.1193,1.0,867,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3c859e96-aa91-389f-bfd2-79fae146473e,Brazil,government,53007344,CEF 13 DE CEILANDIA,-15.8494,-48.1176,1.0,1224,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4e4bae8e-0354-33e3-8e60-d27ff999a522,Brazil,government,53007352,CEF 14 DE CEILANDIA,-15.8473,-48.1243,1.0,874,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+18ef1180-4044-3231-9cbd-ccecdebdd86d,Brazil,government,53007360,CED 14 DE CEILANDIA,-15.7937,-48.1294,1.0,1702,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+284a7e37-be39-3823-839b-ca0533942ab1,Brazil,government,53007379,CEF 16 DE CEILANDIA,-15.8032,-48.1087,1.0,903,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+92f42458-61d8-317a-a412-49a8673a1e83,Brazil,government,53007387,CED 15 DE CEILANDIA,-15.7987,-48.1382,1.0,1238,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+280df8ce-c295-3ab9-83e1-4c08b4e380b9,Brazil,government,53007395,CEF 18 DE CEILANDIA,-15.8375,-48.1156,1.0,844,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+090a5fa5-44f3-34bd-8c29-d35773883ae6,Brazil,government,53007409,CEF 19 DE CEILANDIA,-15.8266,-48.1145,1.0,798,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+72434054-4072-3681-8914-5cf507f52805,Brazil,government,53007417,CEF 20 DE CEILANDIA,-15.8014,-48.1164,1.0,1473,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+75d3960b-47d0-358a-841d-fdbf14727dea,Brazil,government,53007425,CEM 12 DE CEILANDIA,-15.81,-48.13,0.78,1607,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+14591089-ca16-33ae-93f2-ca8a65e5f076,Brazil,government,53007450,CEF PROF MARIA DO ROSARIO GONDIM DA SILVA,-15.8099,-48.1222,1.0,831,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+88c75255-11ea-306a-9954-443f42e46d7b,Brazil,government,53007492,CEM 02 DE CEILANDIA,-15.8075,-48.1091,1.0,1951,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4f803714-c62e-3fb8-b092-754ea62c2ab1,Brazil,government,53007506,CEM 03 DE CEILANDIA,-15.8264,-48.0987,1.0,2531,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1b503f91-64e8-3631-a44a-a1fae7686869,Brazil,government,53007514,CEM 04 DE CEILANDIA,-15.8311,-48.1076,1.0,1654,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+df3112f3-ab8b-347a-908a-117a33811d83,Brazil,government,53007522,CEF 25 DE CEILANDIA,-15.815,-48.1282,0.94,2382,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6a16dd26-ffda-32e3-88d2-28f4f3c74227,Brazil,government,53007530,CED 06 DE CEILANDIA,-15.8445,-48.1156,1.0,1640,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fd6afddc-b3be-33bd-b580-198bd8d9ea76,Brazil,government,53007549,CED 07 DE CEILANDIA,-15.8122,-48.1183,1.0,2398,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+01677b0d-9e09-3f45-bb24-e588dc9bc0ad,Brazil,government,53007557,CEM 09 DE CEILANDIA,-15.7917,-48.1243,1.0,1447,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0052d266-7d78-37f1-bb8a-d5a6049a38bd,Brazil,government,53007565,CEM 10 DE CEILANDIA,-15.801,-48.1403,0.94,774,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a47914fc-155c-3290-9c7e-7f49d3a77d37,Brazil,government,53007603,CEP - ESC TECNICA DE CEILANDIA,-15.8291,-48.1094,1.0,1834,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f5e7c884-2b4e-3dfa-93c1-08e12a73c37a,Brazil,government,53007646,EC 01 DE CEILANDIA,-15.8336,-48.092,0.94,492,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+48c27299-e1fe-3b00-8b17-3eaccaa58b58,Brazil,government,53007654,EC 02 DE CEILANDIA,-15.8231,-48.0959,1.0,506,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+27a1e4a4-51c5-389d-8f40-edcef4f98b52,Brazil,government,53007662,EC 03 DE CEILANDIA,-15.8123,-48.1017,1.0,726,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d7118560-9a99-337c-b15c-9b1f99cb348e,Brazil,government,53007670,EC 06 DE CEILANDIA,-15.8108,-48.1106,1.0,807,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6f981335-1a6a-3506-b839-f7b59cd2935b,Brazil,government,53007689,CEF 35 DE CEILANDIA,-15.8179,-48.1121,1.0,573,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f02925fa-0948-3212-85fd-47bfa4357eb4,Brazil,government,53007697,EC 08 DE CEILANDIA,-15.8081,-48.1174,1.0,667,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b95dd116-db8a-3e3a-851b-1eb3f5c6212e,Brazil,government,53007700,EC 10 DE CEILANDIA,-15.8155,-48.1075,1.0,434,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e6fec35d-e66f-30fd-b6df-3dd81ecb0766,Brazil,government,53007719,EC 11 DE CEILANDIA,-15.8059,-48.1133,1.0,440,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ef15cbb3-8d8e-3f4d-835e-cbe6e3c342ae,Brazil,government,53007727,EC 12 DE CEILANDIA,-15.8076,-48.1053,1.0,481,Yes,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ebd752d3-b322-3dd7-9fa7-89ca7fbd089f,Brazil,government,53007735,EC 13 DE CEILANDIA,-15.7984,-48.1118,1.0,451,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0b230bb0-4d4a-3e64-8024-e8b90f0d6d84,Brazil,government,53007743,EC 15 DE CEILANDIA,-15.8377,-48.1002,1.0,478,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c246d237-ed59-3237-9517-3886ea0c2b4e,Brazil,government,53007751,EC 16 DE CEILANDIA,-15.7907,-48.1213,1.0,801,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6e8ac246-c597-31d0-8f85-15d6d7529259,Brazil,government,53007760,EC 17 DE CEILANDIA,-15.7972,-48.1227,1.0,808,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e3f1c55f-2113-35fc-936e-19d1cbd0f765,Brazil,government,53007778,EC 18 DE CEILANDIA,-15.826,-48.1023,0.94,440,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f96c7b8c-ae8f-385d-9dfa-1abe8dd661b8,Brazil,government,53007786,EC 19 DE CEILANDIA,-15.8357,-48.0969,1.0,426,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+db43eedf-8ebe-3e08-a9b9-635f5d70a71c,Brazil,government,53007794,EC 20 DE CEILANDIA,-15.8232,-48.1092,1.0,380,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a6df976c-5315-3e6b-bb28-9ccba0477b4b,Brazil,government,53007808,EC 21 DE CEILANDIA,-15.8276,-48.1057,1.0,699,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1694bb2f-b881-362d-b29e-764c3207d4d7,Brazil,government,53007816,EC 22 DE CEILANDIA,-15.8329,-48.1039,1.0,374,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+81c92e52-c776-3ad1-8131-04d5321c2fab,Brazil,government,53007824,EC 24 DE CEILANDIA,-15.8314,-48.1119,1.0,342,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+27824a37-3e54-3a2b-aae3-f4f10d19f0ef,Brazil,government,53007832,EC 25 DE CEILANDIA,-15.8354,-48.1078,1.0,749,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5e2bd0cc-bb47-3e44-ab96-efa23d5fe25b,Brazil,government,53007840,EC 26 DE CEILANDIA,-15.8127,-48.1143,1.0,418,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+70a5208e-0caa-3827-b341-9402d871fa51,Brazil,government,53007859,EC 27 DE CEILANDIA,-15.803,-48.12,0.83,463,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4d35e63e-a706-3606-986f-035e43eaf48a,Brazil,government,53007867,EC 28 DE CEILANDIA,-15.8206,-48.1182,1.0,566,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cc633680-ddea-3613-888e-145284dc9527,Brazil,government,53007875,EC 29 DE CEILANDIA,-15.8155,-48.1209,1.0,376,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+52d18e4b-1e66-3de3-be61-110d9c07c8f2,Brazil,government,53007883,CEF 26 DE CEILANDIA,-15.7866,-48.1263,1.0,783,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+092b6868-ab3a-39f3-a326-720a52e84d26,Brazil,government,53007891,EC 33 DE CEILANDIA,-15.7886,-48.1319,1.0,785,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+14115a1f-7a7a-3bb0-959b-d74c3e4948ef,Brazil,government,53007905,EC 34 DE CEILANDIA,-15.8072,-48.1308,1.0,752,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1a5266f5-831f-36c6-9dc4-12bc22f4cfd4,Brazil,government,53007913,EC 36 DE CEILANDIA,-15.8385,-48.0964,1.0,674,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cebe7efa-b1c4-3c5f-9e3e-ee4ff5e8c077,Brazil,government,53007921,CED 11 DE CEILANDIA,-15.8229,-48.1253,1.0,1796,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7e908f23-88ef-3c16-829d-ae637a2202b1,Brazil,government,53007930,EC 38 DE CEILANDIA,-15.8088,-48.1351,1.0,1012,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+90c4ffcd-a197-3943-b9f2-2602670c5bc9,Brazil,government,53007948,EC 39 DE CEILANDIA,-15.8141,-48.1332,1.0,675,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c807989a-ac28-33f4-878c-95115aacd3de,Brazil,government,53007956,EC 40 DE CEILANDIA,-15.8188,-48.1308,1.0,833,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f4c1838b-8af7-382e-9016-d94010f6d479,Brazil,government,53007964,EC 43 DE CEILANDIA,-15.8443,-48.1103,1.0,644,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+12fc1b4c-5974-3be4-92c6-ad7e3ce8407a,Brazil,government,53007972,CEF 33 DE CEILANDIA,-15.84,-48.119,0.83,1178,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bbd6a62b-ff3b-3830-a0ca-7e1b4249d383,Brazil,government,53007980,EC 45 DE CEILANDIA,-15.8421,-48.1173,1.0,797,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8aadb616-50a8-347e-a557-8b4130e29300,Brazil,government,53007999,EC 46 DE CEILANDIA,-15.8469,-48.1138,1.0,595,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6e4243ff-94f2-30c2-8949-25dd3dbf34f0,Brazil,government,53008006,EC 47 DE CEILANDIA,-15.8404,-48.1244,1.0,625,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2137326a-4f95-3259-9c3f-43e64acafe63,Brazil,government,53008014,EC 48 DE CEILANDIA,-15.8445,-48.1209,1.0,731,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+da445456-9908-3cd0-b05e-7c0eea3ae9b8,Brazil,government,53008022,EC 50 DE CEILANDIA,-15.8429,-48.1278,1.0,800,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+39c0cf78-45d3-3791-95a6-5d7f22e1d79b,Brazil,government,53008030,EC 52 DE CEILANDIA,-15.8522,-48.1205,1.0,849,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8b7ed06b-657a-3d71-af70-ed3a0bfb14f2,Brazil,government,53008049,CEF 31 DE CEILANDIA,-15.7987,-48.1346,1.0,960,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+70fb3f2d-e104-3854-aed8-144351534ee5,Brazil,government,53008057,EC 56 DE CEILANDIA,-15.7941,-48.1366,1.0,821,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c86af56e-52aa-387b-a22b-08299dbee8bb,Brazil,government,53008073,EC 59 DE CEILANDIA,-15.8306,-48.1076,1.0,421,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3c478079-cdc6-3028-bba0-b065cc261ef3,Brazil,government,53008081,CEF 34 DE CEILANDIA,-15.794,-48.1392,0.94,853,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ff4358ab-c2a1-3e39-8a4d-17986e0e1c2b,Brazil,government,53008090,EC 61 DE CEILANDIA,-15.8054,-48.1443,1.0,863,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e46c2a0d-e9eb-3c34-aac3-ec0c381db27f,Brazil,government,53008103,EC 62 DE CEILANDIA,-15.8038,-48.1394,1.0,613,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6a2c6f5d-3814-3f98-a39d-f952ff1e6c9e,Brazil,government,53008111,CEF BOA ESPERANCA,-15.8281,-48.2465,1.0,408,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2d9359fe-9cd5-3d2a-8951-3db15af43b74,Brazil,government,53008120,EC CORREGO DAS CORUJAS,-15.8368,-48.1838,1.0,55,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2b5ab157-8007-3da3-976d-3539c5b9ce64,Brazil,government,53008138,EC DO SETOR P NORTE,-15.8319,-48.1383,1.0,898,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+394eccb8-15ee-396f-bcf9-e15df5cce089,Brazil,government,53008146,CED INCRA 09,-15.7842,-48.1936,1.0,677,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2330bab3-e917-3ce8-b362-3eac853f71d5,Brazil,government,53008154,EC JIBOIA,-15.867,-48.2604,0.94,79,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+72dafd7d-bacd-349e-b5ff-65dad73b3864,Brazil,government,53008162,EC LAJES DA JIBOIA,-15.9181,-48.2678,1.0,180,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0ca08acb-38e9-30d8-825b-230087bb5c16,Brazil,government,53008170,EC 64 DE CEILANDIA,-15.8182,-48.0989,1.0,764,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8a15835f-2005-3e4e-97d5-1ef657da286b,Brazil,government,53008332,EC 31 DE CEILANDIA,-15.7991,-48.128,0.94,810,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6ec841f1-d35e-36b7-bf9a-78952656a776,Brazil,government,53008340,EC 35 DE CEILANDIA,-15.8126,-48.1289,1.0,934,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2d337e82-c503-3a8a-8785-bdb8b592e1dc,Brazil,government,53008391,CEF 01 DO GUARA,-15.8126,-47.9884,1.0,703,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+339a9858-9c2e-3fac-89a6-0e9850c2605e,Brazil,government,53008405,CEF 04 DO GUARA,-15.8188,-47.9878,1.0,1214,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+88523cbc-f86c-38c9-8322-885625f3902f,Brazil,government,53008413,CEF 05 DO GUARA,-15.8434,-47.9739,1.0,987,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c75c0f38-1ca2-3ebc-8a94-00b2989a37a4,Brazil,government,53008421,EC 08 DO GUARA,-15.8393,-47.981,0.94,912,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f8bb74ea-5fd4-3f38-9a83-0c780ea99f88,Brazil,government,53008430,CEF 08 DO GUARA,-15.8278,-47.9786,1.0,1019,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+59924836-fcb8-367e-b7cd-e6405ae04a95,Brazil,government,53008456,CED 01 DO GUARA,-15.8431,-47.9685,1.0,1196,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+230dcf33-b4f6-3b81-8f67-d78b1d697da2,Brazil,government,53008464,CEM 01 DO GUARA,-15.8183,-47.9809,1.0,1230,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8c688d93-454a-334f-a359-4e33f06dbdda,Brazil,government,53008472,CED 03 DO GUARA,-15.8389,-47.9756,1.0,1053,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0d99a535-dce7-38bb-9ead-7a37bc308137,Brazil,government,53008480,CED 04 DO GUARA,-15.8211,-47.9751,1.0,1077,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eccf2a46-b387-3305-ad00-febb53376541,Brazil,government,53008529,CEF 02 DO GUARA,-15.8153,-47.9784,1.0,748,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e0fbe805-8de5-3cd5-8895-ed7edc8ed9a6,Brazil,government,53008561,EC 01 DO GUARA,-15.8144,-47.9748,1.0,278,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+30241ec0-14fc-30ef-8610-b405a638eb6c,Brazil,government,53008570,EC 02 DO GUARA,-15.8144,-47.9838,1.0,397,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38422349-a506-3e5b-af8c-e88f8796bf0f,Brazil,government,53008588,EC 03 DO GUARA,-15.8195,-47.9795,1.0,381,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3df2505c-aa6b-3d0c-96c4-f380a44a3c36,Brazil,government,53008596,EC 05 DO GUARA,-15.823,-47.9818,0.94,540,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6e8af67d-94d0-3fa7-9e5d-d6daadaba35c,Brazil,government,53008600,EC 06 DO GUARA,-15.8299,-47.9847,1.0,531,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+deb8e2b8-6598-3ae1-99f5-c3a2e2e06b89,Brazil,government,53008618,EC 07 DO GUARA,-15.8479,-47.9698,1.0,622,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+032e78f9-9e2d-3dce-8da0-45179273b2f4,Brazil,government,53008626,EC DO SRIA,-15.8139,-47.9594,1.0,239,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d1ce6be0-d3c4-3d39-8108-085f62169af4,Brazil,government,53008707,JI LUCIO COSTA,-15.8094,-47.9859,1.0,207,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3fd7f444-fa51-3726-9da5-355e440c8d87,Brazil,government,53008774,CEF 01 DO CRUZEIRO,-15.7846,-47.9365,1.0,681,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8f4ffb6f-6ff5-3659-bd80-dff1360cb8b2,Brazil,government,53008782,CEF ATHOS BULCAO,-15.7937,-47.9416,1.0,680,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38b5ed78-6ca0-3bce-90c1-10aa6f436d05,Brazil,government,53008790,CEM INTEGRADO DO CRUZEIRO,-15.7833,-47.9385,1.0,300,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+74b003fc-e801-3b32-b3e4-346df76d7722,Brazil,government,53008804,CED 02 DO CRUZEIRO,-15.7958,-47.9381,1.0,1173,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+64528ea0-0e6b-36e3-a7c3-420c45fb4932,Brazil,government,53008820,EC 04 DO CRUZEIRO,-15.796,-47.9415,0.94,277,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a7d982d4-8ee8-3c19-af71-d9ce22503edb,Brazil,government,53008839,EC 05 DO CRUZEIRO,-15.7985,-47.9436,1.0,321,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e0947503-77f0-3447-af9b-b7c497ec525b,Brazil,government,53008847,EC 06 DO CRUZEIRO,-15.7944,-47.9377,1.0,322,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+648b942a-a955-30d4-9c74-519c07f18778,Brazil,government,53008855,EC 08 DO CRUZEIRO,-15.8039,-47.9454,1.0,348,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+94170ca3-66e1-3900-8fa7-34397ec43c34,Brazil,government,53008898,JI 01 DO CRUZEIRO,-15.7845,-47.9357,1.0,229,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+67af4e96-aef7-3dd8-acfd-adec230336ee,Brazil,government,53008944,CAIC AYRTON SENNA,-15.7807,-47.7974,0.67,741,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c97e7943-9a01-392c-9c43-cb4d28d6497a,Brazil,government,53008952,CAIC HELENA REIS,-15.8777,-48.1044,1.0,1159,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38deefd0-18aa-32be-ba7b-52d67e12e79f,Brazil,government,53008979,CED MYRIAM ERVILHA,-15.7807,-47.7974,0.67,1804,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c795aae2-c9d1-3479-85f4-5811e183b19f,Brazil,government,53008987,CEF 404 DE SAMAMBAIA,-15.8669,-48.0843,1.0,1731,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+78adcb32-9091-3454-a021-9b9956fe9e6c,Brazil,government,53008995,CEF 312 DE SAMAMBAIA,-15.8762,-48.0686,1.0,1513,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+666fe764-566d-30ac-bd3c-008f5c0fa70a,Brazil,government,53009002,CEF 411 DE SAMAMBAIA,-15.8775,-48.1103,1.0,1418,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d22a7430-6467-364b-b6f5-7ffa4b1dd2eb,Brazil,government,53009010,CEF 507 DE SAMAMBAIA,-15.891,-48.0975,0.94,738,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+387fb760-9b33-3477-9377-4fe3cc8cfe54,Brazil,government,53009029,CEM 304 DE SAMAMBAIA,-15.8793,-48.0792,1.0,2058,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f3139050-00bd-378b-a7ae-abf9da24471d,Brazil,government,53009053,EC 108 DE SAMAMBAIA,-15.8726,-48.075,0.94,863,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2deb0289-97bc-3077-9473-d9f7e3b7d9c7,Brazil,government,53009061,EC 111 DE SAMAMBAIA,-15.8857,-48.1055,1.0,367,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9e611180-f514-3ad6-bcb3-9d6d832d14d5,Brazil,government,53009070,CEF 120 DE SAMAMBAIA,-15.8692,-48.0586,1.0,1161,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+18a6ac1c-88c1-36f4-b128-c9815c1a0b23,Brazil,government,53009088,EC 121 DE SAMAMBAIA,-15.8926,-48.1205,1.0,593,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f95d6a28-c39b-3a59-b272-24e8aeeac4c8,Brazil,government,53009096,EC 303 DE SAMAMBAIA,-15.8823,-48.0943,1.0,493,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5e76a98f-7be4-3679-856f-5a55c93363a1,Brazil,government,53009100,CEI 307 DE SAMAMBAIA,-15.8855,-48.0994,1.0,361,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+40ae9fba-5015-337e-9fc3-67901d29dc1d,Brazil,government,53009118,EC 317 DE SAMAMBAIA,-15.8911,-48.111,0.94,489,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e1001993-8140-378f-b13c-f5698f9ae70d,Brazil,government,53009126,EC 318 DE SAMAMBAIA,-15.8755,-48.063,0.94,704,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8fe085c1-bbfb-373f-ba72-1d77790631da,Brazil,government,53009134,EC 325 DE SAMAMBAIA,-15.8972,-48.123,0.94,703,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+680bf228-dcc1-3cd1-a80d-89465b3981b9,Brazil,government,53009142,EC 403 DE SAMAMBAIA,-15.8735,-48.0976,1.0,759,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8a37ee24-2ac0-320e-9e20-c03f1d20d7a8,Brazil,government,53009150,CEF 407 DE SAMAMBAIA,-15.8407,-48.0512,1.0,943,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b3030bf2-ac50-31c1-9393-4fdf11a8f494,Brazil,government,53009169,EC 410 DE SAMAMBAIA,-15.8589,-48.0799,1.0,696,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+12364ea2-1d68-3ca3-be3e-3a095b3dda6f,Brazil,government,53009177,CEF 412 DE SAMAMBAIA,-15.8563,-48.0756,1.0,1113,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+049e7eba-06dc-3751-9ec9-b6c3be2980bc,Brazil,government,53009185,EC 415 DE SAMAMBAIA,-15.879,-48.1168,0.94,677,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d1130614-ea76-34ad-8287-c0fb31d5df7a,Brazil,government,53009193,EC 419 DE SAMAMBAIA,-15.8851,-48.1201,1.0,973,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f782e017-5c52-37fb-9ecb-01962cb47d4d,Brazil,government,53009207,EC 425 DE SAMAMBAIA,-15.8875,-48.1249,1.0,585,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8c971a77-5c7d-314b-81ef-e12a55a2c2ee,Brazil,government,53009215,EC 431 DE SAMAMBAIA,-15.8955,-48.1437,1.0,1176,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f104d559-b7ca-3ba3-af11-04046dff9114,Brazil,government,53009223,EC 501 DE SAMAMBAIA,-15.886,-48.0869,0.94,668,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1e4607dc-3aa4-3fb2-8984-5007f72685cd,Brazil,government,53009231,EC 510 DE SAMAMBAIA,-15.8808,-48.0719,1.0,603,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+696bd806-6be4-3a98-bd3d-1059353d8e27,Brazil,government,53009240,EC 511 DE SAMAMBAIA,-15.8694,-48.07,0.89,701,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b4f8c0e4-612e-3d11-8a3f-dba8557da442,Brazil,government,53009258,EC 614 DE SAMAMBAIA,-15.8533,-48.0742,1.0,491,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a405c777-97ca-3055-9489-c63d9e0990af,Brazil,government,53009266,EC GUARIROBA,-15.8611,-48.1736,1.0,424,No,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7de67261-c4d3-359a-8ff3-e2990c269bbb,Brazil,government,53009312,CEF 01 DA CANDANGOLANDIA,-15.8499,-47.9497,1.0,259,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3b09606f-149a-31f2-a41f-05f95d420306,Brazil,government,53009320,EC 01 DA CANDANGOLANDIA,-15.8481,-47.9512,1.0,381,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5a9c43b7-3aeb-37eb-9926-21d595977051,Brazil,government,53009339,EC 02 DA CANDANGOLANDIA,-15.8521,-47.9517,1.0,478,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2be5dbbf-8835-3c05-ae62-0177a9f301a4,Brazil,government,53009347,CEF TAMANDUA,-15.9394,-48.1433,1.0,296,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+298aabb4-164a-3045-b0bb-0a2bd0c70761,Brazil,government,53009355,CEF 106 DO RECANTO DAS EMAS,-15.9053,-48.0821,1.0,995,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+67fcefbf-008f-3bf4-93b5-9350bd98cca6,Brazil,government,53009363,CEF 115 DO RECANTO DAS EMAS,-15.9255,-48.1076,1.0,887,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+09a233b2-bc75-30d1-b386-c52973be7728,Brazil,government,53009380,CED CASA GRANDE,-15.964,-48.0992,0.94,478,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2c4502f1-e065-31f0-882f-7eca79c1949c,Brazil,government,53009398,EC CORREGO BARREIRO,-15.9829,-48.1168,1.0,135,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+05ac8ba7-fc9b-3faa-aae4-256fe1417e76,Brazil,government,53009401,EC 102 DO RECANTO DAS EMAS,-15.9019,-48.0615,1.0,337,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6b1a0d39-94dc-31a1-8bb4-8324b4419ab5,Brazil,government,53009410,CEF 01 DO LAGO NORTE,-15.7336,-47.873,0.94,883,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7124cb64-68f8-3eed-9dba-90e939c46ea6,Brazil,government,53009436,CEF 01 DO VARJAO,-15.7092,-47.8783,1.0,1089,Yes,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e93cc5e7-7589-3b2f-84a5-d8c3acf803c3,Brazil,government,53009444,EC OLHOS DAGUA,-15.6932,-47.8641,1.0,107,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+af481571-df41-362e-a47c-d90da26e1bea,Brazil,government,53009460,CED VARGEM BONITA,-15.9344,-47.9408,1.0,497,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8fd53487-0e24-3264-a4af-82100ac19b21,Brazil,government,53009479,CED DO LAGO,-15.8392,-47.8764,1.0,814,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c25343d2-98ee-3074-94fa-a45b3e4b426d,Brazil,government,53009525,EC 01 SHI-SUL,-15.8476,-47.8931,1.0,444,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+41861462-bdf5-3423-8343-f9e04dc9d848,Brazil,government,53009533,EC JARDIM BOTANICO,-15.8744,-47.8405,1.0,395,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+072ea0a2-803d-3595-bdb5-fbf77a1eaa19,Brazil,government,53009584,CEF 06 DE BRASILIA,-15.856,-47.8777,0.94,762,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cb468866-a029-3f7f-b31a-7ec843f0302c,Brazil,government,53009614,JI VI COMAR,-15.8558,-47.9084,1.0,234,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f72b746f-4e27-35d9-912b-81a35e9c3ef7,Brazil,government,53009649,CAIC ALBERT SABIN,-16.0305,-48.0287,1.0,1064,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c61d7858-9ab6-3b97-a19b-3f8996bcd0bb,Brazil,government,53009657,CAIC SANTA MARIA,-16.0085,-47.9969,1.0,1426,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1f629f1b-495f-3888-881d-1b5fa9b0b641,Brazil,government,53009665,CEF 308 DE SANTA MARIA,-16.0277,-48.0224,1.0,1390,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+db88e039-059a-3cb2-aa63-da1e6f490882,Brazil,government,53009673,EC 206 DE SANTA MARIA,-16.0263,-48.0303,1.0,705,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+44495d74-1e63-3a40-aa6a-7c980c1305ad,Brazil,government,53009681,EC 116 DE SANTA MARIA,-16.0026,-47.9943,1.0,810,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+24bcbd9e-0422-3888-aede-9764bfbd0db2,Brazil,government,53009690,CEF 316 DE SANTA MARIA,-16.0115,-47.995,0.94,1574,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dc9599b2-ed9c-345c-a0a3-6f2629c5ea5c,Brazil,government,53009703,EC 203 DE SANTA MARIA,-16.0373,-48.0332,1.0,1322,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+892d1ada-4ae1-330a-9c7e-1636254b8fa2,Brazil,government,53009711,CEF SARGENTO LIMA,-15.981,-47.9748,0.94,538,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+82c3e371-4aaa-3918-9699-6fabbba81cf7,Brazil,government,53009720,CAIC UNESCO,-15.9019,-47.7738,1.0,2188,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f2d1d926-5400-3344-8d42-ad6efe755568,Brazil,government,53009738,CEF CERAMICA SAO PAULO,-15.8878,-47.7791,1.0,1012,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4a6b0896-6a23-33ee-a89e-7d197b6c2d01,Brazil,government,53009746,CEF NOVA BETANIA,-15.9499,-47.7931,1.0,759,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+055be8ed-ab41-3e07-9d45-3888827a4d88,Brazil,government,53009754,EC AGROVILA SAO SEBASTIAO,-15.9107,-47.7588,1.0,985,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eec9caf3-4e5a-3300-84d0-ce88117ded5c,Brazil,government,53009762,EC CACHOEIRINHA,-15.9896,-47.7518,1.0,179,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+10a91016-f8a6-330f-9bcc-10aa1d9db8bc,Brazil,government,53009770,EC CERAMICA DA BENCAO,-15.9045,-47.7696,1.0,662,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c25743f6-0383-304c-8553-941f056d6c4d,Brazil,government,53009797,CEF JATAI,-16.0196,-47.8006,1.0,202,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e215a60f-b8de-35a5-9e53-f5adbd6f33ff,Brazil,government,53009819,CEP - ESC TECNICA DE BRASILIA,-15.861,-48.0278,0.94,2678,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+476bc480-144c-37cd-aa39-81b364a13888,Brazil,government,53009851,CEF 213 DE SANTA MARIA,-16.0082,-48.0027,1.0,1912,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cdf10f2f-fbc3-3c5c-8608-0c30b12c1c0b,Brazil,government,53009860,CEF 306 DO RECANTO DAS EMAS,-15.9187,-48.0971,1.0,1008,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2e45ef23-77ec-3b3b-9ffa-87abaf907c14,Brazil,government,53009878,CEF 403 DE SANTA MARIA,-16.0378,-48.0266,1.0,756,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1146ecae-884a-358d-9762-390cdfff03f5,Brazil,government,53010000,CED 416 DE SANTA MARIA,-16.0162,-47.9931,1.0,923,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eb9513fe-9bfa-34ad-b077-c442fcc0e565,Brazil,government,53010019,CED 619 DE SAMAMBAIA,-15.8791,-48.1225,1.0,1782,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+857c8519-3a90-3345-a9aa-5cea5404998b,Brazil,government,53010027,CEF 504 DE SAMAMBAIA,-15.8823,-48.0782,1.0,955,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+11e661b2-f620-34d7-b695-d0b53be0838b,Brazil,government,53010060,EC 512 DE SAMAMBAIA,-15.8788,-48.0682,1.0,619,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9dbe7e2e-fcf5-3324-950e-754116fa927a,Brazil,government,53010744,CEE 01 DO GUARA,-15.8191,-47.9859,1.0,48,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bebc4307-e237-3345-8ef3-a1e48d04cbfd,Brazil,government,53010752,CEE 01 DO GAMA,-16.0146,-48.0635,1.0,344,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bdb19169-8d54-3d96-852a-0cd50acdf4d1,Brazil,government,53010981,CIL DO GUARA,-15.8158,-47.9785,1.0,1235,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b4d0c8d6-1620-33e3-a3ed-4ed8a87b621b,Brazil,government,53011015,EC RIACHO FUNDO,-15.8868,-48.0452,1.0,595,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+10fb8594-07a5-30c3-9b10-a76a9639c9b6,Brazil,government,53011023,CED 02 DO RIACHO FUNDO,-15.8834,-48.0197,1.0,1600,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+87560e35-55c4-37f8-aa3f-50c790ed7d65,Brazil,government,53011031,CEM 01 DE SAO SEBASTIAO,-15.9017,-47.7794,1.0,1884,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3009cf69-44d7-333b-83d7-10e311c8ca51,Brazil,government,53011040,CEF DO BOSQUE,-15.9053,-47.7564,1.0,959,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d3477261-e7d1-3de5-9c8c-0dd3f2f156b4,Brazil,government,53011066,CED 104 DO RECANTO DAS EMAS,-15.7807,-47.7974,0.67,1716,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ae0da6e0-d412-3c61-b592-f1be48d4c530,Brazil,government,53011350,CIL DO GAMA,-16.018,-48.068,0.89,3731,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fef37878-3e01-3c93-bd36-51686b2f08da,Brazil,government,53011490,CEF NOSSA SENHORA FATIMA,-15.6032,-47.6579,1.0,929,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+073f3ca5-291f-3677-8ade-df122bd4fc94,Brazil,government,53011503,CEF 209 DE SANTA MARIA,-16.0218,-48.0242,1.0,1168,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d9279693-74ee-3eb5-bb03-52e83b72bd46,Brazil,government,53011511,EC 218 DE SANTA MARIA,-16.0073,-47.9876,1.0,676,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a30afe09-bbe2-3552-8049-2e8b5bc9121c,Brazil,government,53011520,CED DARCY RIBEIRO,-15.7627,-47.7831,1.0,1392,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ebe79953-90ce-366c-b1a0-9d93cdb88be2,Brazil,government,53011562,CEF 519 DE SAMAMBAIA,-15.897,-48.1153,0.94,1254,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1a995ec6-4490-3f2c-852c-269d42be4c58,Brazil,government,53011589,CEF 30 DE CEILANDIA,-15.7859,-48.138,0.94,791,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+47389385-6f60-3955-8c1c-89d95d0d12a2,Brazil,government,53011597,CEF 427 DE SAMAMBAIA,-15.8922,-48.1386,1.0,1258,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9c56234a-c61d-306a-97fc-58e0037d9f66,Brazil,government,53011600,CEF 206 DO RECANTO DAS EMAS,-15.906,-48.069,0.89,1157,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+99eafa57-2258-375b-b5d7-feccdf21d133,Brazil,government,53011988,CED SAO JOSE,-15.9128,-47.7595,1.0,1867,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+507be582-829f-3b09-b34c-81d131121294,Brazil,government,53011996,CEM 414 DE SAMAMBAIA,-15.8592,-48.0724,1.0,1591,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d81060d5-5c4f-3dcd-9c0e-6585ed205099,Brazil,government,53012003,CEF 02 DO PARANOA,-15.7824,-47.7789,1.0,1699,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+231c2b01-dc2a-32e8-aebe-b5730e9b3e33,Brazil,government,53012011,CED CONDOMINIO ESTANCIA III,-15.6176,-47.6867,1.0,1535,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+15a521aa-dfd9-3709-b9b6-4bec98c11b51,Brazil,government,53012038,CEF 07 DE SOBRADINHO,-15.6441,-47.8247,1.0,1148,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+91cea21b-666a-31cb-8ea4-aaef03fdee81,Brazil,government,53012046,CEF 10 DO GUARA,-15.8509,-47.9626,1.0,770,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a940af18-799c-3ec0-8d3e-d8f1a4e6c50a,Brazil,government,53012054,CEF SANTOS DUMONT,-15.9935,-47.9975,1.0,1216,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+19233d4e-1421-35ee-95f1-02ad115a65b1,Brazil,government,53012062,CEF 201 DE SANTA MARIA,-16.0448,-48.0335,1.0,1692,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+89752c89-f102-3489-b0b8-7517747f3a88,Brazil,government,53012070,EC AGUILHADA,-15.963,-47.7395,0.94,148,No,Estadual,Rural,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0bfd264e-de4c-3afd-9016-e930336a5a57,Brazil,government,53012089,EC 02 DO RIACHO FUNDO,-15.8817,-48.0158,1.0,590,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e2aa2371-fc33-3fa6-aab6-4b154e29aa73,Brazil,government,53012097,CED 123 DE SAMAMBAIA,-15.8937,-48.1229,1.0,1068,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2013f62a-ec03-39ab-a653-800f6b23f3e8,Brazil,government,53012100,CED 16 DE CEILANDIA,-15.8039,-48.1433,1.0,1402,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cbed18fa-72a7-3650-ace2-91acb66ab447,Brazil,government,53012119,CED 308 DO RECANTO DAS EMAS,-15.9234,-48.1013,1.0,878,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5db6c075-38bb-3d52-b3a7-ea9ee4424ec4,Brazil,government,53012127,CEF 405 DO RECANTO DAS EMAS,-15.7807,-47.7974,0.67,1435,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a7d63f80-f941-348d-bc16-8354421b36f8,Brazil,government,53012135,CEI 01 DE BRASILIA,-15.7514,-47.8792,1.0,296,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1d74f63b-f2ac-3b72-9278-52d49fd036c9,Brazil,government,53012151,CEI DA CANDANGOLANDIA,-15.8558,-47.9519,1.0,303,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+75e96a09-ed51-31a8-be81-a9d15f58bbdb,Brazil,government,53012178,EC SAO BARTOLOMEU,-15.9104,-47.739,0.94,200,No,Estadual,Rural,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1ec80859-7ed4-3f2f-a33a-f6bda24536d5,Brazil,government,53012186,CEF 101 DO RECANTO DAS EMAS,-15.9001,-48.0571,1.0,982,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fa914e72-42f7-3ee5-ba5e-b1646e97d6a8,Brazil,government,53012194,CEM 111 DO RECANTO DAS EMAS,-15.9125,-48.0986,1.0,1812,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+de19f03f-0495-3878-8512-c4b2675173fe,Brazil,government,53012356,CED DO LAGO NORTE,-15.7179,-47.8789,1.0,906,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+36461e94-31c2-3809-9f36-c5cf642b5d82,Brazil,government,53012429,CEF 01 DO PARANOA,-15.7793,-47.7832,1.0,1950,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4a0dad21-9388-3beb-b832-257d4cefd2b2,Brazil,government,53012488,CEI 01 DE SAO SEBASTIAO,-15.9006,-47.7764,1.0,444,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fbea6e0f-c37c-391e-9f7b-34edf4338456,Brazil,government,53012496,EC VILA DO BOA,-15.8778,-47.7912,1.0,325,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+076b51ca-33ee-3559-8d4a-fa8499c6b553,Brazil,government,53012500,CEI 01 DO PARANOA,-15.7715,-47.7759,1.0,606,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fb6d069c-2f19-32a9-9951-0e46a95cd74c,Brazil,government,53012542,CED 04 DE SOBRADINHO,-15.6465,-47.826,0.94,1630,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+7ae1fde1-0803-30e3-96c2-dad3fc2df34b,Brazil,government,53012550,EC LOBEIRAL,-15.5899,-47.8421,1.0,234,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+566d7a7d-fdd8-344e-bfaf-26e36d6ab6b9,Brazil,government,53012569,CEI 210 DE SANTA MARIA,-16.022,-48.0193,0.94,416,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ec4928fc-df4a-344a-9e55-c3cbf25a3c94,Brazil,government,53012593,CEF 103 DE SANTA MARIA,-16.0369,-48.0374,1.0,794,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9392ea32-34d4-302d-8840-bd662214424c,Brazil,government,53012607,CEM 417 DE SANTA MARIA,-16.0116,-47.9911,1.0,1652,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c062f58f-59f4-37d6-bf50-8c1b65ae0e87,Brazil,government,53012615,CEI 416-516 DE SANTA MARIA,-16.0163,-47.9922,1.0,382,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+34ec904c-8dd8-3bfd-a70d-c41a7caf7909,Brazil,government,53012623,CEM 404 DE SANTA MARIA,-16.0344,-48.0266,1.0,1787,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5a8977cd-d58a-3de5-a7d5-3373408bdce6,Brazil,government,53012631,CEP - ESC TECNICA DE PLANALTINA,-15.625,-47.6546,0.94,2275,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ef2d69a7-7aaa-3f4e-b7ec-d5e5860a2e1f,Brazil,government,53012666,CEF BONSUCESSO,-15.7807,-47.7974,0.67,533,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+24f10eb0-bac4-3d46-a9e8-b8f79131a464,Brazil,government,53012720,CEM 02 DE BRAZLANDIA,-15.6663,-48.197,0.94,1333,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3236386f-9685-38bc-a16a-57317faed9bc,Brazil,government,53012739,EC REINO DAS FLORES,-15.6932,-47.6025,1.0,85,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2e6be772-c368-3476-82bc-1d795751fd67,Brazil,government,53012747,CEF ARAPOANGA,-15.6406,-47.6405,1.0,497,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5f77fb31-63d4-30ab-aab7-1e176476ede6,Brazil,government,53012771,CEE 02 DE CEILANDIA,-15.7911,-48.1333,1.0,7,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+89dafaec-312e-378e-9b98-03279cfcb705,Brazil,government,53012780,CEE 01 DE SAMAMBAIA,-15.885,-48.0938,0.94,196,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d30c9b48-785a-3f19-a366-8029d9c2fb33,Brazil,government,53012798,EC ASPALHA,-15.7328,-47.8341,1.0,218,No,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bf9cc6e1-76b1-320e-bc94-2a7539b00fa4,Brazil,government,53012801,CIL 02 DE BRASILIA,-15.7564,-47.895,0.94,1930,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9aada44f-1080-3e62-abea-06a58db2455d,Brazil,government,53012810,CEI 304 DO RECANTO DAS EMAS,-15.9138,-48.0933,1.0,356,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+137a7bbd-2507-3072-a7c8-2b486c563ecd,Brazil,government,53012828,CEF 801 DO RECANTO DAS EMAS,-15.9188,-48.0521,1.0,1184,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+47b10133-6e7f-3df8-a4eb-3b057178cb06,Brazil,government,53012887,EC 401 DO RECANTO DAS EMAS,-15.9091,-48.0562,1.0,1004,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+38a16276-7632-3e2f-a1b2-a49982d2da54,Brazil,government,53012895,ESC DA NATUREZA,-15.7906,-47.9044,1.0,0,,Estadual,Urban,,,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b9ccf6d2-5577-36c0-9536-ce8d397535fc,Brazil,government,53012976,CIL DE BRAZLANDIA,-15.686,-48.202,0.89,1637,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c18cd76c-4474-3026-8893-c62597c45aaf,Brazil,government,53013034,CEF 01 DO RIACHO FUNDO II,-15.9021,-48.0481,1.0,2137,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f29c5672-5537-31dc-90ab-255ecd099969,Brazil,government,53013239,CEF 802 DO RECANTO DAS EMAS,-15.9235,-48.0509,1.0,1334,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+638c3538-72f4-3d6d-8583-5984eefc616d,Brazil,government,53013247,EC 510 DO RECANTO DAS EMAS,-15.9098,-48.0694,1.0,1020,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+aca5f30e-8a95-32b4-b7f9-efec0b4aed14,Brazil,government,53013263,CEI 01 DO GAMA,-16.0343,-48.0678,1.0,342,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+9756c6eb-d970-3a86-bda7-b810d5ff14d6,Brazil,government,53013280,EC VALE DO SOL,-15.6543,-47.6513,1.0,238,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dc4f5abb-5986-30f1-955b-cca180bc8ce9,Brazil,government,53013336,CEE 01 DE SANTA MARIA,-16.0231,-48.0261,1.0,30,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cf06178b-7f4d-382e-9cbe-793cd097ba06,Brazil,government,53013352,COL MILITAR DOM PEDRO II,-15.8344,-47.9395,1.0,2882,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ce4dd58c-8a22-327f-9815-783385b34138,Brazil,government,53013484,EC 104 DE SAO SEBASTIAO,-15.896,-47.7825,0.94,905,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bc6ba5e4-268c-3681-a4da-ebec63fcba70,Brazil,government,53013492,EC BASEVI,-15.646,-47.8896,0.94,363,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2207dcb1-ff3c-37fc-b9c5-2b18742347fa,Brazil,government,53013506,EC CORREGO DO ARROZAL,-15.6454,-47.7349,1.0,185,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e03d28d4-b58b-336c-94f7-72e8d7e29296,Brazil,government,53013514,EC 14 DE SOBRADINHO,-15.6439,-47.8164,1.0,525,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0cf179d7-1b52-3009-8dcf-65928f42ee4d,Brazil,government,53013522,CEF 08 DE SOBRADINHO,-15.6394,-47.8283,1.0,839,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+898aeba2-6867-3240-af0a-c8f6f32471aa,Brazil,government,53013530,CEF 301 DO RECANTO DAS EMAS,-15.909,-48.085,0.89,1122,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d18d9a8c-07de-32d3-ab7d-19e343ca7ba0,Brazil,government,53013549,CEI DO RIACHO FUNDO II,-15.8958,-48.051,0.94,723,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+aada2428-237d-3c9a-817b-d90b30f81192,Brazil,government,53013557,EC 01 DO RIACHO FUNDO II,-15.9152,-48.0463,1.0,959,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+972ebf0a-c229-3b1e-adf9-182dd3557038,Brazil,government,53013565,EC 215 DE SANTA MARIA,-16.0066,-47.9993,1.0,383,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+07bdf98a-0a05-3960-9520-f6932c9b43ee,Brazil,government,53013832,EC 04 DE SOBRADINHO,-15.6458,-47.7776,1.0,394,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+637d2a4f-0327-3f04-8aae-a7d26ef9e2b7,Brazil,government,53013840,CED STELLA DOS CHERUBINS GUIMARAES TROIS,-15.6304,-47.6598,1.0,1423,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+06a0d11f-83eb-35ab-81eb-738de1bb003a,Brazil,government,53013867,EC 604 DE SAMAMBAIA,-15.8621,-48.0883,1.0,1122,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b8f62f99-346b-33da-9bec-bb1fd455f054,Brazil,government,53013972,CEF 07 DE BRASILIA,-15.755,-47.8989,0.94,736,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+834d8402-1e7c-37cd-818d-91d78ca97df7,Brazil,government,53013980,EC 01 DA VILA ESTRUTURAL,-15.7813,-47.9976,1.0,1223,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8bf957f9-0384-3dfd-a549-acb92c84846a,Brazil,government,53014227,CEF 03 DO PARANOA,-15.7648,-47.7794,1.0,1665,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+15ee7f1c-794a-3a7e-a0af-7feec04cb8b5,Brazil,government,53014235,EC 100 DE SANTA MARIA,-16.0425,-48.0384,1.0,562,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ccfbb99f-2206-35a1-9240-a7ab2e8fe562,Brazil,government,53014260,CEF 602 DO RECANTO DAS EMAS,-15.9154,-48.0545,1.0,1097,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c0422b46-a3e0-3fa7-9134-44bd1dbfa193,Brazil,government,53014278,EC VALE VERDE,-15.5378,-47.6529,1.0,100,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+629e4ebf-faa5-38bb-bb8a-22a6739b3dac,Brazil,government,53014286,EC 303 DE SAO SEBASTIAO,-15.9034,-47.782,0.94,835,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2377a519-a2a4-34f0-b81e-164f7e717f23,Brazil,government,53014294,CEF 418 DE SANTA MARIA,-16.014,-47.9862,0.94,909,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e054d70c-876b-3987-9449-f1e01ad8500b,Brazil,government,53014308,CED POMPILIO MARQUES DE SOUZA,-15.599,-47.6829,0.94,1399,Yes,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,No
+0914fe16-892c-34a6-96d4-997c2ce3c404,Brazil,government,53014316,CED VALE DO AMANHECER,-15.6799,-47.6566,1.0,1187,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ea4f29fc-d70d-3b78-956a-a86a452831aa,Brazil,government,53014545,EC 01 INCRA 08,-15.7406,-48.1703,1.0,900,Yes,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+01589c51-b97d-329b-ab1b-111848d257d5,Brazil,government,53014553,CEF 03 DE BRAZLANDIA,-15.6587,-48.1955,1.0,753,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3a6ecdad-7233-3e27-b24a-2c6340358a91,Brazil,government,53014561,JI 116 DE SANTA MARIA,-16.0022,-47.9957,1.0,444,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c30a2297-940c-3c68-9c7e-a2dc4d462c42,Brazil,government,53014570,EC VILA NOVA,-15.9137,-47.7593,1.0,1074,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ab929ebf-8b6c-3fdd-9e40-a5d01d7a871e,Brazil,government,53014588,EC BELA VISTA,-15.9134,-47.7546,1.0,1151,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8f30c198-08bb-39c9-a3cc-672af11c76a1,Brazil,government,53014596,JI 603 DO RECANTO DAS EMAS,-15.9179,-48.0579,1.0,484,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+30205e11-289e-3cb2-b3de-dc97107b5dda,Brazil,government,53014600,EC 404 DO RECANTO DAS EMAS,-15.9125,-48.0614,1.0,683,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+fd4b1c2d-4d6f-3d1c-af04-47ead4ecff6f,Brazil,government,53014618,EC 803 DO RECANTO DAS EMAS,-15.9232,-48.0543,1.0,886,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+40489deb-3d86-3dc1-a9d7-ebfb00dd38c7,Brazil,government,53014626,JI 01 DO RIACHO FUNDO II,-15.9021,-48.0446,1.0,514,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+93f184da-c607-3842-b3ff-0af0ed175ab1,Brazil,government,53014812,CEM INTEGRADO A EDUC PROFISSIONAL DO GAMA,-16.0105,-48.075,0.94,516,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2c26642e-99c0-37c2-bd84-c123033fd99a,Brazil,government,53014855,EC 65 DE CEILANDIA,-15.8066,-48.1606,1.0,1004,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e55e1a6a-6046-3f63-bfe8-5e2e9cb4318f,Brazil,government,53014863,EC 02 DO RIACHO FUNDO II,-15.8966,-48.0496,0.67,717,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+eb4048b9-7bef-3ae3-b2a6-6c666b38ed5a,Brazil,government,53014871,EC 01 DE ITAPOA,-15.7452,-47.7696,1.0,1808,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6b6754b6-f4f7-30d7-be28-db95bb550083,Brazil,government,53014880,CED SAO BARTOLOMEU,-15.894,-47.7788,0.94,2102,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b51ba215-a73d-3c7d-8403-851e23790b17,Brazil,government,53015215,IFB - CAMPUS BRASILIA,-15.7533,-47.8785,1.0,1337,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ac32de67-a6aa-323e-bfcd-279f6d71d78b,Brazil,government,53015223,IFB - CAMPUS TAGUATINGA,-15.7807,-47.7974,0.67,613,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b3512fcd-d67e-3f22-b387-24362bef229d,Brazil,government,53015231,IFB - CAMPUS SAMAMBAIA,-15.8627,-48.0537,1.0,882,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a8726209-21db-31d2-ab3f-53789e14920f,Brazil,government,53015240,IFB - CAMPUS GAMA,-15.9932,-48.0532,1.0,452,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+57a213d8-75c9-3596-9d84-0aede31922d9,Brazil,government,53015339,CEI 01 DA ESTRUTURAL,-15.779,-47.9943,0.94,483,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f4d94f10-e37d-3db0-97a7-517d9ed337fc,Brazil,government,53015380,IFB - CAMPUS RIACHO FUNDO,-15.8816,-48.0092,1.0,531,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3e2076d5-2489-3f25-9d32-fc5f71a3fa01,Brazil,government,53015401,IFB - CAMPUS SAO SEBASTIAO,-15.8917,-47.7803,1.0,516,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c1a6ffa4-1c5a-32e2-a37c-a3d17f2139f0,Brazil,government,53015495,COL MILITAR TIRADENTES,-15.8302,-47.9421,1.0,808,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c9458c9e-8731-342d-8f46-7f8d55fc7ad2,Brazil,government,53015517,CEI 02 DE BRAZLANDIA,-15.6587,-48.1903,1.0,483,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+74b5ce18-6c7b-3bab-ae57-512c3f8b2ce6,Brazil,government,53015541,CEI 03 DE SAO SEBASTIAO,-15.9039,-47.7786,1.0,423,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+08b27f4e-040d-353d-ba11-0a22b0a783fc,Brazil,government,53015550,CEI 01 DE PLANALTINA,-15.62,-47.6829,0.89,564,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2cb387d3-1d83-33b4-8f8c-90bee95103bc,Brazil,government,53015568,CEI 01 DO RIACHO FUNDO I,-15.8798,-48.022,0.94,358,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+39b636f6-9aed-3163-99cf-667bfecdd100,Brazil,government,53015576,CEI 210 DE SAMAMBAIA,-15.8633,-48.0767,1.0,518,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+53a8ecf4-266a-3531-be08-9b11a74e9e8b,Brazil,government,53015584,CEF 04 DO PARANOA,-15.7837,-47.7792,1.0,668,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+52658304-5624-35df-bb0d-379639317c01,Brazil,government,53015770,CEI 203 DE SANTA MARIA,-16.0381,-48.0335,1.0,373,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ba474596-960d-39da-be73-3dc6eaa32955,Brazil,government,53016041,EP ANISIO TEIXEIRA,-15.8187,-48.095,0.94,3911,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ad9d0f55-de6b-3bea-8c5a-d07fcb9d9ad5,Brazil,government,53016220,EP DA NATUREZA DE BRAZLANDIA,-15.6897,-48.2035,1.0,868,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+cda6069a-b286-32f5-a576-09cdbef9fbc6,Brazil,government,53016378,CED 01 DO ITAPOA,-15.7686,-47.7827,1.0,1285,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+112a0e5a-e21e-3afe-9ac0-b0947ef5699e,Brazil,government,53016386,CIL 01 DE PLANALTINA,-15.6214,-47.6457,1.0,432,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+49050a59-18a5-3ae9-bc17-18042758b7d3,Brazil,government,53016408,CIL 01 DE SANTA MARIA,-16.0061,-48.0009,1.0,756,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+20333797-bf3d-329a-9590-0cf3903581fa,Brazil,government,53016416,CEI 01 DE CEILANDIA,-15.842,-48.1119,0.94,351,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+07fa8ace-8c79-3741-a971-220a81d95ff5,Brazil,government,53016432,CIL 01 DO RECANTO DAS EMAS,-15.9193,-48.0972,1.0,1689,No,Estadual,Urban,Yes,2.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4b7025ce-e421-3389-af02-508f5706c708,Brazil,government,53016645,IFB - CAMPUS CEILANDIA,-15.843,-48.0987,0.94,550,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+a97bbffb-537e-3246-aac5-a64ffd1abda4,Brazil,government,53016653,IFB - CAMPUS ESTRUTURAL,-15.7933,-47.9691,1.0,336,Yes,Federal,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6bcaa507-15f4-3ac6-916c-1db93e7e3ebd,Brazil,government,53016734,CIL 01 DE SAO SEBASTIAO,-15.8879,-47.7792,1.0,204,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6a41c647-9835-3d6d-a675-5f6ad0cd28df,Brazil,government,53016742,CIL 01 DO NUCLEO BANDEIRANTE,-15.8054,-47.9276,1.0,142,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+3b25815e-5e43-36cd-b5c7-eba75cd1d7ef,Brazil,government,53016785,CED 01 DE BRASILIA,-15.8059,-47.9083,1.0,1487,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+4024a9db-310e-3874-ab9b-9d4205c1296c,Brazil,government,53016793,EC 203 DO RECANTO DAS EMAS,-15.9046,-48.065,0.94,832,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+50ba158f-ddf1-347e-b9f1-8324dd362495,Brazil,government,53016807,CEPI GAVIAO,-15.7642,-47.833,0.94,327,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0e830457-3ab5-3d3f-9033-5cc1729c34ba,Brazil,government,53016815,CIL 01 DO PARANOA,-15.7737,-47.7799,1.0,1558,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ed522b28-282b-3ce1-acda-884a6479a276,Brazil,government,53016980,CIL 01 DE SAMAMBAIA,-15.7807,-47.7974,0.67,556,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ee9affdc-2690-3668-b49f-eab00ab2994e,Brazil,government,53017005,EC 06 DO PARANOA,-15.7577,-47.7832,1.0,912,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6b4fe782-ba31-30d5-9327-d2eadc4e8703,Brazil,government,53017013,CEI 07 DE TAGUATINGA,-15.8543,-48.0487,1.0,170,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6d22088e-2b74-35e1-9ad3-d2aa86408c1a,Brazil,government,53017056,JI 06 DO GAMA,-16.0115,-48.0788,1.0,260,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5bbc1013-e9e8-3517-9983-b390beee47a4,Brazil,government,53017064,EC 502 DE SAMAMBAIA,-15.8852,-48.084,0.94,484,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5a70ba0e-d4eb-368f-a3bf-84005dda07f8,Brazil,government,53017072,JI 02 DO CRUZEIRO,-15.7967,-47.9391,1.0,159,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1b138d6d-bda5-38c4-924c-ff7890765307,Brazil,government,53017080,CEF 03 DA ESTRUTURAL,-15.8038,-47.9685,1.0,470,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2b9259d4-6256-32b4-b8db-a268f759b534,Brazil,government,53017234,CEP ARTICULADO DO GUARA - PROF TERESA ONDINA MALTESE,-15.8392,-47.9766,1.0,788,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+56059621-839d-358d-b7df-c4d5f66ce566,Brazil,government,53017277,CEI 04 DE SAO SEBASTIAO,-15.9014,-47.7813,1.0,256,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+65031ac5-5470-31f6-b16d-c03d3f82fea6,Brazil,government,53017323,CEPI PINHEIRINHO ROXO,-15.9074,-48.078,0.94,357,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+d12be689-5fd7-3550-8b11-df68f8a58b1b,Brazil,government,53017404,EC 68 DE CEILANDIA,-15.8084,-48.1583,1.0,1130,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c1b14169-9351-30c4-aebd-7130ddb0740f,Brazil,government,53017412,CEF 09 DE SOBRADINHO,-15.6427,-47.8207,1.0,505,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b391d12b-95ac-37fa-bf66-b806cfe3445f,Brazil,government,53017480,CIL DO RIACHO FUNDO I,-15.8844,-48.0146,1.0,180,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c831b9c0-6907-3140-bcfb-c516389b1397,Brazil,government,53017498,CEJA E EDUC PROFISSIONAL A DISTANCIA DE BRASILIA,-15.8104,-47.8824,1.0,2167,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+1d1304c2-bb76-3449-a53d-161d733746bb,Brazil,government,53017544,EC COMUNIDADE DE APRENDIZAGEM DO PARANOA - EC CAP,-15.779,-47.7878,0.94,427,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5d6945d5-bafb-34ae-831c-16781df25f31,Brazil,government,53017668,IFB - CAMPUS RECANTO DAS EMAS,-15.9124,-48.0772,1.0,490,Yes,Federal,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0bc98e71-b640-380c-9bc7-c1dea4f9121d,Brazil,government,53017730,CEI 08 DE TAGUATINGA,-15.8082,-48.0639,1.0,333,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+961fcda6-1189-32fe-acc7-6332cf235e11,Brazil,government,53017790,CEI BURITIZINHO,-15.9359,-48.2307,1.0,177,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2472306d-454b-3f16-88f3-9dfcc8fdc49b,Brazil,government,53017846,CEI 03 DE BRAZLANDIA,-15.7291,-48.192,0.94,214,No,Estadual,Rural,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+504e3218-636f-3f7e-aa0b-091600d8b676,Brazil,government,53017854,CIL DO RIACHO FUNDO II,-15.8966,-48.0496,0.67,113,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+48bd5a10-9985-3a03-ba28-8855c39d036f,Brazil,government,53018605,CEF 113 DO RECANTO DAS EMAS,-15.9182,-48.1028,1.0,1408,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+93ae06e1-54dd-3588-8d57-77d9b2a31cb4,Brazil,government,53019407,CEM 804 DO RECANTO DAS EMAS,-15.9206,-48.0579,1.0,1432,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f6a8de5f-bdaa-3463-b754-6a3db72b05f8,Brazil,government,53019601,CEF DOUTORA ZILDA ARNS,-15.739,-47.7621,0.94,1912,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+17237964-94bc-3407-a974-1dbf79c287a0,Brazil,government,53019806,CED SAO FRANCISCO,-15.9147,-47.7629,1.0,1486,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+dd0aacb1-ca7a-3adf-941a-7e6e9cd7be91,Brazil,government,53047001,CEI AGUAS CLARAS,-15.8711,-48.0148,1.0,390,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+592430f8-da88-30f4-bb7c-e09e17fcc137,Brazil,government,53047010,EC 16 DE PLANALTINA,-15.6198,-47.6813,1.0,994,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bacc139d-f42b-317b-8103-912d6d35a524,Brazil,government,53047028,EC 01 DO ARAPOANGA,-15.6397,-47.6359,1.0,761,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+99f375d3-533c-372f-9405-334e907319d2,Brazil,government,53048008,CED 01 DA ESTRUTURAL,-15.783,-47.9971,0.94,1664,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+e316ffa2-698e-3789-a25f-07a994813114,Brazil,government,53050002,CEI 310 DO RECANTO DAS EMAS,-15.8644,-48.0897,1.0,335,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+b8c3116b-3a5d-3b95-bc96-05ae59dfe117,Brazil,government,53051009,CEM JULIA KUBITSCHEK,-15.8531,-47.9462,1.0,1203,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2f93fc6a-2352-3219-9012-e254962fcf77,Brazil,government,53068017,EC 02 DE VICENTE PIRES,-15.8006,-48.0488,1.0,610,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+34239e2b-94c7-321a-8980-545c2faa7af9,Brazil,government,53068025,EC 09 DE BRAZLANDIA,-15.6585,-48.1902,1.0,654,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+254bdfe4-4f30-37ec-84f3-fd98dee80908,Brazil,government,53068033,CEI 04 DE SOBRADINHO,-15.654,-47.7992,0.94,162,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+81a56416-9a67-3ea8-9913-88c07a782cb6,Brazil,government,53068041,EC 17 DE SOBRADINHO,-15.6234,-47.8474,1.0,544,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+0f9a88b1-5244-3876-9060-008bd0559b68,Brazil,government,53068050,EC 16 DE SOBRADINHO,-15.6491,-47.7547,1.0,887,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+de6e19cb-660d-3d88-b9cd-15ba51a3a1b0,Brazil,government,53068068,CED DONA AMERICA GUIMARAES,-15.6404,-47.6292,1.0,1965,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+f0a20244-115b-3035-b5b2-400f475fb02f,Brazil,government,53068076,CEF 02 DO ARAPOANGA,-15.6363,-47.6329,1.0,1208,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+57f440e0-4fb4-3490-81b0-0a56e81689ef,Brazil,government,53068084,EC 15 DE PLANALTINA,-15.6186,-47.6854,1.0,717,No,Estadual,Urban,No,0.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+70a75f7f-83ee-3700-ac46-aa564c9451fa,Brazil,government,53068092,CED 01 DO RIACHO FUNDO II,-15.9488,-48.0325,1.0,1318,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+2df218e8-eb2e-3e29-8236-a56c27421044,Brazil,government,53068106,CEF 02 DO RIACHO FUNDO II,-15.9381,-48.0388,1.0,1176,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5a989ad2-e5bb-3623-bed8-51dd55044d0c,Brazil,government,53068114,CEF 27 DE CEILANDIA,-15.8055,-48.1508,1.0,1530,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bee8cc54-6a9a-3bad-a2d7-127ae2d196ee,Brazil,government,53068122,CEF 28 DE CEILANDIA,-15.8132,-48.1395,1.0,1235,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6b353ef9-3066-3cbf-8c0d-b0e860c61de1,Brazil,government,53068130,EC 66 DE CEILANDIA,-15.8183,-48.1531,1.0,1010,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+67d0a6e3-ce3a-32ca-bc44-e8338a762e6e,Brazil,government,53068149,CEF 32 DE CEILANDIA,-15.8577,-48.1238,1.0,811,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+6f70f271-54ea-32d9-89e5-90eeec6bad0b,Brazil,government,53068157,CEF 02 DA ESTRUTURAL,-15.7861,-47.9894,1.0,1543,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8320b520-a268-3a25-b3fc-634c73fd90f1,Brazil,government,53068165,EC 02 DA ESTRUTURAL,-15.7825,-47.9987,1.0,713,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+8658f1ff-21a1-31d1-918b-d703f07b077e,Brazil,government,53068173,EC 831 DE SAMAMBAIA,-15.888,-48.1476,0.94,609,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+c2cc915c-fd39-368f-a955-59f6dbfa8b04,Brazil,government,53068181,CED 310 DE SANTA MARIA,-16.0237,-48.0164,1.0,905,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+79cf1056-24cb-36cf-bdb3-3dd36c00f0da,Brazil,government,53068190,EC 01 DO PORTO RICO,-16.035,-48.0175,0.94,554,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+49af2067-b6bc-3539-9dd5-27b0786c9212,Brazil,government,53068203,EC 02 DO ITAPOA,-15.7398,-47.7633,1.0,717,Yes,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+5deb57ae-815b-30f8-b3c8-06dfb3da2e01,Brazil,government,53068211,CEF MIGUEL ARCANJO,-15.8926,-47.7812,1.0,1251,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+bb903d60-fdef-3361-a020-6495c11ce39b,Brazil,government,53068220,EC DOM BOSCO,-15.9026,-47.774,0.94,547,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes
+ad0f78a5-5c07-3a6d-b2bf-8f3cc778d70d,Brazil,government,53068238,EC VILA BURITIS,-15.9461,-48.2307,1.0,799,No,Estadual,Urban,Yes,5.0,Centro-Oeste,5,Distrito Federal,53,Brasília,5300108,Yes

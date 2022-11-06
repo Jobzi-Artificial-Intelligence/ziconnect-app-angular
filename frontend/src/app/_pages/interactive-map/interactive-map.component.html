@@ -20,8 +20,7 @@
           <div *ngFor="let item of getSelectedViewOption.rangeColors; let i = index"
             [ngStyle]="{'background-color': item.backgroundColor, 'color': item.color}"
             class="flex items-center justify-center legend-item" (mouseenter)="onLegendItemMouseEnter(i)"
-            (mouseleave)="onLegendItemMouseLeave()" [matTooltip]="getRangeColorTooltipMessage(i)"
-            matTooltipPosition="above">
+            (mouseleave)="onLegendItemMouseLeave()" [matTooltip]="getRangeColorTooltipMessage(i)">
             {{item.min}}-{{item.max}}%
           </div>
         </div>
@@ -44,7 +43,8 @@
             search
           </mat-icon>
           <div class="separator"></div>
-          <input matInput placeholder="Region, State or city" formControlName="searchFilter" [matAutocomplete]="auto" (focus)="toggleFilterSettingsExpanded(false)" />
+          <input matInput placeholder="Region, State or city" formControlName="searchFilter" [matAutocomplete]="auto"
+            (focus)="toggleFilterSettingsExpanded(false)" />
         </div>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getSearchLocationAutocompleteText"
           (optionSelected)="onSelectLocationSearchOption($event)">
@@ -242,7 +242,7 @@
             <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
               [results]="mapStatsPanel.connectivityBySchoolType" [xAxis]="true" [yAxis]="true" [legend]="true"
               [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Type'" [yAxisLabel]="'Schools'"
-              [legendTitle]="'Internet'">
+              [legendTitle]="'Internet'" [roundEdges]="false">
             </ngx-charts-bar-vertical-2d>
           </div>
         </section>
@@ -252,7 +252,7 @@
             <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
               [results]="mapStatsPanel.connectivityBySchoolRegion" [xAxis]="true" [yAxis]="true" [legend]="true"
               [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Region'" [yAxisLabel]="'Schools'"
-              [legendTitle]="'Internet'">
+              [legendTitle]="'Internet'" [roundEdges]="false">
             </ngx-charts-bar-vertical-2d>
           </div>
         </section>

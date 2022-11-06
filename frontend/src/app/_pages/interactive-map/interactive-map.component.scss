@@ -5,8 +5,13 @@
 .page-container {
   @include box-sizing(border-box);
   height: 100%;
-  max-height: calc(100vh - 96px);
-  min-height: calc(100vh - 96px);
+  max-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
+  min-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    max-height: calc(100vh - (#{$navigation-bar-height} + 16px));
+    min-height: calc(100vh - (#{$navigation-bar-height} + 16px));
+  }
 
   > header {
     background-color: #fff;
@@ -150,7 +155,10 @@
 
       .filter-settings-container {
         @include border-bottom-radius(8px);
-        @include box-shadow(0 1px 1px 0 rgba(65,69,73,0.3), 0 1px 3px 1px rgba(65,69,73,0.15));
+        @include box-shadow(
+          0 1px 1px 0 rgba(65, 69, 73, 0.3),
+          0 1px 3px 1px rgba(65, 69, 73, 0.15)
+        );
         @include box-sizing(border-box);
         background-color: $white;
         display: none;
@@ -240,6 +248,10 @@
 }
 
 .map-legend {
+  @include breakpoint(xs) {
+    display: none;
+  }
+
   .legend-label {
     color: $tp-title;
     font-weight: 500;
@@ -302,7 +314,7 @@
 
   .infowindow-left {
     box-sizing: border-box;
-    background-color:#f89a51;
+    background-color: #f89a51;
     border-bottom-left-radius: 8px;
     border-top-left-radius: 8px;
     flex: 0 0 calc(40% - 1px);
@@ -311,7 +323,7 @@
 
   .infowindow-right {
     box-sizing: border-box;
-    background-color:#f1764f;
+    background-color: #f1764f;
     border-bottom-right-radius: 8px;
     border-top-right-radius: 8px;
     flex: 0 0 calc(60% - 1px);

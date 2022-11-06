@@ -4,9 +4,9 @@
 
 .page-title {
   background-color: #09132c;
-  padding: 80px 0;
   margin-top: -16px;
   position: relative;
+  height: 290px;
 
   .background-overlay {
     @include box-sizing(border-box);
@@ -48,7 +48,6 @@
 }
 
 .page-content-container {
-
   .main-container {
     background-color: #fafafa;
     height: 350px;

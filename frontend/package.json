@@ -1,6 +1,6 @@
 {
   "name": "jobzi-connectivity",
-  "version": "2.0.14",
+  "version": "2.1.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

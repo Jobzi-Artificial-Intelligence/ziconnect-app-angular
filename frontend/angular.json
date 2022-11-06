@@ -73,11 +73,48 @@
                 }
               ]
             },
+            "homolog": {
+              "index": {
+                "input": "src/index.homolog.html",
+                "output": "index.html"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.homolog.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ]
+            },
             "local": {
               "index": {
                 "input": "src/index.local.html",
                 "output": "index.html"
               },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -110,6 +147,9 @@
             "production": {
               "browserTarget": "jobzi-connectivity:build:production"
             },
+            "homolog": {
+              "browserTarget": "jobzi-connectivity:build:homolog"
+            },
             "local": {
               "browserTarget": "jobzi-connectivity:build:local"
             }
@@ -134,7 +174,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           }
@@ -148,6 +188,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "jobzi-connectivity:serve:production"
+            },
+            "homolog": {
+              "devServerTarget": "jobzi-connectivity:serve:homolog"
             },
             "local": {
               "devServerTarget": "jobzi-connectivity:serve:local"

@@ -10,16 +10,16 @@ import { AngularMaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './_pages/home/home.component';
-import { InteractiveMapComponent } from './_pages/interactive-map/interactive-map.component';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
 import { DialogSchoolColumnSelectorComponent, NavigationBarComponent, SchoolTableBottomSheetComponent } from './_components';
-import { DataSourceReferenceComponent } from './_pages/data-source-reference/data-source-reference.component';
+import { CodeConductComponent, DataSourceReferenceComponent, HomeComponent, InteractiveMapComponent } from './_pages';
+
 
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
+    CodeConductComponent,
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
     HomeComponent,
