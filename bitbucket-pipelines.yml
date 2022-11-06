@@ -1,24 +1,24 @@
+image: node:10
+
 pipelines:
   branches:
-    '{master}':
-        - step:
-            name: Install Unicef project dependencies
-            image: zenika/alpine-chrome:with-node
-            caches:
-              - node
-            script:
-              - cd frontend
-              - npm install
-              - npm test
-        - step:
-            name: Build Unicef project
-            script:
-              - npm run build
-              - set +e
-              - npm run lint
-              - npm run test:ci
-              - set -e
-            caches:
-              - node
-            artifacts:
-              - dist/**
+    master:
+      - step:
+          name: Install Unicef project dependencies
+          caches:
+            - node
+          script:
+            - cd frontend
+            - npm install
+          artifacts:
+            - node_modules/** 
+      - step:
+          name: Lint Unicef project
+          script:
+            - npm run lint
+      - step:
+          name: Build Unicef project
+          script:
+            - npm run build:production
+          artifacts:
+            - dist/** 
