@@ -13,12 +13,8 @@ pipelines:
           artifacts:
             - node_modules/** 
       - step:
-          name: Lint Unicef project
-          script:
-            - npm run lint
-      - step:
           name: Build Unicef project
           script:
-            - npm run build:production
+            - npm run build
           artifacts:
             - dist/** 
