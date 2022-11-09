@@ -5,14 +5,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './navigation-bar.component.html',
   styleUrls: ['./navigation-bar.component.scss']
 })
-export class NavigationBarComponent implements OnInit {
+export class NavigationBarComponent {
   selectedMenuItem: string = '';
   submenuOpened = false;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   toggleSubmenuContainer(menuItem: string | null, opened: boolean | null) {
     if (this.selectedMenuItem === menuItem) {
@@ -21,7 +18,7 @@ export class NavigationBarComponent implements OnInit {
       this.selectedMenuItem = menuItem;
       this.submenuOpened = true;
     } else {
-      this.selectedMenuItem = menuItem ?? '';
+      this.selectedMenuItem = '';
       this.submenuOpened = opened !== null ? opened : !this.submenuOpened;
     }
   }

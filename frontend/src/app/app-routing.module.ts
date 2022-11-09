@@ -1,22 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CodeConductComponent, DataSourceReferenceComponent, HomeComponent, InteractiveMapComponent } from './_pages';
+import { CodeConductComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
 
 const routes: Routes = [{
-  path: 'home',
-  component: HomeComponent,
-  data: {
-    seo: {
-      title: 'Jobzi | Schools Connectivity',
-      metaTags: [
-        { name: 'description', content: 'Our solution implements a data-driven model based on machine learning techniques to predict connectivity in schools' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning' },
-        { property: 'og:title', content: 'Jobzi | Schools Connectivity' },
-        { property: 'og:description', content: 'Our solution implements a data-driven model based on machine learning techniques to predict connectivity in schools' }
-      ]
-    }
-  }
-}, {
   path: '',
   component: InteractiveMapComponent,
   data: {

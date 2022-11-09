@@ -192,7 +192,7 @@
             <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.citiesCount | shortNumber}} cities)
           </div>
           <div *ngIf="mapStatsPanel.itemType === 'city'">
-            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.schoolsCount | shortNumber}} schools)
+            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats?.schoolsCount | shortNumber}} schools)
           </div>
           <!-- TOOLBAR BUTTONS -->
           <div class="flex items-center justify-end">

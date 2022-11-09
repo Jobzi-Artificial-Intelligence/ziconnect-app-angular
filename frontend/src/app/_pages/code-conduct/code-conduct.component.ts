@@ -5,11 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './code-conduct.component.html',
   styleUrls: ['./code-conduct.component.scss']
 })
-export class CodeConductComponent implements OnInit {
-
+export class CodeConductComponent {
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

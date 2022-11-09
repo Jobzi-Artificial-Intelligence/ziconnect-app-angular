@@ -1,35 +1,87 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { APP_BASE_HREF, PlatformLocation } from "@angular/common";
+import { Component } from "@angular/core";
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from "@angular/router";
+import { of, ReplaySubject } from "rxjs";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { SeoService } from "./_services";
 
-describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  });
+@Component({
+  selector: 'app-navigation-bar',
+  template: '<p>Mock Navigation Bar Component</p>'
+})
+class MockNavigationBar { }
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+describe('Component: App', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
 
-  it(`should have as title 'jobzi-connectivity'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('jobzi-connectivity');
-  });
+  const eventSubject = new ReplaySubject<RouterEvent>(1);
+  const routeMock = {
+    navigate: jasmine.createSpy('navigate'),
+    events: eventSubject.asObservable(),
+    url: 'test/url'
+  };
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  const mockSeoService = jasmine.createSpyObj('SeoService', ['updateTitle', 'updateMetaTags']);
+
+  function createComponent(seoData?: any) {
+    let seoDataParam = seoData ?? {
+      firstChild: {
+        data: of({
+          seo: {
+            title: 'Jobzi | Code of Conduct',
+            metaTags: [
+              { name: 'description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' }
+            ]
+          }
+        })
+      }
+    };
+
+    TestBed.configureTestingModule({
+      declarations: [AppComponent, MockNavigationBar],
+      imports: [AppRoutingModule],
+      providers: [
+        { provide: Router, useValue: routeMock },
+        { provide: ActivatedRoute, useValue: seoDataParam },
+        { provide: SeoService, useValue: mockSeoService },
+        {
+          provide: APP_BASE_HREF,
+          useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
+          deps: [PlatformLocation]
+        },
+      ]
+    });
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance; // AppComponent test instance
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('jobzi-connectivity app is running!');
+  }
+
+  it('create an instance', () => {
+    createComponent();
+    expect(component).toBeTruthy();
+  });
+
+  it('should be works when activated route first child is defined', () => {
+    createComponent();
+
+    eventSubject.next(new NavigationEnd(1, 'initial', 'redirectUrl'));
+
+    expect(mockSeoService.updateTitle).toHaveBeenCalled();
+    expect(mockSeoService.updateMetaTags).toHaveBeenCalled();
+  });
+
+
+  it('should be works when activated route first child is undefined', () => {
+    createComponent({
+      firstChild: null
+    });
+
+    eventSubject.next(new NavigationEnd(1, 'current', 'redirectUrl'));
+
+    expect(component).toBeTruthy();
   });
 });

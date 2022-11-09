@@ -1,6 +1,6 @@
 import { City, Region, State } from "../_models";
 
-enum StatType {
+export enum StatType {
   Region,
   State,
   City
@@ -29,7 +29,7 @@ export interface IGeneralStats {
   type: StatType
 }
 
-interface IGeneralStatsMeta {
+export interface IGeneralStatsMeta {
   cityCodes: Array<string>;
   cities: Array<City>;
   regionCodes: Array<string>;
@@ -38,18 +38,18 @@ interface IGeneralStatsMeta {
   states: Array<State>;
 }
 
-interface ISchoolRegionStats {
+export interface ISchoolRegionStats {
   Rural: IConnectivityStats,
   Urban: IConnectivityStats
 }
 
-interface ISchoolTypeStats {
+export interface ISchoolTypeStats {
   Municipal: IConnectivityStats,
   Estadual: IConnectivityStats,
   Federal: IConnectivityStats
 }
 
-interface IConnectivityStats {
+export interface IConnectivityStats {
   YES: number;
   NO: number;
   NA: number;

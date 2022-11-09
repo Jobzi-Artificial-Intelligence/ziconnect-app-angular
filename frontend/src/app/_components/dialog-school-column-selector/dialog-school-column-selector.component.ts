@@ -4,7 +4,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SchoolService } from 'src/app/_services';
 
-interface IColumnCheckItem {
+export interface IColumnCheckItem {
   name: string;
   description: string;
   completed: boolean;
@@ -80,7 +80,7 @@ export class DialogSchoolColumnSelectorComponent implements OnInit {
 
     this.columnCheckItemList.forEach(x => {
       if (x.items && x.items.length > 0) {
-        const groupSelectedColumns = x.items?.filter(y => y.completed)
+        const groupSelectedColumns = x.items.filter(y => y.completed)
         if (groupSelectedColumns.length > 0) {
           selectedColumns = selectedColumns.concat(groupSelectedColumns.map(x => x.columnDef));
         }
@@ -95,7 +95,7 @@ export class DialogSchoolColumnSelectorComponent implements OnInit {
 
   /**
    * Update completed of column checked/unchecke and the completed and incomplete fields of the column wrapper related
-   * @param completed boolean 
+   * @param completed boolean
    * @param columnCheckItem IColumnCheckItem column item checked/unchecked
    * @param groupColumnCheckItem IColumnCheckItem group item from column checked/unchecked
    */
@@ -107,9 +107,9 @@ export class DialogSchoolColumnSelectorComponent implements OnInit {
 
   /**
    * Check or uncheck all columns of the clicked group item
-   * @param completed boolean 
+   * @param completed boolean
    * @param columnCheckItem IColumnCheckItem group item checked/unchecked
-   * @returns 
+   * @returns
    */
   setAll(completed: boolean, columnCheckItem: IColumnCheckItem) {
     columnCheckItem.completed = completed;

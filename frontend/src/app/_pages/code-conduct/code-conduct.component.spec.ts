@@ -1,25 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { CodeConductComponent } from "..";
 
-import { CodeConductComponent } from './code-conduct.component';
-
-describe('CodeConductComponent', () => {
+describe('Component: CodeConductComponent', () => {
   let component: CodeConductComponent;
   let fixture: ComponentFixture<CodeConductComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CodeConductComponent ]
-    })
-    .compileComponents();
-  });
-
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CodeConductComponent],
+    });
+
     fixture = TestBed.createComponent(CodeConductComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display page title', () => {
+    const pageTitle = fixture.nativeElement.querySelector('header.page-title .title');
+
+    expect(pageTitle.textContent).toContain('Code of Conduct');
   });
 });

@@ -12,11 +12,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, startWith } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { StatsService } from 'src/app/_services/stats.service';
+import { StatsService } from 'src/app/_services';
 import { StatsCsvHelper } from 'src/app/_helpers';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ISchoolTableParam, SchoolTableBottomSheetComponent } from 'src/app/_components/school-table-bottom-sheet/school-table-bottom-sheet.component';
-import { MatDialog } from '@angular/material/dialog';
 
 enum MapViewOptionValue {
   Connectivity = 'Connectivity',
@@ -32,7 +31,7 @@ interface IMapInfoWindowContent {
   stats: IGeneralStats
 }
 
-interface ILocationAutocomplete {
+export interface ILocationAutocomplete {
   code: string,
   city?: City,
   locationType: 'Region' | 'State' | 'City'
@@ -41,7 +40,7 @@ interface ILocationAutocomplete {
   state?: State
 }
 
-interface IMapFilter {
+export interface IMapFilter {
   regionOptions: Array<Region>;
   searchLocationOptions: Array<ILocationAutocomplete>;
   stateOptions: Array<State>;
@@ -54,14 +53,14 @@ interface IMapFilter {
   viewOptions: Array<IMapViewOption>,
 }
 
-interface IMapRangeColor {
+export interface IMapRangeColor {
   min: number;
   max: number;
   color: string;
   backgroundColor: string;
 }
 
-interface IMapStatsPanel {
+export interface IMapStatsPanel {
   open: boolean;
   item: any;
   itemName: string;
@@ -77,7 +76,7 @@ interface IMapStatsPanel {
   internetAvailabityPredictionUnits: string;
 }
 
-interface IMapViewOption {
+export interface IMapViewOption {
   name: string,
   description: string,
   rangeColors: IMapRangeColor[],
@@ -193,10 +192,9 @@ export class InteractiveMapComponent implements OnInit {
     private alertService: AlertService,
     @Inject(APP_BASE_HREF) public baseHref: string,
     private ref: ChangeDetectorRef,
-    private _bottomSheet: MatBottomSheet,
-    private _dialog: MatDialog
+    private _bottomSheet: MatBottomSheet
   ) {
-    this.localityGeometryService = new LocalityGeometryService(this.httpClient, this.baseHref);
+    this.localityGeometryService = new LocalityGeometryService(this.httpClient);
     this.loadingMap = new BehaviorSubject<boolean>(false);
   }
 
@@ -363,7 +361,7 @@ export class InteractiveMapComponent implements OnInit {
 
     // Unfocus unselected regions
     this.googleMap.data.forEach(x => {
-      const regionCode = x.getProperty('CODE');
+      const regionCode = x.getProperty('code');
 
       if (regionCode !== region.code) {
         x.setProperty('state', 'unfocused');
@@ -408,7 +406,7 @@ export class InteractiveMapComponent implements OnInit {
 
     // Unfocus unselected states
     this.googleMap.data.forEach(x => {
-      const stateCode = x.getProperty('ADM1_PCODE');
+      const stateCode = x.getProperty('code');
 
       if (stateCode !== state.code) {
         x.setProperty('state', 'unfocused');
@@ -503,34 +501,46 @@ export class InteractiveMapComponent implements OnInit {
    * Initializes location autocomplete options
    */
   initLocationSearchOptions() {
-    const citiesOptions = this.statsCsvHelper.meta.cities.map(city => {
-      return {
-        code: city.code,
-        name: `${city.name}, ${city.state.name}`,
-        locationType: 'City',
-        city: city
-      } as ILocationAutocomplete;
-    });
+    if (this.statsCsvHelper && this.statsCsvHelper.meta) {
+      let regionsOptions = [] as any;
+      let statesOptions = [] as any;
+      let citiesOptions = [] as any;
 
-    const regionsOptions = this.statsCsvHelper.meta.regions.map(region => {
-      return {
-        code: region.code,
-        name: region.name,
-        locationType: 'Region',
-        region: region
-      } as ILocationAutocomplete;
-    });
+      if (this.statsCsvHelper.meta.regions && this.statsCsvHelper.meta.regions.length > 0) {
+        regionsOptions = this.statsCsvHelper.meta.regions.map(region => {
+          return {
+            code: region.code,
+            name: region.name,
+            locationType: 'Region',
+            region: region
+          } as ILocationAutocomplete;
+        });
+      }
 
-    const statesOptions = this.statsCsvHelper.meta.states.map(state => {
-      return {
-        code: state.code,
-        name: state.name,
-        locationType: 'State',
-        state: state
-      } as ILocationAutocomplete;
-    });
+      if (this.statsCsvHelper.meta.states && this.statsCsvHelper.meta.states.length > 0) {
+        statesOptions = this.statsCsvHelper.meta.states.map(state => {
+          return {
+            code: state.code,
+            name: state.name,
+            locationType: 'State',
+            state: state
+          } as ILocationAutocomplete;
+        });
+      }
 
-    this.mapFilter.searchLocationOptions = [...regionsOptions, ...statesOptions, ...citiesOptions];
+      if (this.statsCsvHelper.meta.cities && this.statsCsvHelper.meta.cities.length > 0) {
+        citiesOptions = this.statsCsvHelper.meta.cities.map(city => {
+          return {
+            code: city.code,
+            name: `${city.name}, ${city.state.name}`,
+            locationType: 'City',
+            city: city
+          } as ILocationAutocomplete;
+        });
+      }
+
+      this.mapFilter.searchLocationOptions = [...regionsOptions, ...statesOptions, ...citiesOptions];
+    }
   }
 
   /**
@@ -668,7 +678,6 @@ export class InteractiveMapComponent implements OnInit {
                 element.properties.filtered = true;
                 element.properties.name = element.properties['city_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByCityCode(element.properties.code);
-                element.properties.type = 'city';
 
                 //SET FILL COLOR
                 if (element.properties.stats) {
@@ -760,7 +769,6 @@ export class InteractiveMapComponent implements OnInit {
               element.properties.filtered = true;
               element.properties.name = element.properties['region_name'];
               element.properties.stats = this.statsCsvHelper.getStatsByRegionCode(element.properties.code);
-              element.properties.type = 'region';
 
               //SET FILL COLOR
               if (element.properties.stats) {
@@ -815,7 +823,6 @@ export class InteractiveMapComponent implements OnInit {
                 element.properties.filtered = true;
                 element.properties.name = element.properties['state_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByStateCode(element.properties.code);
-                element.properties.type = 'state';
 
                 //SET FILL COLOR
                 if (element.properties.stats) {
@@ -878,7 +885,7 @@ export class InteractiveMapComponent implements OnInit {
       name: e.feature.getProperty('name'),
       code: e.feature.getProperty('code'),
       stats: e.feature.getProperty('stats'),
-      type: e.feature.getProperty('type')
+      type: e.feature.getProperty('adm_level')
     } as IMapInfoWindowContent;
     this.info.position = this.getCenterJsonFromMapDataFeature(e.feature);
     this.info.open(undefined, false);
@@ -905,7 +912,7 @@ export class InteractiveMapComponent implements OnInit {
    * @param {?google.maps.MapMouseEvent} e
    */
   mouseClickInToRegion(e: any) {
-    switch (e.feature.getProperty('type')) {
+    switch (e.feature.getProperty('adm_level')) {
       case 'region':
         const regionCode = e.feature.getProperty('code');
         const region = this.statsCsvHelper.meta.regions.find(x => x.code === regionCode);
@@ -982,11 +989,9 @@ export class InteractiveMapComponent implements OnInit {
   * Closes stats panel
   */
   closeStatsPanel() {
-    setTimeout(() => {
-      this.mapStatsPanel.item = null;
-      this.mapStatsPanel.open = false;
-      this.ref.detectChanges();
-    }, 100);
+    this.mapStatsPanel.item = null;
+    this.mapStatsPanel.open = false;
+    this.ref.detectChanges();
   }
 
   /**
@@ -1055,35 +1060,33 @@ export class InteractiveMapComponent implements OnInit {
    * @param {google.maps.Data.Feature} feature
    */
   openStatsPanel(feature: google.maps.Data.Feature) {
-    setTimeout(() => {
-      this.mapStatsPanel.item = feature;
-      this.mapStatsPanel.itemName = feature.getProperty('name');
-      this.mapStatsPanel.itemStats = feature.getProperty('stats') as IGeneralStats;
-      this.mapStatsPanel.itemType = feature.getProperty('type');
+    this.mapStatsPanel.item = feature;
+    this.mapStatsPanel.itemName = feature.getProperty('name');
+    this.mapStatsPanel.itemStats = feature.getProperty('stats') as IGeneralStats;
+    this.mapStatsPanel.itemType = feature.getProperty('adm_level');
 
-      if (this.mapStatsPanel.itemStats) {
-        this.mapStatsPanel.generalCardsData = [{
-          name: 'Schools',
-          value: this.mapStatsPanel.itemStats.schoolsCount
-        }, {
-          name: 'Students',
-          value: this.mapStatsPanel.itemStats.studentCount
-        }];
+    if (this.mapStatsPanel.itemStats) {
+      this.mapStatsPanel.generalCardsData = [{
+        name: 'Schools',
+        value: this.mapStatsPanel.itemStats.schoolsCount
+      }, {
+        name: 'Students',
+        value: this.mapStatsPanel.itemStats.studentCount
+      }];
 
-        this.mapStatsPanel.generalCardsConnectivityData = [{
-          name: 'Connectivity',
-          value: this.mapStatsPanel.itemStats.schoolsConnectedPercentage
-        }, {
-          name: 'Without Data',
-          value: this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataPercentage
-        }];
+      this.mapStatsPanel.generalCardsConnectivityData = [{
+        name: 'Connectivity',
+        value: this.mapStatsPanel.itemStats.schoolsConnectedPercentage
+      }, {
+        name: 'Without Data',
+        value: this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataPercentage
+      }];
 
-        this.mapStatsPanel.internetAvailabityPrediction = this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionPercentage;
-        this.mapStatsPanel.internetAvailabityPredictionUnits = this.getInternetAvailabilityPredictionUnitStr(this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionCount, this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataCount);
-        this.mapStatsPanel.schoolsConnectivity = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.byConnectivity).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
-        this.mapStatsPanel.connectivityBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolRegion);
-        this.mapStatsPanel.connectivityBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolType);
-      }
+      this.mapStatsPanel.internetAvailabityPrediction = this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionPercentage;
+      this.mapStatsPanel.internetAvailabityPredictionUnits = this.getInternetAvailabilityPredictionUnitStr(this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionCount, this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataCount);
+      this.mapStatsPanel.schoolsConnectivity = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.byConnectivity).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
+      this.mapStatsPanel.connectivityBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolRegion);
+      this.mapStatsPanel.connectivityBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolType);
 
       // Open stats panel
       this.mapStatsPanel.open = true;
@@ -1097,14 +1100,14 @@ export class InteractiveMapComponent implements OnInit {
       }
 
       this.ref.detectChanges();
-    }, 100);
+    } else {
+      this.alertService.showError('Item statistics was not provided!');
+    }
   }
 
   toggleStatsPanel() {
-    setTimeout(() => {
-      this.mapStatsPanel.open = !this.mapStatsPanel.open;
-      this.ref.detectChanges();
-    }, 100);
+    this.mapStatsPanel.open = !this.mapStatsPanel.open;
+    this.ref.detectChanges();
   }
   //#endregion
   ////////////////////////////////////////////
@@ -1117,7 +1120,7 @@ export class InteractiveMapComponent implements OnInit {
    */
   removeCitiesFromMap() {
     this.googleMap.data.forEach(element => {
-      if (element.getProperty('type') === 'city') {
+      if (element.getProperty('adm_level') === 'city') {
         this.googleMap.data.remove(element);
       }
     });
@@ -1128,7 +1131,7 @@ export class InteractiveMapComponent implements OnInit {
    */
   removeStatesFromMap() {
     this.googleMap.data.forEach(element => {
-      if (element.getProperty('type') === 'state') {
+      if (element.getProperty('adm_level') === 'state') {
         this.googleMap.data.remove(element);
       }
     });
@@ -1154,7 +1157,7 @@ export class InteractiveMapComponent implements OnInit {
    * @param {google.maps.Data.Feature} feature
    */
   setMapDataStyles(feature: google.maps.Data.Feature) {
-    const elementType = feature.getProperty('type');
+    const elementType = feature.getProperty('adm_level');
     let outlineWeight = 0.5, zIndex = 0;
 
     switch (elementType) {

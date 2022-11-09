@@ -42,7 +42,7 @@ export class SchoolTableBottomSheetComponent implements OnInit {
   public schools: Array<School> = new Array<School>();
 
   constructor(private _bottomSheetRef: MatBottomSheetRef<SchoolTableBottomSheetComponent>, @Inject(MAT_BOTTOM_SHEET_DATA) public data: ISchoolTableParam, private httpClient: HttpClient,
-    private alertService: AlertService, @Inject(APP_BASE_HREF) public baseHref: string, public dialog: MatDialog) {
+    private _alertService: AlertService, @Inject(APP_BASE_HREF) public baseHref: string, public dialog: MatDialog) {
     this.tableDataSource = new MatTableDataSource(new Array<School>());
     this.loading = false;
     this.loadingMessage = '';
@@ -116,13 +116,13 @@ export class SchoolTableBottomSheetComponent implements OnInit {
                 resolve(null);
               },
               (error) => {
-                this.alertService.showError(`Something went wrong reading the dataset file: ${error.message}`);
+                this._alertService.showError(`Something went wrong reading the dataset file: ${error.message}`);
                 resolve(null);
               }
             );
         }
       } catch (error: any) {
-        this.alertService.showError(error);
+        this._alertService.showError(error);
         resolve(null);
       }
     })
@@ -161,7 +161,7 @@ export class SchoolTableBottomSheetComponent implements OnInit {
     try {
       this._schoolService.exportToCsv('schools.csv', this.tableDataSource.filteredData);
     } catch (error: any) {
-      this.alertService.showError(error);
+      this._alertService.showError(error.toString());
     }
   }
 }
