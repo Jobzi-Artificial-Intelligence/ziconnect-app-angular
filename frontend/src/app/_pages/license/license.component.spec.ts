@@ -8,9 +8,8 @@ describe('LicenseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LicenseComponent ]
-    })
-    .compileComponents();
+      declarations: [LicenseComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +20,13 @@ describe('LicenseComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display page title', () => {
+    const pageTitle = fixture.nativeElement.querySelector('header.page-title .hero-container .description .title');
+    const pageTitleHeader = fixture.nativeElement.querySelector('header.page-title .hero-container .description .title-header');
+
+    expect(pageTitle.textContent).toContain('License');
+    expect(pageTitleHeader.textContent).toContain('Community');
   });
 });

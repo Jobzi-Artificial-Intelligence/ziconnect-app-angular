@@ -1,0 +1,75 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.page-title {
+  background-color: #ebf2fc;
+  height: auto;
+  margin-top: -16px;
+  position: relative;
+
+  @include breakpoint($min: 768px) {
+    flex-direction: row;
+    height: 500px;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    height: 100%;
+    padding: 48px 0;
+
+    @include breakpoint($min: 768px) {
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .description {
+      flex: auto;
+
+      @include breakpoint($min: 768px) {
+        max-width: 40%;
+      }
+
+      .title-header {
+        color: #d58057;
+      }
+
+      .title {
+        color: #233964;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 24px !important;
+        margin-top: 8px !important;
+      }
+
+      .subtitle {
+        color: #405ea6;
+      }
+    }
+
+    .hero-image {
+      flex: auto;
+      text-align: center;
+
+      @include breakpoint($min: 425px) {
+        flex: 0 0 60%;
+      }
+
+      @include breakpoint($min: 1024px) {
+        flex: auto;
+        text-align: right;
+      }
+
+      img {
+        height: auto;
+        max-width: 650px;
+        width: 100%;
+
+        @include breakpoint($min: 1024px) {
+          width: 650px;
+        }
+      }
+    }
+  }
+}
