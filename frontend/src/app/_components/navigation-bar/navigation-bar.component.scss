@@ -151,26 +151,26 @@
 
         .icon {
           @include border-radius(8px);
-          color: #FFF;
+          color: #fff;
           flex: 0 0 48px;
           height: 48px;
           margin-right: 12px;
           width: 48px;
 
           &.blue {
-            background-color: #0099FF;
+            background-color: #0099ff;
           }
 
           &.green {
-            background-color: #39B249;
+            background-color: #55bfa7;
           }
 
           &.purple {
-            background-color: #7C4FFC;
+            background-color: #7c4ffc;
           }
 
           &.yellow {
-            background-color: #FFA300;
+            background-color: #ffa300;
           }
         }
 

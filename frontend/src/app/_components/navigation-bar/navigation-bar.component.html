@@ -117,11 +117,29 @@
           </div>
         </a>
       </li>
+      <li class="submenu-item">
+        <a routerLink="/contributors" class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center green">
+            <mat-icon class="material-icons-outlined">handshake</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">Contributors</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              We are driving the Open Content Community to work with 3 types of tools to support the platform with the
+              co-creations and contributions in an effective and organized way.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
     </ul>
     <ul id="submenu-list" *ngIf="selectedMenuItem === 'tools'" class="flex">
       <li class="submenu-item">
         <a href="" class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
-          <div class="icon flex items-center justify-center green">
+          <div class="icon flex items-center justify-center blue">
             <mat-icon class="material-icons-outlined">travel_explore</mat-icon>
           </div>
           <div class="description">

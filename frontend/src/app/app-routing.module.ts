@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CodeConductComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
+import { CodeConductComponent, ContributorsComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
 
 const routes: Routes = [{
   path: '',
@@ -41,6 +41,20 @@ const routes: Routes = [{
         { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning, conduct, code, tools, connectivity' },
         { property: 'og:title', content: 'Jobzi | Code of Conduct' },
         { property: 'og:description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' }
+      ]
+    }
+  }
+}, {
+  path: 'contributors',
+  component: ContributorsComponent,
+  data: {
+    seo: {
+      title: 'Jobzi | Contributors',
+      metaTags: [
+        { name: 'description', content: 'Jobzi | Unicef - Contribution Guidelines.' },
+        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning, contribution, code, tools, connectivity' },
+        { property: 'og:title', content: 'Jobzi | Contributiors' },
+        { property: 'og:description', content: 'Jobzi | Unicef - Contribution Guidelines.' }
       ]
     }
   }

@@ -12,7 +12,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
 import { DialogSchoolColumnSelectorComponent, NavigationBarComponent, SchoolTableBottomSheetComponent } from './_components';
-import { CodeConductComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
+import { CodeConductComponent, ContributorsComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
 
 
 @NgModule({
@@ -20,6 +20,7 @@ import { CodeConductComponent, DataSourceReferenceComponent, InteractiveMapCompo
   declarations: [
     AppComponent,
     CodeConductComponent,
+    ContributorsComponent,
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
     InteractiveMapComponent,
