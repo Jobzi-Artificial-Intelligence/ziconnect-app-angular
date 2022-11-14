@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularMaterialModule } from 'src/app/material.module';
 
 import { LicenseComponent } from './license.component';
 
@@ -8,7 +9,8 @@ describe('LicenseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LicenseComponent]
+      declarations: [LicenseComponent],
+      imports: [AngularMaterialModule]
     }).compileComponents();
   });
 
