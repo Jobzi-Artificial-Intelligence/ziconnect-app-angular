@@ -3,52 +3,74 @@
 @import "../../../styles/variables";
 
 .page-title {
-  background-image: url("^assets/img/page/code-conduct/background-image.jpg");
-  background-position: top center;
-  background-size: cover;
+  background-color: #eaf3fc;
+  height: auto;
   margin-top: -16px;
   position: relative;
-  height: 290px;
 
-  .background-overlay {
-    background-color: rgba($color: #fff, $alpha: 0.9);
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-
-    @include breakpoint($min: 425px) {
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0.9) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-    }
-
-    .image-attribution-markup {
-      background-color: rgba($color: #000000, $alpha: 0.7);
-      bottom: 0;
-      color: $white;
-      font-size: 10px;
-      font-weight: 300;
-      opacity: 0.7;
-      padding: 2px 8px;
-      position: absolute;
-      right: 0;
-
-      a {
-        color: $white;
-        font-weight: 500;
-        text-decoration: none;
-      }
-    }
+  @include breakpoint($min: 768px) {
+    flex-direction: row;
+    height: 500px;
   }
 
-  .title {
-    color: #333;
-    line-height: 1.5;
+  .hero-container {
+    flex-direction: column;
+    height: 100%;
+    padding: 48px 0;
+
+    @include breakpoint($min: 768px) {
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .description {
+      flex: auto;
+
+      @include breakpoint($min: 768px) {
+        max-width: 40%;
+      }
+
+      .title-header {
+        color: #f58f4f;
+      }
+
+      .title {
+        color: #2c478c;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 24px !important;
+        margin-top: 8px !important;
+      }
+
+      .subtitle {
+        color: #697fe4;
+      }
+    }
+
+    .hero-image {
+      flex: auto;
+      text-align: center;
+
+      @include breakpoint($min: 425px) {
+        flex: 0 0 60%;
+      }
+
+      @include breakpoint($min: 1024px) {
+        flex: auto;
+        text-align: right;
+      }
+
+      img {
+        height: auto;
+        max-width: 650px;
+        width: 100%;
+
+        @include breakpoint($min: 1024px) {
+          width: 650px;
+        }
+      }
+    }
   }
 }
 
