@@ -1,8 +1,5 @@
-import { City } from "../city.model";
+import { City, LocalityGeometry, Region, State } from "../";
 import { Deserializable } from "../deserializable.model";
-import { LocalityGeometry } from "../locality-geometry.model";
-import { Region } from "../region.model";
-import { State } from "../state.model";
 
 export class LocalityGeometryAutocomplete
   extends LocalityGeometry

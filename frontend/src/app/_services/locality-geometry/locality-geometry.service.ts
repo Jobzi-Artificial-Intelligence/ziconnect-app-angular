@@ -3,13 +3,15 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
-import { LocalityGeometry } from "../../_models";
+import { LocalityGeometry, LocalityGeometryAutocomplete } from "../../_models";
+
 
 @Injectable({
   providedIn: "root",
 })
 export class LocalityGeometryService {
   private _postgrestLocalityGeometryPath = 'locality_geometry';
+  private _viewLocalityGeometryAutocompltePath = 'view_locality_geometry_autocomplete';
 
   constructor(private http: HttpClient) { }
 
@@ -105,5 +107,26 @@ export class LocalityGeometryService {
       type: 'FeatureCollection',
       features: localityGeometryList.map((item) => item.geometry)
     }
+  }
+
+  /**
+   * Gets list of localitities geometry where administrative level equals region
+   * @param countryId 2 digits country code
+   * @param string string value to search
+   * @returns LocalityGeometryAutocomplete[]
+   */
+  getLocalityAutocompleteByCountry(countryId: string, search: string): Observable<LocalityGeometryAutocomplete[]> {
+    let query = `country_id=eq.${countryId}`;
+    query += `&name=ilike.${search.replace(' ', '*')}`;
+
+    return this.http
+      .get<any>(`${environment.postgrestHost}${this._viewLocalityGeometryAutocompltePath}?${query}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new LocalityGeometryAutocomplete().deserialize(item));
+        })
+      );
   }
 }

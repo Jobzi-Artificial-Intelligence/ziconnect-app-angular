@@ -1,4 +1,4 @@
-import { LocalityGeometryAutocomplete } from "./locality-geometry-autocomplete";
+import { LocalityGeometryAutocomplete } from "./locality-geometry-autocomplete.model";
 import { localityGeometryAutocompleteResponseFromServer } from '../../../test/locality-geometry-autocomplete-mock';
 
 describe('Model: LocalityGeometryAutocomplete', () => {
@@ -11,7 +11,7 @@ describe('Model: LocalityGeometryAutocomplete', () => {
     expect(autocompleteObj.cityName).toEqual('');
     expect(autocompleteObj.countryId).toEqual('');
     expect(autocompleteObj.countryName).toEqual('');
-    expect(autocompleteObj.geometry).toEqual(undefined);
+    expect(autocompleteObj.geometry).toEqual(jasmine.any(Object));
     expect(autocompleteObj.regionId).toEqual('');
     expect(autocompleteObj.regionName).toEqual('');
     expect(autocompleteObj.stateAbbreviation).toEqual('');
