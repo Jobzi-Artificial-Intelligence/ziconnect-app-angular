@@ -115,9 +115,19 @@ export class LocalityGeometryService {
    * @param string string value to search
    * @returns LocalityGeometryAutocomplete[]
    */
-  getLocalityAutocompleteByCountry(countryId: string, search: string): Observable<LocalityGeometryAutocomplete[]> {
+  getLocalityAutocompleteByCountry(countryId: string, term: string): Observable<LocalityGeometryAutocomplete[]> {
+    // Clean term
+    // Remove spaces at start and end
+    let searchString = term.trim();
+    // Replace white space between words by *
+    searchString = searchString.replace(' ', '*');
+    // Add * at end of string like as % like database where clause
+    searchString += '*';
+
     let query = `country_id=eq.${countryId}`;
-    query += `&name=ilike.${search.replace(' ', '*')}`;
+    query += `&limit=5`;
+    query += `&name=ilike.${searchString.replace(' ', '*')}`;
+    query += `&order=name.asc`;
 
     return this.http
       .get<any>(`${environment.postgrestHost}${this._viewLocalityGeometryAutocompltePath}?${query}`, {

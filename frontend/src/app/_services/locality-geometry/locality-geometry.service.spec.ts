@@ -289,8 +289,7 @@ describe('LocalityGeometryService', () => {
 
   describe('#getLocalityAutocompleteByCountry', () => {
     beforeEach(() => {
-      query = `country_id=eq.${countryId}`;
-      console.log(endpointViewUri);
+      query = `country_id=eq.${countryId}&limit=5`;
     });
 
     it('should exists', () => {
@@ -299,22 +298,32 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should use GET to retrieve data', () => {
-      const searchString = 'test';
-      query += `&name=ilike.${searchString.replace(' ', '*')}`;
+      let term = 'test';
+      let searchString = term.trim();
+      searchString = searchString.replace(' ', '*');
+      searchString += '*';
 
-      service.getLocalityAutocompleteByCountry(countryId, searchString).subscribe();
+      query += `&name=ilike.${searchString.replace(' ', '*')}`;
+      query += `&order=name.asc`;
+
+      service.getLocalityAutocompleteByCountry(countryId, term).subscribe();
 
       const testRequest = httpTestingController.expectOne(`${endpointViewUri}?${query}`);
       expect(testRequest.request.method).toEqual('GET');
     });
 
     it('should return expected data', (done) => {
-      const searchString = 'extra test';
+      let term = 'test extra';
+      let searchString = term.trim();
+      searchString = searchString.replace(' ', '*');
+      searchString += '*';
+
       query += `&name=ilike.${searchString.replace(' ', '*')}`;
+      query += `&order=name.asc`;
 
       const expectedData: LocalityGeometryAutocomplete[] = localitiesGeometryAutocompleteResponseFromServer.map((item) => new LocalityGeometryAutocomplete().deserialize(item));
 
-      service.getLocalityAutocompleteByCountry(countryId, searchString).subscribe(data => {
+      service.getLocalityAutocompleteByCountry(countryId, term).subscribe(data => {
         expect(data).toEqual(expectedData);
         done();
       });

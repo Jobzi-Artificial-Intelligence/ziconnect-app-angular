@@ -3,13 +3,13 @@ import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } f
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { SchoolCsvHelper } from '../../_helpers/schoolCsv.helper';
 import { IGeneralStats } from '../../_helpers/statsCsv.helper';
-import { City, Region, School, State } from '../../_models';
+import { City, LocalityGeometryAutocomplete, Region, School, State } from '../../_models';
 import { AlertService, LocalityGeometryService, SchoolService } from '../../_services';
 import { APP_BASE_HREF } from '@angular/common';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, startWith } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, filter, map, startWith, subscribeOn, switchMap, tap } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StatsService } from 'src/app/_services';
@@ -31,18 +31,8 @@ interface IMapInfoWindowContent {
   stats: IGeneralStats
 }
 
-export interface ILocationAutocomplete {
-  code: string,
-  city?: City,
-  locationType: 'Region' | 'State' | 'City'
-  name: string,
-  region?: Region,
-  state?: State
-}
-
 export interface IMapFilter {
   regionOptions: Array<Region>;
-  searchLocationOptions: Array<ILocationAutocomplete>;
   stateOptions: Array<State>;
   selectedCity?: City;
   selectedCountry?: string,
@@ -105,7 +95,7 @@ export class InteractiveMapComponent implements OnInit {
   title = 'Jobzi - Interactive Map';
   public filterForm!: FormGroup;
   private localityGeometryService: LocalityGeometryService;
-  searchLocationFilteredOptions: Observable<ILocationAutocomplete[]> | undefined;
+  searchLocationFilteredOptions: LocalityGeometryAutocomplete[] = new Array<LocalityGeometryAutocomplete>();
   infoContent = {
     selectedSchool: null,
     content: {} as IMapInfoWindowContent
@@ -115,6 +105,7 @@ export class InteractiveMapComponent implements OnInit {
   statsCsvHelper!: StatsCsvHelper;
   loadingMap: BehaviorSubject<boolean>;
   loadingMessage = '';
+  loadingAutocomplete = false;
   schools: School[] = new Array<School>();
   schoolMarkers: any[] = [];
   selectedSchool: any;
@@ -127,7 +118,6 @@ export class InteractiveMapComponent implements OnInit {
     selectedCountry: 'BR',
     selectedCity: undefined,
     selectedState: undefined,
-    searchLocationOptions: new Array<ILocationAutocomplete>(),
     selectedSchoolRegion: '',
     selectedSchoolType: '',
     viewOptions: new Array<IMapViewOption>()
@@ -217,7 +207,6 @@ export class InteractiveMapComponent implements OnInit {
 
     this.loadRegionsGeoJson();
 
-    this.initLocationSearchOptions();
     this.initSearchLocationFilteredOptions();
 
     // MAP EVENTS
@@ -441,48 +430,11 @@ export class InteractiveMapComponent implements OnInit {
   //#region SEARCH LOCATION AUTOCOMPLETE
   ////////////////////////////////////////////
   /**
-   * Filter search options
-   * @param value string to be filtered
-   * @returns Array<string>
-   */
-  private _searchFilter(value: string | ILocationAutocomplete): ILocationAutocomplete[] {
-    let filterValue = '';
-
-    if (typeof value == 'string') {
-      filterValue = value.toLowerCase();
-    } else {
-      return [value as ILocationAutocomplete];
-    }
-
-    if (filterValue.length < 3) {
-      return [];
-    }
-
-    return this.mapFilter.searchLocationOptions.filter(option => option.name.toLowerCase().includes(filterValue)).sort(this.compareSort);
-  }
-
-  /**
-   * Compare object name properties for sort array
-   * @param a source object
-   * @param b compare object
-   * @returns boolean
-   */
-  private compareSort(a: any, b: any) {
-    if (a.name < b.name) {
-      return -1;
-    }
-    if (a.name > b.name) {
-      return 1;
-    }
-    return 0;
-  }
-
-  /**
    * Returns the selected location name to the autocomplete field.
    * @param autocompleLocation Selected autocomplete location
    * @returns Selected location name or null value.
    */
-  getSearchLocationAutocompleteText(autocompleLocation: ILocationAutocomplete) {
+  getSearchLocationAutocompleteText(autocompleLocation: LocalityGeometryAutocomplete) {
     return autocompleLocation ? autocompleLocation.name : '';
   }
 
@@ -490,57 +442,28 @@ export class InteractiveMapComponent implements OnInit {
   * Initializes the city autocomplete options filter.
   */
   initSearchLocationFilteredOptions() {
-    this.searchLocationFilteredOptions = this.filterForm.controls.searchFilter.valueChanges
+    this.filterForm.controls.searchFilter.valueChanges
       .pipe(
         startWith(''),
-        map(value => this._searchFilter(value || ''))
-      );
-  }
-
-  /**
-   * Initializes location autocomplete options
-   */
-  initLocationSearchOptions() {
-    if (this.statsCsvHelper && this.statsCsvHelper.meta) {
-      let regionsOptions = [] as any;
-      let statesOptions = [] as any;
-      let citiesOptions = [] as any;
-
-      if (this.statsCsvHelper.meta.regions && this.statsCsvHelper.meta.regions.length > 0) {
-        regionsOptions = this.statsCsvHelper.meta.regions.map(region => {
-          return {
-            code: region.code,
-            name: region.name,
-            locationType: 'Region',
-            region: region
-          } as ILocationAutocomplete;
-        });
-      }
-
-      if (this.statsCsvHelper.meta.states && this.statsCsvHelper.meta.states.length > 0) {
-        statesOptions = this.statsCsvHelper.meta.states.map(state => {
-          return {
-            code: state.code,
-            name: state.name,
-            locationType: 'State',
-            state: state
-          } as ILocationAutocomplete;
-        });
-      }
-
-      if (this.statsCsvHelper.meta.cities && this.statsCsvHelper.meta.cities.length > 0) {
-        citiesOptions = this.statsCsvHelper.meta.cities.map(city => {
-          return {
-            code: city.code,
-            name: `${city.name}, ${city.state.name}`,
-            locationType: 'City',
-            city: city
-          } as ILocationAutocomplete;
-        });
-      }
-
-      this.mapFilter.searchLocationOptions = [...regionsOptions, ...statesOptions, ...citiesOptions];
-    }
+        distinctUntilChanged(),
+        debounceTime(1000),
+        tap((res) => {
+          this.searchLocationFilteredOptions = new Array<LocalityGeometryAutocomplete>();
+          if (res !== null && res.length >= 3) {
+            this.loadingAutocomplete = true;
+          }
+        }),
+      ).subscribe((filterValue: any) => {
+        if (filterValue && filterValue.length > 0) {
+          this.localityGeometryService.getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue).subscribe((data) => {
+            this.searchLocationFilteredOptions = data;
+            this.loadingAutocomplete = false;
+          });
+        }
+      }, (error) => {
+        this.loadingAutocomplete = false;
+        this.alertService.showError(`Something went wrong with autocomplete api calls: ${error.message}`);
+      });
   }
 
   /**
@@ -548,22 +471,22 @@ export class InteractiveMapComponent implements OnInit {
   * @param event Event object that is emitted when an autocomplete option is selected.
   */
   async onSelectLocationSearchOption(event: MatAutocompleteSelectedEvent) {
-    const selectedOption = event.option.value as ILocationAutocomplete;
+    const selectedOption = event.option.value as LocalityGeometryAutocomplete;
 
-    switch (selectedOption.locationType) {
-      case 'City':
+    switch (selectedOption.administrativeLevel) {
+      case 'city':
         if (selectedOption.city) {
           await this.onSelectRegion(selectedOption.city.state.region);
           await this.onSelectState(selectedOption.city.state);
           this.onSelectCity(selectedOption.city);
         }
         break;
-      case 'Region':
+      case 'region':
         if (selectedOption.region) {
           this.onSelectRegion(selectedOption.region);
         }
         break;
-      case 'State':
+      case 'state':
         if (selectedOption.state) {
           await this.onSelectRegion(selectedOption.state.region);
           this.onSelectState(selectedOption.state);

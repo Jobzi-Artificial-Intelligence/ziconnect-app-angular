@@ -37,4 +37,23 @@ export class LocalityGeometryAutocomplete
 
     return this;
   }
+
+  get getText() {
+    let names = [] as Array<string>;
+    if (this.cityName && this.cityName.length > 0) {
+      names.push(this.cityName.toString());
+    }
+
+    if (this.stateName && this.stateName.length > 0) {
+      names.push(this.stateName.toString());
+    }
+
+    if (this.regionName && this.regionName.length > 0) {
+      names.push(this.regionName.toString());
+    }
+
+    console.log(names);
+
+    return names.join(', ');
+  }
 }
