@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ElementRef, NgZone } from "@angular/core";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GoogleMapsModule, MapMarker } from "@angular/google-maps";
 import { MatBottomSheet } from "@angular/material/bottom-sheet";
@@ -9,8 +9,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AngularMaterialModule } from "src/app/material.module";
 import { SchoolTableBottomSheetComponent } from "src/app/_components";
 import { IGeneralStats, IGeneralStatsMeta, StatsCsvHelper } from "src/app/_helpers";
-import { City, Region, State } from "src/app/_models";
-import { ILocationAutocomplete, InteractiveMapComponent } from "./interactive-map.component";
+import { City, LocalityGeometryAutocomplete, Region, State } from "src/app/_models";
+import { InteractiveMapComponent } from "./interactive-map.component";
 import { geoJsonSample, geoJsonCities, geoJsonRegions, geoJsonStates } from "../../../test/geo-json-mock";
 import { cityStats, regionStats, stateStats } from "../../../test/item-stats-mock";
 import { ShortNumberPipe } from "src/app/_pipes/short-number.pipe";
@@ -18,6 +18,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { of, throwError } from 'rxjs';
 import { citiesLocalityGeometryList, regionsLocalityGeometryList, statesLocalityGeometryList } from "../../../test/locality-geometry-mock";
+import { localitiesGeometryAutocompleteResponseFromServer } from "../../../test/locality-geometry-autocomplete-mock"
 
 describe('Component: InteractiveMap', () => {
   let component: InteractiveMapComponent;
@@ -99,7 +100,6 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'watchLoadingMap');
       spyOn(component, 'loadGeneralStats');
       spyOn(component, 'loadRegionsGeoJson');
-      spyOn(component, 'initLocationSearchOptions');
       spyOn(component, 'initSearchLocationFilteredOptions');
 
       await component.ngOnInit();
@@ -108,7 +108,6 @@ describe('Component: InteractiveMap', () => {
       expect(component.watchLoadingMap).toHaveBeenCalled();
       expect(component.loadGeneralStats).toHaveBeenCalled();
       expect(component.loadRegionsGeoJson).toHaveBeenCalled();
-      expect(component.initLocationSearchOptions).toHaveBeenCalled();
       expect(component.initSearchLocationFilteredOptions).toHaveBeenCalled();
     });
   });
@@ -1462,77 +1461,6 @@ describe('Component: InteractiveMap', () => {
 
   //#region SEARCH LOCATION AUTOCOMPLETE
   ////////////////////////////////////////////
-  describe('#_searchFilter', () => {
-
-    it('should exists', () => {
-      //@ts-ignore
-      expect(component._searchFilter).toBeTruthy();
-      //@ts-ignore
-      expect(component._searchFilter).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      // Initializing variables and setting properties values for test scenario
-      let result;
-
-      component.mapFilter.searchLocationOptions = new Array<ILocationAutocomplete>();
-      component.mapFilter.searchLocationOptions.push(<ILocationAutocomplete>{
-        code: '',
-        locationType: 'Region',
-        name: 'Region01',
-        region: new Region('code01', 'Region01')
-      });
-
-      // Test result expectations
-      //@ts-ignore
-      result = component._searchFilter('re');
-      expect(result.length).toEqual(0);
-
-      //@ts-ignore
-      result = component._searchFilter('regio');
-      expect(result.length).toEqual(1);
-
-      //@ts-ignore
-      result = component._searchFilter('state');
-      expect(result.length).toEqual(0);
-
-      //@ts-ignore
-      result = component._searchFilter(component.mapFilter.searchLocationOptions[0]);
-      expect(result.length).toEqual(1);
-    })
-  });
-
-  describe('#_compareSort', () => {
-
-    it('should exists', () => {
-      //@ts-ignore
-      expect(component.compareSort).toBeTruthy();
-      //@ts-ignore
-      expect(component.compareSort).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      let result;
-
-      let compareA = { name: 'a' };
-      let compareB = { name: 'b' };
-
-      //@ts-ignore
-      result = component.compareSort(compareA, compareB);
-      expect(result).toEqual(-1);
-
-      compareA.name = 'c';
-      //@ts-ignore
-      result = component.compareSort(compareA, compareB);
-      expect(result).toEqual(1);
-
-      compareA.name = 'b';
-      //@ts-ignore
-      result = component.compareSort(compareA, compareB);
-      expect(result).toEqual(0);
-    });
-  });
-
   describe('#getSearchLocationAutocompleteText', () => {
 
     it('should exists', () => {
@@ -1542,14 +1470,14 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       let result;
-      let locationAutocomplete = <ILocationAutocomplete>{
+      let locationAutocomplete = <LocalityGeometryAutocomplete>{
         name: 'Name01'
       };
 
       result = component.getSearchLocationAutocompleteText(locationAutocomplete);
       expect(result).toEqual(locationAutocomplete.name);
 
-      locationAutocomplete = <ILocationAutocomplete>{};
+      locationAutocomplete = <LocalityGeometryAutocomplete>{};
       result = component.getSearchLocationAutocompleteText(locationAutocomplete);
       expect(result).toBeUndefined();
     });
@@ -1562,76 +1490,71 @@ describe('Component: InteractiveMap', () => {
       expect(component.initSearchLocationFilteredOptions).toEqual(jasmine.any(Function));
     });
 
-    it('should works', () => {
-      //@ts-ignore
-      spyOn(component, '_searchFilter');
-
-      component.mapFilter.searchLocationOptions = new Array<ILocationAutocomplete>();
-      component.mapFilter.searchLocationOptions.push(<ILocationAutocomplete>{
-        code: '',
-        locationType: 'Region',
-        name: 'Region01',
-        region: new Region('code01', 'Region01')
-      });
+    it('should works filter length > 3', fakeAsync(() => {
+      spyOn(component, 'loadAutocompleteSearchOptions');
 
       component.initSearchLocationFilteredOptions();
 
       component.filterForm.controls.searchFilter.setValue('regio', { emitEvent: true });
 
-      component.searchLocationFilteredOptions?.subscribe();
-      //@ts-ignore
-      expect(component._searchFilter).toHaveBeenCalled()
-    });
+      tick(2000);
+
+      expect(component.loadAutocompleteSearchOptions).toHaveBeenCalled();
+    }));
+
+    it('should works filter length < 3', fakeAsync(() => {
+      spyOn(component, 'loadAutocompleteSearchOptions');
+
+      component.initSearchLocationFilteredOptions();
+
+      component.filterForm.controls.searchFilter.setValue('re', { emitEvent: true });
+
+      tick(2000);
+
+      expect(component.loadingAutocomplete).toEqual(false);
+    }));
   });
 
-  describe('#initLocationSearchOptions', () => {
-
+  describe('#loadAutocompleteSearchOptions', () => {
     it('should exists', () => {
-      expect(component.initLocationSearchOptions).toBeTruthy();
-      expect(component.initLocationSearchOptions).toEqual(jasmine.any(Function));
+      expect(component.loadAutocompleteSearchOptions).toBeTruthy();
+      expect(component.loadAutocompleteSearchOptions).toEqual(jasmine.any(Function));
     });
 
-    it('should works for cities', () => {
-      component.statsCsvHelper = {} as StatsCsvHelper;
-      component.statsCsvHelper.meta = <IGeneralStatsMeta>{
-        cityCodes: [mockCity.code],
-        cities: [mockCity]
-      };
+    it('should works when server fail', () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
 
-      component.initLocationSearchOptions();
+      //@ts-ignore
+      spyOn(component.localityGeometryService, 'getLocalityAutocompleteByCountry').and.returnValue(throwError({ message: 'http error' }));
 
-      expect(component.mapFilter.searchLocationOptions.length).toEqual(component.statsCsvHelper.meta.cities.length);
-      expect(component.mapFilter.searchLocationOptions.every(x => x.locationType === 'City')).toBeTrue();
+      component.loadingAutocomplete = true;
+
+      component.loadAutocompleteSearchOptions('region');
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong with autocomplete api calls: http error');
+      expect(component.loadingAutocomplete).toEqual(false);
     });
 
-    it('should works for regions', () => {
-      component.statsCsvHelper = {} as StatsCsvHelper;
-      component.statsCsvHelper.meta = <IGeneralStatsMeta>{
-        regionCodes: [mockRegion.code],
-        regions: [mockRegion]
-      };
+    it('should works when server success', () => {
+      //@ts-ignore
+      spyOn(component.localityGeometryService, 'getLocalityAutocompleteByCountry').and.returnValue(of(localitiesGeometryAutocompleteResponseFromServer));
 
-      component.initLocationSearchOptions();
+      component.loadingAutocomplete = true;
 
-      expect(component.mapFilter.searchLocationOptions.length).toEqual(component.statsCsvHelper.meta.regions.length);
-      expect(component.mapFilter.searchLocationOptions.every(x => x.locationType === 'Region')).toBeTrue();
-    });
+      component.loadAutocompleteSearchOptions('region');
 
-    it('should works for states', () => {
-      component.statsCsvHelper = {} as StatsCsvHelper;
-      component.statsCsvHelper.meta = <IGeneralStatsMeta>{
-        stateCodes: [mockState.code],
-        states: [mockState]
-      };
-
-      component.initLocationSearchOptions();
-
-      expect(component.mapFilter.searchLocationOptions.length).toEqual(component.statsCsvHelper.meta.states.length);
-      expect(component.mapFilter.searchLocationOptions.every(x => x.locationType === 'State')).toBeTrue();
+      //@ts-ignore
+      expect(component.searchLocationFilteredOptions).toEqual(jasmine.any(Array));
+      expect(component.searchLocationFilteredOptions.length).toEqual(localitiesGeometryAutocompleteResponseFromServer.length);
+      expect(component.loadingAutocomplete).toEqual(false);
     });
   });
 
-  describe('#onSelectLocationSearchOption', () => {
+  describe('#loadAutocompleteSearchOptions', () => {
 
     it('should exists', () => {
       expect(component.onSelectLocationSearchOption).toBeTruthy();
@@ -1664,8 +1587,8 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectCity).not.toHaveBeenCalled();
 
       // Selected option type city
-      event.option.value = <ILocationAutocomplete>{
-        locationType: 'City',
+      event.option.value = <LocalityGeometryAutocomplete>{
+        administrativeLevel: 'city',
         city: city
       }
       await component.onSelectLocationSearchOption(event);
@@ -1674,8 +1597,8 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectCity).toHaveBeenCalledWith(city);
 
       // Selected option type state
-      event.option.value = <ILocationAutocomplete>{
-        locationType: 'State',
+      event.option.value = <LocalityGeometryAutocomplete>{
+        administrativeLevel: 'state',
         state: state
       }
       await component.onSelectLocationSearchOption(event);
@@ -1683,8 +1606,8 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectState).toHaveBeenCalledWith(state);
 
       // Selected option type region
-      event.option.value = <ILocationAutocomplete>{
-        locationType: 'Region',
+      event.option.value = <LocalityGeometryAutocomplete>{
+        administrativeLevel: 'region',
         region: region
       }
       await component.onSelectLocationSearchOption(event);
@@ -1828,3 +1751,7 @@ describe('Component: InteractiveMap', () => {
   //#endregion
   ////////////////////////////////////////////
 });
+
+function done() {
+  throw new Error("Function not implemented.");
+}
