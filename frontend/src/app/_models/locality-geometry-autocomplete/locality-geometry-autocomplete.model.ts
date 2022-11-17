@@ -52,8 +52,6 @@ export class LocalityGeometryAutocomplete
       names.push(this.regionName.toString());
     }
 
-    console.log(names);
-
     return names.join(', ');
   }
 }

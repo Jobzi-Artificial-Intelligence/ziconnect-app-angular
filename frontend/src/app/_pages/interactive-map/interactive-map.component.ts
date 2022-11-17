@@ -451,15 +451,23 @@ export class InteractiveMapComponent implements OnInit {
           this.searchLocationFilteredOptions = new Array<LocalityGeometryAutocomplete>();
           if (res !== null && res.length >= 3) {
             this.loadingAutocomplete = true;
+          } else {
+            this.loadingAutocomplete = false;
           }
         }),
       ).subscribe((filterValue: any) => {
         if (filterValue && filterValue.length > 0) {
-          this.localityGeometryService.getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue).subscribe((data) => {
-            this.searchLocationFilteredOptions = data;
-            this.loadingAutocomplete = false;
-          });
+          this.loadAutocompleteSearchOptions(filterValue);
         }
+      });
+  }
+
+  loadAutocompleteSearchOptions(filterValue: string) {
+    this.localityGeometryService
+      .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue)
+      .subscribe((data) => {
+        this.searchLocationFilteredOptions = data;
+        this.loadingAutocomplete = false;
       }, (error) => {
         this.loadingAutocomplete = false;
         this.alertService.showError(`Something went wrong with autocomplete api calls: ${error.message}`);

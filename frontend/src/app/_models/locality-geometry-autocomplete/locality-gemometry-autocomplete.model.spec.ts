@@ -50,4 +50,22 @@ describe('Model: LocalityGeometryAutocomplete', () => {
       expect(autocompleteObj.region?.name).toEqual(autocompleteObj.regionName.toString());
     });
   });
+
+  describe('#getText', () => {
+    it('should works', () => {
+      let autocompleteObj = new LocalityGeometryAutocomplete();
+
+      // only region name
+      autocompleteObj.regionName = 'Region01';
+      expect(autocompleteObj.getText).toEqual('Region01');
+
+      // state and region name
+      autocompleteObj.stateName = 'State01';
+      expect(autocompleteObj.getText).toEqual('State01, Region01');
+
+      // city, state and region name
+      autocompleteObj.cityName = 'City01';
+      expect(autocompleteObj.getText).toEqual('City01, State01, Region01');
+    });
+  });
 });
