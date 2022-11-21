@@ -48,10 +48,11 @@
         </div>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getSearchLocationAutocompleteText"
           (optionSelected)="onSelectLocationSearchOption($event)">
-          <mat-option *ngFor="let searchLocationOption of searchLocationFilteredOptions | async"
-            [value]="searchLocationOption">
-            <span class="color-tp-body f-size-14">{{searchLocationOption.name}} <span
-                class="color-tp-label f-size-13">({{searchLocationOption.locationType}})</span></span>
+          <mat-option *ngIf="loadingAutocomplete" disabled>Loading...</mat-option>
+          <mat-option *ngFor="let searchLocationOption of searchLocationFilteredOptions" [value]="searchLocationOption">
+            <span class="color-tp-body f-size-14">{{searchLocationOption.getText}} <span
+                class="color-tp-label f-size-13">({{searchLocationOption.administrativeLevel |
+                titlecase}})</span></span>
           </mat-option>
         </mat-autocomplete>
       </form>

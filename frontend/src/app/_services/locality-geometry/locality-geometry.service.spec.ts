@@ -2,12 +2,14 @@ import { TestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LocalityGeometryService } from "./locality-geometry.service";
 import { environment } from "src/environments/environment";
-import { LocalityGeometry } from "src/app/_models";
+import { LocalityGeometry, LocalityGeometryAutocomplete } from "src/app/_models";
+import { localitiesGeometryAutocompleteResponseFromServer } from "../../../test/locality-geometry-autocomplete-mock";
 
 describe('LocalityGeometryService', () => {
   let httpTestingController: HttpTestingController;
   let service: LocalityGeometryService;
   let endpointUri = '';
+  let endpointViewUri = '';
   let query = '';
 
   // function parameters
@@ -131,6 +133,10 @@ describe('LocalityGeometryService', () => {
     //@ts-ignore
     const path = service._postgrestLocalityGeometryPath;
     endpointUri = `${host}${path}`
+
+    //@ts-ignore
+    const viewPath = service._viewLocalityGeometryAutocompltePath;
+    endpointViewUri = `${host}${viewPath}`;
   });
 
   afterEach(() => {
@@ -279,5 +285,51 @@ describe('LocalityGeometryService', () => {
       expect(result.features.length).toBeGreaterThan(0);
       expect(result.features[0]).toEqual(localityGeometryList[0].geometry);
     })
+  });
+
+  describe('#getLocalityAutocompleteByCountry', () => {
+    beforeEach(() => {
+      query = `country_id=eq.${countryId}&limit=5`;
+    });
+
+    it('should exists', () => {
+      expect(service.getLocalityAutocompleteByCountry).toBeDefined();
+      expect(service.getLocalityAutocompleteByCountry).toEqual(jasmine.any(Function));
+    });
+
+    it('should use GET to retrieve data', () => {
+      let term = 'test';
+      let searchString = term.trim();
+      searchString = searchString.replace(' ', '*');
+      searchString += '*';
+
+      query += `&name=ilike.${searchString.replace(' ', '*')}`;
+      query += `&order=name.asc`;
+
+      service.getLocalityAutocompleteByCountry(countryId, term).subscribe();
+
+      const testRequest = httpTestingController.expectOne(`${endpointViewUri}?${query}`);
+      expect(testRequest.request.method).toEqual('GET');
+    });
+
+    it('should return expected data', (done) => {
+      let term = 'test extra';
+      let searchString = term.trim();
+      searchString = searchString.replace(' ', '*');
+      searchString += '*';
+
+      query += `&name=ilike.${searchString.replace(' ', '*')}`;
+      query += `&order=name.asc`;
+
+      const expectedData: LocalityGeometryAutocomplete[] = localitiesGeometryAutocompleteResponseFromServer.map((item) => new LocalityGeometryAutocomplete().deserialize(item));
+
+      service.getLocalityAutocompleteByCountry(countryId, term).subscribe(data => {
+        expect(data).toEqual(expectedData);
+        done();
+      });
+
+      const testRequest = httpTestingController.expectOne(`${endpointViewUri}?${query}`);
+      testRequest.flush(localitiesGeometryAutocompleteResponseFromServer);
+    });
   });
 });

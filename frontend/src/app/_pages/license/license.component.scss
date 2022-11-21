@@ -1,0 +1,190 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.page-title {
+  background-color: #ebf2fc;
+  height: auto;
+  margin-top: -16px;
+  position: relative;
+
+  @include breakpoint($min: 768px) {
+    flex-direction: row;
+    height: 500px;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    height: 100%;
+    padding: 48px 0;
+
+    @include breakpoint($min: 768px) {
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .description {
+      flex: auto;
+
+      @include breakpoint($min: 768px) {
+        max-width: 40%;
+      }
+
+      .title-header {
+        color: #a1bff1;
+      }
+
+      .title {
+        color: #233964;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 24px !important;
+        margin-top: 8px !important;
+      }
+
+      .subtitle {
+        color: #405ea6;
+      }
+    }
+
+    .hero-image {
+      flex: auto;
+      text-align: center;
+
+      @include breakpoint($min: 425px) {
+        flex: 0 0 60%;
+      }
+
+      @include breakpoint($min: 1024px) {
+        flex: auto;
+        text-align: right;
+      }
+
+      img {
+        height: auto;
+        max-width: 650px;
+        width: 100%;
+
+        @include breakpoint($min: 1024px) {
+          width: 650px;
+        }
+      }
+    }
+  }
+}
+
+.page-content-container {
+  padding-bottom: 32px;
+
+  > section {
+    color: #404040;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-top: 48px;
+
+    > h3 {
+      color: $tp-title;
+      font-size: 20px;
+      margin-bottom: 8px !important;
+    }
+
+    pre {
+      @include border-radius(8px);
+      background: #fafafa;
+      border: 1px solid #ccc;
+      font-size: 13px;
+      padding: 32px 24px;
+      margin-top: 48px;
+      text-align: center;
+      white-space: pre-wrap; /* Since CSS 2.1 */
+      word-wrap: break-word; /* Internet Explorer 5.5+ */
+    }
+
+    .rule-list {
+      flex-direction: column;
+
+      @include breakpoint($min: 768px) {
+        flex-direction: row;
+      }
+
+      .rule-list-item {
+        margin-top: 48px;
+        width: 100%;
+
+        > header {
+          .title {
+            color: $tp-title;
+            font-size: 16px;
+            font-weight: 500;
+          }
+
+          .mat-icon {
+            font-size: 48px;
+            height: 48px;
+            width: 48px;
+
+            &.color-green {
+              color: #55bfa7;
+            }
+
+            &.color-blue {
+              color: #0099ff;
+            }
+
+            &.color-red {
+              color: $feat-red;
+            }
+          }
+        }
+
+        ul {
+          @include reset-list;
+          margin-top: 32px;
+
+          li {
+            margin-bottom: 16px;
+            width: 100%;
+
+            @include breakpoint($min: 768px) {
+              max-width: 300px;
+            }
+
+            .bullet {
+              @include border-radius(100%);
+              margin-right: 8px;
+              flex: 0 0 12px;
+              height: 12px;
+              width: 12px;
+
+              &.green {
+                background: #55bfa7;
+              }
+
+              &.blue {
+                background: #0099ff;
+              }
+
+              &.red {
+                background: $feat-red;
+              }
+            }
+
+            .title {
+              color: $tp-title;
+              font-size: 16px;
+              font-weight: 500;
+              margin-bottom: 6px;
+              line-height: 1;
+            }
+
+            .subtitle {
+              font-size: 13px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

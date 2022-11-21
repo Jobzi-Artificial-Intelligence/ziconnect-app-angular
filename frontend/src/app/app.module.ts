@@ -11,8 +11,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
-import { DialogSchoolColumnSelectorComponent, NavigationBarComponent, SchoolTableBottomSheetComponent } from './_components';
-import { CodeConductComponent, ContributorsComponent, DataSourceReferenceComponent, InteractiveMapComponent } from './_pages';
+import {
+  DialogSchoolColumnSelectorComponent,
+  NavigationBarComponent,
+  SchoolTableBottomSheetComponent
+} from './_components';
+import {
+  CodeConductComponent,
+  ContributorsComponent,
+  DataSourceReferenceComponent,
+  InteractiveMapComponent,
+  LicenseComponent
+} from './_pages';
 
 
 @NgModule({
@@ -24,6 +34,7 @@ import { CodeConductComponent, ContributorsComponent, DataSourceReferenceCompone
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
     InteractiveMapComponent,
+    LicenseComponent,
     NavigationBarComponent,
     SchoolTableBottomSheetComponent,
     ShortNumberPipe,],
