@@ -89,5 +89,34 @@
       font-size: 20px;
       margin-bottom: 8px !important;
     }
+
+    > h4 {
+      color: $tp-title;
+      font-size: 16px;
+      margin-bottom: 8px !important;
+    }
+  }
+
+  blockquote {
+    background: #fafafa;
+    font-weight: 400;
+    margin: 16px 0 24px 0;
+    padding: 24px 24px;
+    position: relative;
+
+    > p {
+      margin-bottom: 0;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: $feat-red;
+      border-radius: 6px;
+    }
   }
 }
