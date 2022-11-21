@@ -220,4 +220,56 @@
       </li>
     </ul>
   </section>
+
+  <!-- PULL REQUESTS -->
+  <section>
+    <h3>Opening a pull request</h3>
+    <p>You should usually open a pull request in the following situations:</p>
+
+    <ul>
+      <li>Submit trivial fixes (for example, a typo, a broken link or an obvious error).</li>
+      <li>Start work on a contribution that was already asked for, or that you've already discussed, in an issue</li>
+    </ul>
+
+    <p>Here's how to submit a pull request</p>
+    <ul>
+      <li>
+        <span class="f-weight-500">Fork the repository</span> and clone it locally. Connect your local to the original
+        “upstream” repository by adding
+        it as a remote. Pull in changes from “upstream” often so that you stay up to date so that when you submit your
+        pull request, merge conflicts will be less likely. (See more detailed instructions <a
+          href="https://help.github.com/articles/syncing-a-fork/" target="_blank">here</a>.)
+      </li>
+      <li>
+        <span class="f-weight-500">Create a branch</span> for your edits. Make sure the branch name has this
+        structure: <i>&lt;issue_id&gt;-&lt;short_issue_title&gt;</i>, for example: 1-update-contributing-md
+      </li>
+      <li>
+        <span class="f-weight-500">Reference any relevant issues</span> or supporting documentation in your PR (for
+        example, “Closes #1.”)
+      </li>
+      <li>
+        <span class="f-weight-500">Include screenshots of the before and after</span> if your changes include
+        differences in HTML/CSS. Drag and drop the images into the body of your pull request.
+      </li>
+      <li>
+        <span class="f-weight-500">Test your changes!</span> Run your changes against any existing tests if they exist
+        and create new ones when needed. Make sure your changes don't break the project.
+      </li>
+      <li>
+        After you submit your pull request, verify that all <a
+          href="https://help.github.com/articles/about-status-checks/" target="_blank">status checks</a> are passing.
+      </li>
+    </ul>
+
+    <h4>What if the status checks are failing?</h4>
+    <p>If a status check is failing, and you believe that the failure is unrelated to your change, please leave a
+      comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the
+      status check for you. If we conclude that the failure was a false positive, then we will open an issue to track
+      that problem with our status check suite.</p>
+
+    <p>While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may
+      ask you to complete additional design work, tests, or other changes before your pull request can be ultimately
+      accepted.</p>
+  </section>
 </div>
