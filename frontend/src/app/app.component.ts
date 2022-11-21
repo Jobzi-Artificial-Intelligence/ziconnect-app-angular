@@ -34,8 +34,6 @@ export class AppComponent implements OnInit {
   }
 
   registerCustomSvgIcons() {
-    this.matIconRegistry.addSvgIcon('bitbucket', this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.baseHref}assets/icons/bitbucket.svg`));
-    this.matIconRegistry.addSvgIcon('coding', this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.baseHref}assets/icons/coding.svg`));
-    this.matIconRegistry.addSvgIcon('code-fork', this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.baseHref}assets/icons/code-fork.svg`));
+    this.matIconRegistry.addSvgIcon('github', this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.baseHref}assets/icons/github.svg`));
   }
 }
