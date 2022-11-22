@@ -18,8 +18,8 @@ describe('Component: NavigationBar', () => {
 
   beforeEach(inject([MatIconRegistry, DomSanitizer], (matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) => {
     // The `MatIconRegistry` will make GET requests to fetch any SVG icons that are in the registry. More on this below...
-    const codeForkUrl = sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/code-fork.svg');
-    matIconRegistry.addSvgIcon("code-fork", codeForkUrl);
+    const codeForkUrl = sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/github.svg');
+    matIconRegistry.addSvgIcon("github", codeForkUrl);
 
     fixture = TestBed.createComponent(NavigationBarComponent);
     component = fixture.componentInstance;
