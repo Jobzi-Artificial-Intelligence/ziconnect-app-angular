@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ci:build-homolog": "ng build --configuration homolog",
+    "ci:build-production": "ng build --configuration production",
+    "ci:test": "ng test --no-watch --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
