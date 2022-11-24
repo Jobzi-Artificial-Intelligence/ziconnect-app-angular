@@ -1,4 +1,5 @@
 import { UtilHelper } from "../../_helpers";
+import { LocalityGeometry } from "../locality-geometry/locality-geometry.model";
 
 export class School {
   uuid: string;
@@ -27,6 +28,8 @@ export class School {
   student_count: number;
   without_internet_availability_data: Boolean;
 
+  localityGeometry: LocalityGeometry;
+
   constructor() {
     this.uuid = '';
     this.country = '';
@@ -53,6 +56,8 @@ export class School {
     this.state_code = '';
     this.student_count = 0;
     this.without_internet_availability_data = false;
+
+    this.localityGeometry = new LocalityGeometry().deserialize({});
   }
 
   /**

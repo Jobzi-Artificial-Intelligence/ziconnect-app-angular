@@ -30,6 +30,7 @@ describe('Model: Region', () => {
     expect(school.student_count).toEqual(0);
     expect(school.uuid).toEqual('');
     expect(school.without_internet_availability_data).toEqual(false);
+    expect(school.localityGeometry).toBeDefined();
   });
 
   describe('#deserializeFromFile', () => {

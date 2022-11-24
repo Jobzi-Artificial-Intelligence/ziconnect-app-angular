@@ -31,5 +31,23 @@ describe('Helper: Util', () => {
       expect(UtilHelper.getBoolean('yes')).toEqual(true);
       expect(UtilHelper.getBoolean('Yes')).toEqual(true);
     });
-  })
+  });
+
+  describe('#getBooleanStr', () => {
+
+    it('should exists', () => {
+      expect(UtilHelper.getBooleanStr).toBeTruthy();
+      expect(UtilHelper.getBooleanStr).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      // undefined value test
+      let obj = {} as any;
+      expect(UtilHelper.getBooleanStr(obj.booleanValue)).toEqual('NA');
+
+      expect(UtilHelper.getBooleanStr(null)).toEqual('NA');
+      expect(UtilHelper.getBooleanStr(true)).toEqual('Yes');
+      expect(UtilHelper.getBooleanStr(false)).toEqual('No');
+    });
+  });
 });
