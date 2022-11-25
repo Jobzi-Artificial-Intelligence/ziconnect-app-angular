@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AngularMaterialModule } from "src/app/material.module";
 import { SchoolTableBottomSheetComponent } from "src/app/_components";
 import { IGeneralStats, IGeneralStatsMeta, StatsCsvHelper } from "src/app/_helpers";
-import { City, LocalityGeometryAutocomplete, Region, State } from "src/app/_models";
+import { City, LocalityMapAutocomplete, Region, State } from "src/app/_models";
 import { InteractiveMapComponent } from "./interactive-map.component";
 import { geoJsonSample, geoJsonCities, geoJsonRegions, geoJsonStates } from "../../../test/geo-json-mock";
 import { cityStats, regionStats, stateStats } from "../../../test/item-stats-mock";
@@ -17,8 +17,8 @@ import { ShortNumberPipe } from "src/app/_pipes/short-number.pipe";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { of, throwError } from 'rxjs';
-import { citiesLocalityGeometryList, regionsLocalityGeometryList, statesLocalityGeometryList } from "../../../test/locality-geometry-mock";
-import { localitiesGeometryAutocompleteResponseFromServer } from "../../../test/locality-geometry-autocomplete-mock"
+import { citiesLocalityGeometryList, regionsLocalityGeometryList, statesLocalityGeometryList } from "../../../test/locality-map-mock";
+import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock"
 
 describe('Component: InteractiveMap', () => {
   let component: InteractiveMapComponent;
@@ -405,7 +405,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getCitiesByState').and.throwError('Error message');
+      spyOn(component.localityMapService, 'getCitiesByState').and.throwError('Error message');
       await component.loadCitiesGeoJson('', '', '').catch((error) => {
         expect(error.toString()).toEqual('Error: Error message');
       });
@@ -419,7 +419,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getCitiesByState').and.returnValue(throwError({ message: 'http error' }));
+      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(throwError({ message: 'http error' }));
       await component.loadCitiesGeoJson('', '', '').catch((error) => {
         expect(error).toBeTruthy();
         expect(error.message).toEqual('http error');
@@ -434,7 +434,7 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByCityCode = jasmine.createSpy().and.returnValue(mockCityStats);
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityGeometry));
+      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityGeometry));
       await component.loadCitiesGeoJson('', '', '');
 
       let count = 0;
@@ -455,7 +455,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getRegionsByCountry').and.throwError('Error message');
+      spyOn(component.localityMapService, 'getRegionsByCountry').and.throwError('Error message');
       await component.loadRegionsGeoJson().catch((error) => {
         expect(error.toString()).toEqual('Error: Error message');
       });
@@ -469,7 +469,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getRegionsByCountry').and.returnValue(throwError({ message: 'http error' }));
+      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(throwError({ message: 'http error' }));
       await component.loadRegionsGeoJson().catch((error) => {
         expect(error).toBeTruthy();
         expect(error.message).toEqual('http error');
@@ -484,7 +484,7 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByRegionCode = jasmine.createSpy().and.returnValue(mockRegionStats);
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getRegionsByCountry').and.returnValue(of(mockRegionsLocalityGeometry));
+      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(of(mockRegionsLocalityGeometry));
       await component.loadRegionsGeoJson();
 
       let count = 0;
@@ -505,7 +505,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getStatesByRegion').and.throwError('Error message');
+      spyOn(component.localityMapService, 'getStatesByRegion').and.throwError('Error message');
       await component.loadStatesGeoJson('', '').catch((error) => {
         expect(error.toString()).toEqual('Error: Error message');
       });
@@ -519,7 +519,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getStatesByRegion').and.returnValue(throwError({ message: 'http error' }));
+      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(throwError({ message: 'http error' }));
       await component.loadStatesGeoJson('', '').catch((error) => {
         expect(error).toBeTruthy();
         expect(error.message).toEqual('http error');
@@ -534,7 +534,7 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByStateCode = jasmine.createSpy().and.returnValue(mockStateStats);
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityGeometry));
+      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityGeometry));
       await component.loadStatesGeoJson('', '');
 
       let count = 0;
@@ -1470,14 +1470,14 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       let result;
-      let locationAutocomplete = <LocalityGeometryAutocomplete>{
+      let locationAutocomplete = <LocalityMapAutocomplete>{
         name: 'Name01'
       };
 
       result = component.getSearchLocationAutocompleteText(locationAutocomplete);
       expect(result).toEqual(locationAutocomplete.name);
 
-      locationAutocomplete = <LocalityGeometryAutocomplete>{};
+      locationAutocomplete = <LocalityMapAutocomplete>{};
       result = component.getSearchLocationAutocompleteText(locationAutocomplete);
       expect(result).toBeUndefined();
     });
@@ -1526,7 +1526,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getLocalityAutocompleteByCountry').and.returnValue(throwError({ message: 'http error' }));
+      spyOn(component.localityMapService, 'getLocalityAutocompleteByCountry').and.returnValue(throwError({ message: 'http error' }));
 
       component.loadingAutocomplete = true;
 
@@ -1541,7 +1541,7 @@ describe('Component: InteractiveMap', () => {
 
     it('should works when server success', () => {
       //@ts-ignore
-      spyOn(component.localityGeometryService, 'getLocalityAutocompleteByCountry').and.returnValue(of(localitiesGeometryAutocompleteResponseFromServer));
+      spyOn(component.localityMapService, 'getLocalityAutocompleteByCountry').and.returnValue(of(localitiesMapAutocompleteResponseFromServer));
 
       component.loadingAutocomplete = true;
 
@@ -1549,7 +1549,7 @@ describe('Component: InteractiveMap', () => {
 
       //@ts-ignore
       expect(component.searchLocationFilteredOptions).toEqual(jasmine.any(Array));
-      expect(component.searchLocationFilteredOptions.length).toEqual(localitiesGeometryAutocompleteResponseFromServer.length);
+      expect(component.searchLocationFilteredOptions.length).toEqual(localitiesMapAutocompleteResponseFromServer.length);
       expect(component.loadingAutocomplete).toEqual(false);
     });
   });
@@ -1587,7 +1587,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectCity).not.toHaveBeenCalled();
 
       // Selected option type city
-      event.option.value = <LocalityGeometryAutocomplete>{
+      event.option.value = <LocalityMapAutocomplete>{
         administrativeLevel: 'city',
         city: city
       }
@@ -1597,7 +1597,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectCity).toHaveBeenCalledWith(city);
 
       // Selected option type state
-      event.option.value = <LocalityGeometryAutocomplete>{
+      event.option.value = <LocalityMapAutocomplete>{
         administrativeLevel: 'state',
         state: state
       }
@@ -1606,7 +1606,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.onSelectState).toHaveBeenCalledWith(state);
 
       // Selected option type region
-      event.option.value = <LocalityGeometryAutocomplete>{
+      event.option.value = <LocalityMapAutocomplete>{
         administrativeLevel: 'region',
         region: region
       }

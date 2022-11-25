@@ -1,4 +1,4 @@
-export const localityGeometryAutocompleteResponseFromServer = {
+export const localityMapAutocompleteResponseFromServer = {
   "country_id": "BR",
   "country_name": "Brasil",
   "region_id": "5",
@@ -13,7 +13,7 @@ export const localityGeometryAutocompleteResponseFromServer = {
   "adm_level": "city"
 };
 
-export const localitiesGeometryAutocompleteResponseFromServer = [{
+export const localitiesMapAutocompleteResponseFromServer = [{
   "country_id": "BR",
   "country_name": "Brasil",
   "region_id": "5",

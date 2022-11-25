@@ -7,7 +7,7 @@ enum AdministrativeLevel {
   City = 'city'
 }
 
-export class LocalityGeometry implements Deserializable {
+export class LocalityMap implements Deserializable {
   countryId: String;
   countryName: String;
   regionId: String;

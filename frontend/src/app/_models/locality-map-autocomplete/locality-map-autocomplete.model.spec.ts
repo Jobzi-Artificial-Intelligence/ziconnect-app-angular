@@ -1,9 +1,9 @@
-import { LocalityGeometryAutocomplete } from "./locality-geometry-autocomplete.model";
-import { localityGeometryAutocompleteResponseFromServer } from '../../../test/locality-geometry-autocomplete-mock';
+import { LocalityMapAutocomplete } from "./locality-map-autocomplete.model";
+import { localityMapAutocompleteResponseFromServer } from '../../../test/locality-map-autocomplete-mock';
 
 describe('Model: LocalityGeometryAutocomplete', () => {
   it('should initialize all properties correctly', () => {
-    const autocompleteObj = new LocalityGeometryAutocomplete();
+    const autocompleteObj = new LocalityMapAutocomplete();
 
     // Inherit properties
     expect(autocompleteObj.administrativeLevel).toEqual('country');
@@ -28,14 +28,14 @@ describe('Model: LocalityGeometryAutocomplete', () => {
 
   describe('#deserialize', () => {
     it('should exists', () => {
-      const localityGeometry = new LocalityGeometryAutocomplete();
+      const localityGeometry = new LocalityMapAutocomplete();
 
       expect(localityGeometry.deserialize).toBeTruthy();
       expect(localityGeometry.deserialize).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
-      const autocompleteObj = new LocalityGeometryAutocomplete().deserialize(localityGeometryAutocompleteResponseFromServer);
+      const autocompleteObj = new LocalityMapAutocomplete().deserialize(localityMapAutocompleteResponseFromServer);
 
       expect(autocompleteObj.code).toEqual(autocompleteObj.cityId);
       expect(autocompleteObj.name).toEqual(autocompleteObj.cityName);
@@ -53,7 +53,7 @@ describe('Model: LocalityGeometryAutocomplete', () => {
 
   describe('#getText', () => {
     it('should works', () => {
-      let autocompleteObj = new LocalityGeometryAutocomplete();
+      let autocompleteObj = new LocalityMapAutocomplete();
 
       // only region name
       autocompleteObj.regionName = 'Region01';

@@ -1,4 +1,4 @@
-import { LocalityGeometry } from "src/app/_models";
+import { LocalityMap } from "src/app/_models";
 
 export const citiesResponseFromServer = [{
   "country_name": "Brasil",
@@ -129,7 +129,7 @@ export const statesResponseFromServer = [{
   }
 }];
 
-export const citiesLocalityGeometryList = citiesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const countriesLocalityGeometryList = countriesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const regionsLocalityGeometryList = regionsResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const statesLocalityGeometryList = statesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
+export const citiesLocalityGeometryList = citiesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const countriesLocalityGeometryList = countriesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const regionsLocalityGeometryList = regionsResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const statesLocalityGeometryList = statesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });

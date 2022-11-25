@@ -1,13 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { LocalityGeometryService } from "./locality-geometry.service";
+import { LocalityMapService } from "./locality-map.service";
 import { environment } from "src/environments/environment";
-import { LocalityGeometry, LocalityGeometryAutocomplete } from "src/app/_models";
-import { localitiesGeometryAutocompleteResponseFromServer } from "../../../test/locality-geometry-autocomplete-mock";
+import { LocalityMap, LocalityMapAutocomplete } from "src/app/_models";
+import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock";
 
-describe('LocalityGeometryService', () => {
+describe('LocalityMapService', () => {
   let httpTestingController: HttpTestingController;
-  let service: LocalityGeometryService;
+  let service: LocalityMapService;
   let endpointUri = '';
   let endpointViewUri = '';
   let query = '';
@@ -20,9 +20,9 @@ describe('LocalityGeometryService', () => {
   // Response from server
   const citiesResponseFromServer = [{
     "country_name": "Brasil",
-    "country_id": "BR",
+    "country_code": "BR",
     "region_name": "Norte",
-    "region_id": "1",
+    "region_code": "1",
     "state_name": "Rondônia",
     "state_abbreviation": "RO",
     "state_id": "11",
@@ -34,7 +34,7 @@ describe('LocalityGeometryService', () => {
       "geometry": {},
       "properties": {
         "adm_level": "city",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
         "state_id": "11",
@@ -42,16 +42,16 @@ describe('LocalityGeometryService', () => {
         "state_abbreviation": "RO",
         "city_id": "1100015",
         "city_name": "Alta Floresta D'Oeste",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
   }];
   const countriesResponseFromServer = [{
     "country_name": "Brasil",
-    "country_id": "BR",
+    "country_code": "BR",
     "region_name": null,
-    "region_id": null,
+    "region_code": null,
     "state_name": null,
     "state_abbreviation": null,
     "state_id": null,
@@ -63,16 +63,16 @@ describe('LocalityGeometryService', () => {
       "geometry": {},
       "properties": {
         "adm_level": "country",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
   }];
   const regionsResponseFromServer = [{
     "country_name": "Brasil",
-    "country_id": "BR",
+    "country_code": "BR",
     "region_name": "Norte",
-    "region_id": "1",
+    "region_code": "1",
     "state_name": null,
     "state_abbreviation": null,
     "state_id": null,
@@ -84,19 +84,19 @@ describe('LocalityGeometryService', () => {
       "geometry": {},
       "properties": {
         "adm_level": "region",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
   }];
   const statesResponseFromServer = [{
     "country_name": "Brasil",
-    "country_id": "BR",
+    "country_code": "BR",
     "region_name": "Norte",
-    "region_id": "1",
+    "region_code": "1",
     "state_name": "Rondônia",
     "state_abbreviation": "RO",
     "state_id": "11",
@@ -108,13 +108,13 @@ describe('LocalityGeometryService', () => {
       "geometry": {},
       "properties": {
         "adm_level": "state",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
         "state_id": "11",
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
@@ -127,15 +127,15 @@ describe('LocalityGeometryService', () => {
 
     httpTestingController = TestBed.inject(HttpTestingController);
 
-    service = TestBed.inject(LocalityGeometryService);
+    service = TestBed.inject(LocalityMapService);
 
     const host = environment.postgrestHost;
     //@ts-ignore
-    const path = service._postgrestLocalityGeometryPath;
+    const path = service._postgrestLocalityMapPath;
     endpointUri = `${host}${path}`
 
     //@ts-ignore
-    const viewPath = service._viewLocalityGeometryAutocompltePath;
+    const viewPath = service._viewLocalityMapAutocompletePath;
     endpointViewUri = `${host}${viewPath}`;
   });
 
@@ -161,7 +161,7 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should return expected data', (done) => {
-      const expectedData: LocalityGeometry[] = countriesResponseFromServer.map((item) => new LocalityGeometry().deserialize(item));
+      const expectedData: LocalityMap[] = countriesResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
       service.getCountries().subscribe(data => {
         expect(data).toEqual(expectedData);
@@ -175,7 +175,7 @@ describe('LocalityGeometryService', () => {
 
   describe('#getRegionsByCountry', () => {
     beforeEach(() => {
-      query = `adm_level=eq.region&country_id=eq.${countryId}`;
+      query = `adm_level=eq.region&country_code=eq.${countryId}`;
     });
 
     it('should exists', () => {
@@ -191,7 +191,7 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should return expected data', (done) => {
-      const expectedData: LocalityGeometry[] = regionsResponseFromServer.map((item) => new LocalityGeometry().deserialize(item));
+      const expectedData: LocalityMap[] = regionsResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
       service.getRegionsByCountry(countryId).subscribe(data => {
         expect(data).toEqual(expectedData);
@@ -205,7 +205,7 @@ describe('LocalityGeometryService', () => {
 
   describe('#getStatesByRegion', () => {
     beforeAll(() => {
-      query = `adm_level=eq.state&country_id=eq.${countryId}&region_id=eq.${regionId}`;
+      query = `adm_level=eq.state&country_code=eq.${countryId}&region_code=eq.${regionId}`;
     });
 
     it('should exists', () => {
@@ -221,7 +221,7 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should return expected data', (done) => {
-      const expectedData: LocalityGeometry[] = statesResponseFromServer.map((item) => new LocalityGeometry().deserialize(item));
+      const expectedData: LocalityMap[] = statesResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
       service.getStatesByRegion(countryId, regionId).subscribe(data => {
         expect(data).toEqual(expectedData);
@@ -235,7 +235,7 @@ describe('LocalityGeometryService', () => {
 
   describe('#getCitiesByState', () => {
     beforeAll(() => {
-      query = `adm_level=eq.city&country_id=eq.${countryId}&region_id=eq.${regionId}&state_id=eq.${stateId}`;
+      query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_id=eq.${stateId}`;
     });
 
     it('should exists', () => {
@@ -251,7 +251,7 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should return expected data', (done) => {
-      const expectedData: LocalityGeometry[] = citiesResponseFromServer.map((item) => new LocalityGeometry().deserialize(item));
+      const expectedData: LocalityMap[] = citiesResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
       service.getCitiesByState(countryId, regionId, stateId).subscribe(data => {
         expect(data).toEqual(expectedData);
@@ -271,25 +271,25 @@ describe('LocalityGeometryService', () => {
     });
 
     it('should throw error when locality list is empty', () => {
-      expect(() => service.getFeatureCollectionFromLocalityList(new Array<LocalityGeometry>()))
+      expect(() => service.getFeatureCollectionFromLocalityList(new Array<LocalityMap>()))
         .toThrow(new Error('Get Feature Collection: Locality list was not provided!'));
     })
 
     it('should works', () => {
-      const localityGeometryList: LocalityGeometry[] = citiesResponseFromServer.map((item) => new LocalityGeometry().deserialize(item));
+      const localityMapList: LocalityMap[] = citiesResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
-      const result = service.getFeatureCollectionFromLocalityList(localityGeometryList);
+      const result = service.getFeatureCollectionFromLocalityList(localityMapList);
 
       expect(result).toBeTruthy();
       expect(result.type).toEqual('FeatureCollection');
       expect(result.features.length).toBeGreaterThan(0);
-      expect(result.features[0]).toEqual(localityGeometryList[0].geometry);
+      expect(result.features[0]).toEqual(localityMapList[0].geometry);
     })
   });
 
   describe('#getLocalityAutocompleteByCountry', () => {
     beforeEach(() => {
-      query = `country_id=eq.${countryId}&limit=5`;
+      query = `country_code=eq.${countryId}&limit=5`;
     });
 
     it('should exists', () => {
@@ -321,7 +321,7 @@ describe('LocalityGeometryService', () => {
       query += `&name=ilike.${searchString.replace(' ', '*')}`;
       query += `&order=name.asc`;
 
-      const expectedData: LocalityGeometryAutocomplete[] = localitiesGeometryAutocompleteResponseFromServer.map((item) => new LocalityGeometryAutocomplete().deserialize(item));
+      const expectedData: LocalityMapAutocomplete[] = localitiesMapAutocompleteResponseFromServer.map((item) => new LocalityMapAutocomplete().deserialize(item));
 
       service.getLocalityAutocompleteByCountry(countryId, term).subscribe(data => {
         expect(data).toEqual(expectedData);
@@ -329,7 +329,7 @@ describe('LocalityGeometryService', () => {
       });
 
       const testRequest = httpTestingController.expectOne(`${endpointViewUri}?${query}`);
-      testRequest.flush(localitiesGeometryAutocompleteResponseFromServer);
+      testRequest.flush(localitiesMapAutocompleteResponseFromServer);
     });
   });
 });

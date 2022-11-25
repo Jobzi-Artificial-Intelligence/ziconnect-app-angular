@@ -1,8 +1,8 @@
-import { City, LocalityGeometry, Region, State } from "../";
+import { City, LocalityMap, Region, State } from "..";
 import { Deserializable } from "../deserializable.model";
 
-export class LocalityGeometryAutocomplete
-  extends LocalityGeometry
+export class LocalityMapAutocomplete
+  extends LocalityMap
   implements Deserializable {
   code: string;
   name: string;
@@ -18,7 +18,7 @@ export class LocalityGeometryAutocomplete
   }
 
   deserialize(input: any): this {
-    Object.assign(this, new LocalityGeometry().deserialize(input));
+    Object.assign(this, new LocalityMap().deserialize(input));
 
     this.code = input.id;
     this.name = input.name;
