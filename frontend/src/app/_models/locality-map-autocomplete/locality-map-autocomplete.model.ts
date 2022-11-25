@@ -1,8 +1,8 @@
-import { City, LocalityGeometry, Region, State } from "../";
+import { City, LocalityMap, Region, State } from "..";
 import { Deserializable } from "../deserializable.model";
 
-export class LocalityGeometryAutocomplete
-  extends LocalityGeometry
+export class LocalityMapAutocomplete
+  extends LocalityMap
   implements Deserializable {
   code: string;
   name: string;
@@ -18,21 +18,21 @@ export class LocalityGeometryAutocomplete
   }
 
   deserialize(input: any): this {
-    Object.assign(this, new LocalityGeometry().deserialize(input));
+    Object.assign(this, new LocalityMap().deserialize(input));
 
     this.code = input.id;
     this.name = input.name;
 
-    if (this.regionId) {
-      this.region = new Region(this.regionId, this.regionName);
+    if (this.regionCode) {
+      this.region = new Region(this.regionCode, this.regionName);
     }
 
-    if (this.stateId && this.region) {
-      this.state = new State(this.stateId, this.stateName, this.region)
+    if (this.stateCode && this.region) {
+      this.state = new State(this.stateCode, this.stateName, this.region)
     }
 
-    if (this.cityId && this.state) {
-      this.city = new City(this.cityId.toString(), this.cityName.toString(), this.state);
+    if (this.municipalityCode && this.state) {
+      this.city = new City(this.municipalityCode.toString(), this.municipalityName.toString(), this.state);
     }
 
     return this;
@@ -40,8 +40,8 @@ export class LocalityGeometryAutocomplete
 
   get getText() {
     let names = [] as Array<string>;
-    if (this.cityName && this.cityName.length > 0) {
-      names.push(this.cityName.toString());
+    if (this.municipalityName && this.municipalityName.length > 0) {
+      names.push(this.municipalityName.toString());
     }
 
     if (this.stateName && this.stateName.length > 0) {
