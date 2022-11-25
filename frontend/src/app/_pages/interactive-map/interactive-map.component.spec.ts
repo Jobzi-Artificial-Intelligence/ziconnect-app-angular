@@ -17,7 +17,7 @@ import { ShortNumberPipe } from "src/app/_pipes/short-number.pipe";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { of, throwError } from 'rxjs';
-import { citiesLocalityGeometryList, regionsLocalityGeometryList, statesLocalityGeometryList } from "../../../test/locality-map-mock";
+import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from "../../../test/locality-map-mock";
 import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock"
 
 describe('Component: InteractiveMap', () => {
@@ -28,9 +28,9 @@ describe('Component: InteractiveMap', () => {
     open: jasmine.createSpy()
   }
 
-  let mockCitiesLocalityGeometry = [] as any;
-  let mockRegionsLocalityGeometry = [] as any;
-  let mockStatesLocalityGeometry = [] as any;
+  let mockCitiesLocalityMap = [] as any;
+  let mockRegionsLocalityMap = [] as any;
+  let mockStatesLocalityMap = [] as any;
   let mockGeoJsonCities = {} as any;
   let mockGeoJsonRegions = {} as any;
   let mockGeoJsonStates = {} as any;
@@ -69,9 +69,9 @@ describe('Component: InteractiveMap', () => {
     });
 
     // Clone object
-    mockCitiesLocalityGeometry = JSON.parse(JSON.stringify(citiesLocalityGeometryList));
-    mockRegionsLocalityGeometry = JSON.parse(JSON.stringify(regionsLocalityGeometryList));
-    mockStatesLocalityGeometry = JSON.parse(JSON.stringify(statesLocalityGeometryList));
+    mockCitiesLocalityMap = JSON.parse(JSON.stringify(citiesLocalityMapList));
+    mockRegionsLocalityMap = JSON.parse(JSON.stringify(regionsLocalityMapList));
+    mockStatesLocalityMap = JSON.parse(JSON.stringify(statesLocalityMapList));
     mockGeoJsonCities = JSON.parse(JSON.stringify(geoJsonCities));
     mockGeoJsonRegions = JSON.parse(JSON.stringify(geoJsonRegions));
     mockGeoJsonStates = JSON.parse(JSON.stringify(geoJsonStates));
@@ -125,7 +125,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'toggleFilterSettingsExpanded');
 
       component.googleMap.data.addGeoJson(mockGeoJsonRegions, {
-        idPropertyName: 'region_id'
+        idPropertyName: 'region_code'
       });
 
       component.googleMap.data.forEach(feature => { feature.setProperty('stats', mockRegionStats) })
@@ -183,7 +183,7 @@ describe('Component: InteractiveMap', () => {
     it('should works', () => {
       const rangeColorIndex = 0;
 
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_id' });
+      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
 
       // Creates test scenario
       component.googleMap.data.forEach((feature) => {
@@ -208,7 +208,7 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_id' });
+      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
 
       // Creates test scenario
       component.googleMap.data.forEach((feature) => {
@@ -239,14 +239,14 @@ describe('Component: InteractiveMap', () => {
 
       // Initializing variables and setting properties values for test scenario
       const cityFromGeoJson = mockGeoJsonCities.features[0].properties;
-      const region = new Region(cityFromGeoJson.region_id, cityFromGeoJson.region_name);
-      const state = new State(cityFromGeoJson.state_id, cityFromGeoJson.state_name, region);
-      const city = new City(cityFromGeoJson.city_id, cityFromGeoJson.city_name, state);
+      const region = new Region(cityFromGeoJson.region_code, cityFromGeoJson.region_name);
+      const state = new State(cityFromGeoJson.state_code, cityFromGeoJson.state_name, region);
+      const city = new City(cityFromGeoJson.municipality_code, cityFromGeoJson.municipality_name, state);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, { idPropertyName: 'city_id' });
+      component.googleMap.data.addGeoJson(mockGeoJsonCities, { idPropertyName: 'municipality_code' });
 
       component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('city_id'));
+        feature.setProperty('code', feature.getProperty('municipality_code'));
       });
 
       // Execute test function
@@ -255,15 +255,15 @@ describe('Component: InteractiveMap', () => {
       // Test result expectations
       expect(component.mapFilter.selectedCity).toEqual(city);
 
-      const cityFeature = component.googleMap.data.getFeatureById(cityFromGeoJson.city_id);
+      const cityFeature = component.googleMap.data.getFeatureById(cityFromGeoJson.municipality_code);
       if (cityFeature) {
         expect(component.openStatsPanel).toHaveBeenCalledWith(cityFeature);
         expect(component.zoomToFeature).toHaveBeenCalledWith(cityFeature);
       }
 
-      expect(component.addSchoolMarker).toHaveBeenCalledWith(cityFromGeoJson.city_id);
+      expect(component.addSchoolMarker).toHaveBeenCalledWith(cityFromGeoJson.municipality_code);
       component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== cityFromGeoJson.city_id) {
+        if (feature.getProperty('code') !== cityFromGeoJson.municipality_code) {
           expect(feature.getProperty('state')).toEqual('unfocused');
           expect(feature.getProperty('filtered')).toEqual(false);
         } else {
@@ -291,12 +291,12 @@ describe('Component: InteractiveMap', () => {
 
       // Initializing variables and setting properties values for test scenario
       const regionFromGeoJson = mockGeoJsonRegions.features[0].properties;
-      const region = new Region(regionFromGeoJson.region_id, regionFromGeoJson.region_name);
+      const region = new Region(regionFromGeoJson.region_code, regionFromGeoJson.region_name);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_id' });
+      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
 
       component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('region_id'));
+        feature.setProperty('code', feature.getProperty('region_code'));
       });
 
       // Execute test function
@@ -308,7 +308,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.mapFilter.selectedState).toEqual(undefined);
 
       component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== regionFromGeoJson.region_id) {
+        if (feature.getProperty('code') !== regionFromGeoJson.region_code) {
           expect(feature.getProperty('state')).toEqual('unfocused');
           expect(feature.getProperty('filtered')).toEqual(false);
         } else {
@@ -323,7 +323,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.schools).toEqual([]);
       expect(component.schoolMarkers).toEqual([]);
 
-      const regionFeature = component.googleMap.data.getFeatureById(regionFromGeoJson.region_id);
+      const regionFeature = component.googleMap.data.getFeatureById(regionFromGeoJson.region_code);
       if (regionFeature) {
         expect(component.openStatsPanel).toHaveBeenCalledWith(regionFeature);
         expect(component.zoomToFeature).toHaveBeenCalledWith(regionFeature);
@@ -348,13 +348,13 @@ describe('Component: InteractiveMap', () => {
 
       // Initializing variables and setting properties values for test scenario
       const stateFromGeoJson = mockGeoJsonStates.features[0].properties;
-      const region = new Region(stateFromGeoJson.region_id, stateFromGeoJson.region_name);
-      const state = new State(stateFromGeoJson.state_id, stateFromGeoJson.state_name, region);
+      const region = new Region(stateFromGeoJson.region_code, stateFromGeoJson.region_name);
+      const state = new State(stateFromGeoJson.state_code, stateFromGeoJson.state_name, region);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonStates, { idPropertyName: 'state_id' });
+      component.googleMap.data.addGeoJson(mockGeoJsonStates, { idPropertyName: 'state_code' });
 
       component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('state_id'));
+        feature.setProperty('code', feature.getProperty('state_code'));
       });
 
       // Execute test function
@@ -372,7 +372,7 @@ describe('Component: InteractiveMap', () => {
       expect(component.loadSchools).toHaveBeenCalledWith(state.code.toString());
 
       component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== stateFromGeoJson.state_id) {
+        if (feature.getProperty('code') !== stateFromGeoJson.state_code) {
           expect(feature.getProperty('state')).toEqual('unfocused');
           expect(feature.getProperty('filtered')).toEqual(false);
         } else {
@@ -381,7 +381,7 @@ describe('Component: InteractiveMap', () => {
         }
       });
 
-      const cityFeature = component.googleMap.data.getFeatureById(stateFromGeoJson.state_id);
+      const cityFeature = component.googleMap.data.getFeatureById(stateFromGeoJson.state_code);
       if (cityFeature) {
         expect(component.openStatsPanel).toHaveBeenCalledWith(cityFeature);
         expect(component.zoomToFeature).toHaveBeenCalledWith(cityFeature);
@@ -434,12 +434,12 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByCityCode = jasmine.createSpy().and.returnValue(mockCityStats);
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityGeometry));
+      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityMap));
       await component.loadCitiesGeoJson('', '', '');
 
       let count = 0;
       component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockCitiesLocalityGeometry.length);
+      expect(count).toEqual(mockCitiesLocalityMap.length);
     });
   });
 
@@ -484,12 +484,12 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByRegionCode = jasmine.createSpy().and.returnValue(mockRegionStats);
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(of(mockRegionsLocalityGeometry));
+      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(of(mockRegionsLocalityMap));
       await component.loadRegionsGeoJson();
 
       let count = 0;
       component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockRegionsLocalityGeometry.length);
+      expect(count).toEqual(mockRegionsLocalityMap.length);
     });
   });
 
@@ -534,12 +534,12 @@ describe('Component: InteractiveMap', () => {
       component.statsCsvHelper.getStatsByStateCode = jasmine.createSpy().and.returnValue(mockStateStats);
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityGeometry));
+      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityMap));
       await component.loadStatesGeoJson('', '');
 
       let count = 0;
       component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockStatesLocalityGeometry.length);
+      expect(count).toEqual(mockStatesLocalityMap.length);
     });
   });
 
@@ -558,10 +558,10 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         const bounds = new google.maps.LatLngBounds();
         component.processPoints(dataFeature?.getGeometry(), bounds.extend, bounds);
@@ -609,7 +609,7 @@ describe('Component: InteractiveMap', () => {
         feature: {
           getProperty: (propertyName: string) => {
             if (propertyName === 'code') return mockCity.code;
-            if (propertyName === 'adm_level') return 'city';
+            if (propertyName === 'adm_level') return 'municipality';
 
             return '';
           }
@@ -687,16 +687,16 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         spyOn(component.info, 'open');
 
         const geoJsonProperties = mockGeoJsonCities.features[0].properties;
-        dataFeature.setProperty('code', geoJsonProperties.city_id);
-        dataFeature.setProperty('name', geoJsonProperties.city_name);
+        dataFeature.setProperty('code', geoJsonProperties.municipality_code);
+        dataFeature.setProperty('name', geoJsonProperties.municipality_name);
         dataFeature.setProperty('state', 'normal');
         dataFeature.setProperty('stats', {});
 
@@ -707,8 +707,8 @@ describe('Component: InteractiveMap', () => {
         component.mouseInToRegion(event);
 
         expect(component.infoContent.content).toBeTruthy();
-        expect(component.infoContent.content.code).toEqual(geoJsonProperties.city_id);
-        expect(component.infoContent.content.name).toEqual(geoJsonProperties.city_name);
+        expect(component.infoContent.content.code).toEqual(geoJsonProperties.municipality_code);
+        expect(component.infoContent.content.name).toEqual(geoJsonProperties.municipality_name);
         expect(component.infoContent.content.stats).toEqual(jasmine.any(Object));
         expect(component.infoContent.content.type).toEqual(geoJsonProperties.adm_level);
         expect(event.feature.getProperty('state')).toEqual('hover');
@@ -726,10 +726,10 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         spyOn(component.info, 'close');
 
@@ -775,10 +775,10 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         spyOn(component.googleMap, 'fitBounds');
 
@@ -933,10 +933,10 @@ describe('Component: InteractiveMap', () => {
 
     it('should works without item stats', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         //@ts-ignore
         spyOn(component.alertService, 'showError');
@@ -950,10 +950,10 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
       if (dataFeature) {
         dataFeature.setProperty('stats', mockRegionStats);
 
@@ -1002,7 +1002,7 @@ describe('Component: InteractiveMap', () => {
 
       let citiesCount = 0;
       component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'city') {
+        if (feature.getProperty('adm_level') === 'municipality') {
           citiesCount++;
         }
       });
@@ -1013,7 +1013,7 @@ describe('Component: InteractiveMap', () => {
 
       citiesCount = 0;
       component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'city') {
+        if (feature.getProperty('adm_level') === 'municipality') {
           citiesCount++;
         }
       });
@@ -1153,10 +1153,10 @@ describe('Component: InteractiveMap', () => {
       };
 
       component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'city_id'
+        idPropertyName: 'municipality_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.city_id);
+      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
 
       if (dataFeature) {
         let result = component.setMapDataStyles(dataFeature);
@@ -1201,10 +1201,10 @@ describe('Component: InteractiveMap', () => {
       };
 
       component.googleMap.data.addGeoJson(geoJsonStates, {
-        idPropertyName: 'state_id'
+        idPropertyName: 'state_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(geoJsonCities.features[0].properties.state_id);
+      const dataFeature = component.googleMap.data.getFeatureById(geoJsonCities.features[0].properties.state_code);
 
       if (dataFeature) {
         let result = component.setMapDataStyles(dataFeature);
@@ -1249,10 +1249,10 @@ describe('Component: InteractiveMap', () => {
       };
 
       component.googleMap.data.addGeoJson(geoJsonRegions, {
-        idPropertyName: 'region_id'
+        idPropertyName: 'region_code'
       });
 
-      const dataFeature = component.googleMap.data.getFeatureById(geoJsonRegions.features[0].properties.region_id);
+      const dataFeature = component.googleMap.data.getFeatureById(geoJsonRegions.features[0].properties.region_code);
 
       if (dataFeature) {
         // normal state
@@ -1569,9 +1569,9 @@ describe('Component: InteractiveMap', () => {
 
       // Initializing variables and setting properties values for test scenario
       const cityFromGeoJson = mockGeoJsonCities.features[0].properties;
-      const region = new Region(cityFromGeoJson.region_id, cityFromGeoJson.region_name);
-      const state = new State(cityFromGeoJson.state_id, cityFromGeoJson.state_name, region);
-      const city = new City(cityFromGeoJson.city_id, cityFromGeoJson.city_name, state);
+      const region = new Region(cityFromGeoJson.region_code, cityFromGeoJson.region_name);
+      const state = new State(cityFromGeoJson.state_code, cityFromGeoJson.state_name, region);
+      const city = new City(cityFromGeoJson.municipality_code, cityFromGeoJson.municipality_name, state);
 
       let event = {
         option: {
@@ -1588,7 +1588,7 @@ describe('Component: InteractiveMap', () => {
 
       // Selected option type city
       event.option.value = <LocalityMapAutocomplete>{
-        administrativeLevel: 'city',
+        administrativeLevel: 'municipality',
         city: city
       }
       await component.onSelectLocationSearchOption(event);

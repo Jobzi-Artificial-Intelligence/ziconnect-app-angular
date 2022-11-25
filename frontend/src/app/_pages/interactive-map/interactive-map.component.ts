@@ -94,7 +94,7 @@ export class InteractiveMapComponent implements OnInit {
 
   title = 'Jobzi - Interactive Map';
   public filterForm!: FormGroup;
-  private localityMapService: LocalityMapService;
+
   searchLocationFilteredOptions: LocalityMapAutocomplete[] = new Array<LocalityMapAutocomplete>();
   infoContent = {
     selectedSchool: null,
@@ -182,9 +182,9 @@ export class InteractiveMapComponent implements OnInit {
     private alertService: AlertService,
     @Inject(APP_BASE_HREF) public baseHref: string,
     private ref: ChangeDetectorRef,
-    private _bottomSheet: MatBottomSheet
+    private _bottomSheet: MatBottomSheet,
+    private localityMapService: LocalityMapService
   ) {
-    this.localityMapService = new LocalityMapService(this.httpClient);
     this.loadingMap = new BehaviorSubject<boolean>(false);
   }
 
@@ -482,7 +482,7 @@ export class InteractiveMapComponent implements OnInit {
     const selectedOption = event.option.value as LocalityMapAutocomplete;
 
     switch (selectedOption.administrativeLevel) {
-      case 'city':
+      case 'municipality':
         if (selectedOption.city) {
           await this.onSelectRegion(selectedOption.city.state.region);
           await this.onSelectState(selectedOption.city.state);
@@ -593,7 +593,7 @@ export class InteractiveMapComponent implements OnInit {
   async loadCitiesGeoJson(countryCode: string, regionCode: string, stateCode: string) {
     return new Promise((resolve, reject) => {
       this.loadingMap.next(true);
-      this.loadingMessage = 'Loading cities...';
+      this.loadingMessage = 'Loading municipalities...';
 
       try {
         this.localityMapService
@@ -605,9 +605,9 @@ export class InteractiveMapComponent implements OnInit {
               //build stats
               for (let index = 0; index < featureCollection.features.length; index++) {
                 const element = featureCollection.features[index];
-                element.properties.code = element.properties['city_id'];
+                element.properties.code = element.properties['municipality_code'];
                 element.properties.filtered = true;
-                element.properties.name = element.properties['city_name'];
+                element.properties.name = element.properties['municipality_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByCityCode(element.properties.code);
 
                 //SET FILL COLOR
@@ -617,7 +617,7 @@ export class InteractiveMapComponent implements OnInit {
               }
 
               this.googleMap.data.addGeoJson(featureCollection, {
-                idPropertyName: 'city_id'
+                idPropertyName: 'municipality_code'
               });
 
               this.loadingMap.next(false);
@@ -696,7 +696,7 @@ export class InteractiveMapComponent implements OnInit {
             // BUILD STATS
             for (let index = 0; index < featureCollection.features.length; index++) {
               const element = featureCollection.features[index];
-              element.properties.code = element.properties['region_id'];
+              element.properties.code = element.properties['region_code'];
               element.properties.filtered = true;
               element.properties.name = element.properties['region_name'];
               element.properties.stats = this.statsCsvHelper.getStatsByRegionCode(element.properties.code);
@@ -708,7 +708,7 @@ export class InteractiveMapComponent implements OnInit {
             }
 
             this.googleMap.data.addGeoJson(featureCollection, {
-              idPropertyName: 'region_id',
+              idPropertyName: 'region_code',
             });
 
             this.loadingMap.next(false);
@@ -750,7 +750,7 @@ export class InteractiveMapComponent implements OnInit {
               //build stats
               for (let index = 0; index < featureCollection.features.length; index++) {
                 const element = featureCollection.features[index];
-                element.properties.code = element.properties['state_id'];
+                element.properties.code = element.properties['state_code'];
                 element.properties.filtered = true;
                 element.properties.name = element.properties['state_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByStateCode(element.properties.code);
@@ -762,7 +762,7 @@ export class InteractiveMapComponent implements OnInit {
               }
 
               this.googleMap.data.addGeoJson(featureCollection, {
-                idPropertyName: 'state_id',
+                idPropertyName: 'state_code',
               });
 
               this.loadingMap.next(false);
@@ -860,7 +860,7 @@ export class InteractiveMapComponent implements OnInit {
           this.onSelectState(state);
         }
         break;
-      case 'city':
+      case 'municipality':
         const cityCode = e.feature.getProperty('code');
         const city = this.statsCsvHelper.meta.cities.find(x => x.code.toLowerCase() === cityCode.toLowerCase());
 
@@ -1051,7 +1051,7 @@ export class InteractiveMapComponent implements OnInit {
    */
   removeCitiesFromMap() {
     this.googleMap.data.forEach(element => {
-      if (element.getProperty('adm_level') === 'city') {
+      if (element.getProperty('adm_level') === 'municipality') {
         this.googleMap.data.remove(element);
       }
     });
@@ -1098,7 +1098,7 @@ export class InteractiveMapComponent implements OnInit {
       case 'state':
         zIndex = 2;
         break;
-      case 'city':
+      case 'municipality':
         zIndex = 3;
         break;
       default:

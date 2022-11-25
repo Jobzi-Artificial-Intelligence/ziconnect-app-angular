@@ -1,29 +1,29 @@
 export const localityMapAutocompleteResponseFromServer = {
-  "country_id": "BR",
+  "country_code": "BR",
   "country_name": "Brasil",
-  "region_id": "5",
-  "region_name": "Centro-Oeste",
-  "state_id": "51",
-  "state_name": "Mato Grosso",
-  "state_abbreviation": "MT",
-  "city_id": "5106000",
-  "city_name": "Nortelândia",
-  "id": "5106000",
-  "name": "Nortelândia",
-  "adm_level": "city"
+  "region_code": "3",
+  "region_name": "Sudeste",
+  "state_code": "35",
+  "state_name": "São Paulo",
+  "state_abbreviation": "SP",
+  "municipality_code": "3540002",
+  "municipality_name": "Pompéia",
+  "id": "3540002",
+  "name": "Pompéia",
+  "adm_level": "municipality"
 };
 
 export const localitiesMapAutocompleteResponseFromServer = [{
-  "country_id": "BR",
+  "country_code": "BR",
   "country_name": "Brasil",
-  "region_id": "5",
-  "region_name": "Centro-Oeste",
-  "state_id": "51",
-  "state_name": "Mato Grosso",
-  "state_abbreviation": "MT",
-  "city_id": "5106000",
-  "city_name": "Nortelândia",
-  "id": "5106000",
-  "name": "Nortelândia",
-  "adm_level": "city"
+  "region_code": "3",
+  "region_name": "Sudeste",
+  "state_code": "35",
+  "state_name": "São Paulo",
+  "state_abbreviation": "SP",
+  "municipality_code": "3540002",
+  "municipality_name": "Pompéia",
+  "id": "3540002",
+  "name": "Pompéia",
+  "adm_level": "municipality"
 }];

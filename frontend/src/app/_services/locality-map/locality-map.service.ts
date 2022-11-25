@@ -80,7 +80,7 @@ export class LocalityMapService {
    * @returns LocalityGeometry[]
    */
   getCitiesByState(countryId: string, regionId: string, stateId: string): Observable<LocalityMap[]> {
-    const query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_id=eq.${stateId}`;
+    const query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_code=eq.${stateId}`;
 
     return this.http
       .get<any>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {

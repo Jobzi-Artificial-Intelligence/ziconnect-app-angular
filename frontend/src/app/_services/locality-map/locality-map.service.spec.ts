@@ -25,7 +25,7 @@ describe('LocalityMapService', () => {
     "region_code": "1",
     "state_name": "Rondônia",
     "state_abbreviation": "RO",
-    "state_id": "11",
+    "state_code": "11",
     "city_name": "Alta Floresta D'Oeste",
     "city_id": "1100015",
     "adm_level": "city",
@@ -37,7 +37,7 @@ describe('LocalityMapService', () => {
         "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "11",
+        "state_code": "11",
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
         "city_id": "1100015",
@@ -54,7 +54,7 @@ describe('LocalityMapService', () => {
     "region_code": null,
     "state_name": null,
     "state_abbreviation": null,
-    "state_id": null,
+    "state_code": null,
     "city_name": null,
     "city_id": null,
     "adm_level": "country",
@@ -75,7 +75,7 @@ describe('LocalityMapService', () => {
     "region_code": "1",
     "state_name": null,
     "state_abbreviation": null,
-    "state_id": null,
+    "state_code": null,
     "city_name": null,
     "city_id": null,
     "adm_level": "region",
@@ -99,7 +99,7 @@ describe('LocalityMapService', () => {
     "region_code": "1",
     "state_name": "Rondônia",
     "state_abbreviation": "RO",
-    "state_id": "11",
+    "state_code": "11",
     "city_name": null,
     "city_id": null,
     "adm_level": "state",
@@ -111,7 +111,7 @@ describe('LocalityMapService', () => {
         "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "11",
+        "state_code": "11",
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
         "country_code": "BR",
@@ -235,7 +235,7 @@ describe('LocalityMapService', () => {
 
   describe('#getCitiesByState', () => {
     beforeAll(() => {
-      query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_id=eq.${stateId}`;
+      query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_code=eq.${stateId}`;
     });
 
     it('should exists', () => {

@@ -7,15 +7,15 @@ describe('Model: LocalityGeometryAutocomplete', () => {
 
     // Inherit properties
     expect(autocompleteObj.administrativeLevel).toEqual('country');
-    expect(autocompleteObj.cityId).toEqual('');
-    expect(autocompleteObj.cityName).toEqual('');
-    expect(autocompleteObj.countryId).toEqual('');
+    expect(autocompleteObj.municipalityCode).toEqual('');
+    expect(autocompleteObj.municipalityName).toEqual('');
+    expect(autocompleteObj.countryCode).toEqual('');
     expect(autocompleteObj.countryName).toEqual('');
     expect(autocompleteObj.geometry).toEqual(jasmine.any(Object));
-    expect(autocompleteObj.regionId).toEqual('');
+    expect(autocompleteObj.regionCode).toEqual('');
     expect(autocompleteObj.regionName).toEqual('');
     expect(autocompleteObj.stateAbbreviation).toEqual('');
-    expect(autocompleteObj.stateId).toEqual('');
+    expect(autocompleteObj.stateCode).toEqual('');
     expect(autocompleteObj.stateName).toEqual('');
 
     // Own properties
@@ -37,16 +37,16 @@ describe('Model: LocalityGeometryAutocomplete', () => {
     it('should works', () => {
       const autocompleteObj = new LocalityMapAutocomplete().deserialize(localityMapAutocompleteResponseFromServer);
 
-      expect(autocompleteObj.code).toEqual(autocompleteObj.cityId);
-      expect(autocompleteObj.name).toEqual(autocompleteObj.cityName);
+      expect(autocompleteObj.code).toEqual(autocompleteObj.municipalityCode);
+      expect(autocompleteObj.name).toEqual(autocompleteObj.municipalityName);
       expect(autocompleteObj.city).toBeDefined();
-      expect(autocompleteObj.city?.code).toEqual(autocompleteObj.cityId.toString());
-      expect(autocompleteObj.city?.name).toEqual(autocompleteObj.cityName.toString());
+      expect(autocompleteObj.city?.code).toEqual(autocompleteObj.municipalityCode.toString());
+      expect(autocompleteObj.city?.name).toEqual(autocompleteObj.municipalityName.toString());
       expect(autocompleteObj.state).toBeDefined();
-      expect(autocompleteObj.state?.code).toEqual(autocompleteObj.stateId.toString());
+      expect(autocompleteObj.state?.code).toEqual(autocompleteObj.stateCode.toString());
       expect(autocompleteObj.state?.name).toEqual(autocompleteObj.stateName.toString());
       expect(autocompleteObj.region).toBeDefined();
-      expect(autocompleteObj.region?.code).toEqual(autocompleteObj.regionId.toString());
+      expect(autocompleteObj.region?.code).toEqual(autocompleteObj.regionCode.toString());
       expect(autocompleteObj.region?.name).toEqual(autocompleteObj.regionName.toString());
     });
   });
@@ -64,7 +64,7 @@ describe('Model: LocalityGeometryAutocomplete', () => {
       expect(autocompleteObj.getText).toEqual('State01, Region01');
 
       // city, state and region name
-      autocompleteObj.cityName = 'City01';
+      autocompleteObj.municipalityName = 'City01';
       expect(autocompleteObj.getText).toEqual('City01, State01, Region01');
     });
   });
