@@ -43,10 +43,3 @@ jobs:
 
       - name: Build
         run: yarn run ci:build-production
-
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests and collect coverage
-        run: npm run test
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
