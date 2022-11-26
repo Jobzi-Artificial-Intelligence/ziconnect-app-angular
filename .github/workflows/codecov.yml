@@ -2,6 +2,11 @@ name: Running Code Coverage
 
 on: [push, pull_request]
 
+defaults:
+  run:
+    shell: bash
+    working-directory: frontend
+
 jobs:
   build:
 
