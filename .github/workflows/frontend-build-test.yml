@@ -40,6 +40,9 @@ jobs:
 
       - name: Unit test
         run: yarn run ci:test
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
       - name: Build
         run: yarn run ci:build-production
