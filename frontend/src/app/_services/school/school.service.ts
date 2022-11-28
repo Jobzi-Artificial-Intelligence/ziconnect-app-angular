@@ -1,7 +1,10 @@
-import { Inject, Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { School } from "../../_models";
-import { APP_BASE_HREF } from "@angular/common";
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { LocalityMap, School } from '../../_models';
+import { APP_BASE_HREF } from '@angular/common';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
 export interface ISchoolColumnGroup {
   id: string,
@@ -18,11 +21,23 @@ export interface ISchoolColumn {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class SchoolService {
-  csvFilePath = 'assets/datasets/schools/';
+  private _localityMapColumns = ['id',
+    'country_name',
+    'country_code',
+    'region_name',
+    'region_code',
+    'state_name',
+    'state_abbreviation',
+    'state_code',
+    'municipality_name',
+    'municipality_code',
+    'adm_level',];
+  private _postgrestSchoolPath = 'school';
   fileSuffix = '_schools_dataset.csv';
+
 
   schoolColumnGroups: Array<ISchoolColumnGroup> = [{
     id: 'school',
@@ -87,32 +102,32 @@ export class SchoolService {
       columnDef: 'city',
       header: 'City Name',
       description: 'City name',
-      cell: (x: School): string => `${x.city}`
+      cell: (x: School): string => `${x.localityMap.municipalityName}`
     }, {
       columnDef: 'city_code',
       header: 'City Code',
       description: 'City code',
-      cell: (x: School): string => `${x.city_code}`
+      cell: (x: School): string => `${x.localityMap.municipalityCode}`
     }, {
       columnDef: 'region',
       header: 'Region name',
       description: 'Region name',
-      cell: (x: School): string => `${x.region}`
+      cell: (x: School): string => `${x.localityMap.regionName}`
     }, {
       columnDef: 'region_code',
       header: 'Region Code',
       description: 'Region code',
-      cell: (x: School): string => `${x.region_code}`
+      cell: (x: School): string => `${x.localityMap.regionCode}`
     }, {
       columnDef: 'state',
       header: 'State Name',
       description: 'State name',
-      cell: (x: School): string => `${x.state}`
+      cell: (x: School): string => `${x.localityMap.stateName}`
     }, {
       columnDef: 'state_code',
       header: 'State Code',
       description: 'State code',
-      cell: (x: School): string => `${x.state_code}`
+      cell: (x: School): string => `${x.localityMap.stateCode}`
     }]
   }, {
     id: 'connectivity',
@@ -213,18 +228,59 @@ export class SchoolService {
   }
 
   /**
-   * Gets csv dataset file and convert to string
-   * @returns Observable<string> with csv file content
+   * Returns all schools from locality map id
+   * @param localityMapId locality map id
+   * @returns Observable<School[]>
    */
-  getSchoolsByStateCode(countryCode: string, stateCode: string) {
-    if (!countryCode) {
-      throw new Error('ISO 2 digits country code not provided!');
+  getSchoolsByLocalityMapId(localityMapId: number): Observable<School[]> {
+    const query = `select=*,locality_map!inner(${this._localityMapColumns.join(',')})&locality_map_id=eq.${localityMapId}`;
+
+    return this.http
+      .get<any>(`${environment.postgrestHost}${this._postgrestSchoolPath}?${query}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new School().deserialize(item));
+        })
+      );
+  }
+
+  /**
+   * Returns all schools from locality map id
+   * @param countryCode country code
+   * @param regionCode region code
+   * @param stateCode state code
+   * @param municipalityCode municipality code
+   * @returns Observable<School[]>
+   */
+  getSchoolsByLocalityMapCodes(countryCode: string | null, regionCode: string | null, stateCode: string | null, municipalityCode: string | null): Observable<School[]> {
+    let query = `select=*,locality_map!inner(${this._localityMapColumns.join(',')})`;
+
+    if (countryCode !== null) {
+      query += `&locality_map.country_code=eq.${countryCode}`;
     }
 
-    if (!stateCode) {
-      throw new Error('State code not provided!');
+    if (regionCode !== null) {
+      query += `&locality_map.region_code=eq.${regionCode}`;
     }
 
-    return this.http.get(`${this.baseHref}${this.csvFilePath}${countryCode.toLowerCase()}/${stateCode.toUpperCase()}${this.fileSuffix}`, { responseType: 'text' });
+    if (stateCode !== null) {
+      query += `&locality_map.state_code=eq.${stateCode}`;
+    }
+
+    if (municipalityCode !== null) {
+      query += `&locality_map.municipality_code=eq.${municipalityCode}`;
+    }
+
+    return this.http
+      .get<any>(`${environment.postgrestHost}${this._postgrestSchoolPath}?${query}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new School().deserialize(item));
+        })
+      );
   }
 }

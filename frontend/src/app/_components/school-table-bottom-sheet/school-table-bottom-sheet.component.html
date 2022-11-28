@@ -1,6 +1,6 @@
 <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
   <mat-spinner [diameter]="50"></mat-spinner><br>
-  <div class="color-tp-body f-size-14 text-center">{{loadingMessage}}</div>
+  <div class="color-tp-body f-size-14 text-center">Loading schools...</div>
 </div>
 <div [ngClass]="{'display-none': loading}" class="main-container">
   <header class="flex items-center">
@@ -14,17 +14,20 @@
     <!-- ACTION BUTTONS -->
     <div class="buttons flex items-center justify-between">
       <div class="button-container">
-        <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download as csv" (click)="onButtonExportClick()">
+        <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download as csv"
+          (click)="onButtonExportClick()">
           <mat-icon class="material-icons-outlined">file_download</mat-icon>
         </button>
       </div>
       <div class="button-container">
-        <button mat-mini-fab color="primary" aria-label="Select columns" matTooltip="Add or remove columns" (click)="onButtonChooseColumnsClick()">
+        <button mat-mini-fab color="primary" aria-label="Select columns" matTooltip="Add or remove columns"
+          (click)="onButtonChooseColumnsClick()">
           <mat-icon class="material-icons-outlined">view_column</mat-icon>
         </button>
       </div>
       <div class="button-container">
-        <button mat-mini-fab color="accent" aria-label="Close bottom sheet" matTooltip="Close" (click)="onButtonCloseClick()">
+        <button mat-mini-fab color="accent" aria-label="Close bottom sheet" matTooltip="Close"
+          (click)="onButtonCloseClick()">
           <mat-icon class="material-icons-outlined">close</mat-icon>
         </button>
       </div>
