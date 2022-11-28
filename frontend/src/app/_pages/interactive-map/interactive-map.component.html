@@ -43,8 +43,8 @@
             search
           </mat-icon>
           <div class="separator"></div>
-          <input matInput placeholder="Region, State or city" formControlName="searchFilter" [matAutocomplete]="auto"
-            (focus)="toggleFilterSettingsExpanded(false)" />
+          <input matInput placeholder="Region, State or municipality" formControlName="searchFilter"
+            [matAutocomplete]="auto" (focus)="toggleFilterSettingsExpanded(false)" />
         </div>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getSearchLocationAutocompleteText"
           (optionSelected)="onSelectLocationSearchOption($event)">
@@ -192,7 +192,7 @@
           <div *ngIf="mapStatsPanel.itemType === 'state'">
             <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.citiesCount | shortNumber}} cities)
           </div>
-          <div *ngIf="mapStatsPanel.itemType === 'city'">
+          <div *ngIf="mapStatsPanel.itemType === 'municipality'">
             <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats?.schoolsCount | shortNumber}} schools)
           </div>
           <!-- TOOLBAR BUTTONS -->

@@ -4,48 +4,51 @@ enum AdministrativeLevel {
   Country = 'country',
   Region = 'region',
   State = 'state',
-  City = 'city'
+  Municipality = 'municipality'
 }
 
-export class LocalityGeometry implements Deserializable {
-  countryId: String;
+export class LocalityMap implements Deserializable {
+  id: number;
+  countryCode: String;
   countryName: String;
-  regionId: String;
+  regionCode: String;
   regionName: String;
-  stateId: String;
+  stateCode: String;
   stateAbbreviation: String;
   stateName: String;
-  cityId: String;
-  cityName: String;
+  municipalityCode: String;
+  municipalityName: String;
   administrativeLevel: AdministrativeLevel;
 
   // GeoJson feature object
   geometry: any;
 
   constructor() {
+    this.id = 0;
     this.administrativeLevel = AdministrativeLevel.Country;
-    this.countryId = '';
+    this.countryCode = '';
     this.countryName = '';
-    this.regionId = '';
+    this.regionCode = '';
     this.regionName = '';
     this.stateAbbreviation = '';
-    this.stateId = '';
+    this.stateCode = '';
     this.stateName = '';
-    this.cityId = '';
-    this.cityName = '';
+    this.municipalityCode = '';
+    this.municipalityName = '';
     this.geometry = {};
   }
 
   deserialize(input: any): this {
+    this.id = input.id;
     this.administrativeLevel = input.adm_level;
-    this.cityId = input.city_id;
-    this.cityName = input.city_name;
-    this.countryId = input.country_id;
+    this.municipalityCode = input.municipality_code;
+    this.municipalityName = input.municipality_name;
+    this.countryCode = input.country_code;
     this.countryName = input.country_name;
-    this.regionId = input.region_id;
+    this.regionCode = input.region_code;
     this.regionName = input.region_name;
     this.stateAbbreviation = input.state_abbreviation;
-    this.stateId = input.state_id;
+    this.stateCode = input.state_code;
     this.stateName = input.state_name;
     this.geometry = input.geometry;
 

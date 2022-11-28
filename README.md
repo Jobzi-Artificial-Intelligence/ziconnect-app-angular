@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project/branch/master/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project)
+
 # Predicting school connectivity in Brazil #
 
 A model for predicting Internet availability in Brazilian schools using geographical data and information on employability for the schools' region.

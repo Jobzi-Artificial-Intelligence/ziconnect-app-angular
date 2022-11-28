@@ -1,16 +1,17 @@
-import { LocalityGeometry } from "src/app/_models";
+import { LocalityMap } from "src/app/_models";
 
 export const citiesResponseFromServer = [{
+  "id": 34,
   "country_name": "Brasil",
-  "country_id": "BR",
+  "country_code": "BR",
   "region_name": "Norte",
-  "region_id": "1",
+  "region_code": "1",
   "state_name": "Rondônia",
   "state_abbreviation": "RO",
-  "state_id": "11",
-  "city_name": "Alta Floresta D'Oeste",
-  "city_id": "1100015",
-  "adm_level": "city",
+  "state_code": "11",
+  "municipality_name": "Alta Floresta D'Oeste",
+  "municipality_code": "1100015",
+  "adm_level": "municipality",
   "geometry": {
     "type": "Feature",
     "geometry": {
@@ -21,31 +22,32 @@ export const citiesResponseFromServer = [{
       ]
     },
     "properties": {
-      "adm_level": "city",
-      "region_id": "1",
+      "adm_level": "municipality",
+      "region_code": "1",
       "region_name": "Norte",
       "region_abbreviation": "N",
-      "state_id": "11",
+      "state_code": "11",
       "state_name": "Rondônia",
       "state_abbreviation": "RO",
-      "city_id": "1100015",
-      "city_name": "Alta Floresta D'Oeste",
-      "country_id": "BR",
+      "municipality_code": "1100015",
+      "municipality_name": "Alta Floresta D'Oeste",
+      "country_code": "BR",
       "country_name": "Brasil"
     }
   }
 }];
 
 export const countriesResponseFromServer = [{
+  "id": 1,
   "country_name": "Brasil",
-  "country_id": "BR",
+  "country_code": "BR",
   "region_name": null,
-  "region_id": null,
+  "region_code": null,
   "state_name": null,
   "state_abbreviation": null,
-  "state_id": null,
-  "city_name": null,
-  "city_id": null,
+  "state_code": null,
+  "municipality_name": null,
+  "municipality_code": null,
   "adm_level": "country",
   "geometry": {
     "type": "Feature",
@@ -58,22 +60,23 @@ export const countriesResponseFromServer = [{
     },
     "properties": {
       "adm_level": "country",
-      "country_id": "BR",
+      "country_code": "BR",
       "country_name": "Brasil"
     }
   }
 }];
 
 export const regionsResponseFromServer = [{
+  "id": 2,
   "country_name": "Brasil",
-  "country_id": "BR",
+  "country_code": "BR",
   "region_name": "Norte",
-  "region_id": "1",
+  "region_code": "1",
   "state_name": null,
   "state_abbreviation": null,
-  "state_id": null,
-  "city_name": null,
-  "city_id": null,
+  "state_code": null,
+  "municipality_name": null,
+  "municipality_code": null,
   "adm_level": "region",
   "geometry": {
     "type": "Feature",
@@ -86,25 +89,26 @@ export const regionsResponseFromServer = [{
     },
     "properties": {
       "adm_level": "region",
-      "region_id": "1",
+      "region_code": "1",
       "region_name": "Norte",
       "region_abbreviation": "N",
-      "country_id": "BR",
+      "country_code": "BR",
       "country_name": "Brasil"
     }
   }
 }];
 
 export const statesResponseFromServer = [{
+  "id": 7,
   "country_name": "Brasil",
-  "country_id": "BR",
+  "country_code": "BR",
   "region_name": "Norte",
-  "region_id": "1",
+  "region_code": "1",
   "state_name": "Rondônia",
   "state_abbreviation": "RO",
-  "state_id": "11",
-  "city_name": null,
-  "city_id": null,
+  "state_code": "11",
+  "municipality_name": null,
+  "municipality_code": null,
   "adm_level": "state",
   "geometry": {
     "type": "Feature",
@@ -117,19 +121,19 @@ export const statesResponseFromServer = [{
     },
     "properties": {
       "adm_level": "state",
-      "region_id": "1",
+      "region_code": "1",
       "region_name": "Norte",
       "region_abbreviation": "N",
-      "state_id": "11",
+      "state_code": "11",
       "state_name": "Rondônia",
       "state_abbreviation": "RO",
-      "country_id": "BR",
+      "country_code": "BR",
       "country_name": "Brasil"
     }
   }
 }];
 
-export const citiesLocalityGeometryList = citiesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const countriesLocalityGeometryList = countriesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const regionsLocalityGeometryList = regionsResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
-export const statesLocalityGeometryList = statesResponseFromServer.map(item => { return new LocalityGeometry().deserialize(item) });
+export const citiesLocalityMapList = citiesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const countriesLocalityMapList = countriesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const regionsLocalityMapList = regionsResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });
+export const statesLocalityMapList = statesResponseFromServer.map(item => { return new LocalityMap().deserialize(item) });

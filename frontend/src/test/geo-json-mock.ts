@@ -33,16 +33,16 @@ export const geoJsonCities = {
 
       },
       "properties": {
-        "adm_level": "city",
-        "region_id": "1",
+        "adm_level": "municipality",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "11",
+        "state_code": "11",
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
-        "city_id": "1100015",
-        "city_name": "Alta Floresta D'Oeste",
-        "country_id": "BR",
+        "municipality_code": "1100015",
+        "municipality_name": "Alta Floresta D'Oeste",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }, {
@@ -56,16 +56,16 @@ export const geoJsonCities = {
 
       },
       "properties": {
-        "adm_level": "city",
-        "region_id": "1",
+        "adm_level": "municipality",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "12",
-        "state_name": "Acre",
-        "state_abbreviation": "AC",
-        "city_id": "1200013",
-        "city_name": "Acrelândia",
-        "country_id": "BR",
+        "state_code": "11",
+        "state_name": "Rondônia",
+        "state_abbreviation": "RO",
+        "municipality_code": "1100098",
+        "municipality_name": "Espigão D'Oeste",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
@@ -87,10 +87,10 @@ export const geoJsonRegions = {
       },
       "properties": {
         "adm_level": "region",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }, {
@@ -105,10 +105,10 @@ export const geoJsonRegions = {
       },
       "properties": {
         "adm_level": "region",
-        "region_id": "2",
+        "region_code": "2",
         "region_name": "Nordeste",
         "region_abbreviation": "NE",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
@@ -130,13 +130,13 @@ export const geoJsonStates = {
       },
       "properties": {
         "adm_level": "state",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "11",
+        "state_code": "11",
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }, {
@@ -151,13 +151,13 @@ export const geoJsonStates = {
       },
       "properties": {
         "adm_level": "state",
-        "region_id": "1",
+        "region_code": "1",
         "region_name": "Norte",
         "region_abbreviation": "N",
-        "state_id": "12",
+        "state_code": "12",
         "state_name": "Acre",
         "state_abbreviation": "AC",
-        "country_id": "BR",
+        "country_code": "BR",
         "country_name": "Brasil"
       }
     }
