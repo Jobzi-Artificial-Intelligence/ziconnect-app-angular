@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "ci:build-homolog": "ng build --configuration homolog",
     "ci:build-production": "ng build --configuration production",
-    "ci:test": "ng test --code-coverage--no-watch --browsers=ChromeHeadless"
+    "ci:test": "ng test --code-coverage --no-watch --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
