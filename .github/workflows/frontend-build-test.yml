@@ -41,5 +41,14 @@ jobs:
       - name: Unit test
         run: yarn run ci:test
 
+      - name: Install codecov dependency
+        run: npm install -g codecov
+
+      - name: Run Tests
+        run: npm run ci:test
+      
+      - name: Run Codecov Report
+        run: codecov
+
       - name: Build
         run: yarn run ci:build-production
