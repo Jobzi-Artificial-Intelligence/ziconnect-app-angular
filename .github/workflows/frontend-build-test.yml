@@ -49,6 +49,8 @@ jobs:
       
       - name: Run Codecov Report
         run: codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build
         run: yarn run ci:build-production
