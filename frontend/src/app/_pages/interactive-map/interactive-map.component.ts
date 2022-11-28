@@ -3,13 +3,13 @@ import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } f
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { SchoolCsvHelper } from '../../_helpers/schoolCsv.helper';
 import { IGeneralStats } from '../../_helpers/statsCsv.helper';
-import { City, LocalityGeometryAutocomplete, Region, School, State } from '../../_models';
-import { AlertService, LocalityGeometryService, SchoolService } from '../../_services';
+import { City, LocalityMapAutocomplete, Region, School, State } from '../../_models';
+import { AlertService, LocalityMapService, SchoolService } from '../../_services';
 import { APP_BASE_HREF } from '@angular/common';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, startWith, subscribeOn, switchMap, tap } from "rxjs/operators";
+import { BehaviorSubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, tap } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StatsService } from 'src/app/_services';
@@ -94,8 +94,8 @@ export class InteractiveMapComponent implements OnInit {
 
   title = 'Jobzi - Interactive Map';
   public filterForm!: FormGroup;
-  private localityGeometryService: LocalityGeometryService;
-  searchLocationFilteredOptions: LocalityGeometryAutocomplete[] = new Array<LocalityGeometryAutocomplete>();
+
+  searchLocationFilteredOptions: LocalityMapAutocomplete[] = new Array<LocalityMapAutocomplete>();
   infoContent = {
     selectedSchool: null,
     content: {} as IMapInfoWindowContent
@@ -182,9 +182,9 @@ export class InteractiveMapComponent implements OnInit {
     private alertService: AlertService,
     @Inject(APP_BASE_HREF) public baseHref: string,
     private ref: ChangeDetectorRef,
-    private _bottomSheet: MatBottomSheet
+    private _bottomSheet: MatBottomSheet,
+    private localityMapService: LocalityMapService
   ) {
-    this.localityGeometryService = new LocalityGeometryService(this.httpClient);
     this.loadingMap = new BehaviorSubject<boolean>(false);
   }
 
@@ -434,7 +434,7 @@ export class InteractiveMapComponent implements OnInit {
    * @param autocompleLocation Selected autocomplete location
    * @returns Selected location name or null value.
    */
-  getSearchLocationAutocompleteText(autocompleLocation: LocalityGeometryAutocomplete) {
+  getSearchLocationAutocompleteText(autocompleLocation: LocalityMapAutocomplete) {
     return autocompleLocation ? autocompleLocation.name : '';
   }
 
@@ -448,7 +448,7 @@ export class InteractiveMapComponent implements OnInit {
         distinctUntilChanged(),
         debounceTime(1000),
         tap((res) => {
-          this.searchLocationFilteredOptions = new Array<LocalityGeometryAutocomplete>();
+          this.searchLocationFilteredOptions = new Array<LocalityMapAutocomplete>();
           if (res !== null && res.length >= 3) {
             this.loadingAutocomplete = true;
           } else {
@@ -463,7 +463,7 @@ export class InteractiveMapComponent implements OnInit {
   }
 
   loadAutocompleteSearchOptions(filterValue: string) {
-    this.localityGeometryService
+    this.localityMapService
       .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue)
       .subscribe((data) => {
         this.searchLocationFilteredOptions = data;
@@ -479,10 +479,10 @@ export class InteractiveMapComponent implements OnInit {
   * @param event Event object that is emitted when an autocomplete option is selected.
   */
   async onSelectLocationSearchOption(event: MatAutocompleteSelectedEvent) {
-    const selectedOption = event.option.value as LocalityGeometryAutocomplete;
+    const selectedOption = event.option.value as LocalityMapAutocomplete;
 
     switch (selectedOption.administrativeLevel) {
-      case 'city':
+      case 'municipality':
         if (selectedOption.city) {
           await this.onSelectRegion(selectedOption.city.state.region);
           await this.onSelectState(selectedOption.city.state);
@@ -593,21 +593,21 @@ export class InteractiveMapComponent implements OnInit {
   async loadCitiesGeoJson(countryCode: string, regionCode: string, stateCode: string) {
     return new Promise((resolve, reject) => {
       this.loadingMap.next(true);
-      this.loadingMessage = 'Loading cities...';
+      this.loadingMessage = 'Loading municipalities...';
 
       try {
-        this.localityGeometryService
+        this.localityMapService
           .getCitiesByState(countryCode, regionCode, stateCode)
           .subscribe(
             (data: any) => {
-              const featureCollection = this.localityGeometryService.getFeatureCollectionFromLocalityList(data);
+              const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
               //build stats
               for (let index = 0; index < featureCollection.features.length; index++) {
                 const element = featureCollection.features[index];
-                element.properties.code = element.properties['city_id'];
+                element.properties.code = element.properties['municipality_code'];
                 element.properties.filtered = true;
-                element.properties.name = element.properties['city_name'];
+                element.properties.name = element.properties['municipality_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByCityCode(element.properties.code);
 
                 //SET FILL COLOR
@@ -617,7 +617,7 @@ export class InteractiveMapComponent implements OnInit {
               }
 
               this.googleMap.data.addGeoJson(featureCollection, {
-                idPropertyName: 'city_id'
+                idPropertyName: 'municipality_code'
               });
 
               this.loadingMap.next(false);
@@ -689,14 +689,14 @@ export class InteractiveMapComponent implements OnInit {
       this.loadingMessage = 'Loading regions...';
 
       try {
-        this.localityGeometryService.getRegionsByCountry('BR').subscribe(
+        this.localityMapService.getRegionsByCountry('BR').subscribe(
           (data: any) => {
-            const featureCollection = this.localityGeometryService.getFeatureCollectionFromLocalityList(data);
+            const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
             // BUILD STATS
             for (let index = 0; index < featureCollection.features.length; index++) {
               const element = featureCollection.features[index];
-              element.properties.code = element.properties['region_id'];
+              element.properties.code = element.properties['region_code'];
               element.properties.filtered = true;
               element.properties.name = element.properties['region_name'];
               element.properties.stats = this.statsCsvHelper.getStatsByRegionCode(element.properties.code);
@@ -708,7 +708,7 @@ export class InteractiveMapComponent implements OnInit {
             }
 
             this.googleMap.data.addGeoJson(featureCollection, {
-              idPropertyName: 'region_id',
+              idPropertyName: 'region_code',
             });
 
             this.loadingMap.next(false);
@@ -741,16 +741,16 @@ export class InteractiveMapComponent implements OnInit {
       this.loadingMessage = 'Loading states...';
 
       try {
-        this.localityGeometryService
+        this.localityMapService
           .getStatesByRegion(countryCode, regionCode)
           .subscribe(
             (data: any) => {
-              const featureCollection = this.localityGeometryService.getFeatureCollectionFromLocalityList(data);
+              const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
               //build stats
               for (let index = 0; index < featureCollection.features.length; index++) {
                 const element = featureCollection.features[index];
-                element.properties.code = element.properties['state_id'];
+                element.properties.code = element.properties['state_code'];
                 element.properties.filtered = true;
                 element.properties.name = element.properties['state_name'];
                 element.properties.stats = this.statsCsvHelper.getStatsByStateCode(element.properties.code);
@@ -762,7 +762,7 @@ export class InteractiveMapComponent implements OnInit {
               }
 
               this.googleMap.data.addGeoJson(featureCollection, {
-                idPropertyName: 'state_id',
+                idPropertyName: 'state_code',
               });
 
               this.loadingMap.next(false);
@@ -860,7 +860,7 @@ export class InteractiveMapComponent implements OnInit {
           this.onSelectState(state);
         }
         break;
-      case 'city':
+      case 'municipality':
         const cityCode = e.feature.getProperty('code');
         const city = this.statsCsvHelper.meta.cities.find(x => x.code.toLowerCase() === cityCode.toLowerCase());
 
@@ -1051,7 +1051,7 @@ export class InteractiveMapComponent implements OnInit {
    */
   removeCitiesFromMap() {
     this.googleMap.data.forEach(element => {
-      if (element.getProperty('adm_level') === 'city') {
+      if (element.getProperty('adm_level') === 'municipality') {
         this.googleMap.data.remove(element);
       }
     });
@@ -1098,7 +1098,7 @@ export class InteractiveMapComponent implements OnInit {
       case 'state':
         zIndex = 2;
         break;
-      case 'city':
+      case 'municipality':
         zIndex = 3;
         break;
       default:

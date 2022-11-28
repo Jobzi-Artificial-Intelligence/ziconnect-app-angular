@@ -3,32 +3,32 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
-import { LocalityGeometry, LocalityGeometryAutocomplete } from "../../_models";
+import { LocalityMap, LocalityMapAutocomplete } from "../../_models";
 
 
 @Injectable({
   providedIn: "root",
 })
-export class LocalityGeometryService {
-  private _postgrestLocalityGeometryPath = 'locality_geometry';
-  private _viewLocalityGeometryAutocompltePath = 'view_locality_geometry_autocomplete';
+export class LocalityMapService {
+  private _postgrestLocalityMapPath = 'locality_map';
+  private _viewLocalityMapAutocompletePath = 'view_locality_map_autocomplete';
 
   constructor(private http: HttpClient) { }
 
   /**
    * Gets list of localitities geometry where administrative level equals country
-   * @returns LocalityGeometry[]
+   * @returns LocalityMap[]
    */
-  getCountries(): Observable<LocalityGeometry[]> {
+  getCountries(): Observable<LocalityMap[]> {
     const query = `adm_level=eq.country`;
 
     return this.http
-      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityGeometryPath}?${query}`, {
+      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new LocalityGeometry().deserialize(item));
+          return data.map((item: any) => new LocalityMap().deserialize(item));
         })
       );
   }
@@ -36,18 +36,18 @@ export class LocalityGeometryService {
   /**
    * Gets list of localitities geometry where administrative level equals region
    * @param countryId 2 digits country code
-   * @returns LocalityGeometry[]
+   * @returns LocalityMap[]
    */
-  getRegionsByCountry(countryId: string): Observable<LocalityGeometry[]> {
-    const query = `adm_level=eq.region&country_id=eq.${countryId}`;
+  getRegionsByCountry(countryId: string): Observable<LocalityMap[]> {
+    const query = `adm_level=eq.region&country_code=eq.${countryId}`;
 
     return this.http
-      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityGeometryPath}?${query}`, {
+      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new LocalityGeometry().deserialize(item));
+          return data.map((item: any) => new LocalityMap().deserialize(item));
         })
       );
   }
@@ -56,18 +56,18 @@ export class LocalityGeometryService {
    * Gets list of localitities geometry where administrative level equals state
    * @param countryId 2 digits country code
    * @param regionId region id
-   * @returns LocalityGeometry[]
+   * @returns LocalityMap[]
    */
-  getStatesByRegion(countryId: string, regionId: string): Observable<LocalityGeometry[]> {
-    const query = `adm_level=eq.state&country_id=eq.${countryId}&region_id=eq.${regionId}`;
+  getStatesByRegion(countryId: string, regionId: string): Observable<LocalityMap[]> {
+    const query = `adm_level=eq.state&country_code=eq.${countryId}&region_code=eq.${regionId}`;
 
     return this.http
-      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityGeometryPath}?${query}`, {
+      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new LocalityGeometry().deserialize(item));
+          return data.map((item: any) => new LocalityMap().deserialize(item));
         })
       );
   }
@@ -79,16 +79,16 @@ export class LocalityGeometryService {
    * @param stateId state id
    * @returns LocalityGeometry[]
    */
-  getCitiesByState(countryId: string, regionId: string, stateId: string): Observable<LocalityGeometry[]> {
-    const query = `adm_level=eq.city&country_id=eq.${countryId}&region_id=eq.${regionId}&state_id=eq.${stateId}`;
+  getCitiesByState(countryId: string, regionId: string, stateId: string): Observable<LocalityMap[]> {
+    const query = `adm_level=eq.municipality&country_code=eq.${countryId}&region_code=eq.${regionId}&state_code=eq.${stateId}`;
 
     return this.http
-      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityGeometryPath}?${query}`, {
+      .get<any>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new LocalityGeometry().deserialize(item));
+          return data.map((item: any) => new LocalityMap().deserialize(item));
         })
       );
   }
@@ -98,7 +98,7 @@ export class LocalityGeometryService {
    * @param localityGeometryList LocalityGeometry[]
    * @returns FeatureColletion Json
    */
-  getFeatureCollectionFromLocalityList(localityGeometryList: LocalityGeometry[]) {
+  getFeatureCollectionFromLocalityList(localityGeometryList: LocalityMap[]) {
     if (localityGeometryList.length === 0) {
       throw new Error('Get Feature Collection: Locality list was not provided!');
     }
@@ -113,9 +113,9 @@ export class LocalityGeometryService {
    * Gets list of localitities geometry where administrative level equals region
    * @param countryId 2 digits country code
    * @param string string value to search
-   * @returns LocalityGeometryAutocomplete[]
+   * @returns LocalityMapAutocomplete[]
    */
-  getLocalityAutocompleteByCountry(countryId: string, term: string): Observable<LocalityGeometryAutocomplete[]> {
+  getLocalityAutocompleteByCountry(countryId: string, term: string): Observable<LocalityMapAutocomplete[]> {
     // Clean term
     // Remove spaces at start and end
     let searchString = term.trim();
@@ -124,18 +124,18 @@ export class LocalityGeometryService {
     // Add * at end of string like as % like database where clause
     searchString += '*';
 
-    let query = `country_id=eq.${countryId}`;
+    let query = `country_code=eq.${countryId}`;
     query += `&limit=5`;
     query += `&name=ilike.${searchString.replace(' ', '*')}`;
     query += `&order=name.asc`;
 
     return this.http
-      .get<any>(`${environment.postgrestHost}${this._viewLocalityGeometryAutocompltePath}?${query}`, {
+      .get<any>(`${environment.postgrestHost}${this._viewLocalityMapAutocompletePath}?${query}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new LocalityGeometryAutocomplete().deserialize(item));
+          return data.map((item: any) => new LocalityMapAutocomplete().deserialize(item));
         })
       );
   }
