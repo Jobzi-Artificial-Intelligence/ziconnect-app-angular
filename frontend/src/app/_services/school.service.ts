@@ -148,10 +148,10 @@ export class SchoolService {
       description: 'Internet prediction boolean value',
       cell: (x: School): string => `${x.internet_availability_prediction_bool}`
     }, {
-      columnDef: 'internet_speed_Mbps',
+      columnDef: 'internet_speed_mbps',
       header: 'Internet Speed Mbps',
       description: 'Internet speed Mbps',
-      cell: (x: School): string => `${x.internet_speed_Mbps}`
+      cell: (x: School): string => `${x.internet_speed_mbps}`
     }, {
       columnDef: 'without_internet_availability_data',
       header: 'Without internet data',

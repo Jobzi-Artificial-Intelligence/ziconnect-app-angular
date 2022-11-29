@@ -105,7 +105,12 @@ export class LocalityMapService {
 
     return {
       type: 'FeatureCollection',
-      features: localityGeometryList.map((item) => item.geometry)
+      features: localityGeometryList.map((item) => {
+        // include new localityMapId property
+        item.geometry.properties.localityMapId = item.id;
+
+        return item.geometry;
+      })
     }
   }
 
