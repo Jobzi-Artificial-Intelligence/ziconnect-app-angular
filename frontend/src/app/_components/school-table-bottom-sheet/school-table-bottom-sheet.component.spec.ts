@@ -1,14 +1,17 @@
-import { APP_BASE_HREF, PlatformLocation } from "@angular/common";
+import { APP_BASE_HREF } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { ComponentFixture, fakeAsync, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from "@angular/material/bottom-sheet";
 import { MatDialog } from "@angular/material/dialog";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 import { AngularMaterialModule } from "src/app/material.module";
 import { School } from "src/app/_models";
 import { DialogSchoolColumnSelectorComponent, IDialogSchoolColumnSelectorData, IDialogSchoolColumnSelectorResult } from "../dialog-school-column-selector/dialog-school-column-selector.component";
 import { ISchoolTableParam, SchoolTableBottomSheetComponent } from "./school-table-bottom-sheet.component";
+
+import { schoolFromServer } from "../../../test/school-mock";
+import { UtilHelper } from "src/app/_helpers";
 
 describe('Component: SchoolTableBottomSheet', () => {
   let component: SchoolTableBottomSheetComponent;
@@ -59,6 +62,42 @@ describe('Component: SchoolTableBottomSheet', () => {
 
       component.applyFilter(event);
       expect(component.tableDataSource.filter).toEqual(event.target.value.trim().toLowerCase());
+    });
+  });
+
+  describe('#initData', () => {
+    it('should exists', () => {
+      expect(component.initData).toBeTruthy();
+      expect(component.initData).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', async () => {
+      spyOn(component, 'loadSchools');
+      spyOn(component, 'initMatTable');
+
+      await component.initData();
+
+      expect(component.loadSchools).toHaveBeenCalledWith();
+      expect(component.initMatTable).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('#initMatTable', () => {
+    it('should exists', () => {
+      expect(component.initMatTable).toBeTruthy();
+      expect(component.initMatTable).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', async () => {
+      component.schools = [new School().deserialize(schoolFromServer)];
+
+      await component.initMatTable();
+
+      expect(component.tableDataSource).toBeDefined();
+      expect(component.tableDataSource.paginator).toBeDefined();
+      expect(component.tableDataSource.paginator).toEqual(component.paginator);
+      expect(component.tableDataSource.sort).toBeDefined();
+      expect(component.tableDataSource.sort).toEqual(component.sort);
     });
   });
 
@@ -134,7 +173,6 @@ describe('Component: SchoolTableBottomSheet', () => {
     it('should works with schools data', () => {
       component.data = <ISchoolTableParam>{
         stateCode: '',
-        stateCodes: null,
         schools: new Array<School>()
       };
 
@@ -147,34 +185,81 @@ describe('Component: SchoolTableBottomSheet', () => {
     });
 
     it('should works with state code', () => {
-      spyOn(component, 'loadSchoolsFromState');
+      spyOn(component, 'loadSchoolsFromCodes');
 
       component.data = <ISchoolTableParam>{
         stateCode: '1',
-        stateCodes: null,
         schools: new Array<School>()
       };
 
       component.loadSchools();
 
-      expect(component.loadSchoolsFromState).toHaveBeenCalledTimes(1);
-      expect(component.loadSchoolsFromState).toHaveBeenCalledWith('1');
+      expect(component.loadSchoolsFromCodes).toHaveBeenCalledTimes(1);
+      expect(component.loadSchoolsFromCodes).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('#loadSchoolsFromCodes', () => {
+    it('should exists', () => {
+      expect(component.loadSchoolsFromCodes).toBeTruthy();
+      expect(component.loadSchoolsFromCodes).toEqual(jasmine.any(Function));
     });
 
-    it('should works with state code', async () => {
-      spyOn(component, 'loadSchoolsFromState');
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
 
-      component.data = <ISchoolTableParam>{
-        stateCode: null,
-        stateCodes: ['1', '2'],
-        schools: new Array<School>()
+      //@ts-ignore
+      spyOn(component._schoolService, 'getSchoolsByLocalityMapCodes').and.throwError('Error message');
+      await component.loadSchoolsFromCodes().catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._schoolService, 'getSchoolsByLocalityMapCodes').and.returnValue(throwError({ message: 'http error' }));
+      await component.loadSchoolsFromCodes().catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong retrieving schools data: http error');
+    });
+
+    it('should works when service return success', async () => {
+      const schoolsResponse = [new School().deserialize(schoolFromServer)];
+
+      //@ts-ignore
+      spyOn(component._schoolService, 'getSchoolsByLocalityMapCodes').and.returnValue(of(schoolsResponse));
+      await component.loadSchoolsFromCodes();
+
+      expect(component.schools.length).toEqual(1);
+    });
+  });
+
+  describe('#sortingDataAccessor', () => {
+    it('should exists', () => {
+      expect(component.sortingDataAccessor).toBeTruthy();
+      expect(component.sortingDataAccessor).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const obj = {
+        property1: {
+          nestedProperty1: 'value01'
+        }
       };
 
-      await component.loadSchools();
-
-      expect(component.loadSchoolsFromState).toHaveBeenCalledTimes(2);
-      expect(component.loadSchoolsFromState).toHaveBeenCalledWith('1');
-      expect(component.loadSchoolsFromState).toHaveBeenCalledWith('2');
+      const result = component.sortingDataAccessor(obj, 'property1.nestedProperty1');
+      expect(result).toEqual(UtilHelper.getPropertyValueByPath(obj, 'property1.nestedProperty1'));
     });
   });
 });

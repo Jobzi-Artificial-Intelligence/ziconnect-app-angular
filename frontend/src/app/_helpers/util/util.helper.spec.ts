@@ -50,4 +50,61 @@ describe('Helper: Util', () => {
       expect(UtilHelper.getBooleanStr(false)).toEqual('No');
     });
   });
+
+  describe('#getPropertyValueByPath', () => {
+
+    it('should exists', () => {
+      expect(UtilHelper.getPropertyValueByPath).toBeTruthy();
+      expect(UtilHelper.getPropertyValueByPath).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const person = {
+        name: 'pfigueiredo',
+        age: 30,
+        address: null,
+        dog: {
+          owner: {
+            name: 'pfigueiredo'
+          }
+        }
+      };
+
+      const result1 = UtilHelper.getPropertyValueByPath(person, 'age');
+      const result2 = UtilHelper.getPropertyValueByPath(person, 'dog.owner.name');
+
+      expect(result1).toEqual(person.age);
+      expect(result2).toEqual(person.dog.owner.name);
+    });
+  });
+
+  describe('#getObjectKeys', () => {
+
+    it('should exists', () => {
+      expect(UtilHelper.getPropertyValueByPath).toBeTruthy();
+      expect(UtilHelper.getPropertyValueByPath).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const person = {
+        name: 'pfigueiredo',
+        age: 30,
+        address: null,
+        dog: {
+          owner: {
+            name: 'pfigueiredo'
+          }
+        }
+      };
+
+      let objectKeys = new Array<string>();
+
+      UtilHelper.getObjectKeys(person, '', objectKeys);
+
+      expect(objectKeys.includes('name')).toBeTrue();
+      expect(objectKeys.includes('age')).toBeTrue();
+      expect(objectKeys.includes('address')).toBeTrue();
+      expect(objectKeys.includes('dog.owner.name')).toBeTrue();
+    });
+  });
 });

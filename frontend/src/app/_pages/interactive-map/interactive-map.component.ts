@@ -566,13 +566,12 @@ export class InteractiveMapComponent implements OnInit {
             this.loadingMap.next(false);
             this.loadingMessage = '';
 
-            // GET ALL SCHOOLS FROM FILE AND SET TO THE FILTER LIST
             resolve(data);
           },
           (error) => {
             this.loadingMap.next(false);
             this.loadingMessage = '';
-            this.alertService.showError(`Something went wrong reading the dataset file: ${error.message}`);
+            this.alertService.showError(`Something went wrong retrieving schools data: ${error.message}`);
             resolve([]);
           }
         );

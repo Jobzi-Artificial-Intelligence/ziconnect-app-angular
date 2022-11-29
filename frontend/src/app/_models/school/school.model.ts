@@ -15,7 +15,7 @@ export class School implements Deserializable {
   internet_availability_bool: Boolean | null;
   internet_availability_prediction_bool: Boolean | null;
   internet_availability_prediction_str: string;
-  internet_speed_Mbps: number;
+  internet_speed_mbps: number;
   latitude: Number;
   longitude: Number;
   school_name: String;
@@ -39,7 +39,7 @@ export class School implements Deserializable {
     this.internet_availability_bool = false;
     this.internet_availability_prediction_bool = false;
     this.internet_availability_prediction_str = 'NA';
-    this.internet_speed_Mbps = 0;
+    this.internet_speed_mbps = 0;
     this.latitude = 0;
     this.longitude = 0;
     this.school_name = '';
@@ -63,7 +63,7 @@ export class School implements Deserializable {
     this.source_school_id = input.source_school_id;
 
     this.dq_score = input.dq_score;
-    this.internet_speed_Mbps = parseFloat(input.internet_speed_Mbps ? input.internet_speed_Mbps : 0);
+    this.internet_speed_mbps = input.internet_speed_mbps;
     this.latitude = input.latitude;
     this.longitude = input.longitude;
     this.school_name = input.school_name;

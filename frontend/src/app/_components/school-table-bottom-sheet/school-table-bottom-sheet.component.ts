@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { UtilHelper } from 'src/app/_helpers';
 import { School } from 'src/app/_models';
 import { AlertService, ISchoolColumn, SchoolService } from 'src/app/_services';
 import { DialogSchoolColumnSelectorComponent, IDialogSchoolColumnSelectorData, IDialogSchoolColumnSelectorResult } from '../dialog-school-column-selector/dialog-school-column-selector.component';
@@ -73,6 +74,7 @@ export class SchoolTableBottomSheetComponent implements OnInit {
   async initMatTable() {
     this.tableDataSource = new MatTableDataSource(this.schools);
     this.tableDataSource.paginator = this.paginator;
+    this.tableDataSource.sortingDataAccessor = this.sortingDataAccessor;
     this.tableDataSource.sort = this.sort;
   }
 
@@ -92,24 +94,20 @@ export class SchoolTableBottomSheetComponent implements OnInit {
   async loadSchoolsFromCodes() {
     return new Promise((resolve, reject) => {
       try {
-        if (!this._schoolService) {
-          resolve(null);
-        } else {
-          this._schoolService
-            .getSchoolsByLocalityMapCodes(this.data.countryCode, this.data.regionCode, this.data.stateCode, this.data.municipalityCode)
-            .subscribe(
-              (data) => {
-                // GET ALL SCHOOLS FROM FILE
-                this.schools = data;
+        this._schoolService
+          .getSchoolsByLocalityMapCodes(this.data.countryCode, this.data.regionCode, this.data.stateCode, this.data.municipalityCode)
+          .subscribe(
+            (data) => {
+              // GET ALL SCHOOLS FROM FILE
+              this.schools = data;
 
-                resolve(null);
-              },
-              (error) => {
-                this._alertService.showError(`Something went wrong reading the dataset file: ${error.message}`);
-                resolve(null);
-              }
-            );
-        }
+              resolve(null);
+            },
+            (error) => {
+              this._alertService.showError(`Something went wrong retrieving schools data: ${error.message}`);
+              resolve(null);
+            }
+          );
       } catch (error: any) {
         this._alertService.showError(error);
         resolve(null);
@@ -152,5 +150,9 @@ export class SchoolTableBottomSheetComponent implements OnInit {
     } catch (error: any) {
       this._alertService.showError(error.toString());
     }
+  }
+
+  sortingDataAccessor(obj: any, path: any) {
+    return UtilHelper.getPropertyValueByPath(obj, path);
   }
 }
