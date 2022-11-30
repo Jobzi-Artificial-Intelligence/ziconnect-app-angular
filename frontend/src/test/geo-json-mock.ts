@@ -43,7 +43,8 @@ export const geoJsonCities = {
         "municipality_code": "1100015",
         "municipality_name": "Alta Floresta D'Oeste",
         "country_code": "BR",
-        "country_name": "Brasil"
+        "country_name": "Brasil",
+        "localityMapId": 123456
       }
     }, {
       "type": "Feature",
@@ -91,7 +92,8 @@ export const geoJsonRegions = {
         "region_name": "Norte",
         "region_abbreviation": "N",
         "country_code": "BR",
-        "country_name": "Brasil"
+        "country_name": "Brasil",
+        "localityMapId": 987654
       }
     }, {
       "type": "Feature",
@@ -137,7 +139,8 @@ export const geoJsonStates = {
         "state_name": "Rondônia",
         "state_abbreviation": "RO",
         "country_code": "BR",
-        "country_name": "Brasil"
+        "country_name": "Brasil",
+        "localityMapId": 1
       }
     }, {
       "type": "Feature",

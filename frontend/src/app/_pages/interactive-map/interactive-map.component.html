@@ -146,34 +146,34 @@
             <div class="infowindow-stats-container">
               <div>
                 <div class="infowindow-title">{{infoContent.content.stats?.schoolsConnectedPercentage}}%</div>
-                <div class="infowindow-subtitle">Connectivity</div>
+                <div class="infowindow-subtitle">Connectivity Available</div>
               </div>
+              <br>
               <div>
                 <div class="infowindow-title">
                   {{infoContent.content.stats?.schoolsInternetAvailabilityPredictionPercentage}}%</div>
-                <div class="infowindow-subtitle">Prediction</div>
+                <div class="infowindow-subtitle">Connectivity Prediction</div>
               </div>
             </div>
           </div>
           <div class="infowindow-right">
             <div>
-              <div class="infowindow-title">Connectivity</div>
-              <div class="infowindow-subtitle">{{infoContent.content.stats?.schoolsConnectedCount | number:'1.0-0'}}
-                connected school(s)
-                with approximately
-                {{infoContent.content.stats?.studentCount | number:'1.0-0'}} students with internet access</div>
+              <div class="infowindow-title">Connectivity Available</div>
+              <div class="infowindow-subtitle">
+                {{infoContent.content.stats?.schoolsConnectedCount | number:'1.0-0'}} connected school(s) with
+                approximately {{infoContent.content.stats?.studentCount | number:'1.0-0'}}
+                students with internet access
+              </div>
             </div>
             <br>
             <div>
-              <div class="infowindow-title">Prediction</div>
+              <div class="infowindow-title">Connectivity Prediction</div>
               <div class="infowindow-subtitle"
                 *ngIf="infoContent.content.stats && infoContent.content.stats.schoolsInternetAvailabilityPredictionCount > 0">
                 {{infoContent.content.stats?.schoolsWithoutConnectivityDataCount | number:'1.0-0'}}
                 school(s) without connectivity data,
                 {{infoContent.content.stats?.schoolsInternetAvailabilityPredictionCount | number:'1.0-0'}} with
-                internet
-                access
-                prediction</div>
+                internet access prediction</div>
               <div class="infowindow-subtitle"
                 *ngIf="infoContent.content.stats && infoContent.content.stats.schoolsInternetAvailabilityPredictionCount === 0">
                 Not available</div>
