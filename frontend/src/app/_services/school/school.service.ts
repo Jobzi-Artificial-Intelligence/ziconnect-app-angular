@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocalityMap, School } from '../../_models';
+import { School } from '../../_models';
 import { APP_BASE_HREF } from '@angular/common';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';

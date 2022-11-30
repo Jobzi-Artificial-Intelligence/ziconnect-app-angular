@@ -1,6 +1,6 @@
 import { Deserializable } from "../deserializable.model";
 
-enum AdministrativeLevel {
+export enum AdministrativeLevel {
   Country = 'country',
   Region = 'region',
   State = 'state',
