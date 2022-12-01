@@ -1,15 +1,14 @@
-import { IConnectivityStats, IGeneralStats, ISchoolRegionStats, ISchoolTypeStats, StatType } from "src/app/_helpers";
+import { IConnectivityStats, ISchoolRegionStats, ISchoolTypeStats } from "src/app/_models/locality-statistics/locality-statistics.model";
+import { LocalityStatistics } from "src/app/_models";
 
 export const regionStats = {
-  byConnectivity: <IConnectivityStats>{
+  internetAvailabilityByValue: <IConnectivityStats>{
     YES: 50,
     NO: 30,
     NA: 20
   },
-  citiesCount: 100,
-  cityCode: '',
-  cityName: '',
-  connectivityBySchoolRegion: <ISchoolRegionStats>{
+  municipalitiesCount: 100,
+  internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -21,7 +20,7 @@ export const regionStats = {
       NA: 20
     }
   },
-  connectivityBySchoolType: <ISchoolTypeStats>{
+  internetAvailabilityBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -38,32 +37,25 @@ export const regionStats = {
       NA: 20
     }
   },
-  regionCode: '1',
-  regionName: 'Norte',
-  schoolsCount: 50,
-  schoolsConnectedCount: 40,
-  schoolsConnectedPercentage: 80,
-  schoolsWithoutConnectivityDataCount: 20,
-  schoolsWithoutConnectivityDataPercentage: 30,
-  schoolsInternetAvailabilityPredictionCount: 20,
-  schoolsInternetAvailabilityPredictionPercentage: 50,
-  stateCode: '',
-  stateName: '',
+  schoolCount: 50,
+  schoolInternetAvailabilityCount: 40,
+  schoolInternetAvailabilityPercentage: 80,
+  schoolWithoutInternetAvailabilityCount: 20,
+  schoolWithoutInternetAvailabilityPercentage: 30,
+  schoolInternetAvailabilityPredicitionCount: 20,
+  schoolInternetAvailabilityPredicitionPercentage: 50,
   statesCount: 2,
-  studentCount: 10000,
-  type: StatType.Region
-} as IGeneralStats
+  studentCount: 10000
+} as LocalityStatistics
 
 export const cityStats = {
-  byConnectivity: <IConnectivityStats>{
+  internetAvailabilityByValue: <IConnectivityStats>{
     YES: 50,
     NO: 30,
     NA: 20
   },
-  citiesCount: 100,
-  cityCode: '',
-  cityName: '',
-  connectivityBySchoolRegion: <ISchoolRegionStats>{
+  municipalitiesCount: 100,
+  internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -75,7 +67,7 @@ export const cityStats = {
       NA: 20
     }
   },
-  connectivityBySchoolType: <ISchoolTypeStats>{
+  internetAvailabilityBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -92,32 +84,25 @@ export const cityStats = {
       NA: 20
     }
   },
-  regionCode: '1',
-  regionName: 'Norte',
-  schoolsCount: 50,
-  schoolsConnectedCount: 40,
-  schoolsConnectedPercentage: 80,
-  schoolsWithoutConnectivityDataCount: 20,
-  schoolsWithoutConnectivityDataPercentage: 30,
-  schoolsInternetAvailabilityPredictionCount: 20,
-  schoolsInternetAvailabilityPredictionPercentage: 50,
-  stateCode: '',
-  stateName: '',
+  schoolCount: 50,
+  schoolInternetAvailabilityCount: 40,
+  schoolInternetAvailabilityPercentage: 80,
+  schoolWithoutInternetAvailabilityCount: 20,
+  schoolWithoutInternetAvailabilityPercentage: 30,
+  schoolInternetAvailabilityPredicitionCount: 20,
+  schoolInternetAvailabilityPredicitionPercentage: 50,
   statesCount: 2,
-  studentCount: 10000,
-  type: StatType.Region
-} as IGeneralStats
+  studentCount: 10000
+} as LocalityStatistics
 
 export const stateStats = {
-  byConnectivity: <IConnectivityStats>{
+  internetAvailabilityByValue: <IConnectivityStats>{
     YES: 50,
     NO: 30,
     NA: 20
   },
-  citiesCount: 100,
-  cityCode: '',
-  cityName: '',
-  connectivityBySchoolRegion: <ISchoolRegionStats>{
+  municipalitiesCount: 100,
+  internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -129,7 +114,7 @@ export const stateStats = {
       NA: 20
     }
   },
-  connectivityBySchoolType: <ISchoolTypeStats>{
+  internetAvailabilityBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -146,18 +131,13 @@ export const stateStats = {
       NA: 20
     }
   },
-  regionCode: '1',
-  regionName: 'Norte',
-  schoolsCount: 50,
-  schoolsConnectedCount: 40,
-  schoolsConnectedPercentage: 80,
-  schoolsWithoutConnectivityDataCount: 20,
-  schoolsWithoutConnectivityDataPercentage: 30,
-  schoolsInternetAvailabilityPredictionCount: 20,
-  schoolsInternetAvailabilityPredictionPercentage: 50,
-  stateCode: 'code01',
-  stateName: 'Name01',
+  schoolCount: 50,
+  schoolInternetAvailabilityCount: 40,
+  schoolInternetAvailabilityPercentage: 80,
+  schoolWithoutInternetAvailabilityCount: 20,
+  schoolWithoutInternetAvailabilityPercentage: 30,
+  schoolInternetAvailabilityPredicitionCount: 20,
+  schoolInternetAvailabilityPredicitionPercentage: 50,
   statesCount: 2,
-  studentCount: 10000,
-  type: StatType.Region
-} as IGeneralStats
+  studentCount: 10000
+} as LocalityStatistics
