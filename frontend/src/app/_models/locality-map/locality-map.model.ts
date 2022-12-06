@@ -1,6 +1,9 @@
+import { City } from "../city/city.model";
 import { Deserializable } from "../deserializable.model";
+import { Region } from "../region/region.model";
+import { State } from "../state/state.model";
 
-enum AdministrativeLevel {
+export enum AdministrativeLevel {
   Country = 'country',
   Region = 'region',
   State = 'state',
@@ -20,6 +23,10 @@ export class LocalityMap implements Deserializable {
   municipalityName: String;
   administrativeLevel: AdministrativeLevel;
 
+  municipality: City | null;
+  region: Region | null;
+  state: State | null;
+
   // GeoJson feature object
   geometry: any;
 
@@ -36,6 +43,10 @@ export class LocalityMap implements Deserializable {
     this.municipalityCode = '';
     this.municipalityName = '';
     this.geometry = {};
+
+    this.municipality = null;
+    this.region = null;
+    this.state = null;
   }
 
   deserialize(input: any): this {
@@ -51,6 +62,18 @@ export class LocalityMap implements Deserializable {
     this.stateCode = input.state_code;
     this.stateName = input.state_name;
     this.geometry = input.geometry;
+
+    if (this.regionCode && this.regionName) {
+      this.region = new Region(this.regionCode, this.regionName);
+    }
+
+    if (this.region && this.stateCode && this.stateName) {
+      this.state = new State(this.stateCode, this.stateName, this.region);
+    }
+
+    if (this.region && this.state && this.municipalityCode && this.municipalityName) {
+      this.municipality = new City(this.municipalityCode.toString(), this.municipalityName.toString(), this.state);
+    }
 
     return this;
   }

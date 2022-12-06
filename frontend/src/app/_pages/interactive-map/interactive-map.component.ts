@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { IGeneralStats } from '../../_helpers/statsCsv.helper';
-import { City, LocalityMapAutocomplete, Region, School, State } from '../../_models';
-import { AlertService, LocalityMapService, SchoolService } from '../../_services';
+import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, LocalityStatistics, Region, School, State } from '../../_models';
+import { AlertService, LocalityMapService, LocalityStatisticsService, SchoolService } from '../../_services';
 import { APP_BASE_HREF } from '@angular/common';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -11,8 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { StatsService } from 'src/app/_services';
-import { StatsCsvHelper } from 'src/app/_helpers';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ISchoolTableParam, SchoolTableBottomSheetComponent } from 'src/app/_components/school-table-bottom-sheet/school-table-bottom-sheet.component';
 
@@ -27,14 +24,14 @@ interface IMapInfoWindowContent {
   code: string,
   name: string,
   type: string,
-  stats: IGeneralStats
+  stats: LocalityStatistics
 }
 
 export interface IMapFilter {
   regionOptions: Array<Region>;
   stateOptions: Array<State>;
   selectedCity?: City;
-  selectedCountry?: string,
+  selectedCountry: string,
   selectedRegion?: Region;
   selectedState?: State;
   selectedSchoolRegion: String,
@@ -53,7 +50,7 @@ export interface IMapStatsPanel {
   open: boolean;
   item: any;
   itemName: string;
-  itemStats: IGeneralStats;
+  itemStats: LocalityStatistics;
   itemType: string;
   cardsInnerPadding: number;
   generalCardsData: Array<any>;
@@ -100,11 +97,16 @@ export class InteractiveMapComponent implements OnInit {
     content: {} as IMapInfoWindowContent
   };
 
+  // Locality Map List
+  localityMapRegions: LocalityMap[] = new Array<LocalityMap>();
+  localityMapStates: LocalityMap[] = new Array<LocalityMap>();
+  localityMapMunicipalities: LocalityMap[] = new Array<LocalityMap>();
+
   filterSettingsExpanded = false;
-  statsCsvHelper!: StatsCsvHelper;
   loadingMap: BehaviorSubject<boolean>;
   loadingMessage = '';
   loadingAutocomplete = false;
+  localityStatistics: LocalityStatistics[] = new Array<LocalityStatistics>();
   schools: School[] = new Array<School>();
   schoolMarkers: any[] = [];
   selectedSchool: any;
@@ -152,7 +154,7 @@ export class InteractiveMapComponent implements OnInit {
     open: false,
     item: null,
     itemName: '',
-    itemStats: {} as IGeneralStats,
+    itemStats: {} as LocalityStatistics,
     itemType: '',
     cardsInnerPadding: 8,
     generalCardsData: new Array<any>(),
@@ -183,6 +185,7 @@ export class InteractiveMapComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private _bottomSheet: MatBottomSheet,
     private localityMapService: LocalityMapService,
+    private localityStatisticsService: LocalityStatisticsService,
     private schoolService: SchoolService
   ) {
     this.loadingMap = new BehaviorSubject<boolean>(false);
@@ -203,9 +206,10 @@ export class InteractiveMapComponent implements OnInit {
     // INIT OBSERVABLES
     this.watchLoadingMap();
 
-    await this.loadGeneralStats('BR');
-
-    this.loadRegionsGeoJson();
+    await this.loadLocalityStatistics(AdministrativeLevel.Region);
+    await this.loadRegionsGeoJson();
+    await this.initRegionSelectOptions();
+    await this.initStateSelectOptions();
 
     this.initSearchLocationFilteredOptions();
 
@@ -252,12 +256,44 @@ export class InteractiveMapComponent implements OnInit {
   //#region FILTER FUNCTIONS
   ////////////////////////////////////////////
 
+  async initRegionSelectOptions() {
+    try {
+      await this.localityMapService
+        .getRegionsOfCountry(this.mapFilter.selectedCountry)
+        .toPromise()
+        .then((data) => {
+          this.mapFilter.regionOptions = data;
+        })
+        .catch((error) => {
+          this.alertService.showError(`Something went wrong retrieving region options: ${error.message}`);
+        });
+    } catch (error: any) {
+      this.alertService.showError(error);
+    }
+  }
+
+  async initStateSelectOptions() {
+    try {
+      await this.localityMapService
+        .getStatesOfCountry(this.mapFilter.selectedCountry)
+        .toPromise()
+        .then((data) => {
+          this.mapFilter.stateOptions = data;
+        })
+        .catch((error) => {
+          this.alertService.showError(`Something went wrong retrieving state options: ${error.message}`);
+        });
+    } catch (error: any) {
+      this.alertService.showError(error);
+    }
+  }
+
   onChangeSelectedViewOption(e: any) {
     // collapse filters panel
     this.toggleFilterSettingsExpanded(false);
 
     this.googleMap.data.forEach(element => {
-      const elementStats = element.getProperty('stats') as IGeneralStats;
+      const elementStats = element.getProperty('stats') as LocalityStatistics;
       const percentage = this.getPercentageValueForFillColor(elementStats);
 
       const indexAtPercentage = this.getRangeColorIndex(percentage);
@@ -278,6 +314,9 @@ export class InteractiveMapComponent implements OnInit {
     this.mapFilter.selectedCity = undefined;
     this.mapFilter.selectedRegion = undefined;
     this.mapFilter.selectedState = undefined;
+
+    // Load regions statistics from country
+    await this.loadLocalityStatistics(AdministrativeLevel.Region);
 
     // Load regions from country
     await this.loadRegionsGeoJson();
@@ -380,8 +419,11 @@ export class InteractiveMapComponent implements OnInit {
 
     this.mapFilter.selectedRegion = region;
 
+    // Load states statistics from selected region
+    await this.loadLocalityStatistics(AdministrativeLevel.State);
+
     // Load states from selected region
-    await this.loadStatesGeoJson(this.mapFilter.selectedCountry ?? '', region.code.toString());
+    await this.loadStatesGeoJson(this.mapFilter.selectedCountry, region.code.toString());
 
     // Region Zoom
     const regionFeature = this.googleMap.data.getFeatureById(region.code.toString());
@@ -416,8 +458,11 @@ export class InteractiveMapComponent implements OnInit {
     // Remove current cities before loads new
     this.removeCitiesFromMap();
 
+    // Load municipalities statistics from selected state
+    await this.loadLocalityStatistics(AdministrativeLevel.Municipality);
+
     // Add load cities
-    await this.loadCitiesGeoJson(this.mapFilter.selectedCountry ?? '', state.region.code.toString(), state.code.toString());
+    await this.loadCitiesGeoJson(this.mapFilter.selectedCountry, state.region.code.toString(), state.code.toString());
 
     // State Zoom
     const stateFeature = this.googleMap.data.getFeatureById(state.code.toString());
@@ -428,6 +473,7 @@ export class InteractiveMapComponent implements OnInit {
 
     this.ref.detectChanges();
   }
+
   //#endregion
   ////////////////////////////////////////////
 
@@ -468,7 +514,7 @@ export class InteractiveMapComponent implements OnInit {
 
   loadAutocompleteSearchOptions(filterValue: string) {
     this.localityMapService
-      .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue)
+      .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry, filterValue)
       .subscribe((data) => {
         this.searchLocationFilteredOptions = data;
         this.loadingAutocomplete = false;
@@ -487,10 +533,10 @@ export class InteractiveMapComponent implements OnInit {
 
     switch (selectedOption.administrativeLevel) {
       case 'municipality':
-        if (selectedOption.city) {
-          await this.onSelectRegion(selectedOption.city.state.region);
-          await this.onSelectState(selectedOption.city.state);
-          this.onSelectCity(selectedOption.city);
+        if (selectedOption.municipality) {
+          await this.onSelectRegion(selectedOption.municipality.state.region);
+          await this.onSelectState(selectedOption.municipality.state);
+          this.onSelectCity(selectedOption.municipality);
         }
         break;
       case 'region':
@@ -595,6 +641,8 @@ export class InteractiveMapComponent implements OnInit {
           .getCitiesByState(countryCode, regionCode, stateCode)
           .subscribe(
             (data: any) => {
+              this.localityMapMunicipalities = data;
+
               const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
               //build stats
@@ -603,7 +651,7 @@ export class InteractiveMapComponent implements OnInit {
                 element.properties.code = element.properties['municipality_code'];
                 element.properties.filtered = true;
                 element.properties.name = element.properties['municipality_name'];
-                element.properties.stats = this.statsCsvHelper.getStatsByCityCode(element.properties.code);
+                element.properties.stats = this.getLocalityStatisticsByMunicipalityCode(element.properties.code);
 
                 //SET FILL COLOR
                 if (element.properties.stats) {
@@ -639,34 +687,34 @@ export class InteractiveMapComponent implements OnInit {
     });
   }
 
-  async loadGeneralStats(countryCode: string) {
+  async loadLocalityStatistics(administrativeLevel: AdministrativeLevel) {
     return new Promise((resolve, reject) => {
       this.loadingMap.next(true);
       this.loadingMessage = 'Loading stats...';
 
       try {
-        const statsService = new StatsService(this.httpClient, this.baseHref);
+        this.localityStatisticsService
+          .getStatisticsOfAdministrativeLevelLocalities(
+            administrativeLevel,
+            this.mapFilter.selectedCountry,
+            this.mapFilter.selectedRegion ? this.mapFilter.selectedRegion.code.toString() : '',
+            this.mapFilter.selectedState ? this.mapFilter.selectedState.code.toString() : ''
+          )
+          .subscribe(
+            (data) => {
+              this.localityStatistics = data;
 
-        statsService.getGeneralStatsByCountry(countryCode).subscribe(
-          (data) => {
-            // READ CSV GENERAL STATS FILE
-            this.statsCsvHelper = new StatsCsvHelper(data);
-
-            // SET MAP FILTER OPTIONS
-            this.mapFilter.regionOptions = this.statsCsvHelper.meta.regions;
-            this.mapFilter.stateOptions = this.statsCsvHelper.meta.states;
-
-            this.loadingMap.next(false);
-            this.loadingMessage = '';
-            resolve(null);
-          },
-          (error) => {
-            this.loadingMap.next(false);
-            this.loadingMessage = '';
-            this.alertService.showError(`Something went wrong reading the general stats file: ${error.message}`);
-            resolve(null);
-          }
-        );
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+              resolve(null);
+            },
+            (error) => {
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+              this.alertService.showError(`Something went wrong loading locality statistics: ${error.message}`);
+              resolve(null);
+            }
+          );
       } catch (error: any) {
         this.loadingMap.next(false);
         this.loadingMessage = '';
@@ -684,8 +732,10 @@ export class InteractiveMapComponent implements OnInit {
       this.loadingMessage = 'Loading regions...';
 
       try {
-        this.localityMapService.getRegionsByCountry('BR').subscribe(
+        this.localityMapService.getLocalityMapRegionsByCountry('BR').subscribe(
           (data: any) => {
+            this.localityMapRegions = data;
+
             const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
             // BUILD STATS
@@ -694,7 +744,7 @@ export class InteractiveMapComponent implements OnInit {
               element.properties.code = element.properties['region_code'];
               element.properties.filtered = true;
               element.properties.name = element.properties['region_name'];
-              element.properties.stats = this.statsCsvHelper.getStatsByRegionCode(element.properties.code);
+              element.properties.stats = this.getLocalityStatisticsByRegionCode(element.properties.code);
 
               //SET FILL COLOR
               if (element.properties.stats) {
@@ -740,6 +790,8 @@ export class InteractiveMapComponent implements OnInit {
           .getStatesByRegion(countryCode, regionCode)
           .subscribe(
             (data: any) => {
+              this.localityMapStates = data;
+
               const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
 
               //build stats
@@ -748,7 +800,7 @@ export class InteractiveMapComponent implements OnInit {
                 element.properties.code = element.properties['state_code'];
                 element.properties.filtered = true;
                 element.properties.name = element.properties['state_name'];
-                element.properties.stats = this.statsCsvHelper.getStatsByStateCode(element.properties.code);
+                element.properties.stats = this.getLocalityStatisticsByStateCode(element.properties.code);
 
                 //SET FILL COLOR
                 if (element.properties.stats) {
@@ -813,6 +865,7 @@ export class InteractiveMapComponent implements OnInit {
       stats: e.feature.getProperty('stats'),
       type: e.feature.getProperty('adm_level')
     } as IMapInfoWindowContent;
+
     this.info.position = this.getCenterJsonFromMapDataFeature(e.feature);
     this.info.open(undefined, false);
 
@@ -841,26 +894,26 @@ export class InteractiveMapComponent implements OnInit {
     switch (e.feature.getProperty('adm_level')) {
       case 'region':
         const regionCode = e.feature.getProperty('code');
-        const region = this.statsCsvHelper.meta.regions.find(x => x.code === regionCode);
+        const regionMap = this.localityMapRegions.find(x => x.regionCode === regionCode);
 
-        if (region) {
-          this.onSelectRegion(region);
+        if (regionMap && regionMap.region) {
+          this.onSelectRegion(regionMap.region);
         }
         break;
       case 'state':
         const selectedStateCode = e.feature.getProperty('code');
-        const state = this.statsCsvHelper.meta.states.find(x => x.code.toLowerCase() === selectedStateCode.toLowerCase());
+        const stateMap = this.localityMapStates.find(x => x.stateCode === selectedStateCode);
 
-        if (state) {
-          this.onSelectState(state);
+        if (stateMap && stateMap.state) {
+          this.onSelectState(stateMap.state);
         }
         break;
       case 'municipality':
-        const cityCode = e.feature.getProperty('code');
-        const city = this.statsCsvHelper.meta.cities.find(x => x.code.toLowerCase() === cityCode.toLowerCase());
+        const municipalityCode = e.feature.getProperty('code');
+        const municipalityMap = this.localityMapMunicipalities.find(x => x.municipalityCode === municipalityCode);
 
-        if (city) {
-          this.onSelectCity(city);
+        if (municipalityMap && municipalityMap.municipality) {
+          this.onSelectCity(municipalityMap.municipality);
         }
         break;
       default:
@@ -988,13 +1041,13 @@ export class InteractiveMapComponent implements OnInit {
   openStatsPanel(feature: google.maps.Data.Feature) {
     this.mapStatsPanel.item = feature;
     this.mapStatsPanel.itemName = feature.getProperty('name');
-    this.mapStatsPanel.itemStats = feature.getProperty('stats') as IGeneralStats;
+    this.mapStatsPanel.itemStats = feature.getProperty('stats') as LocalityStatistics;
     this.mapStatsPanel.itemType = feature.getProperty('adm_level');
 
     if (this.mapStatsPanel.itemStats) {
       this.mapStatsPanel.generalCardsData = [{
         name: 'Schools',
-        value: this.mapStatsPanel.itemStats.schoolsCount
+        value: this.mapStatsPanel.itemStats.schoolCount
       }, {
         name: 'Students',
         value: this.mapStatsPanel.itemStats.studentCount
@@ -1002,17 +1055,17 @@ export class InteractiveMapComponent implements OnInit {
 
       this.mapStatsPanel.generalCardsConnectivityData = [{
         name: 'Connectivity',
-        value: this.mapStatsPanel.itemStats.schoolsConnectedPercentage
+        value: this.mapStatsPanel.itemStats.schoolInternetAvailabilityPercentage
       }, {
         name: 'Without Data',
-        value: this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataPercentage
+        value: this.mapStatsPanel.itemStats.schoolWithoutInternetAvailabilityPercentage
       }];
 
-      this.mapStatsPanel.internetAvailabityPrediction = this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionPercentage;
-      this.mapStatsPanel.internetAvailabityPredictionUnits = this.getInternetAvailabilityPredictionUnitStr(this.mapStatsPanel.itemStats.schoolsInternetAvailabilityPredictionCount, this.mapStatsPanel.itemStats.schoolsWithoutConnectivityDataCount);
-      this.mapStatsPanel.schoolsConnectivity = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.byConnectivity).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
-      this.mapStatsPanel.connectivityBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolRegion);
-      this.mapStatsPanel.connectivityBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.connectivityBySchoolType);
+      this.mapStatsPanel.internetAvailabityPrediction = this.mapStatsPanel.itemStats.schoolInternetAvailabilityPredicitionPercentage;
+      this.mapStatsPanel.internetAvailabityPredictionUnits = this.getInternetAvailabilityPredictionUnitStr(this.mapStatsPanel.itemStats.schoolInternetAvailabilityPredicitionCount, this.mapStatsPanel.itemStats.schoolWithoutInternetAvailabilityCount);
+      this.mapStatsPanel.schoolsConnectivity = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.internetAvailabilityByValue).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
+      this.mapStatsPanel.connectivityBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityBySchoolRegion);
+      this.mapStatsPanel.connectivityBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityBySchoolType);
 
       // Open stats panel
       this.mapStatsPanel.open = true;
@@ -1068,7 +1121,7 @@ export class InteractiveMapComponent implements OnInit {
    * @param element GeoJson data
    */
   setMapElementFillColor(element: any) {
-    const percentage = this.getPercentageValueForFillColor(element.properties.stats as IGeneralStats);
+    const percentage = this.getPercentageValueForFillColor(element.properties.stats as LocalityStatistics);
 
     let indexAtPercentage = this.getRangeColorIndex(percentage);
     element.properties.fillColor = this.getSelectedViewOption.rangeColors[indexAtPercentage].backgroundColor;
@@ -1220,6 +1273,18 @@ export class InteractiveMapComponent implements OnInit {
     return this.filterForm.controls.selectedViewOption.value;
   }
 
+  getLocalityStatisticsByRegionCode(regionCode: string) {
+    return this.localityStatistics.find(x => x.localityMap.regionCode === regionCode);
+  }
+
+  getLocalityStatisticsByStateCode(stateCode: string) {
+    return this.localityStatistics.find(x => x.localityMap.stateCode === stateCode);
+  }
+
+  getLocalityStatisticsByMunicipalityCode(municipalityCode: string) {
+    return this.localityStatistics.find(x => x.localityMap.municipalityCode === municipalityCode);
+  }
+
   getStateCodesFromRegion(regionCode: string): Array<string> {
     return this.mapFilter.stateOptions.filter(x => x.region.code === regionCode).map(x => x.code.toString());
   }
@@ -1229,8 +1294,8 @@ export class InteractiveMapComponent implements OnInit {
    * @param stats general stats object
    * @returns number
    */
-  getPercentageValueForFillColor(stats: IGeneralStats) {
-    return this.getSelectedViewOption.value === MapViewOptionValue.Prediction ? stats.schoolsInternetAvailabilityPredictionPercentage : stats.schoolsConnectedPercentage;
+  getPercentageValueForFillColor(stats: LocalityStatistics) {
+    return this.getSelectedViewOption.value === MapViewOptionValue.Prediction ? stats.schoolInternetAvailabilityPredicitionPercentage : stats.schoolInternetAvailabilityPercentage;
   }
 
   /**
