@@ -24,8 +24,11 @@ def compute_stats_by_columns(df: pd.DataFrame, columns: List[str]) -> pd.DataFra
     group_df = df.groupby(columns)
 
     stats_df = group_df.agg(
-        school_count = ('uuid', lambda x: len(set(x))),
-        student_count = ('student_count', 'sum'),
+        region_count       = ('region_code', lambda x: len(set(x))),
+        state_count        = ('state_code', lambda x: len(set(x))),
+        municipality_count = ('municipality_code', lambda x: len(set(x))),
+        school_count       = ('uuid', lambda x: len(set(x))),
+        student_count      = ('student_count', 'sum'),
 
         connected_count      = ('internet_availability', lambda x: conditional_count(x, 'Yes')),
         connected_percentage = ('internet_availability', lambda x: conditional_perc(x, 'Yes')),
@@ -63,6 +66,9 @@ def create_table(engine) -> Table:
         TABLE_NAME, meta,
         Column('id', Integer, primary_key=True),
         Column('locality_map_id', Integer, nullable=True),
+        Column('region_count', Integer, nullable=False),
+        Column('state_count', Integer, nullable=False),
+        Column('municipality_count', Integer, nullable=False),
         Column('school_count', Integer, nullable=False),
         Column('student_count', Integer, nullable=False),
         Column('connected_count', Integer, nullable=False),
@@ -101,13 +107,21 @@ def main(db_filepath):
         input_df['internet_availability_prediction'].apply(parse_bool)
 
     groupby_columns = [
+        'country',
         'region_name', 'region_code',
         'state_name', 'state_code',
         'municipality_name', 'municipality_code'
     ]
-    region_df = compute_stats_by_columns(input_df, groupby_columns[:2]).reset_index()
-    state_df = compute_stats_by_columns(input_df, groupby_columns[:4]).reset_index()
-    city_df = compute_stats_by_columns(input_df, groupby_columns).reset_index()
+    country_df = compute_stats_by_columns(input_df, groupby_columns[:1]).reset_index()
+    region_df = compute_stats_by_columns(input_df, groupby_columns[:3]).reset_index()
+    state_df = compute_stats_by_columns(input_df, groupby_columns[:5]).reset_index()
+    municipality_df = compute_stats_by_columns(input_df, groupby_columns).reset_index()
+
+    # HARD CODED -> Only Brazil is available
+    assert country_df.shape[0] == 1, "Locality should only be available to Brazil!"
+
+    country_codes = ['BR']
+    country_df['locality_map_id'] = get_locality_map_ids_adm_level(engine, country_codes, 'country')
 
     region_codes = region_df['region_code'].to_list()
     region_df['locality_map_id'] = get_locality_map_ids_adm_level(engine, region_codes, 'region')
@@ -115,10 +129,10 @@ def main(db_filepath):
     state_codes = state_df['state_code'].to_list()
     state_df['locality_map_id'] = get_locality_map_ids_adm_level(engine, state_codes, 'state')
 
-    city_codes = city_df['municipality_code'].to_list()
-    city_df['locality_map_id'] = get_locality_map_ids_adm_level(engine, city_codes, 'municipality')
+    city_codes = municipality_df['municipality_code'].to_list()
+    municipality_df['locality_map_id'] = get_locality_map_ids_adm_level(engine, city_codes, 'municipality')
 
-    stats_df = pd.concat([city_df, state_df, region_df])
+    stats_df = pd.concat([country_df, municipality_df, state_df, region_df])
     stats_df[groupby_columns] = stats_df[groupby_columns].fillna('')
     stats_df = stats_df.sort_values('locality_map_id')
     stats_df = stats_df.drop(columns=groupby_columns)
