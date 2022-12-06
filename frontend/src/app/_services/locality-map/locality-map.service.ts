@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
-import { LocalityMap, LocalityMapAutocomplete } from "../../_models";
+import { LocalityMap, LocalityMapAutocomplete, Region, State } from "../../_models";
 
 
 @Injectable({
@@ -38,7 +38,7 @@ export class LocalityMapService {
    * @param countryId 2 digits country code
    * @returns LocalityMap[]
    */
-  getRegionsByCountry(countryId: string): Observable<LocalityMap[]> {
+  getLocalityMapRegionsByCountry(countryId: string): Observable<LocalityMap[]> {
     const query = `adm_level=eq.region&country_code=eq.${countryId}`;
 
     return this.http
@@ -141,6 +141,44 @@ export class LocalityMapService {
       .pipe(
         map((data) => {
           return data.map((item: any) => new LocalityMapAutocomplete().deserialize(item));
+        })
+      );
+  }
+
+  /**
+   * Get list of regions of a country
+   * @param countryId 2 digits country code
+   * @returns Region[]
+   */
+  getRegionsOfCountry(countryId: string): Observable<Region[]> {
+    const query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}`;
+
+    return this.http
+      .get<Region[]>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new Region(item.region_code, item.region_name));
+        })
+      );
+  }
+
+  /**
+   * Get list of states of a country
+   * @param countryId 2 digits country code
+   * @returns State[]
+   */
+  getStatesOfCountry(countryId: string): Observable<State[]> {
+    const query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}`;
+
+    return this.http
+      .get<State[]>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new State(item.state_code, item.state_name, new Region(item.region_code, item.region_name)));
         })
       );
   }

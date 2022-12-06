@@ -7,10 +7,6 @@ export class LocalityMapAutocomplete
   code: string;
   name: string;
 
-  city?: City;
-  state?: State;
-  region?: Region;
-
   constructor() {
     super();
     this.code = '';
@@ -22,18 +18,6 @@ export class LocalityMapAutocomplete
 
     this.code = input.id;
     this.name = input.name;
-
-    if (this.regionCode) {
-      this.region = new Region(this.regionCode, this.regionName);
-    }
-
-    if (this.stateCode && this.region) {
-      this.state = new State(this.stateCode, this.stateName, this.region)
-    }
-
-    if (this.municipalityCode && this.state) {
-      this.city = new City(this.municipalityCode.toString(), this.municipalityName.toString(), this.state);
-    }
 
     return this;
   }

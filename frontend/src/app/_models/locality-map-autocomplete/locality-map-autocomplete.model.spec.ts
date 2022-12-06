@@ -21,9 +21,9 @@ describe('Model: LocalityGeometryAutocomplete', () => {
     // Own properties
     expect(autocompleteObj.code).toEqual('');
     expect(autocompleteObj.name).toEqual('');
-    expect(autocompleteObj.city).toBeUndefined();
-    expect(autocompleteObj.state).toBeUndefined();
-    expect(autocompleteObj.region).toBeUndefined();
+    expect(autocompleteObj.municipality).toBeNull();
+    expect(autocompleteObj.state).toBeNull();
+    expect(autocompleteObj.region).toBeNull();
   });
 
   describe('#deserialize', () => {
@@ -39,9 +39,9 @@ describe('Model: LocalityGeometryAutocomplete', () => {
 
       expect(autocompleteObj.code).toEqual(autocompleteObj.municipalityCode);
       expect(autocompleteObj.name).toEqual(autocompleteObj.municipalityName);
-      expect(autocompleteObj.city).toBeDefined();
-      expect(autocompleteObj.city?.code).toEqual(autocompleteObj.municipalityCode.toString());
-      expect(autocompleteObj.city?.name).toEqual(autocompleteObj.municipalityName.toString());
+      expect(autocompleteObj.municipality).toBeDefined();
+      expect(autocompleteObj.municipality?.code).toEqual(autocompleteObj.municipalityCode.toString());
+      expect(autocompleteObj.municipality?.name).toEqual(autocompleteObj.municipalityName.toString());
       expect(autocompleteObj.state).toBeDefined();
       expect(autocompleteObj.state?.code).toEqual(autocompleteObj.stateCode.toString());
       expect(autocompleteObj.state?.name).toEqual(autocompleteObj.stateName.toString());
