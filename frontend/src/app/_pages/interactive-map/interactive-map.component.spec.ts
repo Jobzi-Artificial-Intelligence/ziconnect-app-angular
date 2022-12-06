@@ -102,6 +102,8 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'watchLoadingMap');
       spyOn(component, 'loadLocalityStatistics');
       spyOn(component, 'loadRegionsGeoJson');
+      spyOn(component, 'initRegionSelectOptions');
+      spyOn(component, 'initStateSelectOptions');
       spyOn(component, 'initSearchLocationFilteredOptions');
 
       await component.ngOnInit();
@@ -110,12 +112,110 @@ describe('Component: InteractiveMap', () => {
       expect(component.watchLoadingMap).toHaveBeenCalled();
       expect(component.loadLocalityStatistics).toHaveBeenCalled();
       expect(component.loadRegionsGeoJson).toHaveBeenCalled();
+      expect(component.initRegionSelectOptions).toHaveBeenCalled();
+      expect(component.initStateSelectOptions).toHaveBeenCalled();
       expect(component.initSearchLocationFilteredOptions).toHaveBeenCalled();
     });
   });
 
   //#region FILTER FUNCTIONS
   ////////////////////////////////////////////
+  describe('#initRegionSelectOptions', () => {
+
+    it('should exists', () => {
+      expect(component.initRegionSelectOptions).toBeTruthy();
+      expect(component.initRegionSelectOptions).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getRegionsOfCountry').and.throwError('Error message');
+      await component.initRegionSelectOptions().catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getRegionsOfCountry').and.returnValue(throwError({ message: 'http error' }));
+      await component.initRegionSelectOptions().catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong retrieving region options: http error');
+    });
+
+    it('should works when service return success', async () => {
+      const regionsResponse = [mockRegion];
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getRegionsOfCountry').and.returnValue(of(regionsResponse));
+      await component.initRegionSelectOptions();
+
+      expect(component.mapFilter.regionOptions).toEqual(jasmine.any(Array));
+      expect(component.mapFilter.regionOptions.length).toEqual(regionsResponse.length);
+    });
+  });
+
+  describe('#initStateSelectOptions', () => {
+
+    it('should exists', () => {
+      expect(component.initStateSelectOptions).toBeTruthy();
+      expect(component.initStateSelectOptions).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesOfCountry').and.throwError('Error message');
+      await component.initStateSelectOptions().catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesOfCountry').and.returnValue(throwError({ message: 'http error' }));
+      await component.initStateSelectOptions().catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong retrieving state options: http error');
+    });
+
+    it('should works when service return success', async () => {
+      const statesResponse = [mockState];
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesOfCountry').and.returnValue(of(statesResponse));
+      await component.initStateSelectOptions();
+
+      expect(component.mapFilter.stateOptions).toEqual(jasmine.any(Array));
+      expect(component.mapFilter.stateOptions.length).toEqual(statesResponse.length);
+    });
+  });
+
   describe('#onChangeSelectedViewOption', () => {
 
     it('should exists', () => {
@@ -611,7 +711,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getRegionsByCountry').and.throwError('Error message');
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.throwError('Error message');
       await component.loadRegionsGeoJson().catch((error) => {
         expect(error.toString()).toEqual('Error: Error message');
       });
@@ -625,7 +725,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component.alertService, 'showError');
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(throwError({ message: 'http error' }));
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.returnValue(throwError({ message: 'http error' }));
       await component.loadRegionsGeoJson().catch((error) => {
         expect(error).toBeTruthy();
         expect(error.message).toEqual('http error');
@@ -639,7 +739,7 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'getLocalityStatisticsByRegionCode').and.returnValue(localityStatisticsRegions[0]);
 
       //@ts-ignore
-      spyOn(component.localityMapService, 'getRegionsByCountry').and.returnValue(of(mockRegionsLocalityMap));
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.returnValue(of(mockRegionsLocalityMap));
       await component.loadRegionsGeoJson();
 
       let count = 0;

@@ -1,5 +1,5 @@
 import { LocalityMap } from '../locality-map/locality-map.model';
-import { IConnectivityStats, LocalityStatistics } from './locality-statistics.model';
+import { LocalityStatistics } from './locality-statistics.model';
 import { localityStatisticsFromServer } from '../../../test/locality-statistics-mock';
 
 describe('Model: LocalityStatistics', () => {
@@ -46,9 +46,9 @@ describe('Model: LocalityStatistics', () => {
       expect(localityStatistics.localityMap).toBeDefined();
       expect(localityStatistics.localityMap).toEqual(localityMap);
 
-      expect(localityStatistics.municipalitiesCount).toEqual(localityStatisticsItemFromServer.municipalities_count);
-      expect(localityStatistics.regionsCount).toEqual(localityStatisticsItemFromServer.regions_count);
-      expect(localityStatistics.statesCount).toEqual(localityStatisticsItemFromServer.states_count);
+      expect(localityStatistics.municipalitiesCount).toEqual(localityStatisticsItemFromServer.municipality_count);
+      expect(localityStatistics.regionsCount).toEqual(localityStatisticsItemFromServer.region_count);
+      expect(localityStatistics.statesCount).toEqual(localityStatisticsItemFromServer.state_count);
       expect(localityStatistics.schoolCount).toEqual(localityStatisticsItemFromServer.school_count);
       expect(localityStatistics.studentCount).toEqual(localityStatisticsItemFromServer.student_count);
 

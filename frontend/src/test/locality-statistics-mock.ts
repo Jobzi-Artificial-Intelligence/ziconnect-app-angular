@@ -4,9 +4,9 @@ export const localityStatisticsFromServer = [
   {
     "id": 1,
     "locality_map_id": 2,
-    "municipalities_count": 100,
-    "regions_count": 1,
-    "states_count": 5,
+    "municipality_count": 100,
+    "region_count": 1,
+    "state_count": 5,
     "school_count": 24781,
     "student_count": 4727271,
     "connected_count": 7897,

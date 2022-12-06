@@ -96,9 +96,9 @@ export class LocalityStatistics implements Deserializable {
     this.id = input.id;
     this.localityMap = new LocalityMap().deserialize(input.locality_map);
 
-    this.municipalitiesCount = input.municipalities_count;
-    this.regionsCount = input.regions_count;
-    this.statesCount = input.states_count;
+    this.municipalitiesCount = input.municipality_count;
+    this.regionsCount = input.region_count;
+    this.statesCount = input.state_count;
     this.schoolCount = input.school_count;
     this.studentCount = input.student_count;
 

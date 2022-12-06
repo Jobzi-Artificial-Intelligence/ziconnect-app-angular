@@ -31,7 +31,7 @@ export interface IMapFilter {
   regionOptions: Array<Region>;
   stateOptions: Array<State>;
   selectedCity?: City;
-  selectedCountry?: string,
+  selectedCountry: string,
   selectedRegion?: Region;
   selectedState?: State;
   selectedSchoolRegion: String,
@@ -207,8 +207,9 @@ export class InteractiveMapComponent implements OnInit {
     this.watchLoadingMap();
 
     await this.loadLocalityStatistics(AdministrativeLevel.Region);
-
-    this.loadRegionsGeoJson();
+    await this.loadRegionsGeoJson();
+    await this.initRegionSelectOptions();
+    await this.initStateSelectOptions();
 
     this.initSearchLocationFilteredOptions();
 
@@ -254,6 +255,38 @@ export class InteractiveMapComponent implements OnInit {
 
   //#region FILTER FUNCTIONS
   ////////////////////////////////////////////
+
+  async initRegionSelectOptions() {
+    try {
+      await this.localityMapService
+        .getRegionsOfCountry(this.mapFilter.selectedCountry)
+        .toPromise()
+        .then((data) => {
+          this.mapFilter.regionOptions = data;
+        })
+        .catch((error) => {
+          this.alertService.showError(`Something went wrong retrieving region options: ${error.message}`);
+        });
+    } catch (error: any) {
+      this.alertService.showError(error);
+    }
+  }
+
+  async initStateSelectOptions() {
+    try {
+      await this.localityMapService
+        .getStatesOfCountry(this.mapFilter.selectedCountry)
+        .toPromise()
+        .then((data) => {
+          this.mapFilter.stateOptions = data;
+        })
+        .catch((error) => {
+          this.alertService.showError(`Something went wrong retrieving state options: ${error.message}`);
+        });
+    } catch (error: any) {
+      this.alertService.showError(error);
+    }
+  }
 
   onChangeSelectedViewOption(e: any) {
     // collapse filters panel
@@ -390,7 +423,7 @@ export class InteractiveMapComponent implements OnInit {
     await this.loadLocalityStatistics(AdministrativeLevel.State);
 
     // Load states from selected region
-    await this.loadStatesGeoJson(this.mapFilter.selectedCountry ?? '', region.code.toString());
+    await this.loadStatesGeoJson(this.mapFilter.selectedCountry, region.code.toString());
 
     // Region Zoom
     const regionFeature = this.googleMap.data.getFeatureById(region.code.toString());
@@ -429,7 +462,7 @@ export class InteractiveMapComponent implements OnInit {
     await this.loadLocalityStatistics(AdministrativeLevel.Municipality);
 
     // Add load cities
-    await this.loadCitiesGeoJson(this.mapFilter.selectedCountry ?? '', state.region.code.toString(), state.code.toString());
+    await this.loadCitiesGeoJson(this.mapFilter.selectedCountry, state.region.code.toString(), state.code.toString());
 
     // State Zoom
     const stateFeature = this.googleMap.data.getFeatureById(state.code.toString());
@@ -440,6 +473,7 @@ export class InteractiveMapComponent implements OnInit {
 
     this.ref.detectChanges();
   }
+
   //#endregion
   ////////////////////////////////////////////
 
@@ -480,7 +514,7 @@ export class InteractiveMapComponent implements OnInit {
 
   loadAutocompleteSearchOptions(filterValue: string) {
     this.localityMapService
-      .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry ?? '', filterValue)
+      .getLocalityAutocompleteByCountry(this.mapFilter.selectedCountry, filterValue)
       .subscribe((data) => {
         this.searchLocationFilteredOptions = data;
         this.loadingAutocomplete = false;
@@ -662,7 +696,7 @@ export class InteractiveMapComponent implements OnInit {
         this.localityStatisticsService
           .getStatisticsOfAdministrativeLevelLocalities(
             administrativeLevel,
-            this.mapFilter.selectedCountry || '',
+            this.mapFilter.selectedCountry,
             this.mapFilter.selectedRegion ? this.mapFilter.selectedRegion.code.toString() : '',
             this.mapFilter.selectedState ? this.mapFilter.selectedState.code.toString() : ''
           )
@@ -698,7 +732,7 @@ export class InteractiveMapComponent implements OnInit {
       this.loadingMessage = 'Loading regions...';
 
       try {
-        this.localityMapService.getRegionsByCountry('BR').subscribe(
+        this.localityMapService.getLocalityMapRegionsByCountry('BR').subscribe(
           (data: any) => {
             this.localityMapRegions = data;
 

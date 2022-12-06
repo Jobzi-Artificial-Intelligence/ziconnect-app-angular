@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LocalityMapService } from "./locality-map.service";
 import { environment } from "src/environments/environment";
-import { LocalityMap, LocalityMapAutocomplete } from "src/app/_models";
+import { LocalityMap, LocalityMapAutocomplete, Region, State } from "src/app/_models";
 import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock";
 
 describe('LocalityMapService', () => {
@@ -173,18 +173,18 @@ describe('LocalityMapService', () => {
     });
   });
 
-  describe('#getRegionsByCountry', () => {
+  describe('#getLocalityMapRegionsByCountry', () => {
     beforeEach(() => {
       query = `adm_level=eq.region&country_code=eq.${countryId}`;
     });
 
     it('should exists', () => {
-      expect(service.getRegionsByCountry).toBeDefined();
-      expect(service.getRegionsByCountry).toEqual(jasmine.any(Function));
+      expect(service.getLocalityMapRegionsByCountry).toBeDefined();
+      expect(service.getLocalityMapRegionsByCountry).toEqual(jasmine.any(Function));
     });
 
     it('should use GET to retrieve data', () => {
-      service.getRegionsByCountry(countryId).subscribe();
+      service.getLocalityMapRegionsByCountry(countryId).subscribe();
 
       const testRequest = httpTestingController.expectOne(`${endpointUri}?${query}`);
       expect(testRequest.request.method).toEqual('GET');
@@ -193,7 +193,7 @@ describe('LocalityMapService', () => {
     it('should return expected data', (done) => {
       const expectedData: LocalityMap[] = regionsResponseFromServer.map((item) => new LocalityMap().deserialize(item));
 
-      service.getRegionsByCountry(countryId).subscribe(data => {
+      service.getLocalityMapRegionsByCountry(countryId).subscribe(data => {
         expect(data).toEqual(expectedData);
         done();
       });
@@ -330,6 +330,66 @@ describe('LocalityMapService', () => {
 
       const testRequest = httpTestingController.expectOne(`${endpointViewUri}?${query}`);
       testRequest.flush(localitiesMapAutocompleteResponseFromServer);
+    });
+  });
+
+  describe('#getRegionsOfCountry', () => {
+    beforeEach(() => {
+      query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}`;
+    });
+
+    it('should exists', () => {
+      expect(service.getRegionsOfCountry).toBeDefined();
+      expect(service.getRegionsOfCountry).toEqual(jasmine.any(Function));
+    });
+
+    it('should use GET to retrieve data', () => {
+      service.getRegionsOfCountry(countryId).subscribe();
+
+      const testRequest = httpTestingController.expectOne(`${endpointUri}?${query}`);
+      expect(testRequest.request.method).toEqual('GET');
+    });
+
+    it('should return expected data', (done) => {
+      const expectedData: Region[] = regionsResponseFromServer.map((item) => new Region(item.region_code, item.region_name));
+
+      service.getRegionsOfCountry(countryId).subscribe(data => {
+        expect(data).toEqual(expectedData);
+        done();
+      });
+
+      const testRequest = httpTestingController.expectOne(`${endpointUri}?${query}`);
+      testRequest.flush(regionsResponseFromServer);
+    });
+  });
+
+  describe('#getStatesOfCountry', () => {
+    beforeEach(() => {
+      query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}`;
+    });
+
+    it('should exists', () => {
+      expect(service.getStatesOfCountry).toBeDefined();
+      expect(service.getStatesOfCountry).toEqual(jasmine.any(Function));
+    });
+
+    it('should use GET to retrieve data', () => {
+      service.getStatesOfCountry(countryId).subscribe();
+
+      const testRequest = httpTestingController.expectOne(`${endpointUri}?${query}`);
+      expect(testRequest.request.method).toEqual('GET');
+    });
+
+    it('should return expected data', (done) => {
+      const expectedData: State[] = statesResponseFromServer.map((item) => new State(item.state_code, item.state_name, new Region(item.region_code, item.region_name)));
+
+      service.getStatesOfCountry(countryId).subscribe(data => {
+        expect(data).toEqual(expectedData);
+        done();
+      });
+
+      const testRequest = httpTestingController.expectOne(`${endpointUri}?${query}`);
+      testRequest.flush(statesResponseFromServer);
     });
   });
 });
