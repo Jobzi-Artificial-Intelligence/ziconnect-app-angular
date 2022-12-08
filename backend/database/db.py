@@ -20,26 +20,42 @@ def get_engine(filepath) -> Engine:
     return create_engine(engine_url, echo = False, pool_pre_ping=True)
 
 def get_locality_map_ids_adm_level(engine: Engine, codes: List[str], adm_level: str):
-    value_template = '(\'{0}\')'
-    values = [value_template.format(code) for code in codes]
+    values = [f"('{code}')" for code in codes]
     query = f"""
-        SELECT lm.id
+        SELECT code  AS code, 
+               lm.id AS locality_map_id
         FROM (VALUES
             {', '.join(values)}
         ) AS temp(code)
         LEFT JOIN unicef.locality_map lm
     """
-    if adm_level == "region":
-        query += " ON lm.region_code = code AND lm.state_code IS NULL AND lm.municipality_code IS NULL"
+    if adm_level == "country":
+        query += """
+             ON lm.country_code = code 
+            AND lm.region_code is NULL 
+            AND lm.state_code IS NULL 
+            AND lm.municipality_code IS NULL
+        """
+    elif adm_level == "region":
+        query += """
+             ON lm.region_code = code 
+            AND lm.state_code IS NULL 
+            AND lm.municipality_code IS NULL
+        """
     elif adm_level == "state":
-        query += " ON lm.state_code = code AND lm.municipality_code IS NULL"
+        query += """
+             ON lm.state_code = code 
+            AND lm.municipality_code IS NULL
+        """
     else:
         query += " ON lm.municipality_code = code"
 
     with engine.connect() as connect:
         results = connect.execute(query)
         records = [dict(r) for r in results]
-        return pd.DataFrame(records)['id']
+        id_map = {r['code'] : r['locality_map_id']
+                  for r in records}
+        return [id_map[code] for code in codes]
 
 def get_locality_map_ids(engine: Engine, district_codes: List[str]):
     value_template = '(\'{0}\')'
