@@ -11,9 +11,9 @@ import { SeoService } from "./_services";
   selector: 'app-navigation-bar',
   template: '<p>Mock Navigation Bar Component</p>'
 })
-class MockNavigationBar { }
+class MockNavigationBarComponent { }
 
-describe('Component: App', () => {
+describe('Component: AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
@@ -41,7 +41,7 @@ describe('Component: App', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent, MockNavigationBar],
+      declarations: [AppComponent, MockNavigationBarComponent],
       imports: [AppRoutingModule],
       providers: [
         { provide: Router, useValue: routeMock },

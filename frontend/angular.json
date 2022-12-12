@@ -197,9 +197,21 @@
               "devServerTarget": "jobzi-connectivity:serve:local"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "jobzi-connectivity"
+  "defaultProject": "jobzi-connectivity",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
