@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      - staging
+      - development
 
   # the follow line allow this script to be started manually.
   workflow_dispatch:

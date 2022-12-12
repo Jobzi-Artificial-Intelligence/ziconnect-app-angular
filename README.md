@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project/branch/master/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project)
+[![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project/branch/staging/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project)
 
 # Predicting school connectivity in Brazil #
 
