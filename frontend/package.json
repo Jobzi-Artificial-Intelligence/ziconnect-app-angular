@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "ci:build-homolog": "ng build --configuration homolog",
     "ci:build-production": "ng build --configuration production",
-    "ci:test": "ng test --code-coverage --no-watch --browsers=ChromeHeadless"
+    "ci:test": "ng test --code-coverage --no-watch --browsers=ChromeHeadless",
+    "ci:lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -33,12 +34,20 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.4",
+    "@angular-eslint/builder": "13.5.0",
+    "@angular-eslint/eslint-plugin": "13.5.0",
+    "@angular-eslint/eslint-plugin-template": "13.5.0",
+    "@angular-eslint/schematics": "13.5.0",
+    "@angular-eslint/template-parser": "13.5.0",
     "@angular/cli": "~13.3.4",
     "@angular/compiler-cli": "~13.3.5",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "5.27.1",
+    "@typescript-eslint/parser": "5.27.1",
     "codelyzer": "^6.0.0",
     "compass-mixins": "^0.12.10",
+    "eslint": "^8.17.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.4",
