@@ -20,6 +20,7 @@ import {
   CodeConductComponent,
   ContributorsComponent,
   DataSourceReferenceComponent,
+  HomeComponent,
   InteractiveMapComponent,
   LicenseComponent
 } from './_pages';
@@ -33,6 +34,7 @@ import {
     ContributorsComponent,
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
+    HomeComponent,
     InteractiveMapComponent,
     LicenseComponent,
     NavigationBarComponent,
