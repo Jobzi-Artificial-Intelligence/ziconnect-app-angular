@@ -1,0 +1,62 @@
+@import "~compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#page-home {
+  margin-top: -16px;
+}
+
+#hero-section {
+  @include border-bottom-radius(40px);
+  background: linear-gradient(270deg, #030f14 0%, #0b1425 100%);
+  overflow: hidden;
+  line-height: 1;
+  padding: 60px 0;
+
+  .hero-content {
+    @include breakpoint($max: 768px) {
+      flex-direction: column;
+    }
+
+    .hero-description {
+      flex: 0 0 100%;
+      max-width: 600px;
+
+      h1 {
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        line-height: 1.5;
+        margin: 24px 0 40px;
+      }
+
+      ::ng-deep .mat-raised-button {
+        @include border-radius(32px);
+        font-size: 18px;
+        line-height: 64px;
+        padding: 0 32px;
+
+        @include breakpoint($max: 768px) {
+          display: block;
+        }
+      }
+    }
+
+    .hero-image {
+      flex: auto;
+      position: relative;
+
+      img {
+        @include breakpoint($max: 768px) {
+          height: auto;
+          margin-top: 48px;
+          max-width: 500px;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
