@@ -3,15 +3,18 @@
 @import "../../../styles/variables";
 
 #page-home {
+  line-height: 1;
   margin-top: -16px;
+
+  > section {
+    padding: 80px 0;
+  }
 }
 
 #hero-section {
   @include border-bottom-radius(40px);
   background: linear-gradient(270deg, #030f14 0%, #0b1425 100%);
   overflow: hidden;
-  line-height: 1;
-  padding: 80px 0;
 
   .hero-content {
     .hero-description {
@@ -47,8 +50,6 @@
 }
 
 #project-section {
-  padding: 80px 0;
-
   > .wrapper {
     > header {
       margin: 0 auto 48px;
@@ -130,8 +131,6 @@
 
 #about-us-section {
   background-color: #fdf5ef;
-  padding: 80px 0;
-  line-height: 1;
   overflow: hidden;
 
   .about-content {
@@ -183,9 +182,66 @@
   }
 }
 
+#solution-section {
+  background-color: #f9f8fe;
+  overflow: hidden;
+
+  .solution-description {
+    flex: 0 0 calc(60% - 16px);
+    max-width: 650px;
+
+    .solution-title {
+      margin-bottom: 24px;
+    }
+
+    .solution-subtitle {
+      margin-bottom: 48px;
+    }
+  }
+
+  .solution-items-container {
+    flex: 0 0 calc(40% - 16px);
+
+    .solution-item {
+      margin-bottom: 48px;
+
+      .icon {
+        @include box-shadow(0px 4px 9px rgba(0, 0, 0, 0.05));
+        background-color: #fff;
+        height: 60px;
+        flex: 0 0 60px;
+        margin-right: 20px;
+        width: 60px;
+
+        ::ng-deep .mat-icon {
+          height: 32px;
+          width: 32px;
+        }
+      }
+
+      .title {
+        display: block;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .solution-image {
+    img {
+      @include breakpoint($max: 768px) {
+        height: auto;
+        margin-top: 48px;
+        max-width: 650px;
+        width: 100%;
+      }
+    }
+  }
+}
+
 // shared styles
 .about-content,
-.hero-content {
+.hero-content,
+.solution-content {
   @include breakpoint($max: 768px) {
     flex-direction: column;
   }
