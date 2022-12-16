@@ -1,9 +1,14 @@
+from collections import OrderedDict
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from typing import Optional, Dict
 
 import argparse
 import pandas as pd
@@ -18,6 +23,83 @@ RESOURCES_DIR = "./resourses"
 MODEL_NAME = 'final'
 PREFIX_MODEL_NAME = f'{MODEL_NAME}'
 
+OUTPUT_COLUMN = 'internet_availability'
+
+class StudentCountEstimator(BaseEstimator, TransformerMixin):
+    
+    # Columns needed to estimate student count
+    LOCALITY_COLUMNS = [
+        # 'district_code',
+        'municipality_code', 
+        'microregion_code',
+        'mesoregion_code', 
+        'state_code', 
+        'region_code',
+    ]
+
+    BY_LOCALITY_REGION_TYPE_KEY = 'by=loc+reg+type'
+    BY_LOCALITY_REGION_KEY = 'by=loc+reg'
+    BY_LOCALITY_KEY = 'by=loc'
+
+    def _generate_counter_map(self,
+                              X: pd.DataFrame,
+                              column: Optional[str] = None
+                             ):
+        groupby_columns = [column, 'school_region', 'school_type']
+
+        counter_map = {}
+        # School count by locality, school region and school_type
+        
+        counter_map[self.BY_LOCALITY_REGION_TYPE_KEY] = \
+            X.groupby(groupby_columns)['student_count'].median().to_dict()
+
+        # School count by locality and school region
+        counter_map[self.BY_LOCALITY_REGION_KEY] = \
+            X.groupby(groupby_columns[:2])['student_count'].median().to_dict()
+
+        # School count by locatily
+        counter_map[self.BY_LOCALITY_KEY] = \
+            X.groupby(groupby_columns[:1])['student_count'].median().to_dict()
+
+        return counter_map
+
+    def fit(self, X: pd.DataFrame, y: pd.Series=None):
+        for column in self.LOCALITY_COLUMNS + ['student_count']:
+            assert column in X.columns, \
+                f"DataFrame does not contain column '{column}'"
+
+        self.locality_counter_maps_ = OrderedDict()
+        for column in self.LOCALITY_COLUMNS:
+            self.locality_counter_maps_[column] = \
+                self._generate_counter_map(X, column)
+
+        return self
+
+    def _get_count(self, row: pd.Series) -> int:
+        # Get the "best" approximation possible given school data
+        for column, counter_map in self.locality_counter_maps_.items():
+            key_values = [row[column],
+                          row['school_region'], 
+                          row['school_type']]
+
+            key = tuple(key_values)
+            if key in counter_map[self.BY_LOCALITY_REGION_TYPE_KEY]:
+                return counter_map[self.BY_LOCALITY_REGION_TYPE_KEY][key]
+
+            key = tuple(key_values[:2])
+            if key in counter_map[self.BY_LOCALITY_REGION_KEY]:
+                return counter_map[self.BY_LOCALITY_REGION_KEY][key]
+
+            key = tuple(key_values[:1])
+            if key in counter_map[self.BY_LOCALITY_KEY]:
+                return counter_map[self.BY_LOCALITY_KEY][key]
+
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+        # Compute the student count for each school
+        X.loc[:, 'student_count'] = X.apply(self._get_count, axis=1)
+        return X
+
+
 def save_model(model_folder, model_name, model, replace=True):
     exists = os.path.exists(model_folder)
     if not exists:
@@ -28,9 +110,11 @@ def save_model(model_folder, model_name, model, replace=True):
          "Change the model name or set replace to True."
     
     pickle.dump(model, open(f'{model_folder}/{model_name}', 'wb'))
-    
+
+
 def load_model(model_folder, model_name):
      return pickle.load(open(f'{model_folder}/{model_name}', 'rb'))    
+
 
 def prepare_data(data: pd.DataFrame, for_train: bool=True):
     """
@@ -40,23 +124,12 @@ def prepare_data(data: pd.DataFrame, for_train: bool=True):
             as the dependent variable to be predicted in boolean form.
     """
 
-    # After an extensive experimentation, these were the variables choosen
-    input_columns = [
-        'latitude',
-        'longitude',
-        'student_count',
-        'school_type',
-        'school_region',
-        'region_name',
-        'state_abbreviation',
-        'mesoregion_name',
-    ]
-    output_column = 'internet_availability'
-
+    input_columns = list(data.columns)
+    input_columns.remove(OUTPUT_COLUMN)
     input_data = data[input_columns]
     output_data = None
     if for_train:
-        output_data = data[output_column]
+        output_data = data[OUTPUT_COLUMN]
         # Since we're applying supervised learning algortihm, we discard 
         # all rows with NA output values
         is_train_rows = ~output_data.isna()        
@@ -66,11 +139,15 @@ def prepare_data(data: pd.DataFrame, for_train: bool=True):
         output_data = output_data[is_train_rows]
 
     # Fix noise values
-    input_data.loc[:, 'student_count'] = input_data['student_count'].clip(upper=5000)
+    # Since we will have to estimate the student_count, it make sense to use 
+    # a small count since most school there are few students
+    if 'student_count' in input_data.columns:
+        input_data.loc[:, 'student_count'] = \
+            input_data['student_count'].clip(upper=200)
     
     # Variables used in the models
     # Discriteze categorical variables
-    X = pd.get_dummies(input_data)
+    X = input_data
     y = None if output_data is None else output_data.astype(bool)
     return X, y
 
@@ -90,22 +167,32 @@ def train(data: pd.DataFrame, model_folder):
     num_folds = 10
     cv_folds = get_cv_folds(X_train, y_train, k=num_folds)
 
+    # After an extensive experimentation, these were the variables choosen
+    continuous_columns = ['latitude', 'longitude', 'student_count']
+    categorical_columns = ['school_type', 'school_region', 'region_name', 
+                           'state_abbreviation', 'mesoregion_name']
+
     # Normalize the data
-    scaler = MinMaxScaler()
-    X_train = pd.DataFrame(scaler.fit_transform(X_train), columns=X_train.columns)
-    X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
-    save_model(model_folder, f'{PREFIX_MODEL_NAME}_scaler.pkl', scaler)
+    model = Pipeline(steps=[
+        ('estimator', StudentCountEstimator()),
+        ('selector', ColumnTransformer([
+            ('selector', 'passthrough', continuous_columns),
+            ('encoder', OneHotEncoder(sparse=False), categorical_columns)
+        ], remainder="drop")),
+        ('scaler', MinMaxScaler()), 
+        ('model', RandomForestClassifier(random_state=0))
+    ], verbose=False)
 
     # Grid Search Parameters
-    model = RandomForestClassifier(random_state=0)
     param_grid = {
-        'max_depth': [1,2,4,8,16,32],
-        'min_samples_leaf': [5]
+        'model__max_depth': [1, 2, 4, 8, 16, 32],
+        'model__min_samples_leaf': [5]
     }
+
     clf_rf = GridSearchCV(estimator=model,
                           param_grid=param_grid,
                           cv=cv_folds,
-                          n_jobs=5,
+                          n_jobs=6,
                           verbose=1,
                           scoring=['accuracy'],
                           refit='accuracy',
@@ -143,19 +230,15 @@ def train(data: pd.DataFrame, model_folder):
     # Finally, retrain the model using all labelled data
     model.set_params(**best_params)
     model = model.fit(X, y)
-    save_model(model_folder, f'{PREFIX_MODEL_NAME}_rf.pkl', best_model)    
+    save_model(model_folder, f'{PREFIX_MODEL_NAME}_pipeline.pkl', best_model)    
 
 def predict(data: pd.DataFrame, model_folder: str) -> None:
     X, _ = prepare_data(data, for_train=False)    
     assert X.shape[0] == data.shape[0], \
         f"Number of test entries is different! X: {X.shape} | data: {data.shape}"
 
-    # Normalize the data
-    scaler = load_model(model_folder, f'{PREFIX_MODEL_NAME}_scaler.pkl')
-    X = pd.DataFrame(scaler.transform(X), columns=X.columns)
-
-    # Load trained model
-    model = load_model(model_folder, f'{PREFIX_MODEL_NAME}_rf.pkl')
+    # Load all the pipeline (Preprocessing + Model)
+    model = load_model(model_folder, f'{PREFIX_MODEL_NAME}_pipeline.pkl')
 
     # Predict
     return model.predict(X)
@@ -165,6 +248,9 @@ def main(db_filepath, model_folder, is_test):
     # Retrieve all school data from Database
     engine = get_engine(db_filepath)
     data = get_schools_plus_ibge(engine)
+
+    # There are a few (~10) schools which we could not infer their locations
+    data = data[~data['district_code'].isna()]
 
     # Guarantee all relevant variables are present
     # We only allow connectivity related variables to be missing since these
