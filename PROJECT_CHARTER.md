@@ -10,7 +10,7 @@ This project charter serves as a statement of scope and objectives for the **Uni
 <u>**Document Revision History**</u>
 
 | Revised By       | Date           | Comment                                       |
-| -----------------|:--------------:|:---------------------------------------------:|
+| -----------------|:--------------:|:--------------------------------------------- |
 | Armando Horie    | 11/10/2022     | Concept of Unicef and Giga Project            |
 | Eduardo Laber    | 14/10/2022     | Deliverable scope adjustments                 |
 | Sergio           | 26/10/2022     | Added new concepts prediction analysis        |
