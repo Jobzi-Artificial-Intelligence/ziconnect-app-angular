@@ -179,13 +179,11 @@ Project operations and processes are described in [CONTRIBUTING.md].
 
 Jobzi uses a loose consensus-seeking process, described in [CONTRIBUTING.md].
 
-### 5.3: Other Project Roles
-
 ## 6: Definitions
 
-[UNICEF]: https://www.unicef.org/
-[GIGA Company]: https://giga.global/
-[CODE_OF_CONDUCT.md]: https://github.com/Jobzi-Artificial-Intelligence/unicef-project/blob/master/CODE_OF_CONDUCT.md
-[CONTRIBUTING.md]: https://github.com/Jobzi-Artificial-Intelligence/unicef-project/blob/master/CONTRIBUTING.md
+- UNICEF: https://www.unicef.org/
+- GIGA Company: https://giga.global/
+- CODE_OF_CONDUCT: https://github.com/Jobzi-Artificial-Intelligence/unicef-project/blob/master/CODE_OF_CONDUCT.md
+- CONTRIBUTING: https://github.com/Jobzi-Artificial-Intelligence/unicef-project/blob/master/CONTRIBUTING.md
 
 
