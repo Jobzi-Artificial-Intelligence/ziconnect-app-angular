@@ -1,8 +1,27 @@
+
 # Unicef Schools Connectivity Project Charter
 
 This project charter serves as a statement of scope and objectives for the **Unicef Schools Connectivity** project developed by Jobzi.
 
+**Document Created:** 18/10/2022
+
+**Author:** Jobzi Team
+
+<u>**Document Revision History**</u>
+
+| Revised By       | Date           | Comment                              |
+| -----------------|:--------------:|:------------------------------------:|
+| Armando          | 12/10/2022     | Concept of Unicef and Giga Project   |
+| Eduardo Laber    | Date modified  | Scope adjustments                    |
+| Frances Gomes    | Date modified  | Added GIthub and devOps workflow     |
+		
+
+| Start Date | End Date    | Project Manager | Client      |
+| :---------:|:-----------:| :--------------:| ------------|
+|            |             |                               |
+
 ## 1: Guiding Principles
+
 
 ## 2: Scope
 
