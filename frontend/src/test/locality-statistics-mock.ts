@@ -47,6 +47,34 @@ export const localityStatisticsFromServer = [
         "Yes": 5447
       }
     },
+    "internet_availability_prediction_by_value": {
+      "No": 3374,
+      "Yes": 978
+    },
+    "internet_availability_prediction_by_school_region": {
+      "Rural": {
+        "No": 3355,
+        "Yes": 578
+      },
+      "Urban": {
+        "No": 19,
+        "Yes": 400
+      }
+    },
+    "internet_availability_prediction_by_school_type": {
+      "Estadual": {
+        "No": 132,
+        "Yes": 143
+      },
+      "Federal": {
+        "No": 0,
+        "Yes": 1
+      },
+      "Municipal": {
+        "No": 3242,
+        "Yes": 834
+      }
+    },
     "internet_availability_prediction_count": 407,
     "internet_availability_prediction_percentage": 9.35202205882353,
     "create_at": "2022-11-25T20:14:15.001452+00:00",
