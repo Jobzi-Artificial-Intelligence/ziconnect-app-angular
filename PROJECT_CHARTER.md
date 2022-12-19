@@ -21,17 +21,40 @@ This project charter serves as a statement of scope and objectives for the **Uni
 
 | Start Date | End Date    | Project Manager | Client      |
 | :---------:|:-----------:| :--------------:| ------------|
-|            |             |                               |
+|            |             |                 |             |
 
 ## 1: Guiding Principles
 
-This project-charter file provides the content and informations necessary to identify the project in the context of its purpose, funding, resource requirements and approval. This document target audience is the major departmental stakeholders and decision makers in the leadership team.
+This project-charter file provides the content and information necessary to identify the project in the context of its purpose, funding, resource requirements and approval. This document target audience is the major departmental stakeholders and decision makers in the leadership team.
 
 ## 2: Scope
 
-Jobzi has knowledge and exprience to provide AI NLP solution designed to guide, contribute and merge the Job and Education market. As a part of this experience we are helping the Unicef and Giga a platform and AI prediction models to identify Internet availability in Brazilian schools using geographical data and information on employability for the schools' region.
+Jobzi has a considerable knowledge and experience to provide AI NLP solution designed to guide, contribute and merge the Job and Education market. As a part of this experience we are helping the Unicef and Giga a platform and AI prediction models to identify Internet availability in Brazilian schools using geographical data and information on employability for the schools' region.
 
-### Objectives
+## 3: Relationship with Unicef Foundation and Giga Company
+
+Additionally, we want to promote the Education towards employability, giving institutions the data and tools to improve their results. With Unicef Innovation Fund and Giga Project our objective it to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis.
+
+### 3.1 Jobzi Commercial Solutions
+
+Jobzi provides an unique AI NLP solution designed to merge Job and Education market in four solutions groups:
+
+                | Data                            | ATS                              | Data                            | Career Center                   |
+                | Crawling & Modeling             | SAAS Platform                    | Intelligence Provider           | SAAS Platform                   |
+|---------------|---------------------------------|----------------------------------|---------------------------------|---------------------------------|
+|Jobzi Solution |Data Discovery & Acquisition     | Job Portal & ATS Platform        | API Solution Stack              | Platform to connect students,   |
+|               |AI Special Projects              | for HR process automation        | Intelligence layer for ATS, TMS | companies and educational       |
+|               |                                 |                                  | (Training) & LMS (Learning)     | institutions with Lifelong      |
+|               |                                 |                                  |                                 | Learning Data Insights          |
+|---------------|---------------------------------|----------------------------------|---------------------------------|---------------------------------|       
+|Target Market  | Eduaction & Financial           | SMB Companies                    | HR, Learning and Upskilling     | Educational Institutions        |
+|               |                                 |                                  | PLatforms                       |                                 | 
+|---------------|---------------------------------|----------------------------------|---------------------------------|---------------------------------|       
+|Business Model | On Demand                       | On Hold                          | $ by #API Request               | $ by #Students                  |
+|               |                                 | ($ by Premium Plan)              |                                 |                                 |
+
+
+## 4: Unicef Project's Plan
 
 The project's details and milestones were defined as follows:
 
@@ -112,12 +135,43 @@ The project's details and milestones were defined as follows:
         - Attend virtual graduation      
         - Initiate submmission for the DPGA for consideration
 
+### 4.1 Scope
 
-## 3: Relationship with Unicef Foundation and Giga Company
+- NodeJS APIs to extend functionality in the Platform
+- File-based and code-based configuration
+- APIs ("interfaces") to write and organize tests written in JavaScript or compile-to-JavaScript languages
+- Command-line executable to run tests in a Node.js-based terminal environment
+- API to run tests in a browser environment
+- Internal test coverage for all of the above
+- Documentation including (but not limited to):
+  - Website ([https://unicef.jobzi.com](https://unicef.jobzi.com)) contents and design
+  - Test-writing and test-organizing APIs
+  - Command-line execution and options
+  - Browser-based execution and options
+  - [Project User Concept](https://unicef.jobzi.com/data-source-reference)
+  - [Contribution guide](https://github.com/Jobzi-Artificial-Intelligence/unicef-project/blob/master/CONTRIBUTING.md)
+- General support for multiple levels of tests, including (but not limited to):
+  - Unit tests
+  - Integration tests
+  - Functional/end-to-end tests
+  - Operational readiness tests
+- Tool configuration for project tests, build, documentation or website deployment
+- Angular and additional frameworks (e.g Karma), if needed
+- Third-party service integrations (e.g., bots, CI servers, SCM)
+- Project-endorsed spaces for collaboration (chat rooms, mailing lists, forums, etc.)
 
-### 3.1: Other Formal Project Relationships
+### 4.2 Out-Of-Scope
 
-## 4: Unicef Schools Connectivity's Governing Body
+- Use within unmaintained versions of Node.js
+- Use within browsers not meeting a threshold decided upon by maintainers
+- Certain classes of contributions:
+  - Bug fixes or enhancements without associated test coverage 
+  - Features having limited general-purpose use (as determined by maintainers)
+  - Bug fixes which "break" more users than are affected by the bug itself, _regardless_ of "correctness"
+  - Breaking changes to API without demonstrated need, especially those which would cause correct, currently-passing tests to fail
+  - Changes that significantly negatively impact performance without demonstrated need
+  - Code reviews, issue comments or pull requests which are dogmatic, demanding, or excessively critical as to discourage contributions by others
+  - Those which violate the Jobzi's [Code of Conduct]
 
 ## 5: Roles & Responsibilities
 
