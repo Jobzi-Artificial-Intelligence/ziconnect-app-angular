@@ -33,7 +33,7 @@ Jobzi has knowledge and exprience to provide AI NLP solution designed to guide, 
 
 ### Objectives
 
-The project's detailing and milestones were defined as follows:
+The project's details and milestones were defined as follows:
 
 - Quarter 1
     - Milestone 1 [Initial model to predict internet availability on Brazilian schools, based on information from GIGA (Backend and Frontend)]
@@ -61,8 +61,56 @@ The project's detailing and milestones were defined as follows:
         - Create a public, standalone Open Source documentation website that corresponds to a public git repository. Use tools to set up automated deployments of HTML documentation site from public source code repository (e.g. with Continuous Integration)
         - Follow the Pull Request Workflow when contributing code into your Open Source repositories.
 
+- Quarter 2
+    - Milestone 1 [Updated model to predict internet connectivity on Brazilian schools, based on information from GIGA, regional employability data, and additional data from external sources , (backend and frontend)]
+        - Acquisiton of data from additional sources
+        - Feature selection
+        - Model testing
+        - Model selection
+        - Data summarizing
+        - Update webpage
+    - Milestone 2 [Meeting Open Source Contractual Requirement]
+        - MUST have a OSI-approved license distributed with public source code repositories by end of Q2
+        - Create contributing guidelines for all Open Source repositories. Explain how someone makes a contribution to the projects. Add to documentation website created in previous quarter
+        - Create public tickets/issues that correspond to planned features and known bugs/problems with Open Source repositories
+        - Establish an Open Source quality assurance process. Explore unit testing frameworks for front-end/back-end software, if applicable. Document user stories and test cases for games, if applicable. Document data structures and algorithm decisions for data science, if applicable.
+        - Add either developer or user documentation to the Open Source documentation site. (Hint: Developer docs often include API docs, architecture or system state diagrams, or deployment guides)
+        - Identify a Code of Conduct for any public Open Source repositories. Upload it to public source code repositories. Create internal documentation for how to respond to a Code of Conduct report, if one were to be made.
+    - Milestone 3 [Communications and Branding]
+        - 1 image + caption per month to be shared on your social media channels
 
+- Quarter 3
+    - Milestone 1 [Investigation of the social impact of connectivity]
+        - Data Acquisition 
+        - Exploratory analysis of data
+        - Investigation of social impact of connectivity via  machine learning models
+        - Exibition of results in the Web Page
+    - Milestone 2 [Communications and Branding]
+        - 1 image + caption per month to be shared on your social media channels
+    - Milestone 3 [Meeting Open Source Contractual Requirement]
+        - Advance Open Source quality assurance. Set up a Continuous Integration / Continuous Deployment (CI/CD) pipeline from source code repository. Set up checks or tests on new Pull Requests. Target 40% code coverage, if applicable
+        - Use a public project management board to track progress on public tickets/issues (e.g. Taiga, GitHub/GitLab Projects, JIRA, Trello, or similar)
+        - Advance Open Source quality assurance. Target 40% code coverage for unit tests, if applicable
+        - Review compliance against DPG criteria and address any gaps
 
+- Quarter 4
+    - Milestone 1 [Tool for studying the social impact of connectivity in schools]
+        - Component for data acquisiton
+        - Component with the analytical models
+        - Component for use interface
+        - Update webpage
+    - Milestone 2 [Communications and Branding]
+        - 1 image + caption per month to be shared on your social media channels
+        - 1 blog post at end of quarter
+    - Milestone 3 [Meeting Open Source Contractual Requirement]
+        - Finalize Open Source documentation. User and developer documentation should be available
+        - Finalize Open Source quality assurance. Achieve 80% code test coverage, if applicable
+        - Create "Good First Issues" for bite-sized, low-commitment contributions for new developers to make to your source code repositories.
+        - Establish a public communication platform for the public to interact with project development team. (Suggested: UNICEF Innovation Fund community forum.)
+        - Growth planning, contextual analysis, and focused support with Open Source Mentor
+    - Milestone 4 [Cohort Product Development]
+        - Attend virtual graduation      
+        - Initiate submmission for the DPGA for consideration
 
 
 ## 3: Relationship with Unicef Foundation and Giga Company
