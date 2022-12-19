@@ -1882,6 +1882,25 @@ describe('Component: InteractiveMap', () => {
 
   //#region UTIL FUNCTIONS
   ////////////////////////////////////////////
+  describe('#getConnectivityPredictionBarColor', () => {
+
+    it('should exists', () => {
+      expect(component.getConnectivityPredictionBarColor).toBeTruthy();
+      expect(component.getConnectivityPredictionBarColor).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const valueYes = 'Yes';
+      const valueNo = 'No';
+      const valueNA = 'NA';
+
+      expect(component.getConnectivityPredictionBarColor(valueYes)).toEqual(component.schoolsPredictionColorScheme[valueYes]);
+      expect(component.getConnectivityPredictionBarColor(valueNo)).toEqual(component.schoolsPredictionColorScheme[valueNo]);
+      expect(component.getConnectivityPredictionBarColor(valueNA)).toEqual(component.schoolsPredictionColorScheme[valueNA]);
+
+    });
+  });
+
   describe('#getLocalityStatisticsByRegionCode', () => {
 
     it('should exists', () => {
