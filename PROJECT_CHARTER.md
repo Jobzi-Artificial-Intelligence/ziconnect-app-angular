@@ -39,7 +39,7 @@ Additionally, we want to promote the Education towards employability, giving ins
 
 Jobzi provides an unique AI NLP solution designed to merge Job and Education market in four solutions groups:
 
-                | Data  Crawling & Modeling           | ATS SAAS Platform                                    | Data Intelligence Provider          ! Career Center SAAS Platform                                  |
+| Business Group| Data  Crawling & Modeling           | ATS SAAS Platform                                    | Data Intelligence Provider          | Career Center SAAS Platform                                  |
 | ------------- | ----------------------------------- | ---------------------------------------------------- | ------------------------------------| ------------------------------------------------------------ |
 |Jobzi Solution | Data Discovery & AI Special Projects| Job Portal & ATS Platform for HR process automation  | API Solution for ATS, TMS and LMS   | Platform for students, companies and educational institutions|
 |Target Market  | Eduaction & Financial               | SMB Companies                                        | HR, Learning and Upskilling Platform| Educational Institutions                                     |   
