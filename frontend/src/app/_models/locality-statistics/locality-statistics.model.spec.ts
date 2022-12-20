@@ -26,6 +26,10 @@ describe('Model: LocalityStatistics', () => {
     expect(localityStatistics.internetAvailabilityByValue).toBeDefined();
     expect(localityStatistics.internetAvailabilityBySchoolRegion).toBeDefined();
     expect(localityStatistics.internetAvailabilityBySchoolType).toBeDefined();
+
+    expect(localityStatistics.internetAvailabilityPredictionByValue).toBeDefined();
+    expect(localityStatistics.internetAvailabilityPredictionBySchoolRegion).toBeDefined();
+    expect(localityStatistics.internetAvailabilityPredictionBySchoolType).toBeDefined();
   });
 
   describe('#deserialize', () => {
@@ -62,6 +66,10 @@ describe('Model: LocalityStatistics', () => {
       expect(localityStatistics.internetAvailabilityByValue).toBeDefined();
       expect(localityStatistics.internetAvailabilityBySchoolRegion).toBeDefined();
       expect(localityStatistics.internetAvailabilityBySchoolType).toBeDefined();
+
+      expect(localityStatistics.internetAvailabilityPredictionByValue).toBeDefined();
+      expect(localityStatistics.internetAvailabilityPredictionBySchoolRegion).toBeDefined();
+      expect(localityStatistics.internetAvailabilityPredictionBySchoolType).toBeDefined();
     });
   });
 });

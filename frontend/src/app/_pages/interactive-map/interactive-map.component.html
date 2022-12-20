@@ -231,7 +231,7 @@
             </ngx-charts-number-card>
           </div>
         </section>
-        <section style="height: 150px;" *ngIf="mapStatsPanel.open">
+        <section style="height: 150px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Connectivity'">
           <header class="text-transform-uppercase f-size-13 f-weight-500">Schools Connectivity</header>
           <div>
             <ngx-charts-pie-grid [view]="[500, 130]" [scheme]="schoolsConnectivityColorScheme"
@@ -239,7 +239,7 @@
             </ngx-charts-pie-grid>
           </div>
         </section>
-        <section style="height: 250px;" *ngIf="mapStatsPanel.open">
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Connectivity'">
           <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity by type</header>
           <div>
             <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
@@ -249,13 +249,43 @@
             </ngx-charts-bar-vertical-2d>
           </div>
         </section>
-        <section style="height: 250px;" *ngIf="mapStatsPanel.open">
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Connectivity'">
           <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity by region</header>
           <div>
             <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="ocean"
               [results]="mapStatsPanel.connectivityBySchoolRegion" [xAxis]="true" [yAxis]="true" [legend]="true"
               [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Region'" [yAxisLabel]="'Schools'"
               [legendTitle]="'Internet'" [roundEdges]="false">
+            </ngx-charts-bar-vertical-2d>
+          </div>
+        </section>
+        <section style="height: 150px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Prediction'">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Schools Connectivity Prediction</header>
+          <div>
+            <ngx-charts-pie-grid [view]="[500, 130]" [scheme]="schoolsConnectivityColorScheme"
+              [results]="mapStatsPanel.schoolsConnectivityPrediction">
+            </ngx-charts-pie-grid>
+          </div>
+        </section>
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Prediction'">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity Prediction by type</header>
+          <div>
+            <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="forest"
+              [customColors]="getConnectivityPredictionBarColor"
+              [results]="mapStatsPanel.connectivityPredictionBySchoolType" [xAxis]="true" [yAxis]="true" [legend]="true"
+              [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Type'" [yAxisLabel]="'Schools'"
+              [legendTitle]="'Internet'" [roundEdges]="false">
+            </ngx-charts-bar-vertical-2d>
+          </div>
+        </section>
+        <section style="height: 250px;" *ngIf="mapStatsPanel.open && getSelectedViewOption.value === 'Prediction'">
+          <header class="text-transform-uppercase f-size-13 f-weight-500">Connectivity Prediction by region</header>
+          <div>
+            <ngx-charts-bar-vertical-2d [view]="[480, 200]" scheme="forest"
+              [customColors]="getConnectivityPredictionBarColor"
+              [results]="mapStatsPanel.connectivityPredictionBySchoolRegion" [xAxis]="true" [yAxis]="true"
+              [legend]="true" [showXAxisLabel]="false" [showYAxisLabel]="true" [xAxisLabel]="'Region'"
+              [yAxisLabel]="'Schools'" [legendTitle]="'Internet'" [roundEdges]="false">
             </ngx-charts-bar-vertical-2d>
           </div>
         </section>
