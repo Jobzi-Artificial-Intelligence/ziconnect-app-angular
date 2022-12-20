@@ -57,7 +57,10 @@ export interface IMapStatsPanel {
   generalCardsConnectivityData: Array<any>;
   connectivityBySchoolRegion: Array<any>;
   connectivityBySchoolType: Array<any>;
+  connectivityPredictionBySchoolRegion: Array<any>;
+  connectivityPredictionBySchoolType: Array<any>;
   schoolsConnectivity: Array<any>;
+  schoolsConnectivityPrediction: Array<any>;
   internetAvailabityPrediction: number;
   internetAvailabityPredictionUnits: string;
 }
@@ -161,7 +164,10 @@ export class InteractiveMapComponent implements OnInit {
     generalCardsConnectivityData: new Array<any>(),
     connectivityBySchoolRegion: new Array<any>(),
     connectivityBySchoolType: new Array<any>(),
+    connectivityPredictionBySchoolRegion: new Array<any>(),
+    connectivityPredictionBySchoolType: new Array<any>(),
     schoolsConnectivity: new Array<any>(),
+    schoolsConnectivityPrediction: new Array<any>(),
     internetAvailabityPrediction: 0,
     internetAvailabityPredictionUnits: ''
   };
@@ -170,7 +176,13 @@ export class InteractiveMapComponent implements OnInit {
     name: 'PieSchoolsConnectivityScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#5AA454', '#A10A28', '#C7B42C',],
+    domain: ['#56d132', '#f95e5d', '#C7B42C',],
+  };
+
+  schoolsPredictionColorScheme: any = {
+    'Yes': '#56d132',
+    'No': '#f95e5d',
+    'NA': '#C7B42C'
   };
   //#endregion
   ////////////////////////////////////////////
@@ -1063,9 +1075,16 @@ export class InteractiveMapComponent implements OnInit {
 
       this.mapStatsPanel.internetAvailabityPrediction = this.mapStatsPanel.itemStats.schoolInternetAvailabilityPredicitionPercentage;
       this.mapStatsPanel.internetAvailabityPredictionUnits = this.getInternetAvailabilityPredictionUnitStr(this.mapStatsPanel.itemStats.schoolInternetAvailabilityPredicitionCount, this.mapStatsPanel.itemStats.schoolWithoutInternetAvailabilityCount);
+
+      // Internet availability charts
       this.mapStatsPanel.schoolsConnectivity = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.internetAvailabilityByValue).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
       this.mapStatsPanel.connectivityBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityBySchoolRegion);
       this.mapStatsPanel.connectivityBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityBySchoolType);
+
+      // Internet availability prediction charts
+      this.mapStatsPanel.schoolsConnectivityPrediction = this.getKeyValuePairToChartData(this.mapStatsPanel.itemStats.internetAvailabilityPredictionByValue).sort((a, b) => a.name < b.name ? 1 : a.name > b.name ? -1 : 0);
+      this.mapStatsPanel.connectivityPredictionBySchoolRegion = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityPredictionBySchoolRegion);
+      this.mapStatsPanel.connectivityPredictionBySchoolType = this.getKeyValuePairToGroupedChartData(this.mapStatsPanel.itemStats.internetAvailabilityPredictionBySchoolType);
 
       // Open stats panel
       this.mapStatsPanel.open = true;
@@ -1271,6 +1290,10 @@ export class InteractiveMapComponent implements OnInit {
 
   get getSelectedViewOption(): IMapViewOption {
     return this.filterForm.controls.selectedViewOption.value;
+  }
+
+  getConnectivityPredictionBarColor = (value: any) => {
+    return this.schoolsPredictionColorScheme[value];
   }
 
   getLocalityStatisticsByRegionCode(regionCode: string) {

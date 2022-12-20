@@ -35,9 +35,15 @@ export class LocalityStatistics implements Deserializable {
   schoolWithoutInternetAvailabilityCount: number;
   schoolWithoutInternetAvailabilityPercentage: number;
 
+  // Internet Availability
   internetAvailabilityByValue: IConnectivityStats;
   internetAvailabilityBySchoolRegion: ISchoolRegionStats;
   internetAvailabilityBySchoolType: ISchoolTypeStats;
+
+  // Internet Availability Predicition
+  internetAvailabilityPredictionByValue: IConnectivityStats;
+  internetAvailabilityPredictionBySchoolRegion: ISchoolRegionStats;
+  internetAvailabilityPredictionBySchoolType: ISchoolTypeStats;
 
   constructor() {
     this.id = 0;
@@ -90,6 +96,41 @@ export class LocalityStatistics implements Deserializable {
         NO: 0
       }
     };
+
+    this.internetAvailabilityPredictionByValue = <IConnectivityStats>{
+      YES: 0,
+      NO: 0,
+      NA: 0
+    };
+    this.internetAvailabilityPredictionBySchoolRegion = <ISchoolRegionStats>{
+      Rural: {
+        YES: 0,
+        NA: 0,
+        NO: 0
+      },
+      Urban: {
+        YES: 0,
+        NA: 0,
+        NO: 0
+      }
+    };
+    this.internetAvailabilityPredictionBySchoolType = <ISchoolTypeStats>{
+      Estadual: {
+        YES: 0,
+        NA: 0,
+        NO: 0
+      },
+      Federal: {
+        YES: 0,
+        NA: 0,
+        NO: 0
+      },
+      Municipal: {
+        YES: 0,
+        NA: 0,
+        NO: 0
+      }
+    };
   }
 
   deserialize(input: any): this {
@@ -112,6 +153,10 @@ export class LocalityStatistics implements Deserializable {
     this.internetAvailabilityByValue = input.internet_availability_by_value as IConnectivityStats;
     this.internetAvailabilityBySchoolRegion = input.internet_availability_by_school_region as ISchoolRegionStats;
     this.internetAvailabilityBySchoolType = input.internet_availability_by_school_type as ISchoolTypeStats;
+
+    this.internetAvailabilityPredictionByValue = input.internet_availability_prediction_by_value as IConnectivityStats;
+    this.internetAvailabilityPredictionBySchoolRegion = input.internet_availability_prediction_by_school_region as ISchoolRegionStats;
+    this.internetAvailabilityPredictionBySchoolType = input.internet_availability_prediction_by_school_type as ISchoolTypeStats;
 
     return this;
   }
