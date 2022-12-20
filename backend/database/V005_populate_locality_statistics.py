@@ -43,7 +43,6 @@ def compute_stats_by_columns(df: pd.DataFrame, columns: List[str]) -> pd.DataFra
         lambda x: x.groupby(['school_region', 'internet_availability']).size()
             .unstack(fill_value=0).to_dict('index')
     )
-
     stats_df['internet_availability_by_school_type'] = group_df.apply(
         lambda x: x.groupby(['school_type', 'internet_availability']).size()
             .unstack(fill_value=0).to_dict('index')
@@ -53,6 +52,23 @@ def compute_stats_by_columns(df: pd.DataFrame, columns: List[str]) -> pd.DataFra
         x[x['internet_availability'] == 'NA']['internet_availability_prediction'], 'Yes'))
     stats_df['internet_availability_prediction_percentage'] = group_df.apply(lambda x: conditional_perc(
         x[x['internet_availability'] == 'NA']['internet_availability_prediction'], 'Yes'))
+    stats_df['internet_availability_prediction_by_value'] = group_df.apply(
+        lambda x: x[x['internet_availability'] == 'NA']
+            .groupby('internet_availability_prediction')
+            .size().to_dict()
+    )
+    stats_df['internet_availability_prediction_by_school_region'] = group_df.apply(
+        lambda x: x[x['internet_availability'] == 'NA']
+            .groupby(['school_region', 'internet_availability_prediction'])
+            .size()
+            .unstack(fill_value=0).to_dict('index')
+    )
+    stats_df['internet_availability_prediction_by_school_type'] = group_df.apply(
+        lambda x: x[x['internet_availability'] == 'NA']
+            .groupby(['school_type', 'internet_availability_prediction'])
+            .size()
+            .unstack(fill_value=0).to_dict('index')
+    )
 
     return stats_df
 
@@ -80,6 +96,9 @@ def create_table(engine) -> Table:
         Column('internet_availability_by_school_type', JSON, nullable=False),
         Column('internet_availability_prediction_count', Integer, nullable=False),
         Column('internet_availability_prediction_percentage', Float, nullable=False),
+        Column('internet_availability_prediction_by_value', JSON, nullable=False),
+        Column('internet_availability_prediction_by_school_region', JSON, nullable=False),
+        Column('internet_availability_prediction_by_school_type', JSON, nullable=False),
         Column('create_at', DateTime(timezone=True), nullable=False, 
             server_default=func.now()),
         ForeignKeyConstraint(['locality_map_id'], ['unicef.locality_map.id']),

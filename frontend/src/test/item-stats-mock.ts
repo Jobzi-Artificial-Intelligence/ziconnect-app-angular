@@ -7,6 +7,11 @@ export const regionStats = {
     NO: 30,
     NA: 20
   },
+  internetAvailabilityPredictionByValue: <IConnectivityStats>{
+    YES: 50,
+    NO: 30,
+    NA: 20
+  },
   municipalitiesCount: 100,
   internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
@@ -21,6 +26,35 @@ export const regionStats = {
     }
   },
   internetAvailabilityBySchoolType: <ISchoolTypeStats>{
+    Municipal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Estadual: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Federal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolRegion: <ISchoolRegionStats>{
+    Rural: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Urban: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -54,6 +88,11 @@ export const cityStats = {
     NO: 30,
     NA: 20
   },
+  internetAvailabilityPredictionByValue: <IConnectivityStats>{
+    YES: 50,
+    NO: 30,
+    NA: 20
+  },
   municipalitiesCount: 100,
   internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
@@ -68,6 +107,35 @@ export const cityStats = {
     }
   },
   internetAvailabilityBySchoolType: <ISchoolTypeStats>{
+    Municipal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Estadual: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Federal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolRegion: <ISchoolRegionStats>{
+    Rural: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Urban: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
@@ -101,6 +169,11 @@ export const stateStats = {
     NO: 30,
     NA: 20
   },
+  internetAvailabilityPredictionByValue: <IConnectivityStats>{
+    YES: 50,
+    NO: 30,
+    NA: 20
+  },
   municipalitiesCount: 100,
   internetAvailabilityBySchoolRegion: <ISchoolRegionStats>{
     Rural: <IConnectivityStats>{
@@ -115,6 +188,35 @@ export const stateStats = {
     }
   },
   internetAvailabilityBySchoolType: <ISchoolTypeStats>{
+    Municipal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Estadual: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Federal: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolRegion: <ISchoolRegionStats>{
+    Rural: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    },
+    Urban: <IConnectivityStats>{
+      YES: 50,
+      NO: 30,
+      NA: 20
+    }
+  },
+  internetAvailabilityPredictionBySchoolType: <ISchoolTypeStats>{
     Municipal: <IConnectivityStats>{
       YES: 50,
       NO: 30,
