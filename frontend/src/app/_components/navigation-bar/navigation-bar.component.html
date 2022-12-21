@@ -12,6 +12,9 @@
     </a>
   </div>
   <div class="menu flex items-center">
+    <div class="menu-item flex items-center">
+      <a routerLink="" class="flex items-center" (click)="toggleSubmenuContainer(null, false)">Home</a>
+    </div>
     <div class="menu-item flex items-center" (click)="toggleSubmenuContainer('tools', null)">
       <span class="flex items-center">Tools</span>
       <mat-icon class="material-icons-outlined color-tp-body" *ngIf="selectedMenuItem !== 'tools' || !submenuOpened">
@@ -54,6 +57,10 @@
       <mat-icon class="material-icons-outlined">close</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
+      <a routerLink="" mat-menu-item>
+        <mat-icon class="material-icons-outlined">home</mat-icon>
+        <span>Home</span>
+      </a>
       <div (click)="toggleSubmenuContainer('tools', null)" mat-menu-item>
         <mat-icon class="material-icons-outlined">handyman</mat-icon>
         <span>Tools</span>
