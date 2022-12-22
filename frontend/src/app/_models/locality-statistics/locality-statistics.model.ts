@@ -144,11 +144,11 @@ export class LocalityStatistics implements Deserializable {
     this.studentCount = input.student_count;
 
     this.schoolInternetAvailabilityCount = input.connected_count;
-    this.schoolInternetAvailabilityPercentage = input.connected_percentage;
+    this.schoolInternetAvailabilityPercentage = Math.round(input.connected_percentage);
     this.schoolInternetAvailabilityPredicitionCount = input.internet_availability_prediction_count;
-    this.schoolInternetAvailabilityPredicitionPercentage = input.internet_availability_prediction_percentage;
+    this.schoolInternetAvailabilityPredicitionPercentage = Math.round(input.internet_availability_prediction_percentage);
     this.schoolWithoutInternetAvailabilityCount = input.internet_availability_null_count;
-    this.schoolWithoutInternetAvailabilityPercentage = input.internet_availability_null_percentage;
+    this.schoolWithoutInternetAvailabilityPercentage = Math.round(input.internet_availability_null_percentage);
 
     this.internetAvailabilityByValue = input.internet_availability_by_value as IConnectivityStats;
     this.internetAvailabilityBySchoolRegion = input.internet_availability_by_school_region as ISchoolRegionStats;

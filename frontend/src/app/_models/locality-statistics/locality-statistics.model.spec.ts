@@ -57,11 +57,11 @@ describe('Model: LocalityStatistics', () => {
       expect(localityStatistics.studentCount).toEqual(localityStatisticsItemFromServer.student_count);
 
       expect(localityStatistics.schoolInternetAvailabilityCount).toEqual(localityStatisticsItemFromServer.connected_count);
-      expect(localityStatistics.schoolInternetAvailabilityPercentage).toEqual(localityStatisticsItemFromServer.connected_percentage);
+      expect(localityStatistics.schoolInternetAvailabilityPercentage).toEqual(Math.round(localityStatisticsItemFromServer.connected_percentage));
       expect(localityStatistics.schoolInternetAvailabilityPredicitionCount).toEqual(localityStatisticsItemFromServer.internet_availability_prediction_count);
-      expect(localityStatistics.schoolInternetAvailabilityPredicitionPercentage).toEqual(localityStatisticsItemFromServer.internet_availability_prediction_percentage);
+      expect(localityStatistics.schoolInternetAvailabilityPredicitionPercentage).toEqual(Math.round(localityStatisticsItemFromServer.internet_availability_prediction_percentage));
       expect(localityStatistics.schoolWithoutInternetAvailabilityCount).toEqual(localityStatisticsItemFromServer.internet_availability_null_count);
-      expect(localityStatistics.schoolWithoutInternetAvailabilityPercentage).toEqual(localityStatisticsItemFromServer.internet_availability_null_percentage);
+      expect(localityStatistics.schoolWithoutInternetAvailabilityPercentage).toEqual(Math.round(localityStatisticsItemFromServer.internet_availability_null_percentage));
 
       expect(localityStatistics.internetAvailabilityByValue).toBeDefined();
       expect(localityStatistics.internetAvailabilityBySchoolRegion).toBeDefined();
