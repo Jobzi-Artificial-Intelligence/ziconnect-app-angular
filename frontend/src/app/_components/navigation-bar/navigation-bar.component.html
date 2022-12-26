@@ -1,7 +1,7 @@
 <div class="inner-container flex items-center justify-between">
   <div class="logos flex items-center">
     <a href="https://jobzi.com" target="_blank" matTooltip="Jobzi">
-      <img class="cursor-pointer" src="assets/img/logo-zi.png"
+      <img class="cursor-pointer" src="assets/img/logo-js-md.png"
         srcset="assets/img/logo-js-md.png 1x, assets/img/logo-js-md@2x.png 2x" alt="Jobzi Logo" width="80" height="38"
         id="jobzi-logo" />
     </a>
@@ -12,6 +12,9 @@
     </a>
   </div>
   <div class="menu flex items-center">
+    <div class="menu-item flex items-center">
+      <a routerLink="" class="flex items-center" (click)="toggleSubmenuContainer(null, false)">Home</a>
+    </div>
     <div class="menu-item flex items-center" (click)="toggleSubmenuContainer('tools', null)">
       <span class="flex items-center">Tools</span>
       <mat-icon class="material-icons-outlined color-tp-body" *ngIf="selectedMenuItem !== 'tools' || !submenuOpened">
@@ -54,6 +57,10 @@
       <mat-icon class="material-icons-outlined">close</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
+      <a routerLink="" mat-menu-item>
+        <mat-icon class="material-icons-outlined">home</mat-icon>
+        <span>Home</span>
+      </a>
       <div (click)="toggleSubmenuContainer('tools', null)" mat-menu-item>
         <mat-icon class="material-icons-outlined">handyman</mat-icon>
         <span>Tools</span>
@@ -137,7 +144,8 @@
     </ul>
     <ul id="submenu-list" *ngIf="selectedMenuItem === 'tools'" class="flex">
       <li class="submenu-item">
-        <a href="" class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+        <a [routerLink]="['/interactive-map']" class="flex text-decoration-none"
+          (click)="toggleSubmenuContainer(null, false)">
           <div class="icon flex items-center justify-center blue">
             <mat-icon class="material-icons-outlined">travel_explore</mat-icon>
           </div>
