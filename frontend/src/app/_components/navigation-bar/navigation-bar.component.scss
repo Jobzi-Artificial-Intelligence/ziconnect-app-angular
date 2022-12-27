@@ -55,10 +55,11 @@
   }
 
   .menu {
+    display: none;
     height: 100%;
 
-    @include breakpoint($min: 0, $max: $navigation-bar-width-breakpoint) {
-      display: none;
+    @include breakpoint($min: $navigation-bar-width-breakpoint) {
+      display: flex;
     }
 
     .menu-item {

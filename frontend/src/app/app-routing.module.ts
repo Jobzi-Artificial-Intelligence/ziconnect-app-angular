@@ -4,12 +4,27 @@ import {
   CodeConductComponent,
   ContributorsComponent,
   DataSourceReferenceComponent,
+  HomeComponent,
   InteractiveMapComponent,
   LicenseComponent
 } from './_pages';
 
 const routes: Routes = [{
   path: '',
+  component: HomeComponent,
+  data: {
+    seo: {
+      title: 'Jobzi | Schools Connectivity',
+      metaTags: [
+        { name: 'description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' },
+        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, conectivity, machine learning' },
+        { property: 'og:title', content: 'Jobzi | Schools Connectivity' },
+        { property: 'og:description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' }
+      ]
+    }
+  }
+}, {
+  path: 'interactive-map',
   component: InteractiveMapComponent,
   data: {
     seo: {

@@ -34,11 +34,11 @@ describe('Component: NavigationBar', () => {
 
   it('should display menu items', () => {
     const menuItems = fixture.debugElement.queryAll(By.css('.inner-container .menu .menu-item'));
-    expect(menuItems.length).toEqual(5);
+    expect(menuItems.length).toEqual(6);
 
     //single menu items
     const singleMenuItems = fixture.debugElement.queryAll(By.css('.inner-container .menu .menu-item>a'));
-    expect(singleMenuItems.length).toEqual(3);
+    expect(singleMenuItems.length).toEqual(4);
 
     const singleMenuText = singleMenuItems.map((x) => x.nativeElement.textContent) as Array<string>;
     expect(singleMenuText.includes('Data Sources')).toBeTrue();
