@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, LocalityStatistics, Region, School, State } from '../../_models';
-import { AlertService, LocalityMapService, LocalityStatisticsService, SchoolService } from '../../_services';
+import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
+import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, LocalityStatistics, Region, State } from '../../_models';
+import { AlertService, LocalityMapService, LocalityStatisticsService } from '../../_services';
 import { APP_BASE_HREF } from '@angular/common';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -10,8 +9,6 @@ import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ISchoolTableParam, SchoolTableBottomSheetComponent } from 'src/app/_components/school-table-bottom-sheet/school-table-bottom-sheet.component';
 
 enum MapViewOptionValue {
   Connectivity = 'Connectivity',
@@ -110,8 +107,6 @@ export class InteractiveMapComponent implements OnInit {
   loadingMessage = '';
   loadingAutocomplete = false;
   localityStatistics: LocalityStatistics[] = new Array<LocalityStatistics>();
-  schools: School[] = new Array<School>();
-  schoolMarkers: any[] = [];
   selectedSchool: any;
 
   //#region GOOGLE MAPS CONFIGS
@@ -191,14 +186,11 @@ export class InteractiveMapComponent implements OnInit {
   ////////////////////////////////////////////
 
   constructor(
-    private httpClient: HttpClient,
     private alertService: AlertService,
     @Inject(APP_BASE_HREF) public baseHref: string,
     private ref: ChangeDetectorRef,
-    private _bottomSheet: MatBottomSheet,
     private localityMapService: LocalityMapService,
-    private localityStatisticsService: LocalityStatisticsService,
-    private schoolService: SchoolService
+    private localityStatisticsService: LocalityStatisticsService
   ) {
     this.loadingMap = new BehaviorSubject<boolean>(false);
   }
@@ -315,9 +307,6 @@ export class InteractiveMapComponent implements OnInit {
   }
 
   async onCountryClick() {
-    // Remove all school markers
-    this.schoolMarkers = [];
-
     // Remove all map data
     this.googleMap.data.forEach(x => this.googleMap.data.remove(x));
 
@@ -384,19 +373,8 @@ export class InteractiveMapComponent implements OnInit {
 
     let cityFeature = this.googleMap.data.getFeatureById(city.code.toString());
     if (cityFeature) {
-      const localityMapId = cityFeature.getProperty('localityMapId');
-      // Get schools from locality map id
-      const schools = await this.loadSchools(localityMapId);
-
-      // Add schools markers
-      await this.addSchoolMarker(schools);
-
-      // City Zoom
-
-      if (cityFeature) {
-        this.zoomToFeature(cityFeature);
-        this.openStatsPanel(cityFeature);
-      }
+      this.zoomToFeature(cityFeature);
+      this.openStatsPanel(cityFeature);
     }
 
     this.ref.detectChanges();
@@ -425,10 +403,6 @@ export class InteractiveMapComponent implements OnInit {
     // Remove any cities from map
     this.removeCitiesFromMap();
 
-    // Remove any schools from map
-    this.schools = [];
-    this.schoolMarkers = [];
-
     this.mapFilter.selectedRegion = region;
 
     // Load states statistics from selected region
@@ -448,8 +422,6 @@ export class InteractiveMapComponent implements OnInit {
   }
 
   async onSelectState(state: State) {
-    this.schools = [];
-    this.schoolMarkers = [];
     this.mapFilter.selectedCity = undefined;
     this.mapFilter.selectedRegion = state.region;
     this.mapFilter.selectedState = state;
@@ -571,77 +543,6 @@ export class InteractiveMapComponent implements OnInit {
 
   //#region MAP LOAD FUNCTION
   ////////////////////////////////////////////
-
-  /**
-   * Adds schools markers to the map, based on selected city filter
-   */
-  async addSchoolMarker(schools: Array<School>) {
-    this.schools = [];
-    this.schoolMarkers = [];
-
-    if (schools && schools.length > 0) {
-      const markerColors: any = {
-        'yes': '#01e64c',
-        'no': '#fdf569',
-        'na': '#fd7567'
-      };
-
-      schools.forEach(x => {
-        this.schools.push(x);
-        this.schoolMarkers.push({
-          position: {
-            lat: parseFloat(x.latitude.toString()),
-            lng: parseFloat(x.longitude.toString()),
-          },
-          title: x.school_name,
-          options: {
-            zIndex: 100,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 8.5,
-              fillColor: markerColors[x.internet_availability_str.toLowerCase()],
-              fillOpacity: 0.7,
-              strokeWeight: 0.4
-            },
-          },
-          schoolInfo: x,
-        });
-      });
-    }
-  }
-
-  /**
-   * Read dataset csv file. Load map data points and material table datasource.
-   */
-  async loadSchools(localityMapId: number): Promise<School[]> {
-    return new Promise((resolve, reject) => {
-      this.loadingMap.next(true);
-      this.loadingMessage = 'Loading schools ...';
-
-      try {
-        this.schoolService.getSchoolsByLocalityMapId(localityMapId).subscribe(
-          (data) => {
-            this.loadingMap.next(false);
-            this.loadingMessage = '';
-
-            resolve(data);
-          },
-          (error) => {
-            this.loadingMap.next(false);
-            this.loadingMessage = '';
-            this.alertService.showError(`Something went wrong retrieving schools data: ${error.message}`);
-            resolve([]);
-          }
-        );
-      } catch (error: any) {
-        this.loadingMap.next(false);
-        this.loadingMessage = '';
-
-        this.alertService.showError(error);
-        resolve([]);
-      }
-    })
-  }
 
   async loadCitiesGeoJson(countryCode: string, regionCode: string, stateCode: string) {
     return new Promise((resolve, reject) => {
@@ -931,14 +832,6 @@ export class InteractiveMapComponent implements OnInit {
       default:
         return;
     }
-  }
-
-  /**
-   * AT THE MARKER CLICK EVENT, SHOW MAP WINDOW WITH SUMMARY OF SCHOOL DATA
-   */
-  openSchoolInfo(marker: MapMarker, contentInfo: any) {
-    this.selectedSchool = contentInfo;
-    this.info.open(marker);
   }
 
   /**
@@ -1263,24 +1156,6 @@ export class InteractiveMapComponent implements OnInit {
 
     // collapse filters panel
     this.toggleFilterSettingsExpanded(false);
-  }
-  //#endregion
-  ////////////////////////////////////////////
-
-  //#region SCHOOL TABLE FUNCTIONS
-  ////////////////////////////////////////////
-  onOpenSchoolTableClick() {
-    let params = {
-      countryCode: this.mapFilter.selectedCountry,
-      regionCode: this.mapFilter.selectedRegion ? this.mapFilter.selectedRegion.code : null,
-      stateCode: this.mapFilter.selectedState ? this.mapFilter.selectedState.code : null,
-      municipalityCode: this.mapFilter.selectedCity ? this.mapFilter.selectedCity.code : null,
-      schools: this.schools
-    } as ISchoolTableParam;
-
-    this._bottomSheet.open(SchoolTableBottomSheetComponent, {
-      data: params
-    });
   }
   //#endregion
   ////////////////////////////////////////////
