@@ -22,7 +22,8 @@ import {
   DataSourceReferenceComponent,
   HomeComponent,
   InteractiveMapComponent,
-  LicenseComponent
+  LicenseComponent,
+  PageNotFoundComponent
 } from './_pages';
 
 
@@ -38,6 +39,7 @@ import {
     InteractiveMapComponent,
     LicenseComponent,
     NavigationBarComponent,
+    PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
     ShortNumberPipe,],
   exports: [ShortNumberPipe],

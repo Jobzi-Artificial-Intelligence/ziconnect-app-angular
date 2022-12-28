@@ -8,9 +8,9 @@ describe('PageNotFoundComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageNotFoundComponent ]
+      declarations: [PageNotFoundComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +21,13 @@ describe('PageNotFoundComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display page title', () => {
+    const pageTitle = fixture.nativeElement.querySelector('#page-not-found .hero-title');
+    const pageSubtitle = fixture.nativeElement.querySelector('#page-not-found .hero-subtitle');
+
+    expect(pageTitle.textContent).toContain('404');
+    expect(pageSubtitle.textContent).toContain('Sorry, the page you are looking for could not be found.');
   });
 });
