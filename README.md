@@ -14,9 +14,9 @@ This repository presents the data and the code needed to predict whether a Brazi
 
 The repository is organized as follows:
 
-* `backend/vocabulary-annotator-api`: the code for retrieving and treating job openings
-* `backend/model`: Postgrest API library to summarized information about job openings in the school dataset; for retrieving additional geographical information based on the schools' positions (latitude and longitude); and for running and evaluating the machine learning models that predict internet availability for Brazilian schools.
-* `frontend`: Angular code library for running and presenting the project website, containing information on the Brazilian schools in our dataset, including a prediction regarding their employbaility and internet availability.
+* `repository`: PostgreSQL with the schema and initial data (schools, locations)
+* `backend`: Postgrest API library to collect and summarized information on connectivity and employability. Retrieve additional geographical information based on the schools' positions (latitude and longitude), and for running and evaluating the machine learning models that predict internet availability for Brazilian schools.
+* `frontend`: Angular code library for running and presenting the project website, containing information on the Brazilian schools in our dataset, including a prediction regarding their employability and internet availability.
 
 Additional guidance files or procedures can be find to explain how to set up each component of the project.
 
