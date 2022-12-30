@@ -35,10 +35,10 @@ body {
 app-root {
   display: block;
   height: 100%;
-  min-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16));
+  min-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
 
   @include breakpoint($navigation-bar-width-breakpoint) {
-    min-height: calc(100vh - (#{$navigation-bar-height} + 16));
+    min-height: calc(100vh - (#{$navigation-bar-height} + 16px));
   }
 }
 
