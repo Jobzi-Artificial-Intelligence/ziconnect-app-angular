@@ -5,7 +5,7 @@ import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, Locali
 import { AlertService, LocalityMapService, LocalityStatisticsService, SchoolService } from '../../_services';
 import { APP_BASE_HREF } from '@angular/common';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
-import { UntypedFormControl, UntypedFormGroup, FormGroupDirective } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from "rxjs/operators";
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
@@ -92,7 +92,7 @@ export class InteractiveMapComponent implements OnInit {
   ////////////////////////////////////////////
 
   title = 'Jobzi - Interactive Map';
-  public filterForm!: UntypedFormGroup;
+  public filterForm!: FormGroup<any>;
 
   searchLocationFilteredOptions: LocalityMapAutocomplete[] = new Array<LocalityMapAutocomplete>();
   infoContent = {
@@ -208,11 +208,11 @@ export class InteractiveMapComponent implements OnInit {
     this.initMapViewOptions();
 
     // INITIALIZE FILTER FORM FIELDS
-    this.filterForm = new UntypedFormGroup({
-      searchFilter: new UntypedFormControl(),
-      selectedSchoolRegion: new UntypedFormControl(''),
-      selectedSchoolType: new UntypedFormControl(''),
-      selectedViewOption: new UntypedFormControl(this.mapFilter.viewOptions[0])
+    this.filterForm = new FormGroup<any>({
+      searchFilter: new FormControl(),
+      selectedSchoolRegion: new FormControl<string>(''),
+      selectedSchoolType: new FormControl<string>(''),
+      selectedViewOption: new FormControl<IMapViewOption>(this.mapFilter.viewOptions[0])
     });
 
     // INIT OBSERVABLES
