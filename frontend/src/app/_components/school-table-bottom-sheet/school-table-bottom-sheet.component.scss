@@ -1,4 +1,4 @@
-@import "~compass-mixins/lib/compass/css3";
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
 @import "../../../styles/mixins";
 @import "../../../styles/variables";
 
@@ -14,12 +14,20 @@ $buttons-space-between: 12px;
 .main-container {
   > header {
     .buttons {
-      flex: 0 0 calc((#{$buttons-count} * #{$buttons-size}) + (#{$buttons-space-between} * (#{$buttons-count} - 1)));
+      flex: 0 0
+        calc(
+          (#{$buttons-count} * #{$buttons-size}) +
+            (#{$buttons-space-between} * (#{$buttons-count} - 1))
+        );
       margin-left: 24px;
     }
   }
 }
 
 .table-container {
-  @include box-shadow(0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f);
+  @include box-shadow(
+    0 5px 5px -3px #0003,
+    0 8px 10px 1px #00000024,
+    0 3px 14px 2px #0000001f
+  );
 }
