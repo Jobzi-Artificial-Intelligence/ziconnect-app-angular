@@ -24,7 +24,7 @@ interface IMapInfoWindowContent {
   code: string,
   name: string,
   type: string,
-  stats: LocalityStatistics
+  stats: LocalityStatistics | null
 }
 
 export interface IMapFilter {
