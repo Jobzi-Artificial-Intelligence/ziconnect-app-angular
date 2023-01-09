@@ -46,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "codelyzer": "^6.0.0",
-    "compass-mixins": "^0.12.10",
+    "compass-mixins": "^0.12.11",
     "eslint": "^8.23.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
