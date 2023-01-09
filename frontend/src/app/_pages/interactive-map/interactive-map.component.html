@@ -5,13 +5,13 @@
         <ol class="breadcrumb">
           <li (click)="onCountryClick()"><span>Brazil</span></li>
           <li *ngIf="mapFilter.selectedRegion" (click)="onSelectRegion(mapFilter.selectedRegion)">
-            <span>{{mapFilter.selectedRegion?.name}}</span>
+            <span>{{mapFilter.selectedRegion.name}}</span>
           </li>
           <li *ngIf="mapFilter.selectedState" (click)="onSelectState(mapFilter.selectedState)">
-            <span>{{mapFilter.selectedState?.name}}</span>
+            <span>{{mapFilter.selectedState.name}}</span>
           </li>
           <li *ngIf="mapFilter.selectedCity" (click)="onSelectCity(mapFilter.selectedCity)">
-            <span>{{mapFilter.selectedCity?.name}}</span>
+            <span>{{mapFilter.selectedCity.name}}</span>
           </li>
         </ol>
       </div>
@@ -171,9 +171,9 @@
               <div class="infowindow-title">Connectivity Prediction</div>
               <div class="infowindow-subtitle"
                 *ngIf="infoContent.content.stats && infoContent.content.stats.schoolInternetAvailabilityPredicitionCount > 0">
-                {{infoContent.content.stats?.schoolWithoutInternetAvailabilityCount | number:'1.0-0'}}
+                {{infoContent.content.stats.schoolWithoutInternetAvailabilityCount | number:'1.0-0'}}
                 school(s) without connectivity data,
-                {{infoContent.content.stats?.schoolInternetAvailabilityPredicitionCount | number:'1.0-0'}} with
+                {{infoContent.content.stats.schoolInternetAvailabilityPredicitionCount | number:'1.0-0'}} with
                 internet access prediction</div>
               <div class="infowindow-subtitle"
                 *ngIf="infoContent.content.stats && infoContent.content.stats.schoolInternetAvailabilityPredicitionCount === 0">
@@ -195,7 +195,7 @@
             municipalities)
           </div>
           <div *ngIf="mapStatsPanel.itemType === 'municipality'">
-            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats?.schoolCount | shortNumber}} schools)
+            <b>{{mapStatsPanel.itemName}}</b>&nbsp;({{mapStatsPanel.itemStats.schoolCount | shortNumber}} schools)
           </div>
           <!-- TOOLBAR BUTTONS -->
           <div class="flex items-center justify-end">

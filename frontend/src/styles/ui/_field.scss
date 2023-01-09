@@ -1,4 +1,4 @@
-@import "~compass-mixins/lib/compass/css3";
+@import "../../../node_modules/compass-mixins/lib/compass/css3";
 @import "../mixins";
 @import "../variables";
 
@@ -8,7 +8,10 @@
 
   > input {
     @include border-radius(8px);
-    @include box-shadow(0 1px 1px 0 rgba(65,69,73,0.3), 0 1px 3px 1px rgba(65,69,73,0.15));
+    @include box-shadow(
+      0 1px 1px 0 rgba(65, 69, 73, 0.3),
+      0 1px 3px 1px rgba(65, 69, 73, 0.15)
+    );
     @include box-sizing(border-box);
     @include transition(all 0.2s ease-in-out);
     background: #fff !important;
@@ -24,7 +27,6 @@
 }
 
 .field-icon {
-
   mat-icon {
     left: 8px;
     position: absolute;
@@ -37,7 +39,6 @@
 }
 
 .field-icon-right {
-
   mat-icon {
     right: 8px;
     position: absolute;

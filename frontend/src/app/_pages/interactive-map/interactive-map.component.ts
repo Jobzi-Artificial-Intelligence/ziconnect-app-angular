@@ -24,7 +24,7 @@ interface IMapInfoWindowContent {
   code: string,
   name: string,
   type: string,
-  stats: LocalityStatistics
+  stats: LocalityStatistics | null
 }
 
 export interface IMapFilter {
@@ -92,7 +92,7 @@ export class InteractiveMapComponent implements OnInit {
   ////////////////////////////////////////////
 
   title = 'Jobzi - Interactive Map';
-  public filterForm!: FormGroup;
+  public filterForm!: FormGroup<any>;
 
   searchLocationFilteredOptions: LocalityMapAutocomplete[] = new Array<LocalityMapAutocomplete>();
   infoContent = {
@@ -208,11 +208,11 @@ export class InteractiveMapComponent implements OnInit {
     this.initMapViewOptions();
 
     // INITIALIZE FILTER FORM FIELDS
-    this.filterForm = new FormGroup({
+    this.filterForm = new FormGroup<any>({
       searchFilter: new FormControl(),
-      selectedSchoolRegion: new FormControl(''),
-      selectedSchoolType: new FormControl(''),
-      selectedViewOption: new FormControl(this.mapFilter.viewOptions[0])
+      selectedSchoolRegion: new FormControl<string>(''),
+      selectedSchoolType: new FormControl<string>(''),
+      selectedViewOption: new FormControl<IMapViewOption>(this.mapFilter.viewOptions[0])
     });
 
     // INIT OBSERVABLES
