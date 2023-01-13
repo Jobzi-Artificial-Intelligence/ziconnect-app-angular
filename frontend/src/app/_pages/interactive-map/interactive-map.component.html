@@ -98,10 +98,6 @@
       </div>
     </div>
     <google-map #googleMap height="100%" width="100%" [options]="mapOptions">
-      <map-marker #marker="mapMarker" *ngFor="let markerItem of schoolMarkers" [position]="markerItem.position"
-        [label]="markerItem.label" [title]="markerItem.title" [options]="markerItem.options"
-        (mapClick)="openSchoolInfo(marker, markerItem.schoolInfo)">
-      </map-marker>
       <map-info-window id="marker-info-window">
         <div id="infowindow-container" *ngIf="selectedSchool">
           <div class="infowindow-left">
@@ -199,14 +195,11 @@
           </div>
           <!-- TOOLBAR BUTTONS -->
           <div class="flex items-center justify-end">
-            <button mat-icon-button class="color-white" aria-label="Show schools table" matTooltip="Show schools table"
-              (click)="onOpenSchoolTableClick()">
+            <!-- TODO Open statistics table or download statistics data -->
+            <!-- <button mat-icon-button class="color-white" aria-label="Show statistics table"
+              matTooltip="Show statistics table">
               <mat-icon>table_view</mat-icon>
-            </button>
-            <button mat-icon-button class="color-white" aria-label="Show explanation of numbers"
-              matTooltip="Show explanation of numbers">
-              <mat-icon>info</mat-icon>
-            </button>
+            </button> -->
           </div>
         </header>
         <section *ngIf="mapStatsPanel.open">

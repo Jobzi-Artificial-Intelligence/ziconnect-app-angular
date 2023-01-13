@@ -1,14 +1,14 @@
 import { APP_BASE_HREF } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { ElementRef, NgZone } from "@angular/core";
+import { ElementRef } from "@angular/core";
 import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { GoogleMapsModule, MapMarker } from "@angular/google-maps";
+import { GoogleMapsModule } from "@angular/google-maps";
 import { MatBottomSheet } from "@angular/material/bottom-sheet";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AngularMaterialModule } from "src/app/material.module";
 import { SchoolTableBottomSheetComponent } from "src/app/_components";
-import { AdministrativeLevel, City, LocalityMapAutocomplete, LocalityStatistics, Region, School, State } from "src/app/_models";
+import { AdministrativeLevel, City, LocalityMapAutocomplete, LocalityStatistics, Region, State } from "src/app/_models";
 import { InteractiveMapComponent } from "./interactive-map.component";
 import { ShortNumberPipe } from "src/app/_pipes/short-number.pipe";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -19,16 +19,11 @@ import { geoJsonSample, geoJsonCities, geoJsonRegions, geoJsonStates } from "../
 import { cityStats, regionStats, stateStats } from "../../../test/item-stats-mock";
 import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from "../../../test/locality-map-mock";
 import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock";
-import { schoolFromServer } from "src/test/school-mock";
 import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from "src/test/locality-statistics-mock";
 
 describe('Component: InteractiveMap', () => {
   let component: InteractiveMapComponent;
   let fixture: ComponentFixture<InteractiveMapComponent>;
-
-  const mockMatBottomSheet = {
-    open: jasmine.createSpy()
-  }
 
   let mockCitiesLocalityMap = [] as any;
   let mockRegionsLocalityMap = [] as any;
@@ -65,7 +60,6 @@ describe('Component: InteractiveMap', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '' },
-        { provide: MatBottomSheet, useValue: mockMatBottomSheet },
         { provide: ElementRef, useClass: MockElementRef }
       ]
     });
@@ -270,7 +264,6 @@ describe('Component: InteractiveMap', () => {
 
       await component.onCountryClick();
 
-      expect(component.schools).toEqual([]);
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.Region);
       expect(component.loadRegionsGeoJson).toHaveBeenCalled();
       expect(component.googleMap.fitBounds).toHaveBeenCalled();
@@ -337,10 +330,8 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', async () => {
       // Creating spy
-      spyOn(component, 'addSchoolMarker');
       spyOn(component, 'zoomToFeature');
       spyOn(component, 'openStatsPanel');
-      spyOn(component, 'loadSchools').and.returnValue(Promise.resolve(new Array<School>()));
 
       // Initializing variables and setting properties values for test scenario
       const cityFromGeoJson = mockGeoJsonCities.features[0].properties;
@@ -364,10 +355,8 @@ describe('Component: InteractiveMap', () => {
       if (cityFeature) {
         expect(component.openStatsPanel).toHaveBeenCalledWith(cityFeature);
         expect(component.zoomToFeature).toHaveBeenCalledWith(cityFeature);
-        expect(component.loadSchools).toHaveBeenCalledWith(cityFeature.getProperty('localityMapId'));
       }
 
-      expect(component.addSchoolMarker).toHaveBeenCalledWith(jasmine.any(Array));
       component.googleMap.data.forEach((feature) => {
         if (feature.getProperty('code') !== cityFromGeoJson.municipality_code) {
           expect(feature.getProperty('state')).toEqual('unfocused');
@@ -427,9 +416,6 @@ describe('Component: InteractiveMap', () => {
       expect(component.removeStatesFromMap).toHaveBeenCalled();
       expect(component.removeCitiesFromMap).toHaveBeenCalled();
 
-      expect(component.schools).toEqual([]);
-      expect(component.schoolMarkers).toEqual([]);
-
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.State);
 
       const regionFeature = component.googleMap.data.getFeatureById(regionFromGeoJson.region_code);
@@ -451,7 +437,6 @@ describe('Component: InteractiveMap', () => {
       // Creating spy
       spyOn(component, 'loadLocalityStatistics');
       spyOn(component, 'loadCitiesGeoJson');
-      spyOn(component, 'loadSchools');
       spyOn(component, 'openStatsPanel');
       spyOn(component, 'removeCitiesFromMap');
       spyOn(component, 'zoomToFeature');
@@ -474,8 +459,6 @@ describe('Component: InteractiveMap', () => {
       expect(component.mapFilter.selectedCity).toEqual(undefined);
       expect(component.mapFilter.selectedRegion).toEqual(state.region);
       expect(component.mapFilter.selectedState).toEqual(state);
-      expect(component.schools).toEqual([]);
-      expect(component.schoolMarkers).toEqual([]);
 
       expect(component.removeCitiesFromMap).toHaveBeenCalled();
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.Municipality);
@@ -503,76 +486,6 @@ describe('Component: InteractiveMap', () => {
 
   //#region MAP LOAD FUNCTION
   ////////////////////////////////////////////
-  describe('#addSchoolMarker', () => {
-
-    it('should exists', () => {
-      expect(component.addSchoolMarker).toBeTruthy();
-      expect(component.addSchoolMarker).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', async () => {
-      const schools = [new School().deserialize(schoolFromServer)];
-
-      await component.addSchoolMarker(schools);
-
-      expect(component.schools.length).toEqual(schools.length);
-      expect(component.schoolMarkers.length).toEqual(schools.length);
-    });
-  });
-
-  describe('#loadSchools', () => {
-
-    it('should exists', () => {
-      expect(component.loadSchools).toBeTruthy();
-      expect(component.loadSchools).toEqual(jasmine.any(Function));
-    });
-
-    it('should works when service throw error', async () => {
-      const localityMapId = 123456;
-
-      //@ts-ignore
-      spyOn(component.alertService, 'showError');
-
-      //@ts-ignore
-      spyOn(component.schoolService, 'getSchoolsByLocalityMapId').and.throwError('Error message');
-      await component.loadSchools(localityMapId).catch((error) => {
-        expect(error.toString()).toEqual('Error: Error message');
-      });
-
-      //@ts-ignore
-      expect(component.alertService.showError).toHaveBeenCalled();
-    });
-
-    it('should works when service return error', async () => {
-      const localityMapId = 123456;
-
-      //@ts-ignore
-      spyOn(component.alertService, 'showError');
-
-      //@ts-ignore
-      spyOn(component.schoolService, 'getSchoolsByLocalityMapId').and.returnValue(throwError({ message: 'http error' }));
-      await component.loadSchools(localityMapId).catch((error) => {
-        expect(error).toBeTruthy();
-        expect(error.message).toEqual('http error');
-      });
-
-      //@ts-ignore
-      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong retrieving schools data: http error');
-    });
-
-    it('should works when service return success', async () => {
-      const localityMapId = 123456;
-      const schoolsResponse = [new School().deserialize(schoolFromServer)];
-
-      //@ts-ignore
-      spyOn(component.schoolService, 'getSchoolsByLocalityMapId').and.returnValue(of(schoolsResponse));
-      const result = await component.loadSchools(localityMapId);
-
-      expect(result).toEqual(jasmine.any(Array));
-      expect(result.length).toEqual(schoolsResponse.length);
-    });
-  });
-
   describe('#loadCitiesGeoJson', () => {
 
     it('should exists', () => {
@@ -1002,26 +915,6 @@ describe('Component: InteractiveMap', () => {
         expect(event.feature.getProperty('state')).toEqual('normal');
         expect(component.info.close).toHaveBeenCalled();
       }
-    });
-  });
-
-  describe('#openSchoolInfo', () => {
-    beforeEach(() => {
-      component.googleMap.data.forEach(feature => component.googleMap.data.remove(feature));
-    });
-
-    it('should exists', () => {
-      expect(component.openSchoolInfo).toBeTruthy();
-      expect(component.openSchoolInfo).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      spyOn(component.info, 'open');
-
-      const marker = new MapMarker(component.googleMap, new NgZone({}));
-      component.openSchoolInfo(marker, {});
-
-      expect(component.info.open).toHaveBeenCalledWith(marker);
     });
   });
 
@@ -1659,62 +1552,6 @@ describe('Component: InteractiveMap', () => {
 
       expect(component.loadRegionsGeoJson).toHaveBeenCalledWith();
       expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
-    });
-  });
-
-  //#endregion
-  ////////////////////////////////////////////
-
-  //#region SCHOOL TABLE FUNCTIONS
-  ////////////////////////////////////////////
-  describe('#onOpenSchoolTableClick', () => {
-
-    it('should exists', () => {
-      expect(component.onOpenSchoolTableClick).toBeTruthy();
-      expect(component.onOpenSchoolTableClick).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      component.onOpenSchoolTableClick();
-      //@ts-ignore
-      expect(component._bottomSheet.open).toHaveBeenCalledWith(SchoolTableBottomSheetComponent, {
-        data: jasmine.any(Object)
-      });
-    });
-
-    it('should workd with selected state value', () => {
-      component.mapFilter.selectedState = new State('1', 'State 1', new Region('1', 'Region 1'));
-
-      component.onOpenSchoolTableClick();
-      //@ts-ignore
-      expect(component._bottomSheet.open).toHaveBeenCalledWith(SchoolTableBottomSheetComponent, {
-        data: {
-          countryCode: component.mapFilter.selectedCountry,
-          regionCode: component.mapFilter.selectedRegion ? component.mapFilter.selectedRegion.code : null,
-          stateCode: component.mapFilter.selectedState.code ? component.mapFilter.selectedState.code : null,
-          municipalityCode: component.mapFilter.selectedCity ? component.mapFilter.selectedCity.code : null,
-          schools: component.schools
-        }
-      });
-    });
-
-    it('should workd with selected region value', () => {
-      const stateCodes = ['1', '2'];
-      spyOn(component, 'getStateCodesFromRegion').and.returnValue(stateCodes);
-
-      component.mapFilter.selectedRegion = new Region('1', 'Region 1');
-
-      component.onOpenSchoolTableClick();
-      //@ts-ignore
-      expect(component._bottomSheet.open).toHaveBeenCalledWith(SchoolTableBottomSheetComponent, {
-        data: {
-          countryCode: component.mapFilter.selectedCountry,
-          regionCode: component.mapFilter.selectedRegion ? component.mapFilter.selectedRegion.code : null,
-          stateCode: component.mapFilter.selectedState ? component.mapFilter.selectedState.code : null,
-          municipalityCode: component.mapFilter.selectedCity ? component.mapFilter.selectedCity.code : null,
-          schools: component.schools
-        }
-      });
     });
   });
 
