@@ -253,6 +253,17 @@
     .solution-item {
       margin-bottom: 48px;
 
+      .badge {
+        @include border-radius(9px);
+        background-color: rgba($color: #000000, $alpha: 0.8);
+        color: $white;
+        display: inline-block;
+        font-size: 11px;
+        line-height: 18px;
+        margin-left: 6px;
+        padding: 0 12px;
+      }
+
       .icon {
         @include box-shadow(0px 4px 9px rgba(0, 0, 0, 0.05));
         background-color: #fff;
@@ -268,7 +279,6 @@
       }
 
       .title {
-        display: block;
         margin-bottom: 10px;
       }
     }
