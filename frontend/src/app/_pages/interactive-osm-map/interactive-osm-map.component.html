@@ -1,0 +1,34 @@
+<div id="interactive-osm-map-page" class="flex direction-column">
+  <!-- <header>
+    <section class="bar flex items-center justify-between">
+      <div>
+        <ol class="breadcrumb">
+          <li (click)="onCountryClick()"><span>Brazil</span></li>
+          <li *ngIf="mapFilter.selectedRegion" (click)="onSelectRegion(mapFilter.selectedRegion)">
+            <span>{{mapFilter.selectedRegion.name}}</span>
+          </li>
+          <li *ngIf="mapFilter.selectedState" (click)="onSelectState(mapFilter.selectedState)">
+            <span>{{mapFilter.selectedState.name}}</span>
+          </li>
+          <li *ngIf="mapFilter.selectedCity" (click)="onSelectCity(mapFilter.selectedCity)">
+            <span>{{mapFilter.selectedCity.name}}</span>
+          </li>
+        </ol>
+      </div>
+      <div class="map-legend flex items-center">
+        <div class="legend-items">
+          <div *ngFor="let item of getSelectedViewOption.rangeColors; let i = index"
+            [ngStyle]="{'background-color': item.backgroundColor, 'color': item.color}"
+            class="flex items-center justify-center legend-item" (mouseenter)="onLegendItemMouseEnter(i)"
+            (mouseleave)="onLegendItemMouseLeave()" [matTooltip]="getRangeColorTooltipMessage(i)">
+            {{item.min}}-{{item.max}}%
+          </div>
+        </div>
+      </div>
+    </section>
+  </header> -->
+  <div class="container flex items-strecth justify-center flex-auto">
+    <div class="map-container" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)">
+    </div>
+  </div>
+</div>

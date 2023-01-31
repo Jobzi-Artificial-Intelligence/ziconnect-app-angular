@@ -1,0 +1,164 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#interactive-osm-map-page {
+  @include box-sizing(border-box);
+  height: 100%;
+  max-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
+  min-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    max-height: calc(100vh - (#{$navigation-bar-height} + 16px));
+    min-height: calc(100vh - (#{$navigation-bar-height} + 16px));
+  }
+
+  .container {
+    @include box-sizing(border-box);
+    position: relative;
+    overflow: hidden;
+
+    .box-loading {
+      background-color: rgba($color: #fff, $alpha: 0.7);
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+
+    .map-container {
+      height: 100;
+      width: 100%;
+    }
+
+    .filters-container {
+      left: 16px;
+      position: absolute;
+      top: 16px;
+      z-index: 2;
+
+      #field-autocomplete-location {
+        min-width: 350px;
+        position: relative;
+        z-index: 2;
+
+        input {
+          padding-left: 54px;
+          padding-right: 42px;
+        }
+
+        input[aria-expanded="true"] {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .separator {
+          background-color: #ccc;
+          left: 42px;
+          position: absolute;
+          height: 32px;
+          top: 5px;
+          width: 1px;
+        }
+
+        .input-icon {
+          left: auto;
+          right: 8px;
+        }
+      }
+
+      .filter-settings-container {
+        @include border-bottom-radius(8px);
+        @include box-shadow(
+          0 1px 1px 0 rgba(65, 69, 73, 0.3),
+          0 1px 3px 1px rgba(65, 69, 73, 0.15)
+        );
+        @include box-sizing(border-box);
+        background-color: $white;
+        display: none;
+        left: 0;
+        padding: 16px;
+        position: absolute;
+        top: 44px;
+        width: 350px;
+        z-index: 1;
+
+        // mat-radion-button view options
+        .mrbViewOption {
+          margin: 5px;
+        }
+      }
+
+      &.expanded {
+        #field-autocomplete-location {
+          input {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+
+        .filter-settings-container {
+          display: block;
+        }
+      }
+    }
+
+    .stats-panel-container {
+      background-color: $white;
+      height: 100%;
+      left: auto;
+      right: -520px;
+      position: absolute;
+      top: 0;
+      transition: all 0.3s ease;
+      width: 520px;
+
+      &.open {
+        @include box-shadow(
+          0px 8px 10px -5px rgb(0 0 0 / 20%),
+          0px 16px 24px 2px rgb(0 0 0 / 14%),
+          0px 6px 30px 5px rgb(0 0 0 / 12%)
+        );
+        right: 0;
+      }
+
+      > .inner-container {
+        height: 100%;
+        overflow: auto;
+        width: 100%;
+
+        > header {
+          background-color: #232837;
+          color: $white;
+          height: 44px;
+          padding: 0 12px;
+          margin-bottom: 24px;
+        }
+
+        > section {
+          margin-top: 12px;
+          padding: 4px 16px;
+
+          > header {
+            border-bottom: 1px solid $border-color;
+            color: $tp-title;
+            height: 24px;
+            margin-bottom: 16px;
+          }
+        }
+      }
+
+      .toggle-button {
+        @include border-left-radius(6px);
+        background-color: $tp-title;
+        color: #fff;
+        cursor: pointer;
+        position: absolute;
+        left: -24px;
+        bottom: 16px;
+      }
+    }
+  }
+}

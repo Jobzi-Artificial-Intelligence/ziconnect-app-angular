@@ -23,6 +23,7 @@ import {
   DataSourceReferenceComponent,
   HomeComponent,
   InteractiveMapComponent,
+  InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
@@ -38,6 +39,7 @@ import {
     DialogSchoolColumnSelectorComponent,
     HomeComponent,
     InteractiveMapComponent,
+    InteractiveOsmMapComponent,
     LicenseComponent,
     NavigationBarComponent,
     PageNotFoundComponent,
