@@ -106,4 +106,4 @@ While the prerequisites above must be satisfied prior to having your pull reques
 
 ## Git workflow diagram
 
-![Alt text](relative/images/Gitworflow.png?raw=true "Workflow diagram")
+!(/images/Gitworflow.png?raw=true "Workflow diagram")
