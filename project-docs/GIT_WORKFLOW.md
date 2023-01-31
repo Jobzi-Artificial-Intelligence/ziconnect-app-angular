@@ -4,7 +4,7 @@ The objective of this document is to guide developers and community in how to im
 
 # Abstract
 
-The use of PULL-REQUEST (PR) is mandotory for new features to move up the ladder:
+The use of PULL-REQUEST (PR) is mandatory for new features to move up the ladder:
 
     - Staging > Release > Master
 
@@ -67,3 +67,8 @@ The standard we are using is semver, you can get more information here: https://
 When building the build will add the build number for it (how many commits it is in from of the last tag), so the build will automaticlly add one more number, as follow:
 
     - 2.100.1.0 > 2.100.1.1 > 2.100.1.2 > etc
+
+
+# Git workflow diagram
+
+!(/images/Gitworflow.png?raw=true "Workflow diagram")

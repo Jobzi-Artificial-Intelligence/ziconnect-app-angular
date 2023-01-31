@@ -104,6 +104,3 @@ If a status check is failing, and you believe that the failure is unrelated to y
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
 
-## Git workflow diagram
-
-!(/images/Gitworflow.png?raw=true "Workflow diagram")
