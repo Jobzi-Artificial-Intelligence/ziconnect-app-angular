@@ -71,4 +71,4 @@ When building the build will add the build number for it (how many commits it is
 
 # Git workflow diagram
 
-!(/images/Gitworflow.png?raw=true "Workflow diagram")
+!(images/Gitworflow.png? "Workflow diagram")
