@@ -28,6 +28,10 @@
     </section>
   </header> -->
   <div class="container flex items-strecth justify-center flex-auto">
+    <div class="box-loading flex items-center justify-center direction-column" *ngIf="loadingMap.getValue()">
+      <mat-spinner [diameter]="50"></mat-spinner><br>
+      <div class="color-tp-body f-size-14 text-center">{{loadingMessage}}</div>
+    </div>
     <div class="map-container" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)">
     </div>
   </div>
