@@ -26,8 +26,11 @@
     "@angular/platform-browser": "^14.2.12",
     "@angular/platform-browser-dynamic": "^14.2.12",
     "@angular/router": "^14.2.12",
+    "@asymmetrik/ngx-leaflet": "14",
     "@swimlane/ngx-charts": "^20.1.0",
     "@types/d3": "^7.4.0",
+    "@types/leaflet": "^1.9.0",
+    "leaflet": "^1.9.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

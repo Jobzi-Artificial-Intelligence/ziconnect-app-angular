@@ -10,6 +10,7 @@ import { AngularMaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
 import {
   DialogSchoolColumnSelectorComponent,
@@ -51,6 +52,7 @@ import {
     FormsModule,
     GoogleMapsModule,
     HttpClientModule,
+    LeafletModule,
     NgxChartsModule,
     ReactiveFormsModule,
   ],
