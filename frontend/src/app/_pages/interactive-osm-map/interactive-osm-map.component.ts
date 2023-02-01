@@ -215,7 +215,24 @@ export class InteractiveOsmMapComponent implements OnInit {
   }
 
   async onCountryClick() {
-    // TODO onCountryClick 
+    // Remove all locality layers
+    this.removeAllLocalityLayersFromMap();
+
+    // Clear all filters
+    this.mapFilter.selectedCity = undefined;
+    this.mapFilter.selectedRegion = undefined;
+    this.mapFilter.selectedState = undefined;
+
+    // Load regions statistics from country
+    await this.loadLocalityStatistics(AdministrativeLevel.Region);
+
+    // Load regions from country
+    await this.loadRegionsGeoJson();
+
+    // Reset view to initial map view position
+    this.map.setView(this.mapOptions.center, this.mapOptions.zoom);
+
+    this.closeStatsPanel();
   }
 
   // Sets state property of the map data item to unfocused when range color different from the one passed in the param
@@ -261,18 +278,18 @@ export class InteractiveOsmMapComponent implements OnInit {
       value.layer.setStyle(this.setMapDataStyles(value.feature));
     }
 
-    // TODO onSelectRegion 
+    // Remove any state from map
+    this.removeStateLayersFromMap();
 
-    // // Remove any state from map
-    // this.removeStatesFromMap();
-
-    // // Remove any cities from map
-    // this.removeCitiesFromMap();
+    // Remove any cities from map
+    this.removeMunicipalityLayersFromMap();
 
     this.mapFilter.selectedRegion = region;
 
     // Load states statistics from selected region
     await this.loadLocalityStatistics(AdministrativeLevel.State);
+
+    // TODO onSelectRegion 
 
     // // Load states from selected region
     // await this.loadStatesGeoJson(this.mapFilter.selectedCountry, region.code.toString());
@@ -573,6 +590,43 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   //#region MAP UTIL FUNCTIONS
   ////////////////////////////////////////////
+  /**
+   * Remove all locality layer from map layers list
+   */
+  removeAllLocalityLayersFromMap() {
+    this.removeRegionLayersFromMap();
+  }
+
+  /**
+   * Remove all region layers from map layers list
+   */
+  removeRegionLayersFromMap() {
+    for (const [key, value] of Object.entries(this.mapRegionLayers)) {
+      this.map.removeLayer(value.layer);
+    }
+    this.mapRegionLayers = <IMapLocalityLayer>{};
+  }
+
+  /**
+   * Remove all state layers from map layers list
+   */
+  removeStateLayersFromMap() {
+    for (const [key, value] of Object.entries(this.mapStateLayers)) {
+      this.map.removeLayer(value.layer);
+    }
+    this.mapStateLayers = <IMapLocalityLayer>{};
+  }
+
+  /**
+   * Remove all state municipality from map layers list
+   */
+  removeMunicipalityLayersFromMap() {
+    for (const [key, value] of Object.entries(this.mapMunicipalityLayers)) {
+      this.map.removeLayer(value.layer);
+    }
+    this.mapMunicipalityLayers = <IMapLocalityLayer>{};
+  }
+
   /**
    * Sets GeoJson fill color properties according to the color range percentage index value
    * @param element GeoJson data
