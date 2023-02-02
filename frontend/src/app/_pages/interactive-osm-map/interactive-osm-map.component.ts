@@ -24,6 +24,7 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   // LOCALITY MAP LIST
   localityMapRegions: LocalityMap[] = new Array<LocalityMap>();
+  localityMapStates: LocalityMap[] = new Array<LocalityMap>();
 
   filterSettingsExpanded = false;
   loadingMap: BehaviorSubject<boolean>;
@@ -212,6 +213,16 @@ export class InteractiveOsmMapComponent implements OnInit {
     for (const [key, value] of Object.entries(this.mapRegionLayers)) {
       this.updateLayerFillColorByViewOption(value.feature, value.layer);
     }
+
+    // state update fill color
+    for (const [key, value] of Object.entries(this.mapStateLayers)) {
+      this.updateLayerFillColorByViewOption(value.feature, value.layer);
+    }
+
+    // municipality update fill color
+    for (const [key, value] of Object.entries(this.mapMunicipalityLayers)) {
+      this.updateLayerFillColorByViewOption(value.feature, value.layer);
+    }
   }
 
   async onCountryClick() {
@@ -238,23 +249,25 @@ export class InteractiveOsmMapComponent implements OnInit {
   // Sets state property of the map data item to unfocused when range color different from the one passed in the param
   onLegendItemMouseEnter(rangeColorIndex: number) {
     // highlight region by range color index
-    for (const [key, value] of Object.entries(this.mapRegionLayers)) {
-      if (value.feature.properties.fillColorIndex !== rangeColorIndex && value.feature.properties.filtered as Boolean) {
-        value.feature.properties.state = 'unfocused';
-        value.layer.setStyle(this.setMapDataStyles(value.feature));
-      }
-    }
+    this.setLayerStateUnfocusedByColorIndex(rangeColorIndex, this.mapRegionLayers);
+
+    // highlight state by range color index
+    this.setLayerStateUnfocusedByColorIndex(rangeColorIndex, this.mapStateLayers);
+
+    // highlight municipality by range color index
+    this.setLayerStateUnfocusedByColorIndex(rangeColorIndex, this.mapMunicipalityLayers);
   }
 
   // Sets map data item state property to normal
   onLegendItemMouseLeave() {
-    // back to state normal regions
-    for (const [key, value] of Object.entries(this.mapRegionLayers)) {
-      if (value.feature.properties.state === 'unfocused' && value.feature.properties.filtered as Boolean) {
-        value.feature.properties.state = 'normal';
-        value.layer.setStyle(this.setMapDataStyles(value.feature));
-      }
-    }
+    // back region layers to state normal
+    this.setLayerStateUnfocusedToNormalState(this.mapRegionLayers);
+
+    // back state layers to state normal
+    this.setLayerStateUnfocusedToNormalState(this.mapStateLayers);
+
+    // back municipality layers to state normal
+    this.setLayerStateUnfocusedToNormalState(this.mapMunicipalityLayers);
   }
 
   async onSelectCity(city: City) {
@@ -289,10 +302,8 @@ export class InteractiveOsmMapComponent implements OnInit {
     // Load states statistics from selected region
     await this.loadLocalityStatistics(AdministrativeLevel.State);
 
-    // TODO onSelectRegion 
-
     // // Load states from selected region
-    // await this.loadStatesGeoJson(this.mapFilter.selectedCountry, region.code.toString());
+    await this.loadStatesGeoJson(this.mapFilter.selectedCountry, region.code.toString());
 
     // Region Zoom and open statistics panel
     const regionLayer = this.mapRegionLayers[region.code.toString()];
@@ -303,7 +314,65 @@ export class InteractiveOsmMapComponent implements OnInit {
   }
 
   async onSelectState(state: State) {
+    this.mapFilter.selectedCity = undefined;
+    this.mapFilter.selectedRegion = state.region;
+    this.mapFilter.selectedState = state;
+
+    // Unfocus unselected states
+    for (const [key, value] of Object.entries(this.mapStateLayers)) {
+      if (value.feature.properties.code !== state.code) {
+        value.feature.properties.state = 'unfocused';
+        value.feature.properties.filtered = false;
+      } else {
+        value.feature.properties.state = 'normal';
+        value.feature.properties.filtered = true;
+      }
+
+      value.layer.setStyle(this.setMapDataStyles(value.feature));
+    }
+
+    // Unfocus regions
+    for (const [key, value] of Object.entries(this.mapRegionLayers)) {
+      value.feature.properties.state = 'unfocused';
+      value.feature.properties.filtered = false;
+      value.layer.setStyle(this.setMapDataStyles(value.feature));
+    }
+
+    // Remove current cities before loads new
+    this.removeMunicipalityLayersFromMap();
+
+    // Load municipalities statistics from selected state
+    await this.loadLocalityStatistics(AdministrativeLevel.Municipality);
+
     // TODO onSelectState 
+    // Add load cities
+    //await this.loadCitiesGeoJson(this.mapFilter.selectedCountry, state.region.code.toString(), state.code.toString());
+
+    // State Zoom and open statistics panel
+    const stateLayer = this.mapStateLayers[state.code.toString()];
+    if (stateLayer) {
+      this.zoomToLayerBounds(stateLayer.layer.getBounds());
+      this.openStatsPanel(stateLayer.feature);
+    }
+  }
+
+  setLayerStateUnfocusedByColorIndex(rangeColorIndex: number, localityLayers: IMapLocalityLayer) {
+    // highlight locality layer by range color index
+    for (const [key, value] of Object.entries(localityLayers)) {
+      if (value.feature.properties.fillColorIndex !== rangeColorIndex && value.feature.properties.filtered as Boolean) {
+        value.feature.properties.state = 'unfocused';
+        value.layer.setStyle(this.setMapDataStyles(value.feature));
+      }
+    }
+  }
+
+  setLayerStateUnfocusedToNormalState(localityLayers: IMapLocalityLayer) {
+    for (const [key, value] of Object.entries(localityLayers)) {
+      if (value.feature.properties.state === 'unfocused' && value.feature.properties.filtered as Boolean) {
+        value.feature.properties.state = 'normal';
+        value.layer.setStyle(this.setMapDataStyles(value.feature));
+      }
+    }
   }
 
   //#endregion
@@ -414,6 +483,73 @@ export class InteractiveOsmMapComponent implements OnInit {
       }
     });
   }
+
+  async loadStatesGeoJson(countryCode: string, regionCode: string) {
+    return new Promise((resolve, reject) => {
+      this.loadingMap.next(true)
+      this.loadingMessage = 'Loading states...';
+
+      try {
+        this.localityMapService
+          .getStatesByRegion(countryCode, regionCode)
+          .subscribe(
+            (data: any) => {
+              this.localityMapStates = data;
+
+              const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
+
+              //build stats
+              for (let index = 0; index < featureCollection.features.length; index++) {
+                const element = featureCollection.features[index];
+                element.properties.code = element.properties['state_code'];
+                element.properties.filtered = true;
+                element.properties.name = element.properties['state_name'];
+                element.properties.stats = this.getLocalityStatisticsByStateCode(element.properties.code);
+
+                //SET FILL COLOR
+                if (element.properties.stats) {
+                  this.setMapElementFillColor(element);
+                }
+              }
+
+              // ADD REGION LAYER
+              this.map.addLayer(Leaflet.geoJSON(featureCollection as GeoJsonObject, {
+                style: this.setMapDataStyles,
+                onEachFeature: (feature, layer) => {
+                  this.mapStateLayers[feature.properties.code] = {
+                    feature: feature,
+                    layer: layer
+                  } as ILocalityLayer;
+
+                  layer.on('click', this.onMapStateClick, this);
+                  layer.on('mouseover', this.onMapMouseOverLayer, this);
+                  layer.on('mouseout', this.onMapMouseOutLayer, this);
+                }
+              }));
+
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+
+              resolve(null);
+            },
+            (error) => {
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+              this.alertService.showError(`Something went wrong loading states json: ${error.message}`);
+
+              reject(error);
+            }
+          );
+      } catch (error: any) {
+        this.loadingMap.next(false);
+        this.loadingMessage = '';
+
+        this.alertService.showError(error);
+
+        reject(error);
+      }
+    });
+  }
   //#endregion
   ////////////////////////////////////////////
 
@@ -445,6 +581,16 @@ export class InteractiveOsmMapComponent implements OnInit {
 
     if (regionMap && regionMap.region) {
       this.onSelectRegion(regionMap.region);
+    }
+    this.zoomToLayerBounds(e.target.getBounds());
+  }
+
+  onMapStateClick(e: any) {
+    const stateCode = e.target.feature.properties.code;
+    const stateMap = this.localityMapStates.find(x => x.stateCode === stateCode);
+
+    if (stateMap && stateMap.state) {
+      this.onSelectState(stateMap.state);
     }
     this.zoomToLayerBounds(e.target.getBounds());
   }
@@ -595,6 +741,7 @@ export class InteractiveOsmMapComponent implements OnInit {
    */
   removeAllLocalityLayersFromMap() {
     this.removeRegionLayersFromMap();
+    this.removeStateLayersFromMap();
   }
 
   /**
@@ -716,10 +863,7 @@ export class InteractiveOsmMapComponent implements OnInit {
     if (this.mapFilter.selectedRegion) {
       this.onSelectRegion(this.mapFilter.selectedRegion);
     } else {
-      // TODO onRegionSelectionChange refactor
-      // this.googleMap.data.forEach(x => {
-      //   this.googleMap.data.remove(x);
-      // });
+      this.removeAllLocalityLayersFromMap();
 
       this.loadRegionsGeoJson();
     }
@@ -739,10 +883,7 @@ export class InteractiveOsmMapComponent implements OnInit {
       await this.onSelectRegion(selectedState.region);
       this.onSelectState(selectedState);
     } else {
-      // TODO onRegionSelectionChange refactor
-      // this.googleMap.data.forEach(x => {
-      //   this.googleMap.data.remove(x);
-      // });
+      this.removeAllLocalityLayersFromMap();
 
       this.loadRegionsGeoJson();
     }
@@ -860,6 +1001,10 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   getLocalityStatisticsByRegionCode(regionCode: string) {
     return this.localityStatistics.find(x => x.localityMap.regionCode === regionCode);
+  }
+
+  getLocalityStatisticsByStateCode(stateCode: string) {
+    return this.localityStatistics.find(x => x.localityMap.stateCode === stateCode);
   }
 
   /**
