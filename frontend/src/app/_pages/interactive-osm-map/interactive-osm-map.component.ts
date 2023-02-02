@@ -25,6 +25,7 @@ export class InteractiveOsmMapComponent implements OnInit {
   // LOCALITY MAP LIST
   localityMapRegions: LocalityMap[] = new Array<LocalityMap>();
   localityMapStates: LocalityMap[] = new Array<LocalityMap>();
+  localityMapMunicipalities: LocalityMap[] = new Array<LocalityMap>();
 
   filterSettingsExpanded = false;
   loadingMap: BehaviorSubject<boolean>;
@@ -270,11 +271,40 @@ export class InteractiveOsmMapComponent implements OnInit {
     this.setLayerStateUnfocusedToNormalState(this.mapMunicipalityLayers);
   }
 
-  async onSelectCity(city: City) {
-    // TODO onSelectCity 
+  async onSelectCity(municipality: City, withZoom: boolean = true) {
+    this.mapFilter.selectedCity = municipality;
+
+    // Unfocus unselected municipalities
+    for (const [key, value] of Object.entries(this.mapMunicipalityLayers)) {
+      if (value.feature.properties.code !== municipality.code) {
+        value.feature.properties.state = 'unfocused';
+        value.feature.properties.filtered = false;
+      } else {
+        value.feature.properties.state = 'normal';
+        value.feature.properties.filtered = true;
+      }
+
+      value.layer.setStyle(this.setMapDataStyles(value.feature));
+    }
+
+    // Unfocus states
+    for (const [key, value] of Object.entries(this.mapStateLayers)) {
+      value.feature.properties.state = 'unfocused';
+      value.feature.properties.filtered = false;
+      value.layer.setStyle(this.setMapDataStyles(value.feature));
+    }
+
+    // Municipality Zoom and open statistics panel
+    const municipalityLayer = this.mapMunicipalityLayers[municipality.code.toString()];
+    if (municipalityLayer) {
+      if (withZoom) {
+        this.zoomToLayerBounds(municipalityLayer.layer.getBounds());
+      }
+      this.openStatsPanel(municipalityLayer.feature);
+    }
   }
 
-  async onSelectRegion(region: Region) {
+  async onSelectRegion(region: Region, withZoom: boolean = true) {
     this.mapFilter.selectedCity = undefined;
     this.mapFilter.selectedState = undefined;
 
@@ -308,12 +338,14 @@ export class InteractiveOsmMapComponent implements OnInit {
     // Region Zoom and open statistics panel
     const regionLayer = this.mapRegionLayers[region.code.toString()];
     if (regionLayer) {
-      this.zoomToLayerBounds(regionLayer.layer.getBounds());
+      if (withZoom) {
+        this.zoomToLayerBounds(regionLayer.layer.getBounds());
+      }
       this.openStatsPanel(regionLayer.feature);
     }
   }
 
-  async onSelectState(state: State) {
+  async onSelectState(state: State, withZoom: boolean = true) {
     this.mapFilter.selectedCity = undefined;
     this.mapFilter.selectedRegion = state.region;
     this.mapFilter.selectedState = state;
@@ -344,14 +376,15 @@ export class InteractiveOsmMapComponent implements OnInit {
     // Load municipalities statistics from selected state
     await this.loadLocalityStatistics(AdministrativeLevel.Municipality);
 
-    // TODO onSelectState 
     // Add load cities
-    //await this.loadCitiesGeoJson(this.mapFilter.selectedCountry, state.region.code.toString(), state.code.toString());
+    await this.loadCitiesGeoJson(this.mapFilter.selectedCountry, state.region.code.toString(), state.code.toString());
 
     // State Zoom and open statistics panel
     const stateLayer = this.mapStateLayers[state.code.toString()];
     if (stateLayer) {
-      this.zoomToLayerBounds(stateLayer.layer.getBounds());
+      if (withZoom) {
+        this.zoomToLayerBounds(stateLayer.layer.getBounds());
+      }
       this.openStatsPanel(stateLayer.feature);
     }
   }
@@ -380,6 +413,73 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   //#region MAP LOAD FUNCTIONS
   ////////////////////////////////////////////
+  async loadCitiesGeoJson(countryCode: string, regionCode: string, stateCode: string) {
+    return new Promise((resolve, reject) => {
+      this.loadingMap.next(true);
+      this.loadingMessage = 'Loading municipalities...';
+
+      try {
+        this.localityMapService
+          .getCitiesByState(countryCode, regionCode, stateCode)
+          .subscribe(
+            (data: any) => {
+              this.localityMapMunicipalities = data;
+
+              const featureCollection = this.localityMapService.getFeatureCollectionFromLocalityList(data);
+
+              //build stats
+              for (let index = 0; index < featureCollection.features.length; index++) {
+                const element = featureCollection.features[index];
+                element.properties.code = element.properties['municipality_code'];
+                element.properties.filtered = true;
+                element.properties.name = element.properties['municipality_name'];
+                element.properties.stats = this.getLocalityStatisticsByMunicipalityCode(element.properties.code);
+
+                //SET FILL COLOR
+                if (element.properties.stats) {
+                  this.setMapElementFillColor(element);
+                }
+              }
+
+              // ADD MUNICIPALITY LAYER
+              this.map.addLayer(Leaflet.geoJSON(featureCollection as GeoJsonObject, {
+                style: this.setMapDataStyles,
+                onEachFeature: (feature, layer) => {
+                  this.mapMunicipalityLayers[feature.properties.code] = {
+                    feature: feature,
+                    layer: layer
+                  } as ILocalityLayer;
+
+                  layer.on('click', this.onMapMunicipalityClick, this);
+                  layer.on('mouseover', this.onMapMouseOverLayer, this);
+                  layer.on('mouseout', this.onMapMouseOutLayer, this);
+                }
+              }));
+
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+
+              resolve(null);
+            },
+            (error) => {
+              this.loadingMap.next(false);
+              this.loadingMessage = '';
+
+              this.alertService.showError(`Something went wrong loading cities json: ${error.message}`);
+              reject(error);
+            }
+          );
+      } catch (error: any) {
+        this.loadingMap.next(false);
+        this.loadingMessage = '';
+
+        this.alertService.showError(error);
+
+        reject(error);
+      }
+    });
+  }
+
   async loadLocalityStatistics(administrativeLevel: AdministrativeLevel) {
     return new Promise((resolve, reject) => {
       this.loadingMap.next(true);
@@ -512,7 +612,7 @@ export class InteractiveOsmMapComponent implements OnInit {
                 }
               }
 
-              // ADD REGION LAYER
+              // ADD STATE LAYER
               this.map.addLayer(Leaflet.geoJSON(featureCollection as GeoJsonObject, {
                 style: this.setMapDataStyles,
                 onEachFeature: (feature, layer) => {
@@ -592,6 +692,17 @@ export class InteractiveOsmMapComponent implements OnInit {
     if (stateMap && stateMap.state) {
       this.onSelectState(stateMap.state);
     }
+    this.zoomToLayerBounds(e.target.getBounds());
+  }
+
+  onMapMunicipalityClick(e: any) {
+    const municipalityCode = e.target.feature.properties.code;
+    const municipalityMap = this.localityMapMunicipalities.find(x => x.municipalityCode === municipalityCode);
+
+    if (municipalityMap && municipalityMap.municipality) {
+      this.onSelectCity(municipalityMap.municipality);
+    }
+
     this.zoomToLayerBounds(e.target.getBounds());
   }
 
@@ -740,8 +851,9 @@ export class InteractiveOsmMapComponent implements OnInit {
    * Remove all locality layer from map layers list
    */
   removeAllLocalityLayersFromMap() {
-    this.removeRegionLayersFromMap();
+    this.removeMunicipalityLayersFromMap();
     this.removeStateLayersFromMap();
+    this.removeRegionLayersFromMap();
   }
 
   /**
@@ -961,8 +1073,8 @@ export class InteractiveOsmMapComponent implements OnInit {
     switch (selectedOption.administrativeLevel) {
       case 'municipality':
         if (selectedOption.municipality) {
-          await this.onSelectRegion(selectedOption.municipality.state.region);
-          await this.onSelectState(selectedOption.municipality.state);
+          await this.onSelectRegion(selectedOption.municipality.state.region, false);
+          await this.onSelectState(selectedOption.municipality.state, false);
           this.onSelectCity(selectedOption.municipality);
         }
         break;
@@ -973,7 +1085,7 @@ export class InteractiveOsmMapComponent implements OnInit {
         break;
       case 'state':
         if (selectedOption.state) {
-          await this.onSelectRegion(selectedOption.state.region);
+          await this.onSelectRegion(selectedOption.state.region, false);
           this.onSelectState(selectedOption.state);
         }
         break;
@@ -997,6 +1109,10 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   getConnectivityPredictionBarColor = (value: any) => {
     return this.schoolsPredictionColorScheme[value];
+  }
+
+  getLocalityStatisticsByMunicipalityCode(municipalityCode: string) {
+    return this.localityStatistics.find(x => x.localityMap.municipalityCode === municipalityCode);
   }
 
   getLocalityStatisticsByRegionCode(regionCode: string) {
