@@ -7,10 +7,10 @@ import * as Leaflet from 'leaflet';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from 'rxjs/operators';
 import { MapViewOptionValue } from 'src/app/_helpers';
-import { IMapFilter, IMapViewOption, ILocalityLayer, IMapLocalityLayer, IMapStatsPanel } from 'src/app/_interfaces';
+import { IMapFilter, IMapViewOption, ILocalityLayer, IMapLocalityLayer, IMapStatsPanel, IMapInfoWindowContent } from 'src/app/_interfaces';
 import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, LocalityStatistics, Region, State } from 'src/app/_models';
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
-import { AlertService, LocalityMapService, LocalityStatisticsService } from 'src/app/_services';
+import { AlertService, LocalityLayerPopupService, LocalityMapService, LocalityStatisticsService } from 'src/app/_services';
 
 @Component({
   selector: 'app-interactive-osm-map',
@@ -101,6 +101,7 @@ export class InteractiveOsmMapComponent implements OnInit {
   ////////////////////////////////////////////
   constructor(private alertService: AlertService,
     private ref: ChangeDetectorRef,
+    private localityLayerService: LocalityLayerPopupService,
     private localityMapService: LocalityMapService,
     private localityStatisticsService: LocalityStatisticsService
   ) {
@@ -450,6 +451,7 @@ export class InteractiveOsmMapComponent implements OnInit {
                     layer: layer
                   } as ILocalityLayer;
 
+                  layer.bindPopup(this.getFeaturePopup(feature));
                   layer.on('click', this.onMapMunicipalityClick, this);
                   layer.on('mouseover', this.onMapMouseOverLayer, this);
                   layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -554,6 +556,7 @@ export class InteractiveOsmMapComponent implements OnInit {
                   layer: layer
                 } as ILocalityLayer;
 
+                layer.bindPopup(this.getFeaturePopup(feature));
                 layer.on('click', this.onMapRegionClick, this);
                 layer.on('mouseover', this.onMapMouseOverLayer, this);
                 layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -621,6 +624,7 @@ export class InteractiveOsmMapComponent implements OnInit {
                     layer: layer
                   } as ILocalityLayer;
 
+                  layer.bindPopup(this.getFeaturePopup(feature));
                   layer.on('click', this.onMapStateClick, this);
                   layer.on('mouseover', this.onMapMouseOverLayer, this);
                   layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -659,6 +663,7 @@ export class InteractiveOsmMapComponent implements OnInit {
     if (e.target.feature.properties.state !== 'unfocused') {
       e.target.feature.properties.state = 'hover';
       e.target.setStyle(this.setMapDataStyles(e.target.feature));
+      (e.target as Leaflet.GeoJSON).openPopup();
     }
   }
 
@@ -847,6 +852,16 @@ export class InteractiveOsmMapComponent implements OnInit {
 
   //#region MAP UTIL FUNCTIONS
   ////////////////////////////////////////////
+
+  getFeaturePopup(feature: any): ((layer: Leaflet.Layer) => Leaflet.Content) | Leaflet.Content | Leaflet.Popup {
+    return this.localityLayerService.compilePopup(<IMapInfoWindowContent>{
+      name: feature.properties.name,
+      code: feature.properties.code,
+      stats: feature.properties.stats,
+      type: feature.properties.adm_level
+    });
+  }
+
   /**
    * Remove all locality layer from map layers list
    */

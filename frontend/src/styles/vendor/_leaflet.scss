@@ -1,0 +1,16 @@
+.leaflet-container {
+  a {
+    &.leaflet-popup-close-button {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      right: 4px;
+      top: 4px;
+    }
+  }
+}
+
+.leaflet-popup-content {
+  margin: 3px;
+  min-width: 400px;
+}

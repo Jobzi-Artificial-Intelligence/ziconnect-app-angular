@@ -26,7 +26,7 @@ const routes: Routes = [{
     }
   }
 }, {
-  path: 'interactive-map',
+  path: 'interactive-google-map',
   component: InteractiveMapComponent,
   data: {
     seo: {
@@ -40,7 +40,7 @@ const routes: Routes = [{
     }
   }
 }, {
-  path: 'interactive-osm-map',
+  path: 'interactive-map',
   component: InteractiveOsmMapComponent,
   data: {
     seo: {

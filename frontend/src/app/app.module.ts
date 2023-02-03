@@ -14,6 +14,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
 import {
   DialogSchoolColumnSelectorComponent,
+  LocalityLayerPopupComponent,
   NavigationBarComponent,
   SchoolTableBottomSheetComponent
 } from './_components';
@@ -41,6 +42,7 @@ import {
     InteractiveMapComponent,
     InteractiveOsmMapComponent,
     LicenseComponent,
+    LocalityLayerPopupComponent,
     NavigationBarComponent,
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,

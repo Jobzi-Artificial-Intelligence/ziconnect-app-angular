@@ -1,0 +1,39 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#locality-layer-popup {
+  #infowindow-container {
+    color: #fff;
+    display: flex;
+    font-size: 13px;
+    font-weight: 400;
+    justify-content: space-between;
+    max-width: 450px;
+    width: 100%;
+
+    .infowindow-left {
+      box-sizing: border-box;
+      background-color: #f89a51;
+      border-bottom-left-radius: 8px;
+      border-top-left-radius: 8px;
+      flex: 0 0 calc(40% - 1px);
+      padding: 12px;
+    }
+
+    .infowindow-right {
+      box-sizing: border-box;
+      background-color: #f1764f;
+      border-bottom-right-radius: 8px;
+      border-top-right-radius: 8px;
+      flex: 0 0 calc(60% - 1px);
+      padding: 12px;
+    }
+
+    .infowindow-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+    }
+  }
+}
