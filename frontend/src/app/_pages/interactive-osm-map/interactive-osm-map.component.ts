@@ -43,6 +43,7 @@ export class InteractiveOsmMapComponent implements OnInit {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       })
     ],
+    keyboard: false,
     zoom: 5,
     zoomControl: false,
     center: { lat: -15.0110132, lng: -53.3649369 }
@@ -451,7 +452,8 @@ export class InteractiveOsmMapComponent implements OnInit {
                     layer: layer
                   } as ILocalityLayer;
 
-                  layer.bindPopup(this.getFeaturePopup(feature));
+                  layer.bindTooltip(this.getFeaturePopup(feature));
+
                   layer.on('click', this.onMapMunicipalityClick, this);
                   layer.on('mouseover', this.onMapMouseOverLayer, this);
                   layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -556,7 +558,8 @@ export class InteractiveOsmMapComponent implements OnInit {
                   layer: layer
                 } as ILocalityLayer;
 
-                layer.bindPopup(this.getFeaturePopup(feature));
+                layer.bindTooltip(this.getFeaturePopup(feature));
+
                 layer.on('click', this.onMapRegionClick, this);
                 layer.on('mouseover', this.onMapMouseOverLayer, this);
                 layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -624,7 +627,8 @@ export class InteractiveOsmMapComponent implements OnInit {
                     layer: layer
                   } as ILocalityLayer;
 
-                  layer.bindPopup(this.getFeaturePopup(feature));
+                  layer.bindTooltip(this.getFeaturePopup(feature));
+
                   layer.on('click', this.onMapStateClick, this);
                   layer.on('mouseover', this.onMapMouseOverLayer, this);
                   layer.on('mouseout', this.onMapMouseOutLayer, this);
@@ -662,9 +666,11 @@ export class InteractiveOsmMapComponent implements OnInit {
   onMapMouseOverLayer(e: any) {
     if (e.target.feature.properties.state !== 'unfocused') {
       e.target.feature.properties.state = 'hover';
-      e.target.setStyle(this.setMapDataStyles(e.target.feature));
-      (e.target as Leaflet.GeoJSON).openPopup();
+    } else {
+      e.target.feature.properties.state = 'unfocused-hover';
     }
+
+    e.target.setStyle(this.setMapDataStyles(e.target.feature));
   }
 
   /**
@@ -672,12 +678,14 @@ export class InteractiveOsmMapComponent implements OnInit {
    *
    */
   onMapMouseOutLayer(e: any) {
-    if (e.target.feature.properties.state !== 'unfocused') {
+    if (e.target.feature.properties.state === 'unfocused-hover') {
+      e.target.feature.properties.state = 'unfocused';
+    } else if (e.target.feature.properties.state !== 'unfocused') {
       // reset the hover state, returning the border to normal
       e.target.feature.properties.state = 'normal';
-
-      e.target.setStyle(this.setMapDataStyles(e.target.feature));
     }
+
+    e.target.setStyle(this.setMapDataStyles(e.target.feature));
   }
 
   onMapRegionClick(e: any) {
@@ -853,7 +861,7 @@ export class InteractiveOsmMapComponent implements OnInit {
   //#region MAP UTIL FUNCTIONS
   ////////////////////////////////////////////
 
-  getFeaturePopup(feature: any): ((layer: Leaflet.Layer) => Leaflet.Content) | Leaflet.Content | Leaflet.Popup {
+  getFeaturePopup(feature: any) {
     return this.localityLayerService.compilePopup(<IMapInfoWindowContent>{
       name: feature.properties.name,
       code: feature.properties.code,
@@ -922,26 +930,13 @@ export class InteractiveOsmMapComponent implements OnInit {
    */
   setMapDataStyles(feature: any) {
     const elementType = feature.properties['adm_level'];
-    let outlineWeight = 0.5, zIndex = 0;
-
-    switch (elementType) {
-      case 'region':
-        zIndex = 1;
-        break;
-      case 'state':
-        zIndex = 2;
-        break;
-      case 'municipality':
-        zIndex = 3;
-        break;
-      default:
-        break;
-    }
+    let strokeWidth = 0.5;
+    let strokeColor = '#fff';
 
     let featureStats = feature.properties.stats;
 
     if (feature.properties.state === 'hover') {
-      outlineWeight = 2;
+      strokeWidth = 2;
     }
 
     let fillColor = '#000';
@@ -953,9 +948,15 @@ export class InteractiveOsmMapComponent implements OnInit {
       fillColor = '#dedede';
     }
 
+    if (feature.properties.state === 'unfocused-hover') {
+      fillColor = '#F7CCA9';
+      strokeColor = '#D9A981';
+      strokeWidth = 2;
+    }
+
     return {
-      weight: outlineWeight,
-      color: '#fff',
+      weight: strokeWidth,
+      color: strokeColor,
       fillColor: fillColor,
       fillOpacity: 0.75,
     };
