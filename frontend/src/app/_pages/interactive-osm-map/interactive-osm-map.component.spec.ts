@@ -8,10 +8,14 @@ import { AngularMaterialModule } from 'src/app/material.module';
 import { AdministrativeLevel, LocalityStatistics, Region, State } from 'src/app/_models';
 import { of, throwError } from 'rxjs';
 
+import * as Leaflet from 'leaflet';
+
 import { InteractiveOsmMapComponent } from './interactive-osm-map.component';
 import { municipalityLayers, regionLayers, stateLayers } from 'src/test/locality-map-layers';
 import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { regionStats } from 'src/test/item-stats-mock';
+import { geoJsonCities, geoJsonRegions, geoJsonStates } from 'src/test/geo-json-mock';
+import { IMapLocalityLayer } from 'src/app/_interfaces';
 
 describe('InteractiveOsmMapComponent', () => {
   let component: InteractiveOsmMapComponent;
@@ -22,7 +26,11 @@ describe('InteractiveOsmMapComponent', () => {
 
   let mockMunicipalityLayers = municipalityLayers;
   let mockStateLayers = stateLayers;
+  let mockGeoJsonCities = {} as any;
+  let mockGeoJsonRegions = {} as any;
+  let mockGeoJsonStates = {} as any;
   let mockRegionLayers = regionLayers;
+  let mockRegionLayer = mockStateLayers[Object.keys(mockRegionLayers)[0]];
   let mockRegionStats: LocalityStatistics;
 
   beforeEach(async () => {
@@ -40,6 +48,9 @@ describe('InteractiveOsmMapComponent', () => {
     }).compileComponents();
 
     // Clone object
+    mockGeoJsonCities = JSON.parse(JSON.stringify(geoJsonCities));
+    mockGeoJsonRegions = JSON.parse(JSON.stringify(geoJsonRegions));
+    mockGeoJsonStates = JSON.parse(JSON.stringify(geoJsonStates));
     mockRegionStats = JSON.parse(JSON.stringify(regionStats));
 
     fixture = TestBed.createComponent(InteractiveOsmMapComponent);
@@ -448,6 +459,246 @@ describe('InteractiveOsmMapComponent', () => {
       component.toggleStatsPanel();
 
       expect(component.mapStatsPanel.open).toEqual(!statsPanelOpen);
+    });
+  });
+
+  //#endregion
+  ////////////////////////////////////////////
+
+  //#region MAP UTIL FUNCTIONS
+  ////////////////////////////////////////////
+  describe('#getFeaturePopup', () => {
+
+    it('should exists', () => {
+      expect(component.getFeaturePopup).toBeTruthy();
+      expect(component.getFeaturePopup).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      //@ts-ignore
+      spyOn(component.localityLayerService, 'compilePopup');
+
+      component.mapRegionLayers = mockRegionLayers;
+      const regionLayer = component.mapRegionLayers[Object.keys(component.mapRegionLayers)[0]];
+
+      component.getFeaturePopup(regionLayer.feature);
+
+      //@ts-ignore
+      expect(component.localityLayerService.compilePopup).toHaveBeenCalledWith(<IMapInfoWindowContent>{
+        name: regionLayer.feature.properties.name,
+        code: regionLayer.feature.properties.code,
+        stats: regionLayer.feature.properties.stats,
+        type: regionLayer.feature.properties.adm_level
+      });
+    });
+  });
+
+  describe('#removeAllLocalityLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeAllLocalityLayersFromMap).toBeTruthy();
+      expect(component.removeAllLocalityLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'removeMunicipalityLayersFromMap');
+      spyOn(component, 'removeRegionLayersFromMap');
+      spyOn(component, 'removeStateLayersFromMap');
+
+      component.removeAllLocalityLayersFromMap();
+
+      expect(component.removeMunicipalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.removeRegionLayersFromMap).toHaveBeenCalledWith();
+      expect(component.removeStateLayersFromMap).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('#removeRegionLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeRegionLayersFromMap).toBeTruthy();
+      expect(component.removeRegionLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapRegionLayers = mockRegionLayers;
+
+      component.removeRegionLayersFromMap();
+
+      expect(component.mapRegionLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#removeStateLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeStateLayersFromMap).toBeTruthy();
+      expect(component.removeStateLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapStateLayers = mockStateLayers;
+
+      component.removeStateLayersFromMap();
+
+      expect(component.mapStateLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#removeMunicipalityLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeMunicipalityLayersFromMap).toBeTruthy();
+      expect(component.removeMunicipalityLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapMunicipalityLayers = mockMunicipalityLayers;
+
+      component.removeMunicipalityLayersFromMap();
+
+      expect(component.mapMunicipalityLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#setMapDataStyles', () => {
+
+    it('should exists', () => {
+      expect(component.setMapDataStyles).toBeTruthy();
+      expect(component.setMapDataStyles).toEqual(jasmine.any(Function));
+    });
+
+    it('should works feature without stats', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'normal';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#000',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works feature with stats', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'normal';
+      mockRegionLayer.feature.properties.stats = mockRegionStats;
+      mockRegionLayer.feature.properties.fillColor = '#56d132';
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#56d132',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works for hover state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'hover';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 2,
+        color: '#fff',
+        fillColor: '#000',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works for unfocused state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'unfocused';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#dedede',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works for unfocused-hover state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'unfocused-hover';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 2,
+        color: '#D9A981',
+        fillColor: '#F7CCA9',
+        fillOpacity: 0.75,
+      });
+    });
+  });
+
+  describe('#setMapElementFillColor', () => {
+
+    it('should exists', () => {
+      expect(component.setMapElementFillColor).toBeTruthy();
+      expect(component.setMapElementFillColor).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      let element = {
+        properties: {
+          stats: <LocalityStatistics>{
+            schoolInternetAvailabilityPercentage: 70,
+            schoolInternetAvailabilityPredicitionPercentage: 50
+          },
+          fillColor: '',
+          fillColorIndex: 0
+        }
+      };
+
+      const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Connectivity');
+      if (viewOption) {
+        component.filterForm.controls['selectedViewOption'].setValue(viewOption);
+      }
+
+      const percentage = component.getPercentageValueForFillColor(element.properties.stats);
+      const indexAtPercentage = component.getRangeColorIndex(percentage);
+
+      component.setMapElementFillColor(element);
+
+      expect(element.properties.fillColor).toEqual(component.getSelectedViewOption.rangeColors[indexAtPercentage].backgroundColor);
+      expect(element.properties.fillColorIndex).toEqual(indexAtPercentage);
+    });
+  });
+
+  describe('#zoomToLayerBounds', () => {
+
+    it('should exists', () => {
+      expect(component.zoomToLayerBounds).toBeTruthy();
+      expect(component.zoomToLayerBounds).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component.map, 'fitBounds');
+
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
+
+      component.zoomToLayerBounds(bounds);
+
+      expect(component.map.fitBounds).toHaveBeenCalledWith(bounds);
     });
   });
 

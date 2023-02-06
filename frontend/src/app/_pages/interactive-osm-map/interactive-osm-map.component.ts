@@ -929,7 +929,6 @@ export class InteractiveOsmMapComponent implements OnInit {
    * @param {any} feature
    */
   setMapDataStyles(feature: any) {
-    const elementType = feature.properties['adm_level'];
     let strokeWidth = 0.5;
     let strokeColor = '#fff';
 
