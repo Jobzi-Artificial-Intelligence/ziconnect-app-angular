@@ -1,11 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AngularMaterialModule } from 'src/app/material.module';
-import { AdministrativeLevel, LocalityStatistics, Region, State } from 'src/app/_models';
+import { AdministrativeLevel, City, LocalityMapAutocomplete, LocalityStatistics, Region, State } from 'src/app/_models';
 import { of, throwError } from 'rxjs';
 
 import * as Leaflet from 'leaflet';
@@ -16,6 +16,8 @@ import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
 import { regionStats } from 'src/test/item-stats-mock';
 import { geoJsonCities, geoJsonRegions, geoJsonStates } from 'src/test/geo-json-mock';
 import { IMapLocalityLayer } from 'src/app/_interfaces';
+import { localitiesMapAutocompleteResponseFromServer } from 'src/test/locality-map-autocomplete-mock';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 describe('InteractiveOsmMapComponent', () => {
   let component: InteractiveOsmMapComponent;
@@ -700,6 +702,165 @@ describe('InteractiveOsmMapComponent', () => {
 
       expect(component.map.fitBounds).toHaveBeenCalledWith(bounds);
     });
+  });
+
+  //#endregion
+  ////////////////////////////////////////////
+
+  //#region SEARCH LOCATION AUTOCOMPLETE
+  ////////////////////////////////////////////
+  describe('#getSearchLocationAutocompleteText', () => {
+
+    it('should exists', () => {
+      expect(component.getSearchLocationAutocompleteText).toBeTruthy();
+      expect(component.getSearchLocationAutocompleteText).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      let result;
+      let locationAutocomplete = <LocalityMapAutocomplete>{
+        name: 'Name01'
+      };
+
+      result = component.getSearchLocationAutocompleteText(locationAutocomplete);
+      expect(result).toEqual(locationAutocomplete.name);
+
+      locationAutocomplete = <LocalityMapAutocomplete>{};
+      result = component.getSearchLocationAutocompleteText(locationAutocomplete);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('#initSearchLocationFilteredOptions', () => {
+
+    it('should exists', () => {
+      expect(component.initSearchLocationFilteredOptions).toBeTruthy();
+      expect(component.initSearchLocationFilteredOptions).toEqual(jasmine.any(Function));
+    });
+
+    it('should works filter length > 3', fakeAsync(() => {
+      spyOn(component, 'loadAutocompleteSearchOptions');
+
+      component.initSearchLocationFilteredOptions();
+
+      component.filterForm.controls.searchFilter.setValue('regio', { emitEvent: true });
+
+      tick(2000);
+
+      expect(component.loadAutocompleteSearchOptions).toHaveBeenCalled();
+    }));
+
+    it('should works filter length < 3', fakeAsync(() => {
+      spyOn(component, 'loadAutocompleteSearchOptions');
+
+      component.initSearchLocationFilteredOptions();
+
+      component.filterForm.controls.searchFilter.setValue('re', { emitEvent: true });
+
+      tick(2000);
+
+      expect(component.loadingAutocomplete).toEqual(false);
+    }));
+  });
+
+  describe('#loadAutocompleteSearchOptions', () => {
+    it('should exists', () => {
+      expect(component.loadAutocompleteSearchOptions).toBeTruthy();
+      expect(component.loadAutocompleteSearchOptions).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when server fail', () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getLocalityAutocompleteByCountry').and.returnValue(throwError({ message: 'http error' }));
+
+      component.loadingAutocomplete = true;
+
+      component.loadAutocompleteSearchOptions('region');
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong with autocomplete api calls: http error');
+      expect(component.loadingAutocomplete).toEqual(false);
+    });
+
+    it('should works when server success', () => {
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getLocalityAutocompleteByCountry').and.returnValue(of(localitiesMapAutocompleteResponseFromServer));
+
+      component.loadingAutocomplete = true;
+
+      component.loadAutocompleteSearchOptions('region');
+
+      //@ts-ignore
+      expect(component.searchLocationFilteredOptions).toEqual(jasmine.any(Array));
+      expect(component.searchLocationFilteredOptions.length).toEqual(localitiesMapAutocompleteResponseFromServer.length);
+      expect(component.loadingAutocomplete).toEqual(false);
+    });
+  });
+
+  describe('#onSelectLocationSearchOption', () => {
+
+    it('should exists', () => {
+      expect(component.onSelectLocationSearchOption).toBeTruthy();
+      expect(component.onSelectLocationSearchOption).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', async () => {
+      // Creating spy
+      spyOn(component, 'onSelectRegion');
+      spyOn(component, 'onSelectState');
+      spyOn(component, 'onSelectCity');
+
+      // Initializing variables and setting properties values for test scenario
+      const cityFromGeoJson = mockGeoJsonCities.features[0].properties;
+      const region = new Region(cityFromGeoJson.region_code, cityFromGeoJson.region_name);
+      const state = new State(cityFromGeoJson.state_code, cityFromGeoJson.state_name, region);
+      const city = new City(cityFromGeoJson.municipality_code, cityFromGeoJson.municipality_name, state);
+
+      let event = {
+        option: {
+          value: {}
+        }
+      } as MatAutocompleteSelectedEvent;
+
+      // Test result expectations
+      // Any selected location type
+      await component.onSelectLocationSearchOption(event);
+      expect(component.onSelectRegion).not.toHaveBeenCalled();
+      expect(component.onSelectState).not.toHaveBeenCalled();
+      expect(component.onSelectCity).not.toHaveBeenCalled();
+
+      // Selected option type city
+      event.option.value = <LocalityMapAutocomplete>{
+        administrativeLevel: 'municipality',
+        municipality: city
+      }
+      await component.onSelectLocationSearchOption(event);
+      expect(component.onSelectRegion).toHaveBeenCalledWith(city.state.region, false);
+      expect(component.onSelectState).toHaveBeenCalledWith(city.state, false);
+      expect(component.onSelectCity).toHaveBeenCalledWith(city);
+
+      // Selected option type state
+      event.option.value = <LocalityMapAutocomplete>{
+        administrativeLevel: 'state',
+        state: state
+      }
+      await component.onSelectLocationSearchOption(event);
+      expect(component.onSelectRegion).toHaveBeenCalledWith(state.region, false);
+      expect(component.onSelectState).toHaveBeenCalledWith(state);
+
+      // Selected option type region
+      event.option.value = <LocalityMapAutocomplete>{
+        administrativeLevel: 'region',
+        region: region
+      }
+      await component.onSelectLocationSearchOption(event);
+      expect(component.onSelectRegion).toHaveBeenCalledWith(region);
+    })
   });
 
   //#endregion

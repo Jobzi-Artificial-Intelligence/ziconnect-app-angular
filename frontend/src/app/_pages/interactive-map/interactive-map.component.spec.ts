@@ -1653,7 +1653,7 @@ describe('Component: InteractiveMap', () => {
     });
   });
 
-  describe('#loadAutocompleteSearchOptions', () => {
+  describe('#onSelectLocationSearchOption', () => {
 
     it('should exists', () => {
       expect(component.onSelectLocationSearchOption).toBeTruthy();
