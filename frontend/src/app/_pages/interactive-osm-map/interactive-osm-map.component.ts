@@ -722,7 +722,7 @@ export class InteractiveOsmMapComponent implements OnInit {
   //#endregion
   ////////////////////////////////////////////
 
-  //#region MAP STATS PANEL
+  //#region MAP STATISTICS PANEL
   ////////////////////////////////////////////
   /**
   * Closes stats panel
@@ -1108,11 +1108,6 @@ export class InteractiveOsmMapComponent implements OnInit {
         break;
     }
   }
-  //#endregion
-  ////////////////////////////////////////////
-
-  //#region STATISTICS PANEL FUNCTIONS
-  ////////////////////////////////////////////
   //#endregion
   ////////////////////////////////////////////
 

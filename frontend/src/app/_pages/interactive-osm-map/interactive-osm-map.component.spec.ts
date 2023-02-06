@@ -18,6 +18,7 @@ import { geoJsonCities, geoJsonRegions, geoJsonStates } from 'src/test/geo-json-
 import { IMapLocalityLayer } from 'src/app/_interfaces';
 import { localitiesMapAutocompleteResponseFromServer } from 'src/test/locality-map-autocomplete-mock';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from 'src/test/locality-statistics-mock';
 
 describe('InteractiveOsmMapComponent', () => {
   let component: InteractiveOsmMapComponent;
@@ -863,6 +864,183 @@ describe('InteractiveOsmMapComponent', () => {
     })
   });
 
+  //#endregion
+  ////////////////////////////////////////////
+
+  //#region UTIL FUNCTIONS
+  ////////////////////////////////////////////
+  describe('#getConnectivityPredictionBarColor', () => {
+
+    it('should exists', () => {
+      expect(component.getConnectivityPredictionBarColor).toBeTruthy();
+      expect(component.getConnectivityPredictionBarColor).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const valueYes = 'Yes';
+      const valueNo = 'No';
+      const valueNA = 'NA';
+
+      expect(component.getConnectivityPredictionBarColor(valueYes)).toEqual(component.schoolsPredictionColorScheme[valueYes]);
+      expect(component.getConnectivityPredictionBarColor(valueNo)).toEqual(component.schoolsPredictionColorScheme[valueNo]);
+      expect(component.getConnectivityPredictionBarColor(valueNA)).toEqual(component.schoolsPredictionColorScheme[valueNA]);
+    });
+  });
+
+  describe('#getLocalityStatisticsByMunicipalityCode', () => {
+
+    it('should exists', () => {
+      expect(component.getLocalityStatisticsByMunicipalityCode).toBeTruthy();
+      expect(component.getLocalityStatisticsByMunicipalityCode).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.localityStatistics = localityStatisticsMunicipalities;
+
+      const localityStatistics = localityStatisticsMunicipalities[0];
+
+      const result = component.getLocalityStatisticsByMunicipalityCode(localityStatistics.localityMap.municipalityCode.toString());
+
+      expect(result).toEqual(localityStatistics);
+    })
+  });
+
+  describe('#getLocalityStatisticsByRegionCode', () => {
+
+    it('should exists', () => {
+      expect(component.getLocalityStatisticsByRegionCode).toBeTruthy();
+      expect(component.getLocalityStatisticsByRegionCode).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.localityStatistics = localityStatisticsRegions;
+
+      const localityStatistics = localityStatisticsRegions[0];
+
+      const result = component.getLocalityStatisticsByRegionCode(localityStatistics.localityMap.regionCode.toString());
+
+      expect(result).toEqual(localityStatistics);
+    })
+  });
+
+  describe('#getLocalityStatisticsByStateCode', () => {
+
+    it('should exists', () => {
+      expect(component.getLocalityStatisticsByStateCode).toBeTruthy();
+      expect(component.getLocalityStatisticsByStateCode).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.localityStatistics = localityStatisticsStates;
+
+      const localityStatistics = localityStatisticsStates[0];
+
+      const result = component.getLocalityStatisticsByStateCode(localityStatistics.localityMap.stateCode.toString());
+
+      expect(result).toEqual(localityStatistics);
+    })
+  });
+
+  describe('#getPercentageValueForFillColor', () => {
+
+    it('should exists', () => {
+      expect(component.getPercentageValueForFillColor).toBeTruthy();
+      expect(component.getPercentageValueForFillColor).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for connectivity view', () => {
+      const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Connectivity');
+      if (viewOption) {
+        component.filterForm.controls['selectedViewOption'].setValue(viewOption);
+        const stats = <LocalityStatistics>{
+          schoolInternetAvailabilityPredicitionPercentage: 50,
+          schoolInternetAvailabilityCount: 80
+        };
+
+        const result = component.getPercentageValueForFillColor(stats)
+
+        expect(result).toEqual(stats.schoolInternetAvailabilityPercentage);
+      }
+    });
+
+    it('should works for connectivity prediction view', () => {
+      const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Prediction');
+      if (viewOption) {
+        component.filterForm.controls['selectedViewOption'].setValue(viewOption);
+        const stats = <LocalityStatistics>{
+          schoolInternetAvailabilityPredicitionPercentage: 50,
+          schoolInternetAvailabilityPercentage: 80
+        };
+
+        const result = component.getPercentageValueForFillColor(stats)
+
+        expect(result).toEqual(stats.schoolInternetAvailabilityPredicitionPercentage);
+      }
+    });
+  });
+
+  describe('#getRangeColorIndex', () => {
+
+    it('should exists', () => {
+      expect(component.getRangeColorIndex).toBeTruthy();
+      expect(component.getRangeColorIndex).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const rangeColors = component.getSelectedViewOption.rangeColors;
+
+      // Testing for all range colors values
+      rangeColors.forEach((color, index) => {
+        expect(component.getRangeColorIndex(color.min)).toEqual(index);
+        expect(component.getRangeColorIndex(color.max)).toEqual(index);
+      });
+    })
+  });
+
+  describe('#getRangeColorTooltipMessage', () => {
+
+    it('should exists', () => {
+      expect(component.getRangeColorTooltipMessage).toBeTruthy();
+      expect(component.getRangeColorTooltipMessage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for connectivity view', () => {
+      const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Connectivity');
+      if (viewOption) {
+        component.filterForm.controls['selectedViewOption'].setValue(viewOption);
+        const tooltipMessage = component.getRangeColorTooltipMessage(0);
+
+        expect(tooltipMessage).toEqual(`Between ${viewOption.rangeColors[0].min} and ${viewOption.rangeColors[0].max} percent of schools connected`);
+      }
+    });
+
+    it('should works for connectivity prediction view', () => {
+      const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Prediction');
+      if (viewOption) {
+        component.filterForm.controls['selectedViewOption'].setValue(viewOption);
+
+        const tooltipMessage = component.getRangeColorTooltipMessage(0);
+
+        expect(tooltipMessage).toEqual(`Between ${viewOption.rangeColors[0].min} and ${viewOption.rangeColors[0].max} percent of connectivity prediction`);
+      }
+    });
+  });
+
+  describe('#toggleFilterSettingsExpanded', () => {
+
+    it('should exists', () => {
+      expect(component.toggleFilterSettingsExpanded).toBeTruthy();
+      expect(component.toggleFilterSettingsExpanded).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.filterSettingsExpanded = false;
+
+      component.toggleFilterSettingsExpanded(true);
+
+      expect(component.filterSettingsExpanded).toBeTrue();
+    })
+  });
   //#endregion
   ////////////////////////////////////////////
 });
