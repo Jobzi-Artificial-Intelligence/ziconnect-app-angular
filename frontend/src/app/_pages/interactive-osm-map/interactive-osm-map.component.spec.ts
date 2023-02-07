@@ -20,6 +20,8 @@ import { localitiesMapAutocompleteResponseFromServer } from 'src/test/locality-m
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from 'src/test/locality-statistics-mock';
 import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from 'src/test/locality-map-mock';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 describe('InteractiveOsmMapComponent', () => {
   let component: InteractiveOsmMapComponent;
@@ -53,6 +55,8 @@ describe('InteractiveOsmMapComponent', () => {
       imports: [
         AngularMaterialModule,
         BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
         FormsModule,
         HttpClientTestingModule,
         LeafletModule,
@@ -290,6 +294,239 @@ describe('InteractiveOsmMapComponent', () => {
     });
   });
 
+  //#endregion
+  ////////////////////////////////////////////
+
+  //#region MAP LOAD FUNCTIONS
+  ////////////////////////////////////////////
+  describe('#loadCitiesGeoJson', () => {
+
+    it('should exists', () => {
+      expect(component.loadCitiesGeoJson).toBeTruthy();
+      expect(component.loadCitiesGeoJson).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getCitiesByState').and.throwError('Error message');
+      await component.loadCitiesGeoJson('', '', '').catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(throwError({ message: 'http error' }));
+      await component.loadCitiesGeoJson('', '', '').catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong loading cities json: http error');
+    });
+
+    it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
+      spyOn(component, 'getLocalityStatisticsByMunicipalityCode').and.returnValue(localityStatisticsMunicipalities[0]);
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityMap));
+      await component.loadCitiesGeoJson('', '', '');
+
+      expect(component.getLocalityStatisticsByMunicipalityCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
+    });
+  });
+
+  describe('#loadLocalityStatistics', () => {
+
+    it('should exists', () => {
+      expect(component.loadLocalityStatistics).toBeTruthy();
+      expect(component.loadLocalityStatistics).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityStatisticsService, 'getStatisticsOfAdministrativeLevelLocalities').and.throwError('Error message');
+      await component.loadLocalityStatistics(AdministrativeLevel.Region).catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityStatisticsService, 'getStatisticsOfAdministrativeLevelLocalities').and.returnValue(throwError({ message: 'http error' }));
+      await component.loadLocalityStatistics(AdministrativeLevel.Region).catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong loading locality statistics: http error');
+    });
+
+    it('should works for regions', async () => {
+      component.mapFilter.selectedCountry = 'BR';
+
+      //@ts-ignore
+      spyOn(component.localityStatisticsService, 'getStatisticsOfAdministrativeLevelLocalities').and.returnValue(of(localityStatisticsRegions));
+      await component.loadLocalityStatistics(AdministrativeLevel.Region);
+
+      //@ts-ignore
+      expect(component.localityStatisticsService.getStatisticsOfAdministrativeLevelLocalities).toHaveBeenCalledWith(AdministrativeLevel.Region, 'BR', '', '');
+      expect(component.localityStatistics.length).toEqual(localityStatisticsRegions.length);
+    });
+
+    it('should works for states', async () => {
+      component.mapFilter.selectedCountry = 'BR';
+      component.mapFilter.selectedRegion = mockRegion;
+
+      //@ts-ignore
+      spyOn(component.localityStatisticsService, 'getStatisticsOfAdministrativeLevelLocalities').and.returnValue(of(localityStatisticsStates));
+      await component.loadLocalityStatistics(AdministrativeLevel.State);
+
+      //@ts-ignore
+      expect(component.localityStatisticsService.getStatisticsOfAdministrativeLevelLocalities).toHaveBeenCalledWith(AdministrativeLevel.State, 'BR', mockRegion.code, '');
+      expect(component.localityStatistics.length).toEqual(localityStatisticsStates.length);
+    });
+
+    it('should works for municipalities', async () => {
+      component.mapFilter.selectedCountry = 'BR';
+      component.mapFilter.selectedRegion = mockRegion;
+      component.mapFilter.selectedState = mockState;
+
+      //@ts-ignore
+      spyOn(component.localityStatisticsService, 'getStatisticsOfAdministrativeLevelLocalities').and.returnValue(of(localityStatisticsMunicipalities));
+      await component.loadLocalityStatistics(AdministrativeLevel.Municipality);
+
+      //@ts-ignore
+      expect(component.localityStatisticsService.getStatisticsOfAdministrativeLevelLocalities).toHaveBeenCalledWith(AdministrativeLevel.Municipality, 'BR', mockRegion.code, mockState.code);
+      expect(component.localityStatistics.length).toEqual(localityStatisticsMunicipalities.length);
+    });
+  });
+
+  describe('#loadRegionsGeoJson', () => {
+
+    it('should exists', () => {
+      expect(component.loadRegionsGeoJson).toBeTruthy();
+      expect(component.loadRegionsGeoJson).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.throwError('Error message');
+      await component.loadRegionsGeoJson().catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.returnValue(throwError({ message: 'http error' }));
+      await component.loadRegionsGeoJson().catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong loading regions localities: http error');
+    });
+
+    it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
+      spyOn(component, 'getLocalityStatisticsByRegionCode').and.returnValue(localityStatisticsRegions[0]);
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.returnValue(of(mockRegionsLocalityMap));
+      await component.loadRegionsGeoJson();
+
+      expect(component.getLocalityStatisticsByRegionCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
+    });
+  });
+
+  describe('#loadStatesGeoJson', () => {
+
+    it('should exists', () => {
+      expect(component.loadStatesGeoJson).toBeTruthy();
+      expect(component.loadStatesGeoJson).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service throw error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesByRegion').and.throwError('Error message');
+      await component.loadStatesGeoJson('', '').catch((error) => {
+        expect(error.toString()).toEqual('Error: Error message');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalled();
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component.alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(throwError({ message: 'http error' }));
+      await component.loadStatesGeoJson('', '').catch((error) => {
+        expect(error).toBeTruthy();
+        expect(error.message).toEqual('http error');
+      });
+
+      //@ts-ignore
+      expect(component.alertService.showError).toHaveBeenCalledWith('Something went wrong loading states json: http error');
+    });
+
+    it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
+      spyOn(component, 'getLocalityStatisticsByStateCode').and.returnValue(localityStatisticsStates[0]);
+
+      //@ts-ignore
+      spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityMap));
+      await component.loadStatesGeoJson('', '');
+
+      expect(component.getLocalityStatisticsByStateCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
+    });
+  });
   //#endregion
   ////////////////////////////////////////////
 
