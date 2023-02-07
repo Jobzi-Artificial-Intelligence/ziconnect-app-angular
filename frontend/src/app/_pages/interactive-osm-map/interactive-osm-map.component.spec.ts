@@ -19,6 +19,7 @@ import { IMapLocalityLayer } from 'src/app/_interfaces';
 import { localitiesMapAutocompleteResponseFromServer } from 'src/test/locality-map-autocomplete-mock';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from 'src/test/locality-statistics-mock';
+import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from 'src/test/locality-map-mock';
 
 describe('InteractiveOsmMapComponent', () => {
   let component: InteractiveOsmMapComponent;
@@ -27,6 +28,9 @@ describe('InteractiveOsmMapComponent', () => {
   const mockRegion = new Region('code01', 'Name01');
   const mockState = new State('code01', 'Name01', mockRegion);
 
+  let mockCitiesLocalityMap = [] as any;
+  let mockRegionsLocalityMap = [] as any;
+  let mockStatesLocalityMap = [] as any;
   let mockMunicipalityLayers = municipalityLayers;
   let mockStateLayers = stateLayers;
   let mockGeoJsonCities = {} as any;
@@ -35,6 +39,13 @@ describe('InteractiveOsmMapComponent', () => {
   let mockRegionLayers = regionLayers;
   let mockRegionLayer = mockStateLayers[Object.keys(mockRegionLayers)[0]];
   let mockRegionStats: LocalityStatistics;
+
+  const mockLayerDefaultStyles = {
+    weight: 0.5,
+    color: '#fff',
+    fillColor: '#000',
+    fillOpacity: 0.75,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,6 +62,9 @@ describe('InteractiveOsmMapComponent', () => {
     }).compileComponents();
 
     // Clone object
+    mockCitiesLocalityMap = JSON.parse(JSON.stringify(citiesLocalityMapList));
+    mockRegionsLocalityMap = JSON.parse(JSON.stringify(regionsLocalityMapList));
+    mockStatesLocalityMap = JSON.parse(JSON.stringify(statesLocalityMapList));
     mockGeoJsonCities = JSON.parse(JSON.stringify(geoJsonCities));
     mockGeoJsonRegions = JSON.parse(JSON.stringify(geoJsonRegions));
     mockGeoJsonStates = JSON.parse(JSON.stringify(geoJsonStates));
@@ -276,6 +290,231 @@ describe('InteractiveOsmMapComponent', () => {
     });
   });
 
+  //#endregion
+  ////////////////////////////////////////////
+
+  //#region MAP MOUSE FUNCTIONS
+  ////////////////////////////////////////////
+  describe('#onMapMouseOverLayer', () => {
+
+    it('should exists', () => {
+      expect(component.onMapMouseOverLayer).toBeTruthy();
+      expect(component.onMapMouseOverLayer).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOverLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('unfocused-hover');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+
+    it('should works for not unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'normal'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOverLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('hover');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+  });
+
+  describe('#onMapMouseOutLayer', () => {
+
+    it('should exists', () => {
+      expect(component.onMapMouseOutLayer).toBeTruthy();
+      expect(component.onMapMouseOutLayer).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for unfocused-hover state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused-hover'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOutLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('unfocused');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+
+    it('should works for unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOutLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('unfocused');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+
+    it('should works for not unfocused or unfocused-hover state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'hover'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOutLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('normal');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+  });
+
+  describe('#onMapRegionClick', () => {
+
+    it('should exists', () => {
+      expect(component.onMapRegionClick).toBeTruthy();
+      expect(component.onMapRegionClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'zoomToLayerBounds');
+      spyOn(component, 'onSelectRegion');
+
+      component.localityMapRegions = mockRegionsLocalityMap;
+
+      const localityMapRegion = component.localityMapRegions[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              code: localityMapRegion.regionCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
+        }
+      };
+
+      component.onMapRegionClick(event);
+
+      if (localityMapRegion.region) {
+        expect(component.onSelectRegion).toHaveBeenCalledWith(localityMapRegion.region);
+      }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
+    });
+  });
+
+  describe('#onMapStateClick', () => {
+
+    it('should exists', () => {
+      expect(component.onMapStateClick).toBeTruthy();
+      expect(component.onMapStateClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'zoomToLayerBounds');
+      spyOn(component, 'onSelectState');
+
+      component.localityMapStates = mockStatesLocalityMap;
+
+      const localityMapState = component.localityMapStates[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              code: localityMapState.stateCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
+        }
+      };
+
+      component.onMapStateClick(event);
+
+      if (localityMapState.state) {
+        expect(component.onSelectState).toHaveBeenCalledWith(localityMapState.state);
+      }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
+    });
+  });
+
+  describe('#onMapMunicipalityClick', () => {
+
+    it('should exists', () => {
+      expect(component.onMapMunicipalityClick).toBeTruthy();
+      expect(component.onMapMunicipalityClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'zoomToLayerBounds');
+      spyOn(component, 'onSelectCity');
+
+      component.localityMapMunicipalities = mockCitiesLocalityMap;
+
+      const localityMapMunicipality = component.localityMapMunicipalities[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              code: localityMapMunicipality.municipalityCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
+        }
+      };
+
+      component.onMapMunicipalityClick(event);
+
+      if (localityMapMunicipality.municipality) {
+        expect(component.onSelectCity).toHaveBeenCalledWith(localityMapMunicipality.municipality);
+      }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
+    });
+  });
   //#endregion
   ////////////////////////////////////////////
 
