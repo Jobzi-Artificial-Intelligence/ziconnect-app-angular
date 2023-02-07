@@ -947,6 +947,125 @@ describe('InteractiveOsmMapComponent', () => {
   //#endregion
   ////////////////////////////////////////////
 
+  //#region MAT-SELECT FUNCTIONS
+  ////////////////////////////////////////////
+  describe('#matSelectCompareCodes', () => {
+
+    it('should exists', () => {
+      expect(component.matSelectCompareCodes).toBeTruthy();
+      expect(component.matSelectCompareCodes).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      let result = component.matSelectCompareCodes({}, {});
+      expect(result).toEqual(true);
+
+      result = component.matSelectCompareCodes({ code: '1' }, { code: '1' });
+      expect(result).toEqual(true);
+
+      result = component.matSelectCompareCodes({ code: '1' }, { code: '2' });
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('#onRegionSelectionChange', () => {
+
+    it('should exists', () => {
+      expect(component.onRegionSelectionChange).toBeTruthy();
+      expect(component.onRegionSelectionChange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works with selected region', () => {
+      spyOn(component, 'onSelectRegion');
+      spyOn(component, 'toggleFilterSettingsExpanded');
+
+      const region = new Region('1', 'Region 1');
+      component.mapFilter.selectedRegion = region;
+
+      component.onRegionSelectionChange();
+
+      expect(component.onSelectRegion).toHaveBeenCalledWith(component.mapFilter.selectedRegion);
+      expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
+    });
+
+    it('should works without selected region', () => {
+      spyOn(component, 'loadRegionsGeoJson');
+      spyOn(component, 'removeAllLocalityLayersFromMap');
+      spyOn(component, 'toggleFilterSettingsExpanded');
+
+      component.mapFilter.selectedRegion = undefined;
+
+      component.onRegionSelectionChange();
+
+      expect(component.loadRegionsGeoJson).toHaveBeenCalledWith();
+      expect(component.removeAllLocalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('#onStateSelectionChange', () => {
+
+    it('should exists', () => {
+      expect(component.onStateSelectionChange).toBeTruthy();
+      expect(component.onStateSelectionChange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works with selected state', async () => {
+      spyOn(component, 'onSelectRegion');
+      spyOn(component, 'onSelectState');
+      spyOn(component, 'toggleFilterSettingsExpanded');
+
+      const region = new Region('1', 'Region 1');
+      const state = new State('1', 'State 1', region);
+      component.mapFilter.selectedState = state;
+
+      await component.onStateSelectionChange();
+
+      expect(component.onSelectRegion).toHaveBeenCalledWith(component.mapFilter.selectedState.region);
+      expect(component.onSelectState).toHaveBeenCalledWith(component.mapFilter.selectedState);
+      expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
+    });
+
+    it('should works without selected state', async () => {
+      spyOn(component, 'loadRegionsGeoJson');
+      spyOn(component, 'removeAllLocalityLayersFromMap');
+      spyOn(component, 'toggleFilterSettingsExpanded');
+
+      component.mapFilter.selectedState = undefined;
+
+      await component.onStateSelectionChange();
+
+      expect(component.loadRegionsGeoJson).toHaveBeenCalledWith();
+      expect(component.removeAllLocalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('#updateLayerFillColorByViewOption', () => {
+
+    it('should exists', () => {
+      expect(component.updateLayerFillColorByViewOption).toBeTruthy();
+      expect(component.updateLayerFillColorByViewOption).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'getRangeColorIndex').and.returnValue(0);
+      spyOn(component, 'setMapDataStyles');
+      spyOn(mockRegionLayer.layer, 'setStyle');
+
+      mockRegionLayer.feature.properties.stats = mockRegionStats;
+
+      component.updateLayerFillColorByViewOption(mockRegionLayer.feature, mockRegionLayer.layer);
+
+      expect(mockRegionLayer.feature.properties.fillColor).toEqual(component.getSelectedViewOption.rangeColors[0].backgroundColor);
+      expect(mockRegionLayer.feature.properties.fillColorIndex).toEqual(0);
+      expect(mockRegionLayer.layer.setStyle).toHaveBeenCalled();
+      expect(component.setMapDataStyles).toHaveBeenCalledWith(mockRegionLayer.feature);
+    });
+  });
+  //#endregion
+  ////////////////////////////////////////////
+
   //#region SEARCH LOCATION AUTOCOMPLETE
   ////////////////////////////////////////////
   describe('#getSearchLocationAutocompleteText', () => {
