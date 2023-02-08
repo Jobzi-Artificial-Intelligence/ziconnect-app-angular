@@ -16,7 +16,7 @@ export class LocalityLayerPopupService {
    * Builds the referenced component so it can be injected into the 
    * leaflet map as popup.
    */
-  public compilePopup(content: IMapInfoWindowContent): any {
+  public compilePopup(content: IMapInfoWindowContent): HTMLElement {
     // Create element
     const popup = document.createElement('app-locality-layer-popup');
 
