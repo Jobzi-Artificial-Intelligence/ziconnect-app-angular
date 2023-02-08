@@ -30,9 +30,9 @@ export const geoJsonCities = {
           [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
           [100.0, 1.0], [100.0, 0.0]]
         ]
-
       },
       "properties": {
+        "code": "1100015",
         "adm_level": "municipality",
         "region_code": "1",
         "region_name": "Norte",
@@ -54,9 +54,9 @@ export const geoJsonCities = {
           [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
           [100.0, 1.0], [100.0, 0.0]]
         ]
-
       },
       "properties": {
+        "code": "1100098",
         "adm_level": "municipality",
         "region_code": "1",
         "region_name": "Norte",
@@ -87,6 +87,7 @@ export const geoJsonRegions = {
 
       },
       "properties": {
+        "code": "1",
         "adm_level": "region",
         "region_code": "1",
         "region_name": "Norte",
@@ -106,6 +107,7 @@ export const geoJsonRegions = {
 
       },
       "properties": {
+        "code": "2",
         "adm_level": "region",
         "region_code": "2",
         "region_name": "Nordeste",
@@ -131,6 +133,7 @@ export const geoJsonStates = {
 
       },
       "properties": {
+        "code": "11",
         "adm_level": "state",
         "region_code": "1",
         "region_name": "Norte",
@@ -153,6 +156,7 @@ export const geoJsonStates = {
 
       },
       "properties": {
+        "code": "12",
         "adm_level": "state",
         "region_code": "1",
         "region_name": "Norte",

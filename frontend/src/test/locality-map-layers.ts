@@ -7,27 +7,31 @@ let mapRegionLayers: IMapLocalityLayer = {};
 let mapStateLayers: IMapLocalityLayer = {};
 let mapMunicipalityLayers: IMapLocalityLayer = {};
 
-Leaflet.geoJSON(geoJsonRegions as GeoJsonObject, {
+let cloneMunicipalitiesGeoJson = JSON.parse(JSON.stringify(geoJsonCities));
+let cloneRegionsGeoJson = JSON.parse(JSON.stringify(geoJsonRegions));
+let cloneStatesGeoJson = JSON.parse(JSON.stringify(geoJsonStates));
+
+Leaflet.geoJSON(cloneRegionsGeoJson as GeoJsonObject, {
   onEachFeature: (feature, layer) => {
-    mapRegionLayers[feature.properties.code] = {
+    mapRegionLayers[feature.properties.region_code] = {
       feature: feature,
       layer: layer
     } as ILocalityLayer;
   }
 });
 
-Leaflet.geoJSON(geoJsonStates as GeoJsonObject, {
+Leaflet.geoJSON(cloneStatesGeoJson as GeoJsonObject, {
   onEachFeature: (feature, layer) => {
-    mapStateLayers[feature.properties.code] = {
+    mapStateLayers[feature.properties.state_code] = {
       feature: feature,
       layer: layer
     } as ILocalityLayer;
   }
 });
 
-Leaflet.geoJSON(geoJsonCities as GeoJsonObject, {
+Leaflet.geoJSON(cloneMunicipalitiesGeoJson as GeoJsonObject, {
   onEachFeature: (feature, layer) => {
-    mapMunicipalityLayers[feature.properties.code] = {
+    mapMunicipalityLayers[feature.properties.municipality_code] = {
       feature: feature,
       layer: layer
     } as ILocalityLayer;
