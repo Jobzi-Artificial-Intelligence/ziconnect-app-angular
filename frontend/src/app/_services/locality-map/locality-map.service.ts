@@ -151,7 +151,7 @@ export class LocalityMapService {
    * @returns Region[]
    */
   getRegionsOfCountry(countryId: string): Observable<Region[]> {
-    const query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}`;
+    const query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}&order=region_name`;
 
     return this.http
       .get<Region[]>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {
@@ -170,7 +170,7 @@ export class LocalityMapService {
    * @returns State[]
    */
   getStatesOfCountry(countryId: string): Observable<State[]> {
-    const query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}`;
+    const query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}&order=state_name`;
 
     return this.http
       .get<State[]>(`${environment.postgrestHost}${this._postgrestLocalityMapPath}?${query}`, {

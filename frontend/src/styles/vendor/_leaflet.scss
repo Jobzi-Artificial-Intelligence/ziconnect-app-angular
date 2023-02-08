@@ -1,0 +1,33 @@
+.leaflet-container {
+  a {
+    &.leaflet-popup-close-button {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      right: 4px;
+      top: 4px;
+    }
+  }
+}
+
+.leaflet-pane {
+  svg {
+    path {
+      &:focus {
+        outline: 0px solid transparent;
+      }
+    }
+  }
+}
+
+.leaflet-popup-content {
+  margin: 3px;
+  min-width: 400px;
+}
+
+.leaflet-tooltip {
+  @include border-radius(8px);
+  border: 0;
+  min-width: 420px;
+  padding: 3px;
+}

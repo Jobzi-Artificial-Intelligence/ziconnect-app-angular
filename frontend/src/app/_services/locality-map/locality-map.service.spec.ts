@@ -335,7 +335,7 @@ describe('LocalityMapService', () => {
 
   describe('#getRegionsOfCountry', () => {
     beforeEach(() => {
-      query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}`;
+      query = `select=region_code,region_name&adm_level=eq.region&country_code=eq.${countryId}&order=region_name`;
     });
 
     it('should exists', () => {
@@ -365,7 +365,7 @@ describe('LocalityMapService', () => {
 
   describe('#getStatesOfCountry', () => {
     beforeEach(() => {
-      query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}`;
+      query = `select=region_code,region_name,state_code,state_name&adm_level=eq.state&country_code=eq.${countryId}&order=state_name`;
     });
 
     it('should exists', () => {

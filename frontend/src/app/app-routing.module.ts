@@ -6,6 +6,7 @@ import {
   DataSourceReferenceComponent,
   HomeComponent,
   InteractiveMapComponent,
+  InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
@@ -25,8 +26,22 @@ const routes: Routes = [{
     }
   }
 }, {
-  path: 'interactive-map',
+  path: 'interactive-google-map',
   component: InteractiveMapComponent,
+  data: {
+    seo: {
+      title: 'Jobzi | Connectivity Map',
+      metaTags: [
+        { name: 'description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' },
+        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'Jobzi | Connectivity Map' },
+        { property: 'og:description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' }
+      ]
+    }
+  }
+}, {
+  path: 'interactive-map',
+  component: InteractiveOsmMapComponent,
   data: {
     seo: {
       title: 'Jobzi | Connectivity Map',

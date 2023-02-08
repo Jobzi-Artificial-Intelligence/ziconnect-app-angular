@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from "@angular/common";
+import { APP_BASE_HREF, TitleCasePipe } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ElementRef } from "@angular/core";
 import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
@@ -1653,7 +1653,7 @@ describe('Component: InteractiveMap', () => {
     });
   });
 
-  describe('#loadAutocompleteSearchOptions', () => {
+  describe('#onSelectLocationSearchOption', () => {
 
     it('should exists', () => {
       expect(component.onSelectLocationSearchOption).toBeTruthy();
