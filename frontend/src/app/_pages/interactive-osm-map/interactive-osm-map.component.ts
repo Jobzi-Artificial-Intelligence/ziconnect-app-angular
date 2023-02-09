@@ -39,10 +39,9 @@ export class InteractiveOsmMapComponent implements OnInit {
   map!: Leaflet.Map;
   mapOptions = {
     layers: [
-      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      })
+      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
     ],
+    attributionControl: false,
     keyboard: false,
     zoom: 5,
     zoomControl: false,
@@ -134,8 +133,17 @@ export class InteractiveOsmMapComponent implements OnInit {
   async onMapReady($event: Leaflet.Map) {
     this.map = $event;
 
+    // Add attribution control
+    const attribution = Leaflet.control.attribution({
+      position: 'bottomleft'
+    });
+    attribution.addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+
+    this.map.addControl(attribution);
+
+    // Add zoom control
     this.map.addControl(Leaflet.control.zoom({
-      position: 'bottomright'
+      position: 'bottomleft'
     }));
 
     await this.loadRegionsGeoJson();

@@ -5,7 +5,6 @@ import {
   ContributorsComponent,
   DataSourceReferenceComponent,
   HomeComponent,
-  InteractiveMapComponent,
   InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
@@ -22,20 +21,6 @@ const routes: Routes = [{
         { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
         { property: 'og:title', content: 'Jobzi | Schools Connectivity' },
         { property: 'og:description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' }
-      ]
-    }
-  }
-}, {
-  path: 'interactive-google-map',
-  component: InteractiveMapComponent,
-  data: {
-    seo: {
-      title: 'Jobzi | Connectivity Map',
-      metaTags: [
-        { name: 'description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Connectivity Map' },
-        { property: 'og:description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' }
       ]
     }
   }

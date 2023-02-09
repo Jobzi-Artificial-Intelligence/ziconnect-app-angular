@@ -4,7 +4,6 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GoogleMapsModule } from '@angular/google-maps';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularMaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +22,6 @@ import {
   ContributorsComponent,
   DataSourceReferenceComponent,
   HomeComponent,
-  InteractiveMapComponent,
   InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
@@ -39,7 +37,6 @@ import {
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
     HomeComponent,
-    InteractiveMapComponent,
     InteractiveOsmMapComponent,
     LicenseComponent,
     LocalityLayerPopupComponent,
@@ -54,7 +51,6 @@ import {
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    GoogleMapsModule,
     HttpClientModule,
     LeafletModule,
     NgxChartsModule,

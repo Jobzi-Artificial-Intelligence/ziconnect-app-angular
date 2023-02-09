@@ -32,23 +32,15 @@ To install the all packages dependencies, open a terminal window, access applica
 
 `yarn install`
 
-## Loading the Google Maps API
-
-- First follow [these steps](https://developers.google.com/maps/gmp-get-started) to get an API key that can be used to load Google Maps.
-- The API key must be changed with your key before running the project.
-
-```html
-<!-- index.html -->
-<!DOCTYPE html>
-<head>
-  ...
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization"></script>
-</head>
-```
-
 ## Run Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Interactive Map
+
+After running development server, accessing the address http://localhost:4200/interactive-map, it will be possible to view the results of the predictive model of connectivity in schools on an interactive map.
+
+In this project, we used the open source [Leaflet](https://leafletjs.com/) library along with [Open Street Map](https://www.openstreetmap.org/) to draw the boundaries of geographic locations and generate the separate administrative level views.
 
 ## Build
 
