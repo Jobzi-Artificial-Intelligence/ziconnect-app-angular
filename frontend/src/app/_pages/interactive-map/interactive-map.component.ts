@@ -71,6 +71,9 @@ export interface IMapViewOption {
 //#endregion
 ////////////////////////////////////////////
 
+/**
+ * @deprecated Component is deprecated; use InteractiveOsmMapComponent instead.
+ */
 @Component({
   selector: 'app-interactive-map',
   templateUrl: './interactive-map.component.html',
