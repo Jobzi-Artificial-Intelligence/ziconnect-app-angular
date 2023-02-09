@@ -5,7 +5,6 @@ import {
   ContributorsComponent,
   DataSourceReferenceComponent,
   HomeComponent,
-  InteractiveMapComponent,
   InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
