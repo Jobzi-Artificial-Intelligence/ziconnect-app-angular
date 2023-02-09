@@ -36,6 +36,12 @@ To install the all packages dependencies, open a terminal window, access applica
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Interactive Map
+
+After running development server, accessing the address http://localhost:4200/interactive-map, it will be possible to view the results of the predictive model of connectivity in schools on an interactive map.
+
+In this project, we used the open source [Leaflet](https://leafletjs.com/) library along with [Open Street Map](https://www.openstreetmap.org/) to draw the boundaries of geographic locations and generate the separate administrative level views.
+
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--configuration production` flag for a production build. Visit https://angular.io/cli/build to see all available build options.
