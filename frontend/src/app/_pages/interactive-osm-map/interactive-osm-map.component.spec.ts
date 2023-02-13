@@ -1,68 +1,69 @@
-import { APP_BASE_HREF } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { ElementRef } from "@angular/core";
-import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { GoogleMapsModule } from "@angular/google-maps";
-import { MatBottomSheet } from "@angular/material/bottom-sheet";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { AngularMaterialModule } from "src/app/material.module";
-import { SchoolTableBottomSheetComponent } from "src/app/_components";
-import { AdministrativeLevel, City, LocalityMapAutocomplete, LocalityStatistics, Region, State } from "src/app/_models";
-import { InteractiveMapComponent } from "./interactive-map.component";
-import { ShortNumberPipe } from "src/app/_pipes/short-number.pipe";
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AngularMaterialModule } from 'src/app/material.module';
+import { AdministrativeLevel, City, LocalityMapAutocomplete, LocalityStatistics, Region, State } from 'src/app/_models';
 import { of, throwError } from 'rxjs';
 
-import { geoJsonSample, geoJsonCities, geoJsonRegions, geoJsonStates } from "../../../test/geo-json-mock";
-import { cityStats, regionStats, stateStats } from "../../../test/item-stats-mock";
-import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from "../../../test/locality-map-mock";
-import { localitiesMapAutocompleteResponseFromServer } from "../../../test/locality-map-autocomplete-mock";
-import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from "src/test/locality-statistics-mock";
+import * as Leaflet from 'leaflet';
 
-describe('Component: InteractiveMap', () => {
-  let component: InteractiveMapComponent;
-  let fixture: ComponentFixture<InteractiveMapComponent>;
+import { InteractiveOsmMapComponent } from './interactive-osm-map.component';
+import { municipalityLayers, regionLayers, stateLayers } from 'src/test/locality-map-layers';
+import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
+import { regionStats } from 'src/test/item-stats-mock';
+import { geoJsonCities, geoJsonRegions, geoJsonStates } from 'src/test/geo-json-mock';
+import { ILocalityLayer, IMapLocalityLayer } from 'src/app/_interfaces';
+import { localitiesMapAutocompleteResponseFromServer } from 'src/test/locality-map-autocomplete-mock';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { localityStatisticsMunicipalities, localityStatisticsRegions, localityStatisticsStates } from 'src/test/locality-statistics-mock';
+import { citiesLocalityMapList, regionsLocalityMapList, statesLocalityMapList } from 'src/test/locality-map-mock';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+
+describe('InteractiveOsmMapComponent', () => {
+  let component: InteractiveOsmMapComponent;
+  let fixture: ComponentFixture<InteractiveOsmMapComponent>;
+
+  const mockRegion = new Region('code01', 'Name01');
+  const mockState = new State('code01', 'Name01', mockRegion);
 
   let mockCitiesLocalityMap = [] as any;
   let mockRegionsLocalityMap = [] as any;
   let mockStatesLocalityMap = [] as any;
+  let mockMunicipalityLayers = municipalityLayers;
+  let mockStateLayers = stateLayers;
   let mockGeoJsonCities = {} as any;
   let mockGeoJsonRegions = {} as any;
   let mockGeoJsonStates = {} as any;
-  let mockCityStats: LocalityStatistics;
+  let mockRegionLayers = <IMapLocalityLayer>{};
+  let mockRegionLayer = <ILocalityLayer>{};
   let mockRegionStats: LocalityStatistics;
-  let mockStateStats: LocalityStatistics;
 
-  const mockRegion = new Region('code01', 'Name01');
-  const mockState = new State('code01', 'Name01', mockRegion);
-  const mockMunicipality = new City('code01', 'Name01', mockState);
+  const mockLayerDefaultStyles = {
+    weight: 0.5,
+    color: '#fff',
+    fillColor: '#000',
+    fillOpacity: 0.75,
+  };
 
-  class MockElementRef extends ElementRef {
-    constructor() { super(undefined); }
-    // nativeElement = {};
-  }
-
-  beforeEach(() => {
-    //jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
-
-    TestBed.configureTestingModule({
-      declarations: [InteractiveMapComponent, SchoolTableBottomSheetComponent, ShortNumberPipe],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [InteractiveOsmMapComponent, ShortNumberPipe],
       imports: [
         AngularMaterialModule,
         BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
         FormsModule,
-        GoogleMapsModule,
         HttpClientTestingModule,
+        LeafletModule,
         NgxChartsModule,
         ReactiveFormsModule
-      ],
-      providers: [
-        { provide: APP_BASE_HREF, useValue: '' },
-        { provide: ElementRef, useClass: MockElementRef }
       ]
-    });
+    }).compileComponents();
 
     // Clone object
     mockCitiesLocalityMap = JSON.parse(JSON.stringify(citiesLocalityMapList));
@@ -71,16 +72,18 @@ describe('Component: InteractiveMap', () => {
     mockGeoJsonCities = JSON.parse(JSON.stringify(geoJsonCities));
     mockGeoJsonRegions = JSON.parse(JSON.stringify(geoJsonRegions));
     mockGeoJsonStates = JSON.parse(JSON.stringify(geoJsonStates));
-    mockCityStats = JSON.parse(JSON.stringify(cityStats));
     mockRegionStats = JSON.parse(JSON.stringify(regionStats));
-    mockStateStats = JSON.parse(JSON.stringify(stateStats));
 
-    fixture = TestBed.createComponent(InteractiveMapComponent);
+    // Clone Layers
+    mockRegionLayers = Object.assign({}, regionLayers);
+    mockRegionLayer = Object.create(mockStateLayers[Object.keys(stateLayers)[0]]);
+
+    fixture = TestBed.createComponent(InteractiveOsmMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should be created', async () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -95,7 +98,6 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'initMapViewOptions');
       spyOn(component, 'watchLoadingMap');
       spyOn(component, 'loadLocalityStatistics');
-      spyOn(component, 'loadRegionsGeoJson');
       spyOn(component, 'initRegionSelectOptions');
       spyOn(component, 'initStateSelectOptions');
       spyOn(component, 'initSearchLocationFilteredOptions');
@@ -105,7 +107,6 @@ describe('Component: InteractiveMap', () => {
       expect(component.initMapViewOptions).toHaveBeenCalled();
       expect(component.watchLoadingMap).toHaveBeenCalled();
       expect(component.loadLocalityStatistics).toHaveBeenCalled();
-      expect(component.loadRegionsGeoJson).toHaveBeenCalled();
       expect(component.initRegionSelectOptions).toHaveBeenCalled();
       expect(component.initStateSelectOptions).toHaveBeenCalled();
       expect(component.initSearchLocationFilteredOptions).toHaveBeenCalled();
@@ -219,26 +220,19 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', () => {
       spyOn(component, 'toggleFilterSettingsExpanded');
+      spyOn(component, 'updateLayerFillColorByViewOption');
 
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, {
-        idPropertyName: 'region_code'
-      });
-
-      component.googleMap.data.forEach(feature => { feature.setProperty('stats', mockRegionStats) })
+      component.mapMunicipalityLayers = mockMunicipalityLayers;
+      component.mapRegionLayers = mockRegionLayers;
+      component.mapStateLayers = mockStateLayers;
 
       const viewOption = component.mapFilter.viewOptions.find(x => x.value === 'Prediction');
       if (viewOption) {
-        const colors = viewOption.rangeColors.map(color => color.backgroundColor);
-
         component.filterForm.controls['selectedViewOption'].setValue(viewOption);
         component.onChangeSelectedViewOption({} as any);
 
         expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
-
-        // Testing fill color values
-        component.googleMap.data.forEach(feature => {
-          expect(colors.includes(feature.getProperty('fillColor'))).toBeTrue();
-        });
+        expect(component.updateLayerFillColorByViewOption).toHaveBeenCalled();
       }
     });
   });
@@ -252,21 +246,16 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', async () => {
       spyOn(component, 'loadLocalityStatistics');
-      spyOn(component, 'loadRegionsGeoJson').and.callFake(() => {
-        return new Promise((resolve, reject) => {
-          component.googleMap.data.addGeoJson(mockGeoJsonRegions);
-          resolve(null);
-        });
-      });
-      spyOn(component.googleMap, 'fitBounds');
-
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions);
+      spyOn(component, 'loadRegionsGeoJson');
+      spyOn(component, 'closeStatsPanel');
+      spyOn(component.map, 'setView');
 
       await component.onCountryClick();
 
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.Region);
       expect(component.loadRegionsGeoJson).toHaveBeenCalled();
-      expect(component.googleMap.fitBounds).toHaveBeenCalled();
+      expect(component.closeStatsPanel).toHaveBeenCalled();
+      expect(component.map.setView).toHaveBeenCalledWith(component.mapOptions.center, component.mapOptions.zoom);
     });
   });
 
@@ -280,20 +269,13 @@ describe('Component: InteractiveMap', () => {
     it('should works', () => {
       const rangeColorIndex = 0;
 
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
-
-      // Creates test scenario
-      component.googleMap.data.forEach((feature) => {
-        feature.setProperty('fillColorIndex', rangeColorIndex + 1);
-        feature.setProperty('filtered', true);
-        feature.setProperty('state', 'normal');
-      });
+      spyOn(component, 'setLayerStateUnfocusedByColorIndex');
 
       component.onLegendItemMouseEnter(rangeColorIndex);
 
-      component.googleMap.data.forEach((feature) => {
-        expect(feature.getProperty('state')).toEqual('unfocused');
-      });
+      expect(component.setLayerStateUnfocusedByColorIndex).toHaveBeenCalledWith(rangeColorIndex, component.mapRegionLayers);
+      expect(component.setLayerStateUnfocusedByColorIndex).toHaveBeenCalledWith(rangeColorIndex, component.mapStateLayers);
+      expect(component.setLayerStateUnfocusedByColorIndex).toHaveBeenCalledWith(rangeColorIndex, component.mapMunicipalityLayers);
     });
   });
 
@@ -305,19 +287,13 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
-
-      // Creates test scenario
-      component.googleMap.data.forEach((feature) => {
-        feature.setProperty('filtered', true);
-        feature.setProperty('state', 'unfocused');
-      });
+      spyOn(component, 'setLayerStateUnfocusedToNormalState');
 
       component.onLegendItemMouseLeave();
 
-      component.googleMap.data.forEach((feature) => {
-        expect(feature.getProperty('state')).toEqual('normal');
-      });
+      expect(component.setLayerStateUnfocusedToNormalState).toHaveBeenCalledWith(component.mapRegionLayers);
+      expect(component.setLayerStateUnfocusedToNormalState).toHaveBeenCalledWith(component.mapStateLayers);
+      expect(component.setLayerStateUnfocusedToNormalState).toHaveBeenCalledWith(component.mapMunicipalityLayers);
     });
   });
 
@@ -330,8 +306,8 @@ describe('Component: InteractiveMap', () => {
 
     it('should works', async () => {
       // Creating spy
-      spyOn(component, 'zoomToFeature');
       spyOn(component, 'openStatsPanel');
+      spyOn(component, 'zoomToLayerBounds');
 
       // Initializing variables and setting properties values for test scenario
       const cityFromGeoJson = mockGeoJsonCities.features[0].properties;
@@ -339,11 +315,8 @@ describe('Component: InteractiveMap', () => {
       const state = new State(cityFromGeoJson.state_code, cityFromGeoJson.state_name, region);
       const city = new City(cityFromGeoJson.municipality_code, cityFromGeoJson.municipality_name, state);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, { idPropertyName: 'municipality_code' });
-
-      component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('municipality_code'));
-      });
+      component.mapMunicipalityLayers = mockMunicipalityLayers;
+      component.mapStateLayers = mockStateLayers;
 
       // Execute test function
       await component.onSelectCity(city);
@@ -351,21 +324,11 @@ describe('Component: InteractiveMap', () => {
       // Test result expectations
       expect(component.mapFilter.selectedCity).toEqual(city);
 
-      const cityFeature = component.googleMap.data.getFeatureById(cityFromGeoJson.municipality_code);
-      if (cityFeature) {
-        expect(component.openStatsPanel).toHaveBeenCalledWith(cityFeature);
-        expect(component.zoomToFeature).toHaveBeenCalledWith(cityFeature);
+      const municipalityLayer = component.mapMunicipalityLayers[city.code.toString()];
+      if (municipalityLayer) {
+        expect(component.zoomToLayerBounds).toHaveBeenCalledWith(municipalityLayer.layer.getBounds());
+        expect(component.openStatsPanel).toHaveBeenCalledWith(municipalityLayer.feature);
       }
-
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== cityFromGeoJson.municipality_code) {
-          expect(feature.getProperty('state')).toEqual('unfocused');
-          expect(feature.getProperty('filtered')).toEqual(false);
-        } else {
-          expect(feature.getProperty('state')).toEqual('normal');
-          expect(feature.getProperty('filtered')).toEqual(true);
-        }
-      });
     });
   });
 
@@ -381,19 +344,15 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'loadLocalityStatistics');
       spyOn(component, 'loadStatesGeoJson');
       spyOn(component, 'openStatsPanel');
-      spyOn(component, 'removeCitiesFromMap');
-      spyOn(component, 'removeStatesFromMap');
-      spyOn(component, 'zoomToFeature');
+      spyOn(component, 'removeMunicipalityLayersFromMap');
+      spyOn(component, 'removeStateLayersFromMap');
+      spyOn(component, 'zoomToLayerBounds');
 
       // Initializing variables and setting properties values for test scenario
       const regionFromGeoJson = mockGeoJsonRegions.features[0].properties;
       const region = new Region(regionFromGeoJson.region_code, regionFromGeoJson.region_name);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonRegions, { idPropertyName: 'region_code' });
-
-      component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('region_code'));
-      });
+      component.mapRegionLayers = mockRegionLayers
 
       // Execute test function
       await component.onSelectRegion(region);
@@ -403,25 +362,15 @@ describe('Component: InteractiveMap', () => {
       expect(component.mapFilter.selectedRegion).toEqual(region);
       expect(component.mapFilter.selectedState).toEqual(undefined);
 
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== regionFromGeoJson.region_code) {
-          expect(feature.getProperty('state')).toEqual('unfocused');
-          expect(feature.getProperty('filtered')).toEqual(false);
-        } else {
-          expect(feature.getProperty('state')).toEqual('normal');
-          expect(feature.getProperty('filtered')).toEqual(true);
-        }
-      });
-
-      expect(component.removeStatesFromMap).toHaveBeenCalled();
-      expect(component.removeCitiesFromMap).toHaveBeenCalled();
-
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.State);
+      expect(component.loadStatesGeoJson).toHaveBeenCalledWith(component.mapFilter.selectedCountry, region.code.toString());
+      expect(component.removeMunicipalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.removeStateLayersFromMap).toHaveBeenCalledWith();
 
-      const regionFeature = component.googleMap.data.getFeatureById(regionFromGeoJson.region_code);
+      const regionFeature = component.mapRegionLayers[region.code.toString()];
       if (regionFeature) {
-        expect(component.openStatsPanel).toHaveBeenCalledWith(regionFeature);
-        expect(component.zoomToFeature).toHaveBeenCalledWith(regionFeature);
+        expect(component.openStatsPanel).toHaveBeenCalledWith(regionFeature.feature);
+        expect(component.zoomToLayerBounds).toHaveBeenCalledWith(regionFeature.layer.getBounds());
       }
     });
   });
@@ -438,19 +387,16 @@ describe('Component: InteractiveMap', () => {
       spyOn(component, 'loadLocalityStatistics');
       spyOn(component, 'loadCitiesGeoJson');
       spyOn(component, 'openStatsPanel');
-      spyOn(component, 'removeCitiesFromMap');
-      spyOn(component, 'zoomToFeature');
+      spyOn(component, 'removeMunicipalityLayersFromMap');
+      spyOn(component, 'zoomToLayerBounds');
 
       // Initializing variables and setting properties values for test scenario
       const stateFromGeoJson = mockGeoJsonStates.features[0].properties;
       const region = new Region(stateFromGeoJson.region_code, stateFromGeoJson.region_name);
       const state = new State(stateFromGeoJson.state_code, stateFromGeoJson.state_name, region);
 
-      component.googleMap.data.addGeoJson(mockGeoJsonStates, { idPropertyName: 'state_code' });
-
-      component.googleMap.data.forEach((feature) => {
-        feature.setProperty('code', feature.getProperty('state_code'));
-      });
+      component.mapRegionLayers = mockRegionLayers;
+      component.mapStateLayers = mockStateLayers;
 
       // Execute test function
       await component.onSelectState(state);
@@ -460,31 +406,75 @@ describe('Component: InteractiveMap', () => {
       expect(component.mapFilter.selectedRegion).toEqual(state.region);
       expect(component.mapFilter.selectedState).toEqual(state);
 
-      expect(component.removeCitiesFromMap).toHaveBeenCalled();
       expect(component.loadLocalityStatistics).toHaveBeenCalledWith(AdministrativeLevel.Municipality);
       expect(component.loadCitiesGeoJson).toHaveBeenCalledWith(component.mapFilter.selectedCountry ?? '', state.region.code.toString(), state.code.toString());
+      expect(component.removeMunicipalityLayersFromMap).toHaveBeenCalledWith();
 
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('code') !== stateFromGeoJson.state_code) {
-          expect(feature.getProperty('state')).toEqual('unfocused');
-          expect(feature.getProperty('filtered')).toEqual(false);
-        } else {
-          expect(feature.getProperty('state')).toEqual('normal');
-          expect(feature.getProperty('filtered')).toEqual(true);
-        }
-      });
-
-      const cityFeature = component.googleMap.data.getFeatureById(stateFromGeoJson.state_code);
-      if (cityFeature) {
-        expect(component.openStatsPanel).toHaveBeenCalledWith(cityFeature);
-        expect(component.zoomToFeature).toHaveBeenCalledWith(cityFeature);
+      const stateFeature = component.mapStateLayers[state.code.toString()];
+      if (stateFeature) {
+        expect(component.openStatsPanel).toHaveBeenCalledWith(stateFeature.feature);
+        expect(component.zoomToLayerBounds).toHaveBeenCalledWith(stateFeature.layer.getBounds());
       }
     });
   });
+
+  describe('#setLayerStateUnfocusedByColorIndex', () => {
+
+    it('should exists', () => {
+      expect(component.setLayerStateUnfocusedByColorIndex).toBeTruthy();
+      expect(component.setLayerStateUnfocusedByColorIndex).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'setMapDataStyles');
+
+      const rangeColorIndex = 1;
+
+      for (const [key, value] of Object.entries(mockRegionLayers)) {
+        value.feature.properties.fillColorIndex = 0;
+        value.feature.properties.filtered = true;
+        value.feature.properties.state = 'normal';
+      }
+
+      component.setLayerStateUnfocusedByColorIndex(rangeColorIndex, mockRegionLayers);
+
+      expect(component.setMapDataStyles).toHaveBeenCalled();
+
+      for (const [key, value] of Object.entries(mockRegionLayers)) {
+        expect(value.feature.properties.state).toEqual('unfocused');
+      }
+    });
+  });
+
+  describe('#setLayerStateUnfocusedToNormalState', () => {
+
+    it('should exists', () => {
+      expect(component.setLayerStateUnfocusedToNormalState).toBeTruthy();
+      expect(component.setLayerStateUnfocusedToNormalState).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'setMapDataStyles');
+
+      for (const [key, value] of Object.entries(mockRegionLayers)) {
+        value.feature.properties.filtered = true;
+        value.feature.properties.state = 'unfocused';
+      }
+
+      component.setLayerStateUnfocusedToNormalState(mockRegionLayers);
+
+      expect(component.setMapDataStyles).toHaveBeenCalled();
+
+      for (const [key, value] of Object.entries(mockRegionLayers)) {
+        expect(value.feature.properties.state).toEqual('normal');
+      }
+    });
+  });
+
   //#endregion
   ////////////////////////////////////////////
 
-  //#region MAP LOAD FUNCTION
+  //#region MAP LOAD FUNCTIONS
   ////////////////////////////////////////////
   describe('#loadCitiesGeoJson', () => {
 
@@ -523,16 +513,17 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
       spyOn(component, 'getLocalityStatisticsByMunicipalityCode').and.returnValue(localityStatisticsMunicipalities[0]);
 
       //@ts-ignore
       spyOn(component.localityMapService, 'getCitiesByState').and.returnValue(of(mockCitiesLocalityMap));
       await component.loadCitiesGeoJson('', '', '');
 
-      let count = 0;
-      component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockCitiesLocalityMap.length);
       expect(component.getLocalityStatisticsByMunicipalityCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
     });
   });
 
@@ -649,16 +640,17 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
       spyOn(component, 'getLocalityStatisticsByRegionCode').and.returnValue(localityStatisticsRegions[0]);
 
       //@ts-ignore
       spyOn(component.localityMapService, 'getLocalityMapRegionsByCountry').and.returnValue(of(mockRegionsLocalityMap));
       await component.loadRegionsGeoJson();
 
-      let count = 0;
-      component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockRegionsLocalityMap.length);
       expect(component.getLocalityStatisticsByRegionCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
     });
   });
 
@@ -699,260 +691,255 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works when service return success', async () => {
+      spyOn(component.map, 'addLayer');
+      spyOn(component, 'getFeaturePopup');
       spyOn(component, 'getLocalityStatisticsByStateCode').and.returnValue(localityStatisticsStates[0]);
 
       //@ts-ignore
       spyOn(component.localityMapService, 'getStatesByRegion').and.returnValue(of(mockStatesLocalityMap));
       await component.loadStatesGeoJson('', '');
 
-      let count = 0;
-      component.googleMap.data.forEach(feature => count++);
-      expect(count).toEqual(mockStatesLocalityMap.length);
       expect(component.getLocalityStatisticsByStateCode).toHaveBeenCalled();
+      expect(component.map.addLayer).toHaveBeenCalled();
+      expect(component.getFeaturePopup).toHaveBeenCalled();
     });
   });
-
   //#endregion
   ////////////////////////////////////////////
 
-  //#region MAP MOUSE EVENTS
+  //#region MAP MOUSE FUNCTIONS
   ////////////////////////////////////////////
-
-  describe('#getCenterJsonFromMapDataFeature', () => {
+  describe('#onMapMouseOverLayer', () => {
 
     it('should exists', () => {
-      expect(component.getCenterJsonFromMapDataFeature).toBeTruthy();
-      expect(component.getCenterJsonFromMapDataFeature).toEqual(jasmine.any(Function));
+      expect(component.onMapMouseOverLayer).toBeTruthy();
+      expect(component.onMapMouseOverLayer).toEqual(jasmine.any(Function));
     });
 
-    it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
+    it('should works for unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
-      if (dataFeature) {
-        const bounds = new google.maps.LatLngBounds();
-        component.processPoints(dataFeature?.getGeometry(), bounds.extend, bounds);
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
 
-        const result = component.getCenterJsonFromMapDataFeature(dataFeature);
-        expect(result).toEqual(bounds.getCenter().toJSON());
-      }
+      component.onMapMouseOverLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('unfocused-hover');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+
+    it('should works for not unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'normal'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOverLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('hover');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
     });
   });
 
-  describe('#mouseClickInToRegion', () => {
+  describe('#onMapMouseOutLayer', () => {
 
     it('should exists', () => {
-      expect(component.mouseClickInToRegion).toBeTruthy();
-      expect(component.mouseClickInToRegion).toEqual(jasmine.any(Function));
+      expect(component.onMapMouseOutLayer).toBeTruthy();
+      expect(component.onMapMouseOutLayer).toEqual(jasmine.any(Function));
     });
 
-    it('should works for any adm_level', () => {
-      spyOn(component, 'onSelectCity');
-      spyOn(component, 'onSelectRegion');
-      spyOn(component, 'onSelectState');
+    it('should works for unfocused-hover state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
 
       const event = {
-        feature: {
-          getProperty: (propertyName: string) => {
-            if (propertyName === 'code') return 'code01';
-            if (propertyName === 'adm_level') return 'any';
-
-            return '';
-          }
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused-hover'
+            }
+          },
+          setStyle: jasmine.createSpy()
         }
-      } as any;
+      };
 
-      component.mouseClickInToRegion(event);
+      component.onMapMouseOutLayer(event);
 
-      expect(component.onSelectCity).not.toHaveBeenCalled();
-      expect(component.onSelectRegion).not.toHaveBeenCalled();
-      expect(component.onSelectState).not.toHaveBeenCalled();
+      expect(event.target.feature.properties.state).toEqual('unfocused');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
     });
 
-    it('should works for city adm_level', () => {
-      spyOn(component, 'onSelectCity');
-
-      component.localityMapMunicipalities = mockCitiesLocalityMap;
-
-      const municipality = component.localityMapMunicipalities[0].municipality;
+    it('should works for unfocused state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
 
       const event = {
-        feature: {
-          getProperty: (propertyName: string) => {
-            if (propertyName === 'code') return municipality ? municipality.code : null;
-            if (propertyName === 'adm_level') return 'municipality';
-
-            return '';
-          }
+        target: {
+          feature: {
+            properties: {
+              state: 'unfocused'
+            }
+          },
+          setStyle: jasmine.createSpy()
         }
-      } as any;
+      };
 
-      component.mouseClickInToRegion(event);
-      if (municipality) {
-        expect(component.onSelectCity).toHaveBeenCalledWith(municipality);
-      }
+      component.onMapMouseOutLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('unfocused');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
     });
 
-    it('should works for region adm_level', () => {
+    it('should works for not unfocused or unfocused-hover state', () => {
+      spyOn(component, 'setMapDataStyles').and.returnValue(mockLayerDefaultStyles);
+
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              state: 'hover'
+            }
+          },
+          setStyle: jasmine.createSpy()
+        }
+      };
+
+      component.onMapMouseOutLayer(event);
+
+      expect(event.target.feature.properties.state).toEqual('normal');
+      expect(event.target.setStyle).toHaveBeenCalledWith(mockLayerDefaultStyles);
+    });
+  });
+
+  describe('#onMapRegionClick', () => {
+
+    it('should exists', () => {
+      expect(component.onMapRegionClick).toBeTruthy();
+      expect(component.onMapRegionClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'zoomToLayerBounds');
       spyOn(component, 'onSelectRegion');
 
       component.localityMapRegions = mockRegionsLocalityMap;
 
-      const region = component.localityMapRegions[0].region;
-
+      const localityMapRegion = component.localityMapRegions[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
       const event = {
-        feature: {
-          getProperty: (propertyName: string) => {
-            if (propertyName === 'code') return region ? region.code : null;
-            if (propertyName === 'adm_level') return 'region';
-
-            return '';
-          }
+        target: {
+          feature: {
+            properties: {
+              code: localityMapRegion.regionCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
         }
-      } as any;
+      };
 
-      component.mouseClickInToRegion(event);
+      component.onMapRegionClick(event);
 
-      if (region) {
-        expect(component.onSelectRegion).toHaveBeenCalledWith(region);
+      if (localityMapRegion.region) {
+        expect(component.onSelectRegion).toHaveBeenCalledWith(localityMapRegion.region);
       }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
+    });
+  });
+
+  describe('#onMapStateClick', () => {
+
+    it('should exists', () => {
+      expect(component.onMapStateClick).toBeTruthy();
+      expect(component.onMapStateClick).toEqual(jasmine.any(Function));
     });
 
-    it('should works for state adm_level', () => {
+    it('should works', () => {
+      spyOn(component, 'zoomToLayerBounds');
       spyOn(component, 'onSelectState');
 
       component.localityMapStates = mockStatesLocalityMap;
 
-      const state = component.localityMapStates[0].state;
-
+      const localityMapState = component.localityMapStates[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
       const event = {
-        feature: {
-          getProperty: (propertyName: string) => {
-            if (propertyName === 'code') return state ? state.code : null;
-            if (propertyName === 'adm_level') return 'state';
-
-            return '';
-          }
+        target: {
+          feature: {
+            properties: {
+              code: localityMapState.stateCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
         }
-      } as any;
+      };
 
-      component.mouseClickInToRegion(event);
+      component.onMapStateClick(event);
 
-      if (state) {
-        expect(component.onSelectState).toHaveBeenCalledWith(state);
+      if (localityMapState.state) {
+        expect(component.onSelectState).toHaveBeenCalledWith(localityMapState.state);
       }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
     });
   });
 
-  describe('#mouseInToRegion', () => {
-    beforeEach(() => {
-      component.googleMap.data.forEach(feature => component.googleMap.data.remove(feature));
-    });
+  describe('#onMapMunicipalityClick', () => {
 
     it('should exists', () => {
-      expect(component.mouseInToRegion).toBeTruthy();
-      expect(component.mouseInToRegion).toEqual(jasmine.any(Function));
+      expect(component.onMapMunicipalityClick).toBeTruthy();
+      expect(component.onMapMunicipalityClick).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
+      spyOn(component, 'zoomToLayerBounds');
+      spyOn(component, 'onSelectCity');
 
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
-      if (dataFeature) {
-        spyOn(component.info, 'open');
+      component.localityMapMunicipalities = mockCitiesLocalityMap;
 
-        const geoJsonProperties = mockGeoJsonCities.features[0].properties;
-        dataFeature.setProperty('code', geoJsonProperties.municipality_code);
-        dataFeature.setProperty('name', geoJsonProperties.municipality_name);
-        dataFeature.setProperty('state', 'normal');
-        dataFeature.setProperty('stats', {});
+      const localityMapMunicipality = component.localityMapMunicipalities[0];
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
+      const event = {
+        target: {
+          feature: {
+            properties: {
+              code: localityMapMunicipality.municipalityCode
+            }
+          },
+          getBounds: jasmine.createSpy().and.returnValue(bounds)
+        }
+      };
 
-        const event = {
-          feature: dataFeature
-        } as any;
+      component.onMapMunicipalityClick(event);
 
-        component.mouseInToRegion(event);
-
-        expect(component.infoContent.content).toBeTruthy();
-        expect(component.infoContent.content.code).toEqual(geoJsonProperties.municipality_code);
-        expect(component.infoContent.content.name).toEqual(geoJsonProperties.municipality_name);
-        expect(component.infoContent.content.stats).toEqual(jasmine.any(Object));
-        expect(component.infoContent.content.type).toEqual(geoJsonProperties.adm_level);
-        expect(event.feature.getProperty('state')).toEqual('hover');
-        expect(component.info.open).toHaveBeenCalledWith(undefined, false);
+      if (localityMapMunicipality.municipality) {
+        expect(component.onSelectCity).toHaveBeenCalledWith(localityMapMunicipality.municipality);
       }
+      expect(component.zoomToLayerBounds).toHaveBeenCalledWith(bounds);
     });
   });
-
-  describe('#mouseOutOfRegion', () => {
-
-    it('should exists', () => {
-      expect(component.mouseOutOfRegion).toBeTruthy();
-      expect(component.mouseOutOfRegion).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
-      if (dataFeature) {
-        spyOn(component.info, 'close');
-
-        dataFeature.setProperty('state', 'hover');
-
-        const event = {
-          feature: dataFeature
-        } as any;
-
-        component.mouseOutOfRegion(event);
-
-        expect(event.feature.getProperty('state')).toEqual('normal');
-        expect(component.info.close).toHaveBeenCalled();
-      }
-    });
-  });
-
-  describe('#zoomToFeature', () => {
-    it('should exists', () => {
-      expect(component.zoomToFeature).toBeTruthy();
-      expect(component.zoomToFeature).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
-      if (dataFeature) {
-        spyOn(component.googleMap, 'fitBounds');
-
-        var bounds = new google.maps.LatLngBounds();
-        component.processPoints(dataFeature.getGeometry(), bounds.extend, bounds);
-
-        component.zoomToFeature(dataFeature);
-
-        expect(component.googleMap.fitBounds).toHaveBeenCalledWith(bounds);
-      }
-    });
-  });
-
   //#endregion
   ////////////////////////////////////////////
 
   //#region MAP STATS PANEL
   ////////////////////////////////////////////
+
   describe('#closeStatsPanel', () => {
 
     it('should exists', () => {
-      expect(component.removeCitiesFromMap).toBeTruthy();
-      expect(component.removeCitiesFromMap).toEqual(jasmine.any(Function));
+      expect(component.closeStatsPanel).toBeTruthy();
+      expect(component.closeStatsPanel).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
@@ -1083,12 +1070,10 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works without item stats', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
+      const dataFeature = mockRegionLayer.feature;
       if (dataFeature) {
+        dataFeature.properties.stats = null;
+
         //@ts-ignore
         spyOn(component.alertService, 'showError');
 
@@ -1100,13 +1085,9 @@ describe('Component: InteractiveMap', () => {
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
+      const dataFeature = mockRegionLayer.feature;
       if (dataFeature) {
-        dataFeature.setProperty('stats', mockRegionStats);
+        dataFeature.properties.stats = mockRegionStats;
 
         component.openStatsPanel(dataFeature);
 
@@ -1138,70 +1119,187 @@ describe('Component: InteractiveMap', () => {
   //#endregion
   ////////////////////////////////////////////
 
-  //#region MAP UTIL FUNCTIONs
+  //#region MAP UTIL FUNCTIONS
   ////////////////////////////////////////////
-
-  describe('#removeCitiesFromMap', () => {
+  describe('#getFeaturePopup', () => {
 
     it('should exists', () => {
-      expect(component.removeCitiesFromMap).toBeTruthy();
-      expect(component.removeCitiesFromMap).toEqual(jasmine.any(Function));
+      expect(component.getFeaturePopup).toBeTruthy();
+      expect(component.getFeaturePopup).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(mockGeoJsonCities);
+      //@ts-ignore
+      spyOn(component.localityLayerService, 'compilePopup');
 
-      let citiesCount = 0;
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'municipality') {
-          citiesCount++;
-        }
+      const regionLayer = mockRegionLayer;
+
+      component.getFeaturePopup(regionLayer.feature);
+
+      //@ts-ignore
+      expect(component.localityLayerService.compilePopup).toHaveBeenCalledWith(<IMapInfoWindowContent>{
+        name: regionLayer.feature.properties.name,
+        code: regionLayer.feature.properties.code,
+        stats: regionLayer.feature.properties.stats,
+        type: regionLayer.feature.properties.adm_level
       });
-
-      expect(citiesCount).toEqual(mockGeoJsonCities.features.length);
-
-      component.removeCitiesFromMap();
-
-      citiesCount = 0;
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'municipality') {
-          citiesCount++;
-        }
-      });
-
-      expect(citiesCount).toEqual(0);
     });
   });
 
-  describe('#removeStatesFromMap', () => {
+  describe('#removeAllLocalityLayersFromMap', () => {
 
     it('should exists', () => {
-      expect(component.removeStatesFromMap).toBeTruthy();
-      expect(component.removeStatesFromMap).toEqual(jasmine.any(Function));
+      expect(component.removeAllLocalityLayersFromMap).toBeTruthy();
+      expect(component.removeAllLocalityLayersFromMap).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
-      component.googleMap.data.addGeoJson(geoJsonStates);
+      spyOn(component, 'removeMunicipalityLayersFromMap');
+      spyOn(component, 'removeRegionLayersFromMap');
+      spyOn(component, 'removeStateLayersFromMap');
 
-      let citiesCount = 0;
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'state') {
-          citiesCount++;
-        }
+      component.removeAllLocalityLayersFromMap();
+
+      expect(component.removeMunicipalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.removeRegionLayersFromMap).toHaveBeenCalledWith();
+      expect(component.removeStateLayersFromMap).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('#removeRegionLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeRegionLayersFromMap).toBeTruthy();
+      expect(component.removeRegionLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapRegionLayers = mockRegionLayers;
+
+      component.removeRegionLayersFromMap();
+
+      expect(component.mapRegionLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#removeStateLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeStateLayersFromMap).toBeTruthy();
+      expect(component.removeStateLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapStateLayers = mockStateLayers;
+
+      component.removeStateLayersFromMap();
+
+      expect(component.mapStateLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#removeMunicipalityLayersFromMap', () => {
+
+    it('should exists', () => {
+      expect(component.removeMunicipalityLayersFromMap).toBeTruthy();
+      expect(component.removeMunicipalityLayersFromMap).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.mapMunicipalityLayers = mockMunicipalityLayers;
+
+      component.removeMunicipalityLayersFromMap();
+
+      expect(component.mapMunicipalityLayers).toEqual(<IMapLocalityLayer>{});
+    });
+  });
+
+  describe('#setMapDataStyles', () => {
+
+    it('should exists', () => {
+      expect(component.setMapDataStyles).toBeTruthy();
+      expect(component.setMapDataStyles).toEqual(jasmine.any(Function));
+    });
+
+    it('should works feature without stats', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'normal';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#000',
+        fillOpacity: 0.75,
       });
+    });
 
-      expect(citiesCount).toEqual(geoJsonStates.features.length);
+    it('should works feature with stats', () => {
+      spyOn(component.map, 'fitBounds');
 
-      component.removeStatesFromMap();
+      mockRegionLayer.feature.properties.state = 'normal';
+      mockRegionLayer.feature.properties.stats = mockRegionStats;
+      mockRegionLayer.feature.properties.fillColor = '#56d132';
 
-      citiesCount = 0;
-      component.googleMap.data.forEach((feature) => {
-        if (feature.getProperty('adm_level') === 'state') {
-          citiesCount++;
-        }
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#56d132',
+        fillOpacity: 0.75,
       });
+    });
 
-      expect(citiesCount).toEqual(0);
+    it('should works for hover state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'hover';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 2,
+        color: '#fff',
+        fillColor: '#000',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works for unfocused state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'unfocused';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 0.5,
+        color: '#fff',
+        fillColor: '#dedede',
+        fillOpacity: 0.75,
+      });
+    });
+
+    it('should works for unfocused-hover state', () => {
+      spyOn(component.map, 'fitBounds');
+
+      mockRegionLayer.feature.properties.state = 'unfocused-hover';
+      mockRegionLayer.feature.properties.stats = null;
+
+      const result = component.setMapDataStyles(mockRegionLayer.feature);
+
+      expect(result).toEqual({
+        weight: 2,
+        color: '#D9A981',
+        fillColor: '#F7CCA9',
+        fillOpacity: 0.75,
+      });
     });
   });
 
@@ -1239,199 +1337,21 @@ describe('Component: InteractiveMap', () => {
     });
   });
 
-  describe('#setMapDataStyles', () => {
+  describe('#zoomToLayerBounds', () => {
+
     it('should exists', () => {
-      expect(component.setMapDataStyles).toBeTruthy();
-      expect(component.setMapDataStyles).toEqual(jasmine.any(Function));
+      expect(component.zoomToLayerBounds).toBeTruthy();
+      expect(component.zoomToLayerBounds).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
-      const expectedResult = {
-        strokeWeight: 0.5,
-        strokeColor: '#fff',
-        zIndex: 0,
-        fillColor: '#000',
-        fillOpacity: 0.75,
-        visible: true,
-      };
+      spyOn(component.map, 'fitBounds');
 
-      component.googleMap.data.addGeoJson(geoJsonSample, {
-        idPropertyName: 'id'
-      });
+      const bounds = Leaflet.latLngBounds([10, 10], [10, 10]);
 
-      const dataFeature = component.googleMap.data.getFeatureById(geoJsonSample.features[0].properties.id);
+      component.zoomToLayerBounds(bounds);
 
-      if (dataFeature) {
-        let result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // normal state
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // hover state
-        dataFeature.setProperty('state', 'hover');
-        expectedResult.strokeWeight = 2;
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // unfocused state
-        dataFeature.setProperty('state', 'unfocused');
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#dedede';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // with stats property
-        dataFeature.setProperty('state', 'normal');
-        dataFeature.setProperty('stats', {});
-        dataFeature.setProperty('fillColor', '#fafafa')
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#fafafa';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-      }
-    });
-
-    it('should works feature type equals city', () => {
-      const expectedResult = {
-        strokeWeight: 0.5,
-        strokeColor: '#fff',
-        zIndex: 3,
-        fillColor: '#000',
-        fillOpacity: 0.75,
-        visible: true,
-      };
-
-      component.googleMap.data.addGeoJson(mockGeoJsonCities, {
-        idPropertyName: 'municipality_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(mockGeoJsonCities.features[0].properties.municipality_code);
-
-      if (dataFeature) {
-        let result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // normal state
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // hover state
-        dataFeature.setProperty('state', 'hover');
-        expectedResult.strokeWeight = 2;
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // unfocused state
-        dataFeature.setProperty('state', 'unfocused');
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#dedede';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // with stats property
-        dataFeature.setProperty('state', 'normal');
-        dataFeature.setProperty('stats', {});
-        dataFeature.setProperty('fillColor', '#fafafa')
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#fafafa';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-      }
-    });
-
-    it('should works feature type equals state', () => {
-      const expectedResult = {
-        strokeWeight: 0.5,
-        strokeColor: '#fff',
-        zIndex: 2,
-        fillColor: '#000',
-        fillOpacity: 0.75,
-        visible: true,
-      };
-
-      component.googleMap.data.addGeoJson(geoJsonStates, {
-        idPropertyName: 'state_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(geoJsonCities.features[0].properties.state_code);
-
-      if (dataFeature) {
-        let result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // normal state
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // hover state
-        dataFeature.setProperty('state', 'hover');
-        expectedResult.strokeWeight = 2;
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // unfocused state
-        dataFeature.setProperty('state', 'unfocused');
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#dedede';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // with stats property
-        dataFeature.setProperty('state', 'normal');
-        dataFeature.setProperty('stats', {});
-        dataFeature.setProperty('fillColor', '#fafafa')
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#fafafa';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-      }
-    });
-
-    it('should works feature type equals region', () => {
-      const expectedResult = {
-        strokeWeight: 0.5,
-        strokeColor: '#fff',
-        zIndex: 1,
-        fillColor: '#000',
-        fillOpacity: 0.75,
-        visible: true,
-      };
-
-      component.googleMap.data.addGeoJson(geoJsonRegions, {
-        idPropertyName: 'region_code'
-      });
-
-      const dataFeature = component.googleMap.data.getFeatureById(geoJsonRegions.features[0].properties.region_code);
-
-      if (dataFeature) {
-        // normal state
-        let result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // hover state
-        dataFeature.setProperty('state', 'hover');
-        expectedResult.strokeWeight = 2;
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // unfocused state
-        dataFeature.setProperty('state', 'unfocused');
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#dedede';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-
-        // with stats property
-        dataFeature.setProperty('state', 'normal');
-        dataFeature.setProperty('stats', {});
-        dataFeature.setProperty('fillColor', '#fafafa')
-        expectedResult.strokeWeight = 0.5;
-        expectedResult.fillColor = '#fafafa';
-        result = component.setMapDataStyles(dataFeature);
-        expect(result).toEqual(expectedResult);
-      }
+      expect(component.map.fitBounds).toHaveBeenCalledWith(bounds);
     });
   });
 
@@ -1440,7 +1360,6 @@ describe('Component: InteractiveMap', () => {
 
   //#region MAT-SELECT FUNCTIONS
   ////////////////////////////////////////////
-
   describe('#matSelectCompareCodes', () => {
 
     it('should exists', () => {
@@ -1482,26 +1401,16 @@ describe('Component: InteractiveMap', () => {
 
     it('should works without selected region', () => {
       spyOn(component, 'loadRegionsGeoJson');
-
-      component.googleMap.data.addGeoJson(geoJsonSample, {
-        idPropertyName: 'id',
-      });
-
-      let count = 0;
-      component.googleMap.data.forEach(x => count++);
-
-      expect(count).toEqual(1);
+      spyOn(component, 'removeAllLocalityLayersFromMap');
+      spyOn(component, 'toggleFilterSettingsExpanded');
 
       component.mapFilter.selectedRegion = undefined;
 
       component.onRegionSelectionChange();
 
-      count = 0;
-      component.googleMap.data.forEach(x => count++);
-
-      expect(count).toEqual(0);
-
       expect(component.loadRegionsGeoJson).toHaveBeenCalledWith();
+      expect(component.removeAllLocalityLayersFromMap).toHaveBeenCalledWith();
+      expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
     });
   });
 
@@ -1530,31 +1439,41 @@ describe('Component: InteractiveMap', () => {
 
     it('should works without selected state', async () => {
       spyOn(component, 'loadRegionsGeoJson');
+      spyOn(component, 'removeAllLocalityLayersFromMap');
       spyOn(component, 'toggleFilterSettingsExpanded');
-
-      component.googleMap.data.addGeoJson(geoJsonSample, {
-        idPropertyName: 'id',
-      });
-
-      let count = 0;
-      component.googleMap.data.forEach(x => count++);
-
-      expect(count).toEqual(1);
 
       component.mapFilter.selectedState = undefined;
 
       await component.onStateSelectionChange();
 
-      count = 0;
-      component.googleMap.data.forEach(x => count++);
-
-      expect(count).toEqual(0);
-
       expect(component.loadRegionsGeoJson).toHaveBeenCalledWith();
+      expect(component.removeAllLocalityLayersFromMap).toHaveBeenCalledWith();
       expect(component.toggleFilterSettingsExpanded).toHaveBeenCalledWith(false);
     });
   });
 
+  describe('#updateLayerFillColorByViewOption', () => {
+
+    it('should exists', () => {
+      expect(component.updateLayerFillColorByViewOption).toBeTruthy();
+      expect(component.updateLayerFillColorByViewOption).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'getRangeColorIndex').and.returnValue(0);
+      spyOn(component, 'setMapDataStyles');
+      spyOn(mockRegionLayer.layer, 'setStyle');
+
+      mockRegionLayer.feature.properties.stats = mockRegionStats;
+
+      component.updateLayerFillColorByViewOption(mockRegionLayer.feature, mockRegionLayer.layer);
+
+      expect(mockRegionLayer.feature.properties.fillColor).toEqual(component.getSelectedViewOption.rangeColors[0].backgroundColor);
+      expect(mockRegionLayer.feature.properties.fillColorIndex).toEqual(0);
+      expect(mockRegionLayer.layer.setStyle).toHaveBeenCalled();
+      expect(component.setMapDataStyles).toHaveBeenCalledWith(mockRegionLayer.feature);
+    });
+  });
   //#endregion
   ////////////////////////////////////////////
 
@@ -1653,7 +1572,7 @@ describe('Component: InteractiveMap', () => {
     });
   });
 
-  describe('#loadAutocompleteSearchOptions', () => {
+  describe('#onSelectLocationSearchOption', () => {
 
     it('should exists', () => {
       expect(component.onSelectLocationSearchOption).toBeTruthy();
@@ -1691,8 +1610,8 @@ describe('Component: InteractiveMap', () => {
         municipality: city
       }
       await component.onSelectLocationSearchOption(event);
-      expect(component.onSelectRegion).toHaveBeenCalledWith(city.state.region);
-      expect(component.onSelectState).toHaveBeenCalledWith(city.state);
+      expect(component.onSelectRegion).toHaveBeenCalledWith(city.state.region, false);
+      expect(component.onSelectState).toHaveBeenCalledWith(city.state, false);
       expect(component.onSelectCity).toHaveBeenCalledWith(city);
 
       // Selected option type state
@@ -1701,7 +1620,7 @@ describe('Component: InteractiveMap', () => {
         state: state
       }
       await component.onSelectLocationSearchOption(event);
-      expect(component.onSelectRegion).toHaveBeenCalledWith(state.region);
+      expect(component.onSelectRegion).toHaveBeenCalledWith(state.region, false);
       expect(component.onSelectState).toHaveBeenCalledWith(state);
 
       // Selected option type region
@@ -1734,8 +1653,25 @@ describe('Component: InteractiveMap', () => {
       expect(component.getConnectivityPredictionBarColor(valueYes)).toEqual(component.schoolsPredictionColorScheme[valueYes]);
       expect(component.getConnectivityPredictionBarColor(valueNo)).toEqual(component.schoolsPredictionColorScheme[valueNo]);
       expect(component.getConnectivityPredictionBarColor(valueNA)).toEqual(component.schoolsPredictionColorScheme[valueNA]);
-
     });
+  });
+
+  describe('#getLocalityStatisticsByMunicipalityCode', () => {
+
+    it('should exists', () => {
+      expect(component.getLocalityStatisticsByMunicipalityCode).toBeTruthy();
+      expect(component.getLocalityStatisticsByMunicipalityCode).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.localityStatistics = localityStatisticsMunicipalities;
+
+      const localityStatistics = localityStatisticsMunicipalities[0];
+
+      const result = component.getLocalityStatisticsByMunicipalityCode(localityStatistics.localityMap.municipalityCode.toString());
+
+      expect(result).toEqual(localityStatistics);
+    })
   });
 
   describe('#getLocalityStatisticsByRegionCode', () => {
@@ -1771,52 +1707,6 @@ describe('Component: InteractiveMap', () => {
       const result = component.getLocalityStatisticsByStateCode(localityStatistics.localityMap.stateCode.toString());
 
       expect(result).toEqual(localityStatistics);
-    })
-  });
-
-  describe('#getLocalityStatisticsByMunicipalityCode', () => {
-
-    it('should exists', () => {
-      expect(component.getLocalityStatisticsByMunicipalityCode).toBeTruthy();
-      expect(component.getLocalityStatisticsByMunicipalityCode).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      component.localityStatistics = localityStatisticsMunicipalities;
-
-      const localityStatistics = localityStatisticsMunicipalities[0];
-
-      const result = component.getLocalityStatisticsByMunicipalityCode(localityStatistics.localityMap.municipalityCode.toString());
-
-      expect(result).toEqual(localityStatistics);
-    })
-  });
-
-  describe('#getStateCodesFromRegion', () => {
-
-    it('should exists', () => {
-      expect(component.getStateCodesFromRegion).toBeTruthy();
-      expect(component.getStateCodesFromRegion).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      const region = new Region('1', 'Region 1');
-      const stateOptions = new Array<State>();
-      stateOptions.push(new State('1', 'State 1', region));
-      stateOptions.push(new State('2', 'State 2', region));
-
-      component.mapFilter.stateOptions = stateOptions;
-
-      let stateCodes = component.getStateCodesFromRegion(region.code.toString());
-
-      expect(stateCodes).toBeTruthy();
-      expect(stateCodes.length).toEqual(2);
-      expect(stateCodes).toEqual(['1', '2']);
-
-      stateCodes = component.getStateCodesFromRegion('2');
-
-      expect(stateCodes).toBeTruthy();
-      expect(stateCodes.length).toEqual(0);
     })
   });
 

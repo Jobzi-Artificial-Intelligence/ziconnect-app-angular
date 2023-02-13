@@ -1,0 +1,45 @@
+<div id="locality-layer-popup">
+  <div id="infowindow-container">
+    <div class="infowindow-left">
+      <div class="infowindow-title">{{content.name}}</div>
+      <div class="infowindow-subtitle">{{content.type | titlecase}}</div>
+      <br>
+      <div class="infowindow-stats-container">
+        <div>
+          <div class="infowindow-title">{{content.stats?.schoolInternetAvailabilityPercentage |
+            number:'1.2-2'}}%</div>
+          <div class="infowindow-subtitle">Connectivity Available</div>
+        </div>
+        <br>
+        <div>
+          <div class="infowindow-title">
+            {{content.stats?.schoolInternetAvailabilityPredicitionPercentage | number:'1.2-2'}}%</div>
+          <div class="infowindow-subtitle">Connectivity Prediction</div>
+        </div>
+      </div>
+    </div>
+    <div class="infowindow-right">
+      <div>
+        <div class="infowindow-title">Connectivity Available</div>
+        <div class="infowindow-subtitle">
+          {{content.stats?.schoolInternetAvailabilityCount | number:'1.0-0'}} connected school(s) with
+          approximately {{content.stats?.studentCount | number:'1.0-0'}}
+          students with internet access
+        </div>
+      </div>
+      <br>
+      <div>
+        <div class="infowindow-title">Connectivity Prediction</div>
+        <div class="infowindow-subtitle"
+          *ngIf="content.stats && content.stats.schoolInternetAvailabilityPredicitionCount > 0">
+          {{content.stats.schoolWithoutInternetAvailabilityCount | number:'1.0-0'}}
+          school(s) without connectivity data,
+          {{content.stats.schoolInternetAvailabilityPredicitionCount | number:'1.0-0'}} with
+          internet access prediction</div>
+        <div class="infowindow-subtitle"
+          *ngIf="content.stats && content.stats.schoolInternetAvailabilityPredicitionCount === 0">
+          Not available</div>
+      </div>
+    </div>
+  </div>
+</div>

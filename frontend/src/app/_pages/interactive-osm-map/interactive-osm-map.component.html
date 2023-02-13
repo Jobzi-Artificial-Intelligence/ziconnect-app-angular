@@ -1,4 +1,4 @@
-<div class="page-container flex direction-column">
+<div id="interactive-osm-map-page" class="flex direction-column">
   <header>
     <section class="bar flex items-center justify-between">
       <div>
@@ -97,88 +97,8 @@
         </form>
       </div>
     </div>
-    <google-map #googleMap height="100%" width="100%" [options]="mapOptions">
-      <map-info-window id="marker-info-window">
-        <div id="infowindow-container" *ngIf="selectedSchool">
-          <div class="infowindow-left">
-            <div class="infowindow-title">{{selectedSchool!.school_name}}</div>
-            <div class="infowindow-subtitle">School</div>
-            <br />
-            <div class="infowindow-stats-container">
-              <div>
-                <div class="infowindow-title">{{selectedSchool!.school_region}}</div>
-                <div class="infowindow-subtitle">Region</div>
-              </div>
-              <div>
-                <div class="infowindow-title">{{selectedSchool!.school_type}}</div>
-                <div class="infowindow-subtitle">Type</div>
-              </div>
-            </div>
-          </div>
-          <div class="infowindow-right">
-            <div class="infowindow-stats-container">
-              <div>
-                <div class="infowindow-title">{{ selectedSchool!.student_count | number:'1.0-0' }}</div>
-                <div class="infowindow-subtitle">Students</div>
-              </div>
-              <div>
-                <div class="infowindow-title">{{ selectedSchool!.computer_availability_str }}</div>
-                <div class="infowindow-subtitle">Computer Availability</div>
-              </div>
-            </div>
-            <br />
-            <div class="infowindow-title">{{ selectedSchool!.internet_availability_str }}</div>
-            <div class="infowindow-subtitle">Internet Availability</div>
-            <br />
-            <div class="infowindow-title">{{ selectedSchool!.internet_availability_prediction_str }}</div>
-            <div class="infowindow-subtitle">Internet Availability Prediction</div>
-          </div>
-        </div>
-        <div id="infowindow-container" *ngIf="!selectedSchool">
-          <div class="infowindow-left">
-            <div class="infowindow-title">{{infoContent.content.name}}</div>
-            <div class="infowindow-subtitle">{{infoContent.content.type | titlecase}}</div>
-            <br>
-            <div class="infowindow-stats-container">
-              <div>
-                <div class="infowindow-title">{{infoContent.content.stats?.schoolInternetAvailabilityPercentage |
-                  number:'1.2-2'}}%</div>
-                <div class="infowindow-subtitle">Connectivity Available</div>
-              </div>
-              <br>
-              <div>
-                <div class="infowindow-title">
-                  {{infoContent.content.stats?.schoolInternetAvailabilityPredicitionPercentage | number:'1.2-2'}}%</div>
-                <div class="infowindow-subtitle">Connectivity Prediction</div>
-              </div>
-            </div>
-          </div>
-          <div class="infowindow-right">
-            <div>
-              <div class="infowindow-title">Connectivity Available</div>
-              <div class="infowindow-subtitle">
-                {{infoContent.content.stats?.schoolInternetAvailabilityCount | number:'1.0-0'}} connected school(s) with
-                approximately {{infoContent.content.stats?.studentCount | number:'1.0-0'}}
-                students with internet access
-              </div>
-            </div>
-            <br>
-            <div>
-              <div class="infowindow-title">Connectivity Prediction</div>
-              <div class="infowindow-subtitle"
-                *ngIf="infoContent.content.stats && infoContent.content.stats.schoolInternetAvailabilityPredicitionCount > 0">
-                {{infoContent.content.stats.schoolWithoutInternetAvailabilityCount | number:'1.0-0'}}
-                school(s) without connectivity data,
-                {{infoContent.content.stats.schoolInternetAvailabilityPredicitionCount | number:'1.0-0'}} with
-                internet access prediction</div>
-              <div class="infowindow-subtitle"
-                *ngIf="infoContent.content.stats && infoContent.content.stats.schoolInternetAvailabilityPredicitionCount === 0">
-                Not available</div>
-            </div>
-          </div>
-        </div>
-      </map-info-window>
-    </google-map>
+    <div class="map-container" leaflet [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)">
+    </div>
     <div class="stats-panel-container" [ngClass]="{'open': mapStatsPanel.open}">
       <div class="inner-container" id="stats-panel-inner-container">
         <header class="flex items-center justify-between text-transform-uppercase f-size-13">

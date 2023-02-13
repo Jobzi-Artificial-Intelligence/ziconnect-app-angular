@@ -5,7 +5,7 @@ import {
   ContributorsComponent,
   DataSourceReferenceComponent,
   HomeComponent,
-  InteractiveMapComponent,
+  InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
@@ -26,7 +26,7 @@ const routes: Routes = [{
   }
 }, {
   path: 'interactive-map',
-  component: InteractiveMapComponent,
+  component: InteractiveOsmMapComponent,
   data: {
     seo: {
       title: 'Jobzi | Connectivity Map',

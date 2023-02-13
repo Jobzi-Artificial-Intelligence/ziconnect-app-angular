@@ -4,15 +4,16 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GoogleMapsModule } from '@angular/google-maps';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularMaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShortNumberPipe } from './_pipes/short-number.pipe';
 import {
   DialogSchoolColumnSelectorComponent,
+  LocalityLayerPopupComponent,
   NavigationBarComponent,
   SchoolTableBottomSheetComponent
 } from './_components';
@@ -21,7 +22,7 @@ import {
   ContributorsComponent,
   DataSourceReferenceComponent,
   HomeComponent,
-  InteractiveMapComponent,
+  InteractiveOsmMapComponent,
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
@@ -36,8 +37,9 @@ import {
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
     HomeComponent,
-    InteractiveMapComponent,
+    InteractiveOsmMapComponent,
     LicenseComponent,
+    LocalityLayerPopupComponent,
     NavigationBarComponent,
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
@@ -49,8 +51,8 @@ import {
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    GoogleMapsModule,
     HttpClientModule,
+    LeafletModule,
     NgxChartsModule,
     ReactiveFormsModule,
   ],
