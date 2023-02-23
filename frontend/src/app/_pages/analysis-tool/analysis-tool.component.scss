@@ -6,10 +6,6 @@
   line-height: 1;
   margin-top: -16px;
 
-  > section {
-    padding: 80px 0;
-  }
-
   .page-title {
     background-color: #fafafa;
     height: auto;
@@ -79,6 +75,62 @@
           }
         }
       }
+    }
+  }
+
+  #section-about,
+  #section-type-selection {
+    padding: 40px 0;
+
+    header {
+      border-bottom: 3px solid $tp-title;
+      padding: 8px 0;
+
+      .title {
+        margin-bottom: 6px;
+      }
+    }
+  }
+
+  .file-upload-container {
+    @include border-radius(8px);
+    @include box-sizing(border-box);
+    border: 2px dashed $border-color;
+    max-width: 350px;
+    padding: 24px 0;
+    position: relative;
+
+    &.file-over {
+      border-color: $blue;
+    }
+
+    ::ng-deep .mat-icon {
+      height: 48px;
+      margin-bottom: 24px;
+      width: 48px;
+    }
+
+    > p {
+      margin-bottom: 16px;
+    }
+
+    .file-drop-input {
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+  }
+
+  .file-selected-container {
+    @include border-radius(8px);
+    @include box-sizing(border-box);
+    border: 2px dashed $border-color;
+    padding: 8px;
+
+    ::ng-deep .mat-icon {
+      height: 48px;
+      margin-right: 8px;
+      width: 48px;
     }
   }
 }

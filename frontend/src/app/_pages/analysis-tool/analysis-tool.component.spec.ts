@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularMaterialModule } from 'src/app/material.module';
 
 import { AnalysisToolComponent } from './analysis-tool.component';
 
@@ -8,9 +9,11 @@ describe('AnalysisToolComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AnalysisToolComponent ]
-    })
-    .compileComponents();
+      declarations: [AnalysisToolComponent],
+      imports: [
+        AngularMaterialModule
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AnalysisToolComponent);
     component = fixture.componentInstance;

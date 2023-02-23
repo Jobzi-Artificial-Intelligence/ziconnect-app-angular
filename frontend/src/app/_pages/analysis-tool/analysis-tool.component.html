@@ -24,4 +24,63 @@
       on <a href="https://www.freepik.com/">Freepik</a>
     </div>
   </header>
+  <section id="section-about" class="wrapper">
+    <header>
+      <div class="title f-size-24 color-tp-title f-weight-500">About Analysis</div>
+    </header>
+    <br>
+    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor
+      incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+    <br>
+    <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
+    <br>
+    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor
+      incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+    <br>
+    <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
+    <br>
+    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor
+      incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+  </section>
+  <section id="section-type-selection" class="wrapper">
+    <header>
+      <div class="title f-size-24 color-tp-title f-weight-500">Let&apos;s start</div>
+      <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
+    </header>
+    <br>
+    <p class="text-transform-uppercase">******</p>
+    <p class="text-transform-uppercase">** selection cards goes here. mat-card component **</p>
+    <p class="text-transform-uppercase">******</p>
+  </section>
+  <section class="wrapper">
+    <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
+      (fileDropped)="onFileDropped($event)">
+      <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
+      <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
+      <p class="f-size-16 color-tp-body">or</p>
+      <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
+      <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)" accept=".csv"
+        class="file-drop-input" />
+    </div>
+    <br>
+    <div class="file-selected-container flex items-start" *ngIf="selectedFile">
+      <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
+      <div>
+        <div class="color-tp-title f-size-16">{{selectedFile.name}}</div>
+        <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
+      </div>
+    </div>
+  </section>
 </div>

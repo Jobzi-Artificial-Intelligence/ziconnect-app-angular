@@ -27,6 +27,7 @@ import {
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
+import { FileDragAndDropDirective } from './_directives';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import {
     ContributorsComponent,
     DataSourceReferenceComponent,
     DialogSchoolColumnSelectorComponent,
+    FileDragAndDropDirective,
     HomeComponent,
     InteractiveOsmMapComponent,
     LicenseComponent,
