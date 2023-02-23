@@ -163,7 +163,8 @@
 
         </a>
       <li class="submenu-item">
-        <a href="#" class="flex text-decoration-none">
+        <a [routerLink]="['/analysis-tool']" class="flex text-decoration-none"
+          (click)="toggleSubmenuContainer(null, false)">
           <div class="icon flex items-center justify-center purple">
             <mat-icon class="material-icons-outlined">query_stats</mat-icon>
           </div>

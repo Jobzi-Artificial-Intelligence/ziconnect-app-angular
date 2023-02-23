@@ -18,6 +18,7 @@ import {
   SchoolTableBottomSheetComponent
 } from './_components';
 import {
+  AnalysisToolComponent,
   CodeConductComponent,
   ContributorsComponent,
   DataSourceReferenceComponent,
@@ -31,6 +32,7 @@ import {
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
+    AnalysisToolComponent,
     AppComponent,
     CodeConductComponent,
     ContributorsComponent,
