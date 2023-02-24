@@ -68,6 +68,14 @@
     <p class="text-transform-uppercase">******</p>
   </section>
   <section class="wrapper">
+    <br>
+    <div>
+      <button mat-raised-button color="primary" (click)="onButtonSetStorageValueClick()">Set Random storage
+        Task Id</button>
+      <br><br>
+      <span>Storage Task Id: <b>{{predictionTaskId}}</b></span>
+    </div>
+    <br><br>
     <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
       (fileDropped)="onFileDropped($event)">
       <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
@@ -87,11 +95,11 @@
     </div>
     <br>
     <div *ngIf="selectedFile">
-      <button mat-raised-button color="primary" (click)="onStartAnalysisButtonClick()">Start Analysis</button>
+      <button mat-raised-button color="primary" (click)="onButtonStartAnalysisClick()">Start Analysis</button>
     </div>
     <br>
     <div>
-      <span>{{progress}}%</span>
+      <span>Upload Progress: {{progress}}%</span>
       <pre>{{responseBody | json}}</pre>
     </div>
   </section>

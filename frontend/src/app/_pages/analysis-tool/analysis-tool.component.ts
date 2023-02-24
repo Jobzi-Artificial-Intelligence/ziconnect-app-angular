@@ -13,11 +13,20 @@ export class AnalysisToolComponent implements OnInit {
   public selectedFile: File | undefined;
   public responseBody: any;
   public progress: number = 0;
+  public predictionTaskId: string = '';
 
   constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService) { }
 
   ngOnInit(): void {
     this.selectedFile = undefined;
+
+    this.loadPredictionTaskId();
+  }
+
+  loadPredictionTaskId() {
+    const storageTaskId = localStorage.getItem('prediction_task_id');
+
+    this.predictionTaskId = storageTaskId ? storageTaskId : '';
   }
 
   //#region Upload Files Handlers
@@ -41,7 +50,14 @@ export class AnalysisToolComponent implements OnInit {
   ////////////////////////////////////////////
   //#endregion
 
-  onStartAnalysisButtonClick() {
+  onButtonSetStorageValueClick() {
+    const newValue = Math.random().toString(36).substring(2, 12);
+    localStorage.setItem('prediction_task_id', newValue);
+
+    this.predictionTaskId = newValue;
+  }
+
+  onButtonStartAnalysisClick() {
     if (!this.selectedFile) {
       this._alertService.showWarning('One or more input file were not provided!');
       return;
