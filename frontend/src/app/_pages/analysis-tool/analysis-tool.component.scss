@@ -5,6 +5,7 @@
 #page-analysis-tool {
   line-height: 1;
   margin-top: -16px;
+  padding-bottom: 80px;
 
   .page-title {
     background-color: #fafafa;
@@ -49,6 +50,14 @@
 
         .subtitle {
           color: #385a64;
+        }
+
+        .btn-cta {
+          margin-top: 24px;
+
+          &.mat-raised-button {
+            background-color: #ff4f5a;
+          }
         }
       }
 

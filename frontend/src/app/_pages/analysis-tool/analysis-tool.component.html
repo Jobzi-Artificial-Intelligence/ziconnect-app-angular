@@ -12,6 +12,9 @@
           <div class="subtitle f-size-20 line-height-1-5 line-height-1">
             Make your own analysis, use our models, visualize the results and download them.
           </div>
+          <button mat-raised-button color="primary" class="btn-cta btn-lg"
+            (click)="scrollToStartAnalysisSection()">Let&apos;s
+            start</button>
         </div>
         <div class="hero-image">
           <img src="assets/img/page/analysis-tool/img-hero.jpg" height="auto" width="650">
@@ -54,7 +57,7 @@
       consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
       Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
   </section>
-  <section id="section-type-selection" class="wrapper">
+  <section id="section-type-selection" #sectionTypeSelection class="wrapper">
     <header>
       <div class="title f-size-24 color-tp-title f-weight-500">Let&apos;s start</div>
       <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
@@ -71,8 +74,8 @@
       <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
       <p class="f-size-16 color-tp-body">or</p>
       <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
-      <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)" accept=".csv"
-        class="file-drop-input" />
+      <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)"
+        accept=".csv,application/pdf" class="file-drop-input" />
     </div>
     <br>
     <div class="file-selected-container flex items-start" *ngIf="selectedFile">
@@ -81,6 +84,15 @@
         <div class="color-tp-title f-size-16">{{selectedFile.name}}</div>
         <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
       </div>
+    </div>
+    <br>
+    <div *ngIf="selectedFile">
+      <button mat-raised-button color="primary" (click)="onStartAnalysisButtonClick()">Start Analysis</button>
+    </div>
+    <br>
+    <div>
+      <span>{{progress}}%</span>
+      <pre>{{responseBody | json}}</pre>
     </div>
   </section>
 </div>

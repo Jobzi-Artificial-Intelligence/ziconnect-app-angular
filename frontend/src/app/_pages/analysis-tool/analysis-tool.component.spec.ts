@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularMaterialModule } from 'src/app/material.module';
 
@@ -11,7 +12,8 @@ describe('AnalysisToolComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AnalysisToolComponent],
       imports: [
-        AngularMaterialModule
+        AngularMaterialModule,
+        HttpClientTestingModule,
       ]
     }).compileComponents();
 

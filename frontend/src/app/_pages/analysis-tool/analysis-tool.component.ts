@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertService } from 'src/app/_services';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AlertService, AnalysisToolService } from 'src/app/_services';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -7,12 +8,16 @@ import { AlertService } from 'src/app/_services';
   styleUrls: ['./analysis-tool.component.scss']
 })
 export class AnalysisToolComponent implements OnInit {
-  public selectedFile: any | null;
+  @ViewChild('sectionTypeSelection') sectionTypeSelection: ElementRef | undefined;
 
-  constructor(private _alertService: AlertService) { }
+  public selectedFile: File | undefined;
+  public responseBody: any;
+  public progress: number = 0;
+
+  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService) { }
 
   ngOnInit(): void {
-    this.selectedFile = null;
+    this.selectedFile = undefined;
   }
 
   //#region Upload Files Handlers
@@ -33,7 +38,38 @@ export class AnalysisToolComponent implements OnInit {
 
     this.selectedFile = files[0];
   }
-
   ////////////////////////////////////////////
   //#endregion
+
+  onStartAnalysisButtonClick() {
+    if (!this.selectedFile) {
+      this._alertService.showWarning('One or more input file were not provided!');
+      return;
+    }
+
+    this.progress = 0;
+
+    this._analysisToolService
+      .postNewPredictionAnalysis(this.selectedFile)
+      .subscribe((event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          this.responseBody = event.body;
+        }
+      }, (error: any) => {
+        this._alertService.showError('Something went wrong: ' + error.message);
+      });
+  }
+
+  scrollToStartAnalysisSection(): void {
+    console.log(this.sectionTypeSelection);
+    if (this.sectionTypeSelection) {
+      const yOffset = -60; // ajuste o valor para a posição desejada
+      const element = this.sectionTypeSelection.nativeElement;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
 }
