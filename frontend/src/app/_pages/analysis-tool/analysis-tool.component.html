@@ -70,14 +70,19 @@
   <section class="wrapper">
     <br>
     <div>
-      <button mat-raised-button color="primary" (click)="onButtonSetStorageValueClick()">Set Random storage
-        Task Id</button>
+      <div class="flex items-center">
+        <button mat-raised-button color="primary" (click)="onButtonSetStorageValueClick()">Set Random storage
+          Task Id</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()">Remove storage
+          Task Id</button>
+      </div>
+
       <br><br>
       <span>Storage Task Id: <b>{{predictionTaskId}}</b></span>
     </div>
     <br><br>
     <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
-      (fileDropped)="onFileDropped($event)">
+      (fileDropped)="onFileDropped($event)" *ngIf="!selectedFile">
       <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
       <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
       <p class="f-size-16 color-tp-body">or</p>
@@ -86,12 +91,15 @@
         accept=".csv,application/pdf" class="file-drop-input" />
     </div>
     <br>
-    <div class="file-selected-container flex items-start" *ngIf="selectedFile">
+    <div class="file-selected-container flex items-center" *ngIf="selectedFile">
       <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
-      <div>
-        <div class="color-tp-title f-size-16">{{selectedFile.name}}</div>
+      <div class="flex-auto">
+        <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
         <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
       </div>
+      <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
+        <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
+      </button>
     </div>
     <br>
     <div *ngIf="selectedFile">

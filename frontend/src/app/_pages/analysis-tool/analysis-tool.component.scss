@@ -136,7 +136,7 @@
     border: 2px dashed $border-color;
     padding: 8px;
 
-    ::ng-deep .mat-icon {
+    > ::ng-deep .mat-icon {
       height: 48px;
       margin-right: 8px;
       width: 48px;

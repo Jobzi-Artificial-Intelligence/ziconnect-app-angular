@@ -50,11 +50,21 @@ export class AnalysisToolComponent implements OnInit {
   ////////////////////////////////////////////
   //#endregion
 
+  onButtonRemoveFileClick() {
+    this.selectedFile = undefined;
+  }
+
   onButtonSetStorageValueClick() {
     const newValue = Math.random().toString(36).substring(2, 12);
     localStorage.setItem('prediction_task_id', newValue);
 
     this.predictionTaskId = newValue;
+  }
+
+  onButtonRemoveStorageValueClick() {
+    localStorage.removeItem('prediction_task_id');
+
+    this.predictionTaskId = '';
   }
 
   onButtonStartAnalysisClick() {

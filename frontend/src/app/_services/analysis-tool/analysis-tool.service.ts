@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AnalysisTask } from 'src/app/_models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalysisToolService {
-  // TODO: Replace with correct url
-  private _taskPredictionUrl = 'http://backend-homolog.jobzi.com:8004/task/prediction';
+  private _taskPredictionPath = 'task/prediction';
+  private _taskResultPath = 'task/result';
 
   constructor(private _http: HttpClient) { }
 
@@ -17,11 +21,30 @@ export class AnalysisToolService {
    */
   postNewPredictionAnalysis(file: File) {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('predictionType', '1');
+    formData.append('predictionFile', file);
 
-    return this._http.post<any>(this._taskPredictionUrl, formData, {
+    return this._http.post<any>(`${environment.fastApiHost}${this._taskPredictionPath}`, formData, {
       reportProgress: true,
       observe: 'events'
     });
+  }
+
+  /**
+   * Gets analysis task status by task id
+   * @param taskId analysis task id
+   * @returns 
+   */
+  getTaskResult(taskId: string): Observable<AnalysisTask> {
+    return this._http
+      .get<any>(`${environment.fastApiHost}${this._taskResultPath}/${taskId}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return data.map((item: any) => new AnalysisTask().deserialize(item));
+        })
+      );
+    ;
   }
 }
