@@ -15,6 +15,7 @@ import {
   DialogSchoolColumnSelectorComponent,
   LocalityLayerPopupComponent,
   NavigationBarComponent,
+  PageFooterComponent,
   SchoolTableBottomSheetComponent
 } from './_components';
 import {
@@ -45,6 +46,7 @@ import { FileDragAndDropDirective } from './_directives';
     LicenseComponent,
     LocalityLayerPopupComponent,
     NavigationBarComponent,
+    PageFooterComponent,
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
     ShortNumberPipe,],

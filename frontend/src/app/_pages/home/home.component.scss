@@ -307,33 +307,6 @@
   }
 }
 
-#footer-section {
-  background-color: #131924;
-  padding: 80px 0 32px;
-
-  .footer-message {
-    margin: 24px auto 48px;
-    max-width: 800px;
-  }
-
-  hr {
-    background-color: #fff;
-    height: 1px;
-    opacity: 0.1;
-    width: 100%;
-  }
-
-  .copyright {
-    color: #fff;
-    opacity: 0.5;
-    padding-top: 32px;
-  }
-
-  ::ng-deep .mat-raised-button {
-    margin-bottom: 64px;
-  }
-}
-
 // shared styles
 .about-content,
 .hero-content,
