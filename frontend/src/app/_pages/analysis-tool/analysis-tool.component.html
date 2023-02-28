@@ -27,88 +27,111 @@
       on <a href="https://www.freepik.com/">Freepik</a>
     </div>
   </header>
-  <section id="section-about" class="wrapper">
-    <header>
-      <div class="title f-size-24 color-tp-title f-weight-500">About Analysis</div>
-    </header>
-    <br>
-    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor
-      incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-    <br>
-    <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
-    <br>
-    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor
-      incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-    <br>
-    <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
-    <br>
-    <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor
-      incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-  </section>
-  <section id="section-type-selection" #sectionTypeSelection class="wrapper">
-    <header>
-      <div class="title f-size-24 color-tp-title f-weight-500">Let&apos;s start</div>
-      <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
-    </header>
-    <br>
-    <p class="text-transform-uppercase">******</p>
-    <p class="text-transform-uppercase">** selection cards goes here. mat-card component **</p>
-    <p class="text-transform-uppercase">******</p>
-  </section>
-  <section class="wrapper">
-    <br>
-    <div>
-      <div class="flex items-center">
-        <button mat-raised-button color="primary" (click)="onButtonSetStorageValueClick()">Set Random storage
-          Task Id</button>&nbsp;
-        <button mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()">Remove storage
-          Task Id</button>
+  <div class="wrapper">
+    <section id="section-about">
+      <header>
+        <div class="title f-size-24 color-tp-title f-weight-500">About Analysis</div>
+      </header>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor
+        incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+      </p>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor
+        incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+      </p>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor
+        incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+      </p>
+    </section>
+    <section id="section-type-selection" #sectionTypeSelection>
+      <header>
+        <div class="title f-size-24 color-tp-title f-weight-500">Let&apos;s start</div>
+        <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
+      </header>
+      <br>
+      <div class="flex direction-column items-center justify-between" id="selection-list">
+        <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(1)"
+          [ngClass]="{'active': selectedAnalysisType === 1}">
+          <mat-icon class="active-icon material-icons color-blue">check_circle</mat-icon>
+          <mat-card-title>Connectivity Prediction</mat-card-title>
+          <mat-card-subtitle>Analysis</mat-card-subtitle>
+          <mat-card-content>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+              ea commodo consequat.</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(2)"
+          [ngClass]="{'active': selectedAnalysisType === 2}">
+          <mat-icon class="active-icon material-icons color-blue">check_circle</mat-icon>
+          <mat-card-title>Employability Impact</mat-card-title>
+          <mat-card-subtitle>Analysis</mat-card-subtitle>
+          <mat-card-content>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+              ea commodo consequat.</p>
+          </mat-card-content>
+        </mat-card>
       </div>
-
-      <br><br>
-      <span>Storage Task Id: <b>{{predictionTaskId}}</b></span>
-    </div>
-    <br><br>
-    <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
-      (fileDropped)="onFileDropped($event)" *ngIf="!selectedFile">
-      <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
-      <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
-      <p class="f-size-16 color-tp-body">or</p>
-      <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
-      <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)"
-        accept=".csv,application/pdf" class="file-drop-input" />
-    </div>
-    <br>
-    <div class="file-selected-container flex items-center" *ngIf="selectedFile">
-      <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
-      <div class="flex-auto">
-        <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
-        <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
+    </section>
+    <section>
+      <div *ngIf="storageTask">
+        <span><b>Storage Task:</b> {{storageTask | json}}</span>
+        <br><br>
+        <button mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()">Remove From Storage</button>
       </div>
-      <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
-        <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
-      </button>
-    </div>
-    <br>
-    <div *ngIf="selectedFile">
-      <button mat-raised-button color="primary" (click)="onButtonStartAnalysisClick()">Start Analysis</button>
-    </div>
-    <br>
-    <div>
-      <span>Upload Progress: {{progress}}%</span>
-      <pre>{{responseBody | json}}</pre>
-    </div>
-  </section>
+      <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
+        (fileDropped)="onFileDropped($event)" *ngIf="selectedAnalysisType && storageTask === null && !selectedFile">
+        <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
+        <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
+        <p class="f-size-16 color-tp-body">or</p>
+        <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
+        <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)"
+          accept=".csv,application/pdf" class="file-drop-input" />
+      </div>
+      <br>
+      <div class="file-selected-container flex items-center" *ngIf="selectedFile && storageTask === null">
+        <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
+        <div class="flex-auto">
+          <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
+          <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
+        </div>
+        <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
+          <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
+        </button>
+      </div>
+      <br>
+      <div *ngIf="selectedFile && storageTask === null">
+        <button mat-raised-button color="primary" (click)="onButtonStartAnalysisClick()">Start Analysis</button>
+      </div>
+      <br>
+      <div *ngIf="selectedFile && storageTask === null">
+        <span>Upload Progress: {{progress}}%</span>
+        <pre>{{responseBody | json}}</pre>
+      </div>
+    </section>
+  </div>
 </div>
