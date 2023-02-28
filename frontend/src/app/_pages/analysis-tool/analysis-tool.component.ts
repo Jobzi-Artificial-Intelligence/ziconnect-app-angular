@@ -1,5 +1,6 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { AnalysisTask } from 'src/app/_models';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
@@ -11,7 +12,9 @@ import { AlertService, AnalysisToolService } from 'src/app/_services';
 })
 export class AnalysisToolComponent implements OnInit {
   @ViewChild('sectionTypeSelection') sectionTypeSelection: ElementRef | undefined;
+  @ViewChild('sectionAnalysisSteps') sectionAnalysisSteps: ElementRef | undefined;
   @ViewChild('fileDropRef') fileDropRef: ElementRef | undefined;
+  @ViewChild('analysisStepper') analysisStepper: MatStepper | undefined;
 
   public selectedAnalysisType: AnalysisType | undefined = undefined;
   public selectedFile: File | undefined;
@@ -19,7 +22,7 @@ export class AnalysisToolComponent implements OnInit {
   public progress: number = 0;
   public storageTask?: AnalysisTask | null = null;
 
-  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService) { }
+  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.selectedFile = undefined;
@@ -121,13 +124,18 @@ export class AnalysisToolComponent implements OnInit {
     this.initNewAnalysis();
 
     this.loadStorageTask();
+
+    this.ref.detectChanges();
+
+    this.scrollToSection('sectionAnalysisSteps');
   }
 
-  scrollToStartAnalysisSection(): void {
-    console.log(this.sectionTypeSelection);
-    if (this.sectionTypeSelection) {
+  scrollToSection(sectionElementName: string): void {
+    const elementRef = (this as any)[sectionElementName] as ElementRef;
+
+    if (elementRef) {
       const yOffset = -60; // ajuste o valor para a posição desejada
-      const element = this.sectionTypeSelection.nativeElement;
+      const element = elementRef.nativeElement;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
       window.scrollTo({ top: y, behavior: 'smooth' });
@@ -140,6 +148,16 @@ export class AnalysisToolComponent implements OnInit {
 
     if (this.fileDropRef) {
       this.fileDropRef.nativeElement.value = '';
+    }
+  }
+
+  onButtonNextClick() {
+    if (this.analysisStepper) {
+      if (this.analysisStepper.selected) {
+        this.analysisStepper.selected.completed = true;
+      }
+
+      this.analysisStepper.next();
     }
   }
 }

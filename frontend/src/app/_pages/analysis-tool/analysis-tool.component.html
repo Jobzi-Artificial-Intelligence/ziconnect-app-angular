@@ -13,7 +13,7 @@
             Make your own analysis, use our models, visualize the results and download them.
           </div>
           <button mat-raised-button color="primary" class="btn-cta btn-lg"
-            (click)="scrollToStartAnalysisSection()">Let&apos;s
+            (click)="scrollToSection('sectionTypeSelection')">Let&apos;s
             start</button>
         </div>
         <div class="hero-image">
@@ -103,35 +103,52 @@
         <br><br>
         <button mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()">Remove From Storage</button>
       </div>
-      <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
-        (fileDropped)="onFileDropped($event)" *ngIf="selectedAnalysisType && storageTask === null && !selectedFile">
-        <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
-        <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
-        <p class="f-size-16 color-tp-body">or</p>
-        <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
-        <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)"
-          accept=".csv,application/pdf" class="file-drop-input" />
-      </div>
-      <br>
-      <div class="file-selected-container flex items-center" *ngIf="selectedFile && storageTask === null">
-        <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
-        <div class="flex-auto">
-          <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
-          <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
-        </div>
-        <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
-          <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
-        </button>
-      </div>
-      <br>
-      <div *ngIf="selectedFile && storageTask === null">
-        <button mat-raised-button color="primary" (click)="onButtonStartAnalysisClick()">Start Analysis</button>
-      </div>
-      <br>
-      <div *ngIf="selectedFile && storageTask === null">
-        <span>Upload Progress: {{progress}}%</span>
-        <pre>{{responseBody | json}}</pre>
-      </div>
+    </section>
+    <section id="section-analysis-steps" *ngIf="selectedAnalysisType && !storageTask" #sectionAnalysisSteps>
+      <mat-vertical-stepper [linear]="true" #analysisStepper>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>Input Data</ng-template>
+          <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
+            (fileDropped)="onFileDropped($event)" *ngIf="selectedAnalysisType && storageTask === null && !selectedFile">
+            <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
+            <p class="f-size-16 f-weight-500 color-tp-body">Drag and drop file here</p>
+            <p class="f-size-16 color-tp-body">or</p>
+            <button mat-raised-button color="primary" (click)="fileDropRef.click()">Browse</button>
+            <input type="file" #fileDropRef id="fileDropRef" (change)="onFileBrowserHandler($event)"
+              accept=".csv,application/pdf" class="file-drop-input" />
+          </div>
+          <br>
+          <div class="file-selected-container flex items-center" *ngIf="selectedFile && storageTask === null">
+            <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
+            <div class="flex-auto">
+              <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
+              <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
+            </div>
+            <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
+              <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
+            </button>
+          </div>
+          <br>
+          <button mat-raised-button color="primary" (click)="onButtonNextClick()"
+            [disabled]="!selectedFile">Next</button>
+        </mat-step>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>Data Validation</ng-template>
+          <p>Data validation summary goes here</p>
+          <button mat-raised-button color="primary" (click)="onButtonNextClick()">Next</button>
+        </mat-step>
+        <mat-step [completed]="false">
+          <ng-template matStepLabel>Execute</ng-template>
+          <div *ngIf="selectedFile && storageTask === null">
+            <button mat-raised-button color="primary" (click)="onButtonStartAnalysisClick()">Start Analysis</button>
+          </div>
+          <br>
+          <div *ngIf="selectedFile && storageTask === null">
+            <span>Upload Progress: {{progress}}%</span>
+            <pre>{{responseBody | json}}</pre>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
     </section>
   </div>
 </div>
