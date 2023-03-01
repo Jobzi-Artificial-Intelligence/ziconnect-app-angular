@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ShortNumberPipe } from './_pipes/short-number.pipe';
+import { FileSizePipe, ShortNumberPipe } from './_pipes';
 import {
   DialogSchoolColumnSelectorComponent,
   LocalityLayerPopupComponent,
@@ -49,8 +49,11 @@ import { FileDragAndDropDirective } from './_directives';
     PageFooterComponent,
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
+    FileSizePipe,
     ShortNumberPipe,],
-  exports: [ShortNumberPipe],
+  exports: [
+    FileSizePipe,
+    ShortNumberPipe],
   imports: [
     AngularMaterialModule,
     AppRoutingModule,

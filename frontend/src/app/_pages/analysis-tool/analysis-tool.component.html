@@ -122,7 +122,7 @@
             <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
             <div class="flex-auto">
               <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{selectedFile.name}}</div>
-              <div class="color-tp-body f-size-13">{{selectedFile.size}}</div>
+              <div class="color-tp-body f-size-13">{{selectedFile.size | fileSize}}</div>
             </div>
             <button mat-mini-fab color="primary" aria-label="Remove file" (click)="onButtonRemoveFileClick()">
               <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
