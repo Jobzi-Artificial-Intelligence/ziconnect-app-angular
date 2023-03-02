@@ -102,8 +102,13 @@
         [ngClass]="{'pending': storageTask.taskStatus === 'PENDING', 'fail': storageTask.taskStatus === 'FAILURE', 'success': storageTask.taskStatus === 'SUCCESS'}">
         <header class="flex items-center justify-between">
           <div class="color-tp-title flex items-center f-size-14" matTooltip="Last status checked at">
-            <mat-icon class="cursor-pointer material-icons-outlined color-tp-body">history</mat-icon>&nbsp;
-            <span>01/03/2023 16:00:00</span>
+            <mat-icon *ngIf="!loadingPoolTask"
+              class="cursor-pointer material-icons-outlined color-tp-body">history</mat-icon>&nbsp;
+            <span *ngIf="!loadingPoolTask">01/03/2023 16:00:00</span>
+            <div class="flex items-center" *ngIf="loadingPoolTask">
+              <mat-spinner [diameter]="20"></mat-spinner>&nbsp;&nbsp;
+              <span class="f-size-13 color-tp-body">Updating...</span>
+            </div>
           </div>
           <div class="status-label flex items-center pending">
             <div class="label-text f-weight-500">{{storageTask.taskStatus}}</div>
@@ -116,7 +121,10 @@
           </div>
         </header>
         <div class="content">
-          <div class="f-size-20 color-tp-title f-weight-500 line-height-1-5">Connectivity prediction analysis</div>
+          <div class="f-size-20 color-tp-title f-weight-500 line-height-1-5">
+            <span *ngIf="selectedAnalysisType === 1">Connectivity Prediction Analysis</span>
+            <span *ngIf="selectedAnalysisType === 2">Employability Impact Analysis</span>
+          </div>
           <div class="f-size-16 color-tp-body">{{storageTask.taskId}}</div>
           <div class="tag-list flex items-center">
             <div class="tag-item flex items-center" matTooltip="Received at">

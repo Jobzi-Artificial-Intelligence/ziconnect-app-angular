@@ -1,6 +1,9 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
+import { Observable, of, interval, Subject, Subscription } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
+import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { AnalysisTask } from 'src/app/_models';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
@@ -10,16 +13,18 @@ import { AlertService, AnalysisToolService } from 'src/app/_services';
   templateUrl: './analysis-tool.component.html',
   styleUrls: ['./analysis-tool.component.scss']
 })
-export class AnalysisToolComponent implements OnInit {
+export class AnalysisToolComponent implements OnInit, OnDestroy {
   @ViewChild('sectionTypeSelection') sectionTypeSelection: ElementRef | undefined;
   @ViewChild('sectionAnalysisSteps') sectionAnalysisSteps: ElementRef | undefined;
   @ViewChild('analysisStepper') analysisStepper: MatStepper | undefined;
 
+  public loadingPoolTask: boolean = false;
   public selectedAnalysisType: AnalysisType | undefined = undefined;
   public selectedFile: File | undefined;
   public responseBody: any;
   public progress: number = 0;
   public storageTask?: AnalysisTask | null = null;
+  public poolTaskSubscription!: Subscription;
 
   //#region FILES
   ////////////////////////////////////////////
@@ -35,6 +40,12 @@ export class AnalysisToolComponent implements OnInit {
   //#endregion
 
   constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef) { }
+
+  ngOnDestroy(): void {
+    if (this.poolTaskSubscription) {
+      this.poolTaskSubscription.unsubscribe();
+    }
+  }
 
   ngOnInit(): void {
     this.selectedFile = undefined;
@@ -74,26 +85,21 @@ export class AnalysisToolComponent implements OnInit {
   ////////////////////////////////////////////
   //#endregion
 
+  onButtonNextClick() {
+    if (this.analysisStepper) {
+      if (this.analysisStepper.selected) {
+        this.analysisStepper.selected.completed = true;
+      }
+
+      this.analysisStepper.next();
+    }
+  }
+
   onButtonRemoveFileClick(filePropertyName: string) {
     (this as any)[filePropertyName] = undefined;
     if ((this as any)[`${filePropertyName}DropRef`]) {
       (this as any)[`${filePropertyName}DropRef`].nativeElement.value = '';
     }
-  }
-
-  setStorageValueClick() {
-    if (this.selectedAnalysisType) {
-      const newValue = Math.random().toString(36).substring(2, 12);
-      const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
-
-      const task = new AnalysisTask();
-      task.taskId = newValue;
-
-      localStorage.setItem(`${analysisTypeStr}_task`, JSON.stringify(task));
-
-      this.storageTask = task;
-    }
-
   }
 
   onButtonRemoveStorageValueClick() {
@@ -115,15 +121,20 @@ export class AnalysisToolComponent implements OnInit {
 
     this.progress = 0;
 
-    this.setStorageValueClick();
-
     this._analysisToolService
       .postNewPredictionAnalysis(this.schoolFile)
       .subscribe((event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);
         } else if (event instanceof HttpResponse) {
-          this.responseBody = event.body;
+          if (event.body && event.body.task_id) {
+            let analysisTask = new AnalysisTask();
+            analysisTask.taskId = event.body.task_id;
+
+            if (this.selectedAnalysisType) {
+              this.putAnalysisTaskOnStorage(analysisTask);
+            }
+          }
         }
       }, (error: any) => {
         this._alertService.showError('Something went wrong: ' + error.message);
@@ -136,9 +147,13 @@ export class AnalysisToolComponent implements OnInit {
 
     this.loadStorageTask();
 
-    this.ref.detectChanges();
+    if (!this.storageTask) {
+      this.ref.detectChanges();
 
-    this.scrollToSection('sectionAnalysisSteps');
+      this.scrollToSection('sectionAnalysisSteps');
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.taskStatus)) {
+      this.poolStorageTask();
+    }
   }
 
   scrollToSection(sectionElementName: string): void {
@@ -170,13 +185,40 @@ export class AnalysisToolComponent implements OnInit {
     }
   }
 
-  onButtonNextClick() {
-    if (this.analysisStepper) {
-      if (this.analysisStepper.selected) {
-        this.analysisStepper.selected.completed = true;
-      }
+  poolStorageTask() {
+    if (this.storageTask) {
+      const timer = interval(10000);
 
-      this.analysisStepper.next();
+      this.poolTaskSubscription = timer.subscribe(() => {
+        this.loadingPoolTask = true;
+
+        this._analysisToolService
+          .getTaskResult(this.storageTask ? this.storageTask.taskId.toString() : '')
+          .subscribe(data => {
+            this.loadingPoolTask = false;
+            this.storageTask = data;
+            this.putAnalysisTaskOnStorage(this.storageTask);
+
+            if ([AnalysisTaskStatus.Failure || this.storageTask.taskStatus === AnalysisTaskStatus.Success].includes(this.storageTask.taskStatus)) {
+              this.poolTaskSubscription.unsubscribe();
+            }
+          }, error => {
+            this.loadingPoolTask = false;
+            this._alertService.showError(error);
+          });
+      });
+    }
+  }
+
+  putAnalysisTaskOnStorage(analysisTask: AnalysisTask) {
+    if (this.selectedAnalysisType) {
+      const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
+
+      localStorage.setItem(`${analysisTypeStr}_task`, JSON.stringify(analysisTask));
+
+      this.storageTask = analysisTask;
+
+      this.poolStorageTask();
     }
   }
 }

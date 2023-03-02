@@ -42,7 +42,7 @@ export class AnalysisToolService {
       })
       .pipe(
         map((data) => {
-          return data.map((item: any) => new AnalysisTask().deserialize(item));
+          return new AnalysisTask().deserialize(data);
         })
       );
     ;
