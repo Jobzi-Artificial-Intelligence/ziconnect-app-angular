@@ -13,7 +13,6 @@ import { AlertService, AnalysisToolService } from 'src/app/_services';
 export class AnalysisToolComponent implements OnInit {
   @ViewChild('sectionTypeSelection') sectionTypeSelection: ElementRef | undefined;
   @ViewChild('sectionAnalysisSteps') sectionAnalysisSteps: ElementRef | undefined;
-  @ViewChild('fileDropRef') fileDropRef: ElementRef | undefined;
   @ViewChild('analysisStepper') analysisStepper: MatStepper | undefined;
 
   public selectedAnalysisType: AnalysisType | undefined = undefined;
@@ -21,6 +20,19 @@ export class AnalysisToolComponent implements OnInit {
   public responseBody: any;
   public progress: number = 0;
   public storageTask?: AnalysisTask | null = null;
+
+  //#region FILES
+  ////////////////////////////////////////////
+  @ViewChild('schoolFileDropRef') schoolFileDropRef: ElementRef | undefined;
+  public schoolFile!: File;
+
+  @ViewChild('localityFileDropRef') localityFileDropRef: ElementRef | undefined;
+  public localityFile!: File;
+
+  @ViewChild('jobsFileDropRef') jobsFileDropRef: ElementRef | undefined;
+  public jobsFile!: File;
+  ////////////////////////////////////////////
+  //#endregion
 
   constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef) { }
 
@@ -43,13 +55,13 @@ export class AnalysisToolComponent implements OnInit {
 
   //#region Upload Files Handlers
   ////////////////////////////////////////////
-  onFileBrowserHandler($event: any) {
+  onFileBrowserHandler($event: any, filePropertyName: string) {
     if ($event && $event.target && $event.target.files && $event.target.files.length > 0) {
-      this.selectedFile = $event.target.files[0];
+      (this as any)[filePropertyName] = $event.target.files[0];
     }
   }
 
-  onFileDropped(files: FileList) {
+  onFileDropped(files: FileList, filePropertyName: string) {
     if (files.length === 0) {
       this._alertService.showWarning('Upload file not provided');
     } else if (files.length > 1) {
@@ -57,17 +69,16 @@ export class AnalysisToolComponent implements OnInit {
       return;
     }
 
-    this.selectedFile = files[0];
+    (this as any)[filePropertyName] = files[0];
   }
   ////////////////////////////////////////////
   //#endregion
 
-  onButtonRemoveFileClick() {
-    this.selectedFile = undefined;
-    if (this.fileDropRef) {
-      this.fileDropRef.nativeElement.value = '';
+  onButtonRemoveFileClick(filePropertyName: string) {
+    (this as any)[filePropertyName] = undefined;
+    if ((this as any)[`${filePropertyName}DropRef`]) {
+      (this as any)[`${filePropertyName}DropRef`].nativeElement.value = '';
     }
-
   }
 
   setStorageValueClick() {
@@ -97,7 +108,7 @@ export class AnalysisToolComponent implements OnInit {
   }
 
   onButtonStartAnalysisClick() {
-    if (!this.selectedFile) {
+    if (!this.schoolFile) {
       this._alertService.showWarning('One or more input file were not provided!');
       return;
     }
@@ -107,7 +118,7 @@ export class AnalysisToolComponent implements OnInit {
     this.setStorageValueClick();
 
     this._analysisToolService
-      .postNewPredictionAnalysis(this.selectedFile)
+      .postNewPredictionAnalysis(this.schoolFile)
       .subscribe((event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);
@@ -146,8 +157,16 @@ export class AnalysisToolComponent implements OnInit {
     this.selectedFile = undefined;
     this.storageTask = null;
 
-    if (this.fileDropRef) {
-      this.fileDropRef.nativeElement.value = '';
+    if (this.schoolFileDropRef) {
+      this.schoolFileDropRef.nativeElement.value = '';
+    }
+
+    if (this.localityFileDropRef) {
+      this.localityFileDropRef.nativeElement.value = '';
+    }
+
+    if (this.jobsFileDropRef) {
+      this.jobsFileDropRef.nativeElement.value = '';
     }
   }
 

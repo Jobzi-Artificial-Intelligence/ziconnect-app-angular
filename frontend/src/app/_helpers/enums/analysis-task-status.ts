@@ -1,3 +1,5 @@
 export enum AnalysisTaskStatus {
-  Pending = 'PENDING'
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Failure = 'FAILURE'
 }
