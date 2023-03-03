@@ -1,8 +1,7 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
-import { Observable, of, interval, Subject, Subscription } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { interval, Subscription } from 'rxjs';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { AnalysisTask } from 'src/app/_models';
@@ -19,6 +18,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   @ViewChild('analysisStepper') analysisStepper: MatStepper | undefined;
 
   public loadingPoolTask: boolean = false;
+  public loadingStartTask: boolean = false;
+
   public selectedAnalysisType: AnalysisType | undefined = undefined;
   public selectedFile: File | undefined;
   public responseBody: any;
@@ -29,13 +30,13 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   //#region FILES
   ////////////////////////////////////////////
   @ViewChild('schoolFileDropRef') schoolFileDropRef: ElementRef | undefined;
-  public schoolFile!: File;
+  public schoolFile: File | undefined;
 
   @ViewChild('localityFileDropRef') localityFileDropRef: ElementRef | undefined;
-  public localityFile!: File;
+  public localityFile: File | undefined;
 
-  @ViewChild('jobsFileDropRef') jobsFileDropRef: ElementRef | undefined;
-  public jobsFile!: File;
+  @ViewChild('schoolHistoryFileDropRef') schoolHistoryFileDropRef: ElementRef | undefined;
+  public schoolHistoryFile: File | undefined;
   ////////////////////////////////////////////
   //#endregion
 
@@ -59,7 +60,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       const storageTask = localStorage.getItem(`${analysisTypeStr}_task`);
 
       if (storageTask) {
-        this.storageTask = JSON.parse(storageTask);
+        let analysisTask = new AnalysisTask().fromLocalStorage(JSON.parse(storageTask));
+        this.storageTask = analysisTask;
       }
     }
   }
@@ -106,7 +108,6 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     if (this.selectedAnalysisType) {
       const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
 
-
       localStorage.removeItem(`${analysisTypeStr}_task`);
 
       this.onSelectAnalysisTypeClick(this.selectedAnalysisType);
@@ -114,29 +115,46 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onButtonStartAnalysisClick() {
-    if (!this.schoolFile) {
-      this._alertService.showWarning('One or more input file were not provided!');
-      return;
+    let schoolFile: any;
+    if (this.selectedAnalysisType === AnalysisType.ConnectivityPrediction) {
+      if (!this.schoolFile || !this.localityFile) {
+        this._alertService.showWarning('One or more input file were not provided!');
+        return;
+      }
+
+      schoolFile = this.schoolFile;
     }
 
+    if (this.selectedAnalysisType === AnalysisType.EmployabilityImpact) {
+      if (!this.schoolHistoryFile || !this.localityFile) {
+        this._alertService.showWarning('One or more input file were not provided!');
+        return;
+      }
+    }
+
+    this.loadingStartTask = true;
     this.progress = 0;
 
     this._analysisToolService
-      .postNewPredictionAnalysis(this.schoolFile)
+      .postNewPredictionAnalysis(schoolFile)
       .subscribe((event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);
         } else if (event instanceof HttpResponse) {
           if (event.body && event.body.task_id) {
             let analysisTask = new AnalysisTask();
-            analysisTask.taskId = event.body.task_id;
+            analysisTask.id = event.body.task_id;
 
             if (this.selectedAnalysisType) {
               this.putAnalysisTaskOnStorage(analysisTask);
+              this.poolStorageTask();
             }
+
+            this.loadingStartTask = false;
           }
         }
       }, (error: any) => {
+        this.loadingStartTask = false;
         this._alertService.showError('Something went wrong: ' + error.message);
       });
   }
@@ -151,7 +169,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
 
       this.scrollToSection('sectionAnalysisSteps');
-    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.taskStatus)) {
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.status)) {
       this.poolStorageTask();
     }
   }
@@ -169,8 +187,15 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   initNewAnalysis() {
-    this.selectedFile = undefined;
+    this.localityFile = undefined;
+    this.schoolHistoryFile = undefined;
+    this.schoolFile = undefined;
     this.storageTask = null;
+    this.progress = 0;
+
+    if (this.poolTaskSubscription) {
+      this.poolTaskSubscription.unsubscribe();
+    }
 
     if (this.schoolFileDropRef) {
       this.schoolFileDropRef.nativeElement.value = '';
@@ -180,8 +205,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.localityFileDropRef.nativeElement.value = '';
     }
 
-    if (this.jobsFileDropRef) {
-      this.jobsFileDropRef.nativeElement.value = '';
+    if (this.schoolHistoryFileDropRef) {
+      this.schoolHistoryFileDropRef.nativeElement.value = '';
     }
   }
 
@@ -193,13 +218,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
         this.loadingPoolTask = true;
 
         this._analysisToolService
-          .getTaskResult(this.storageTask ? this.storageTask.taskId.toString() : '')
+          .getTaskResult(this.storageTask ? this.storageTask.id.toString() : '')
           .subscribe(data => {
             this.loadingPoolTask = false;
             this.storageTask = data;
+
             this.putAnalysisTaskOnStorage(this.storageTask);
 
-            if ([AnalysisTaskStatus.Failure || this.storageTask.taskStatus === AnalysisTaskStatus.Success].includes(this.storageTask.taskStatus)) {
+            if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
               this.poolTaskSubscription.unsubscribe();
             }
           }, error => {
@@ -214,11 +240,9 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     if (this.selectedAnalysisType) {
       const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
 
-      localStorage.setItem(`${analysisTypeStr}_task`, JSON.stringify(analysisTask));
+      localStorage.setItem(`${analysisTypeStr}_task`, analysisTask.toLocalStorageString());
 
       this.storageTask = analysisTask;
-
-      this.poolStorageTask();
     }
   }
 }

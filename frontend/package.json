@@ -31,6 +31,7 @@
     "@types/geojson": "^7946.0.10",
     "@types/leaflet": "^1.9.0",
     "leaflet": "^1.9.3",
+    "moment": "^2.29.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

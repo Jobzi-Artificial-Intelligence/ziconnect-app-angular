@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   postgrestHost: 'http://localhost:5000/',
-  fastApiHost: 'http://localhost:8004/'
+  fastApiHost: 'https://fastapi-homolog.jobzi.com/'
 };
 
 /*

@@ -206,6 +206,14 @@
     margin-top: 32px;
     padding: 16px 0;
   }
+
+  .upload-file-progrees {
+    margin-top: 24px;
+
+    > p {
+      margin-bottom: 12px;
+    }
+  }
   ////////////////////////////////////////////
 
   // STORAGE TASK CARD
