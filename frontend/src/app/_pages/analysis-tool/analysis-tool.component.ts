@@ -1,7 +1,9 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { interval, Subscription } from 'rxjs';
+import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { AnalysisTask } from 'src/app/_models';
@@ -40,8 +42,11 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   ////////////////////////////////////////////
   //#endregion
 
-  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef) { }
+  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef, private _dialogFileRequirements: MatDialog) { }
 
+
+  //#region Component initialization functions
+  ////////////////////////////////////////////
   ngOnDestroy(): void {
     if (this.poolTaskSubscription) {
       this.poolTaskSubscription.unsubscribe();
@@ -65,28 +70,11 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  //#region Upload Files Handlers
-  ////////////////////////////////////////////
-  onFileBrowserHandler($event: any, filePropertyName: string) {
-    if ($event && $event.target && $event.target.files && $event.target.files.length > 0) {
-      (this as any)[filePropertyName] = $event.target.files[0];
-    }
-  }
-
-  onFileDropped(files: FileList, filePropertyName: string) {
-    if (files.length === 0) {
-      this._alertService.showWarning('Upload file not provided');
-    } else if (files.length > 1) {
-      this._alertService.showWarning('Only one file is allowed');
-      return;
-    }
-
-    (this as any)[filePropertyName] = files[0];
-  }
   ////////////////////////////////////////////
   //#endregion
 
+  //#region Button Events
+  ////////////////////////////////////////////
   onButtonNextClick() {
     if (this.analysisStepper) {
       if (this.analysisStepper.selected) {
@@ -115,62 +103,78 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onButtonStartAnalysisClick() {
-    let schoolFile: any;
     if (this.selectedAnalysisType === AnalysisType.ConnectivityPrediction) {
-      if (!this.schoolFile || !this.localityFile) {
-        this._alertService.showWarning('One or more input file were not provided!');
-        return;
-      }
-
-      schoolFile = this.schoolFile;
+      this.startNewPredictionAnalysis();
     }
 
     if (this.selectedAnalysisType === AnalysisType.EmployabilityImpact) {
-      if (!this.schoolHistoryFile || !this.localityFile) {
-        this._alertService.showWarning('One or more input file were not provided!');
-        return;
-      }
+      this.startNewEmployabilityImpactAnalysis();
     }
+  }
+  ////////////////////////////////////////////
+  //#endregion
 
-    this.loadingStartTask = true;
-    this.progress = 0;
-
-    this._analysisToolService
-      .postNewPredictionAnalysis(schoolFile)
-      .subscribe((event: any) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-        } else if (event instanceof HttpResponse) {
-          if (event.body && event.body.task_id) {
-            let analysisTask = new AnalysisTask();
-            analysisTask.id = event.body.task_id;
-
-            if (this.selectedAnalysisType) {
-              this.putAnalysisTaskOnStorage(analysisTask);
-              this.poolStorageTask();
-            }
-
-            this.loadingStartTask = false;
-          }
-        }
-      }, (error: any) => {
-        this.loadingStartTask = false;
-        this._alertService.showError('Something went wrong: ' + error.message);
-      });
+  //#region Upload Files Handlers
+  ////////////////////////////////////////////
+  onFileBrowserHandler($event: any, filePropertyName: string) {
+    if ($event && $event.target && $event.target.files && $event.target.files.length > 0) {
+      (this as any)[filePropertyName] = $event.target.files[0];
+    }
   }
 
-  onSelectAnalysisTypeClick(type: AnalysisType) {
-    this.selectedAnalysisType = type;
-    this.initNewAnalysis();
+  onFileDropped(files: FileList, filePropertyName: string) {
+    if (files.length === 0) {
+      this._alertService.showWarning('Upload file not provided');
+    } else if (files.length > 1) {
+      this._alertService.showWarning('Only one file is allowed');
+      return;
+    }
 
-    this.loadStorageTask();
+    (this as any)[filePropertyName] = files[0];
+  }
 
-    if (!this.storageTask) {
-      this.ref.detectChanges();
+  onFileRequirementsClick() {
+    this._dialogFileRequirements.open(DialogAnalysisFileRequirementsComponent);
+  }
+  ////////////////////////////////////////////
+  //#endregion
 
-      this.scrollToSection('sectionAnalysisSteps');
-    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.status)) {
-      this.poolStorageTask();
+  //#region Util Functions
+  ////////////////////////////////////////////
+  poolStorageTask() {
+    if (this.storageTask) {
+      const timer = interval(30000);
+
+      this.poolTaskSubscription = timer.subscribe(() => {
+        this.loadingPoolTask = true;
+
+        this._analysisToolService
+          .getTaskResult(this.storageTask ? this.storageTask.id.toString() : '')
+          .subscribe(data => {
+            this.loadingPoolTask = false;
+            this.storageTask = data;
+
+            this.putAnalysisTaskOnStorage(this.storageTask);
+
+            if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
+              this.poolTaskSubscription.unsubscribe();
+            }
+          }, error => {
+            this.loadingPoolTask = false;
+            this._alertService.showError(error);
+            this.poolTaskSubscription.unsubscribe();
+          });
+      });
+    }
+  }
+
+  putAnalysisTaskOnStorage(analysisTask: AnalysisTask) {
+    if (this.selectedAnalysisType) {
+      const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
+
+      localStorage.setItem(`${analysisTypeStr}_task`, analysisTask.toLocalStorageString());
+
+      this.storageTask = analysisTask;
     }
   }
 
@@ -183,6 +187,25 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
       window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+  ////////////////////////////////////////////
+  //#endregion
+
+  //#region Analysis handlers
+  ////////////////////////////////////////////
+  onSelectAnalysisTypeClick(type: AnalysisType) {
+    this.selectedAnalysisType = type;
+    this.initNewAnalysis();
+
+    this.loadStorageTask();
+
+    if (!this.storageTask) {
+      this.ref.detectChanges();
+
+      this.scrollToSection('sectionAnalysisSteps');
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.status)) {
+      this.poolStorageTask();
     }
   }
 
@@ -210,39 +233,45 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     }
   }
 
-  poolStorageTask() {
-    if (this.storageTask) {
-      const timer = interval(10000);
+  startNewPredictionAnalysis() {
+    if (!this.schoolFile || !this.localityFile) {
+      this._alertService.showWarning('One or more input file were not provided!');
+      return;
+    }
 
-      this.poolTaskSubscription = timer.subscribe(() => {
-        this.loadingPoolTask = true;
+    this.loadingStartTask = true;
+    this.progress = 0;
 
-        this._analysisToolService
-          .getTaskResult(this.storageTask ? this.storageTask.id.toString() : '')
-          .subscribe(data => {
-            this.loadingPoolTask = false;
-            this.storageTask = data;
+    this._analysisToolService
+      .postNewPredictionAnalysis(this.schoolFile, this.localityFile)
+      .subscribe((event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          if (event.body && event.body.task_id) {
+            let analysisTask = new AnalysisTask();
+            analysisTask.id = event.body.task_id;
 
-            this.putAnalysisTaskOnStorage(this.storageTask);
-
-            if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
-              this.poolTaskSubscription.unsubscribe();
+            if (this.selectedAnalysisType) {
+              this.putAnalysisTaskOnStorage(analysisTask);
+              this.poolStorageTask();
             }
-          }, error => {
-            this.loadingPoolTask = false;
-            this._alertService.showError(error);
-          });
+
+            this.loadingStartTask = false;
+          }
+        }
+      }, (error: any) => {
+        this.loadingStartTask = false;
+        this._alertService.showError('Something went wrong: ' + error.message);
       });
-    }
   }
 
-  putAnalysisTaskOnStorage(analysisTask: AnalysisTask) {
-    if (this.selectedAnalysisType) {
-      const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
-
-      localStorage.setItem(`${analysisTypeStr}_task`, analysisTask.toLocalStorageString());
-
-      this.storageTask = analysisTask;
+  startNewEmployabilityImpactAnalysis() {
+    if (!this.schoolHistoryFile || !this.localityFile) {
+      this._alertService.showWarning('One or more input file were not provided!');
+      return;
     }
   }
+  ////////////////////////////////////////////
+  //#endregion
 }

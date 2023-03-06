@@ -10,21 +10,40 @@ import { environment } from 'src/environments/environment';
 })
 export class AnalysisToolService {
   private _taskPredictionPath = 'task/prediction';
+  private _taskEmployabilityImpactPath = 'task/employability-impact';
   private _taskResultPath = 'task/result';
 
   constructor(private _http: HttpClient) { }
 
   /**
-   * POST new analysis task
-   * @param file csv data file blob
+   * POST new connectivity prediction analysis task
+   * @param localityFile localities csv data file blob
+   * @param schoolFile schools csv data file blob
    * @returns 
    */
-  postNewPredictionAnalysis(file: File) {
+  postNewPredictionAnalysis(schoolFile: File, localityFile: File) {
     const formData = new FormData();
-    formData.append('predictionType', '1');
-    formData.append('predictionFile', file);
+    formData.append('localityFile', localityFile);
+    formData.append('schoolFile', schoolFile);
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskPredictionPath}`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  /**
+   * POST new Employability impact analysis task
+   * @param localityFile localities csv data file blob
+   * @param schoolHistoryFile school history csv data file blob
+   * @returns 
+   */
+  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityFile: File) {
+    const formData = new FormData();
+    formData.append('localityFile', localityFile);
+    formData.append('schoolHistoryFile', schoolHistoryFile);
+
+    return this._http.post<any>(`${environment.fastApiHost}${this._taskEmployabilityImpactPath}`, formData, {
       reportProgress: true,
       observe: 'events'
     });

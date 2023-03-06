@@ -99,7 +99,7 @@
     </section>
     <section *ngIf="storageTask">
       <div class="storage-task-card"
-        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'success': storageTask.status === 'SUCCESS'}">
+        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'started': storageTask.status === 'STARTED', 'success': storageTask.status === 'SUCCESS'}">
         <header class="flex items-center justify-between">
           <div class="color-tp-title flex items-center f-size-14" matTooltip="Last status checked at">
             <mat-icon *ngIf="!loadingPoolTask"
@@ -113,11 +113,13 @@
           <div class="status-label flex items-center pending">
             <div class="label-text f-weight-500">{{storageTask.status}}</div>
             <mat-icon class="label-icon material-icons-outlined"
+              *ngIf="storageTask.status === 'FAILURE'">error_outline</mat-icon>
+            <mat-icon class="label-icon material-icons-outlined"
               *ngIf="storageTask.status === 'PENDING'">pending</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
-              *ngIf="storageTask.status === 'SUCCESS'">check_circle</mat-icon>
+              *ngIf="storageTask.status === 'STARTED'">play_arrow</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
-              *ngIf="storageTask.status === 'FAILURE'">error_outline</mat-icon>
+              *ngIf="storageTask.status === 'SUCCESS'">check_circle</mat-icon>
           </div>
         </header>
         <div class="content">
@@ -162,13 +164,17 @@
           <div class="step-inputs-list flex items-stretch">
             <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 1">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View information about the file layout">help</mat-icon>
+                matTooltip="View file requirements" (click)="onFileRequirementsClick()">help</mat-icon>
               <mat-card-title>Schools</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
                 <p class="color-tp-body">
                   File containing connectivity data in schools of a country.
                 </p>
+                <p>Read our <span class="color-blue cursor-pointer" (click)="onFileRequirementsClick()">File
+                    Requirements</span> or <a href="/assets/schools_dataset.csv" target="_blank"
+                    class="text-decoration-none">download a CSV
+                    Template</a> to get started.</p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'schoolFile')" *ngIf="selectedAnalysisType && !schoolFile">
                   <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
@@ -195,7 +201,7 @@
             </mat-card>
             <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 2">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View information about the file layout">help</mat-icon>
+                matTooltip="View file requirements">help</mat-icon>
               <mat-card-title>School History</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
@@ -230,7 +236,7 @@
             </mat-card>
             <mat-card class="step-input-item">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View information about the file layout">help</mat-icon>
+                matTooltip="View file requirements">help</mat-icon>
               <mat-card-title>Locality</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>

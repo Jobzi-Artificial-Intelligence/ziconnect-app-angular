@@ -282,6 +282,15 @@
       }
     }
 
+    &.started {
+      border-color: $blue;
+
+      .status-label {
+        background-color: rgba($color: $blue, $alpha: 0.2);
+        color: $blue;
+      }
+    }
+
     &.success {
       border-color: $green-light;
 
