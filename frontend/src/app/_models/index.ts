@@ -1,3 +1,4 @@
+export * from './analysis-input-definition/analysis-input-definition.model';
 export * from './analysis-task/analysis-task.model';
 export * from './city/city.model';
 export * from './locality-map/locality-map.model';

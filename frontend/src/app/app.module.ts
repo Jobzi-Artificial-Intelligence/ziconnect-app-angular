@@ -13,6 +13,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { FileSizePipe, ShortNumberPipe } from './_pipes';
 import {
   DialogSchoolColumnSelectorComponent,
+  DialogAnalysisFileRequirementsComponent,
   LocalityLayerPopupComponent,
   NavigationBarComponent,
   PageFooterComponent,
@@ -39,6 +40,7 @@ import { FileDragAndDropDirective } from './_directives';
     CodeConductComponent,
     ContributorsComponent,
     DataSourceReferenceComponent,
+    DialogAnalysisFileRequirementsComponent,
     DialogSchoolColumnSelectorComponent,
     FileDragAndDropDirective,
     HomeComponent,
@@ -50,7 +52,7 @@ import { FileDragAndDropDirective } from './_directives';
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
     FileSizePipe,
-    ShortNumberPipe,],
+    ShortNumberPipe],
   exports: [
     FileSizePipe,
     ShortNumberPipe],

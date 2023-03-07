@@ -1,0 +1,66 @@
+[
+  {
+    "column": "school_code",
+    "dataType": "string",
+    "required": true,
+    "primaryKey": true,
+    "description": "Unique school identifier",
+    "example": "11000384"
+  },
+  {
+    "column": "school_name",
+    "dataType": "string",
+    "required": false,
+    "primaryKey": false,
+    "description": "School name",
+    "example": "EEEFM 4 DE JANEIRO"
+  },
+  {
+    "column": "school_type",
+    "dataType": "string",
+    "required": false,
+    "primaryKey": false,
+    "description": "Responsible for the school administration: federal government, state, municipality",
+    "example": "state"
+  },
+  {
+    "column": "school_region",
+    "dataType": "string",
+    "required": false,
+    "primaryKey": false,
+    "description": "School region as: urban, rural, etc",
+    "example": "urban"
+  },
+  {
+    "column": "latitude",
+    "dataType": "double",
+    "required": false,
+    "primaryKey": false,
+    "description": "Latitude",
+    "example": "-8.7414"
+  },
+  {
+    "column": "longitude",
+    "dataType": "double",
+    "required": false,
+    "primaryKey": false,
+    "description": "Latitude",
+    "example": "-63.8643"
+  },
+  {
+    "column": "student_count",
+    "dataType": "integer",
+    "required": false,
+    "primaryKey": false,
+    "description": "Number of students currently enrolled",
+    "example": "10835"
+  },
+  {
+    "column": "internet_connectivity",
+    "dataType": "boolean",
+    "required": false,
+    "primaryKey": false,
+    "description": "Does the school have internet?",
+    "example": "true"
+  }
+]

@@ -1,0 +1,4 @@
+id,country_code,country_name,state_code,state_name,state_abbreviation,municipality_code,municipality_name,adm_level
+BR,BR,Brasil,,,,,,country
+11,BR,Brasil,11,Rondônia,RO,,,state
+1100015,BR,Brasil,11,Rondônia,RO,1100015,Alta Floresta D'Oeste,municipality

@@ -148,12 +148,21 @@
               <span class="color-tp-body f-size-13">{{storageTask.failureAtString}}</span>
             </div>
           </div>
+          <br>
+          <div *ngIf="storageTask.statusCheckCode > 200 && storageTask.statusCheckMessage">
+            <div class="color-tp-title f-size-14 f-weight-500">Last status message:</div>
+            <div class="color-tp-body f-size-14 color-tp-body">{{storageTask.statusCheckMessage}}</div>
+          </div>
         </div>
         <footer>
           <button *ngIf="storageTask.status === 'SUCCESS'" mat-raised-button>View Results</button>
-          <button *ngIf="storageTask.status === 'FAILURE'" mat-raised-button>View Errors</button>&nbsp;
-          <button [disabled]="storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE'" mat-raised-button
-            color="warn" (click)="onButtonRemoveStorageValueClick()">Discard</button>
+          <button *ngIf="storageTask.status === 'FAILURE'" mat-raised-button>View Errors</button>
+          <button *ngIf="storageTask.statusCheckCode > 200" mat-raised-button
+            (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
+          <button
+            [disabled]="storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200"
+            mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()"
+            matTooltip="Discard and start new analysis">Discard</button>
         </footer>
       </div>
     </section>
@@ -164,16 +173,18 @@
           <div class="step-inputs-list flex items-stretch">
             <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 1">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View file requirements" (click)="onFileRequirementsClick()">help</mat-icon>
+                matTooltip="View file requirements"
+                (click)="onFileRequirementsClick(analysisTypeEnum.School)">help</mat-icon>
               <mat-card-title>Schools</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
                 <p class="color-tp-body">
                   File containing connectivity data in schools of a country.
                 </p>
-                <p>Read our <span class="color-blue cursor-pointer" (click)="onFileRequirementsClick()">File
-                    Requirements</span> or <a href="/assets/schools_dataset.csv" target="_blank"
-                    class="text-decoration-none">download a CSV
+                <p>Read our <span class="color-blue cursor-pointer"
+                    (click)="onFileRequirementsClick(analysisTypeEnum.School)">File
+                    Requirements</span> or <a href="/assets/analysis-input-definition/school_template.csv"
+                    target="_blank" class="color-blue text-decoration-none">download a CSV
                     Template</a> to get started.</p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'schoolFile')" *ngIf="selectedAnalysisType && !schoolFile">
@@ -201,13 +212,19 @@
             </mat-card>
             <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 2">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View file requirements">help</mat-icon>
+                matTooltip="View file requirements"
+                (click)="onFileRequirementsClick(analysisTypeEnum.SchoolHistory)">help</mat-icon>
               <mat-card-title>School History</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
-                <p class="color-tp-body">
+                <p class=" color-tp-body">
                   File containing historical connectivity data in schools of a country.
                 </p>
+                <p>Read our <span class="color-blue cursor-pointer"
+                    (click)="onFileRequirementsClick(analysisTypeEnum.SchoolHistory)">File
+                    Requirements</span> or <a href="/assets/analysis-input-definition/school_history_template.csv"
+                    target="_blank" class="color-blue text-decoration-none">download a CSV
+                    Template</a> to get started.</p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'schoolHistoryFile')"
                   *ngIf="selectedAnalysisType && !schoolHistoryFile">
@@ -236,12 +253,20 @@
             </mat-card>
             <mat-card class="step-input-item">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
-                matTooltip="View file requirements">help</mat-icon>
+                matTooltip="View file requirements"
+                (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">help</mat-icon>
               <mat-card-title>Locality</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
-                <p class="color-tp-body">
+                <p class=" color-tp-body">
                   File containing location data of a country.
+                </p>
+                <p>
+                  Read our <span class="color-blue cursor-pointer"
+                    (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">File
+                    Requirements</span> or <a href="/assets/analysis-input-definition/locality_template.csv"
+                    target="_blank" class="color-blue text-decoration-none">download a CSV
+                    Template</a> to get started.
                 </p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'localityFile')" *ngIf="selectedAnalysisType && !localityFile">

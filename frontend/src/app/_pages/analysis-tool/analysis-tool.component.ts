@@ -2,8 +2,10 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
 import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
+import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { AnalysisTask } from 'src/app/_models';
@@ -19,6 +21,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   @ViewChild('sectionAnalysisSteps') sectionAnalysisSteps: ElementRef | undefined;
   @ViewChild('analysisStepper') analysisStepper: MatStepper | undefined;
 
+
+  public analysisTypeEnum: typeof AnalysisInputType = AnalysisInputType;
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
@@ -102,6 +106,17 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     }
   }
 
+  onButtonRetryCheckStatusClick() {
+    if (this.storageTask) {
+      this.storageTask.statusCheckCode = 0;
+      this.storageTask.statusCheckMessage = '';
+    }
+
+    if (this.poolTaskSubscription && this.poolTaskSubscription.closed) {
+      this.poolStorageTask();
+    }
+  }
+
   onButtonStartAnalysisClick() {
     if (this.selectedAnalysisType === AnalysisType.ConnectivityPrediction) {
       this.startNewPredictionAnalysis();
@@ -133,8 +148,11 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     (this as any)[filePropertyName] = files[0];
   }
 
-  onFileRequirementsClick() {
-    this._dialogFileRequirements.open(DialogAnalysisFileRequirementsComponent);
+  onFileRequirementsClick(analysisInputType: AnalysisInputType) {
+    this._dialogFileRequirements.open(DialogAnalysisFileRequirementsComponent, {
+      width: '100%',
+      data: analysisInputType
+    });
   }
   ////////////////////////////////////////////
   //#endregion
@@ -153,6 +171,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
           .subscribe(data => {
             this.loadingPoolTask = false;
             this.storageTask = data;
+            this.storageTask.statusCheckCode = 200;
+            this.storageTask.statusCheckMessage = '';
 
             this.putAnalysisTaskOnStorage(this.storageTask);
 
@@ -160,9 +180,24 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
               this.poolTaskSubscription.unsubscribe();
             }
           }, error => {
+            const errorMessage = `Something went wrong getting the analysis data: ${error.message}`;
+
             this.loadingPoolTask = false;
-            this._alertService.showError(error);
+            this._alertService.showError(errorMessage);
             this.poolTaskSubscription.unsubscribe();
+
+            // Update status checked at
+            if (this.storageTask) {
+              this.storageTask.statusCheckedAt = moment();
+              this.storageTask.statusCheckCode = error.status;
+              this.storageTask.statusCheckMessage = errorMessage;
+
+              if (error.status === 400) {
+                this.storageTask.statusCheckMessage = `We were unable to locate your analysis, or its storage time has expired. You can either discard it and start a new analysis.`;
+              }
+
+              this.putAnalysisTaskOnStorage(this.storageTask);
+            }
           });
       });
     }

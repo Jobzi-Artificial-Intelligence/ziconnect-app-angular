@@ -271,6 +271,14 @@
 
     > footer {
       padding: 0px 12px 24px;
+
+      > button {
+        margin-right: 8px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
 
     &.pending {

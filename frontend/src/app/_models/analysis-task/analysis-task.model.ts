@@ -12,11 +12,15 @@ export class AnalysisTask implements Deserializable {
   failureAt: any;
   successAt: any;
   statusCheckedAt: any;
+  statusCheckCode: number;
+  statusCheckMessage: string;
 
   constructor() {
     this.id = '';
     this.status = AnalysisTaskStatus.Pending;
     this.result = null;
+    this.statusCheckCode = 0;
+    this.statusCheckMessage = '';
 
     this.statusCheckedAt = moment();
   }
@@ -50,6 +54,8 @@ export class AnalysisTask implements Deserializable {
     this.id = input.id;
     this.status = input.status;
     this.result = input.result;
+    this.statusCheckCode = input.statusCheckCode;
+    this.statusCheckMessage = input.statusCheckMessage;
 
     const inputDateFielsMap = [
       'failureAt',

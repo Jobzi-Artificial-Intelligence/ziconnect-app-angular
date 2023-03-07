@@ -21,7 +21,6 @@ export class FileDragAndDropDirective {
   @HostListener('dragleave', ['$event']) public onDragLeave(evt: any) {
     evt.preventDefault();
     evt.stopPropagation();
-    console.log(evt);
     this.fileOver = false;
   }
 

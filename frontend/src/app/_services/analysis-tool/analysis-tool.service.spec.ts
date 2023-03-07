@@ -13,7 +13,7 @@ describe('AnalysisToolService', () => {
 
   let endpointGetTaskResulUri = '';
   let endpointPostPredictionTaskUri = '';
-  let endpointPostSocialImpactTaskUri = '';
+  let endpointPostEmployabilityImpactTaskUri = '';
 
   const taskFromServer = {
     "task_id": "b5ab72ba-998a-4a4f-bc90-83a7114b16c4",
@@ -36,7 +36,7 @@ describe('AnalysisToolService', () => {
     //@ts-ignore
     endpointPostPredictionTaskUri = `${environment.fastApiHost}${service._taskPredictionPath}`;
     //@ts-ignore
-    endpointPostSocialImpactTaskUri = `${environment.fastApiHost}${service._taskSocialImpactPath}`;
+    endpointPostEmployabilityImpactTaskUri = `${environment.fastApiHost}${service._taskEmployabilityImpactPath}`;
   });
 
   it('should be created', () => {
@@ -135,7 +135,7 @@ describe('AnalysisToolService', () => {
       );
 
       // Match a request to service.url
-      const req = httpTestingController.expectOne(endpointPostSocialImpactTaskUri);
+      const req = httpTestingController.expectOne(endpointPostEmployabilityImpactTaskUri);
       expect(req.request.method).toEqual('POST');
       // Respond with a mocked UploadProgress HttpEvent
       req.event({ type: HttpEventType.UploadProgress, loaded: 7, total: 10 });
