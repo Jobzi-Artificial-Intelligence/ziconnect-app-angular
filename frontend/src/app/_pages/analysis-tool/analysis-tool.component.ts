@@ -4,12 +4,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
-import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
+import { DialogAnalysisFileRequirementsComponent, DialogAnaysisResultComponent } from 'src/app/_components';
 import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
+import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { AnalysisTask } from 'src/app/_models';
+import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
+
+//TODO Remover isso
+import { analysisResultFromServer } from '../../../test/analysis-result';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -32,6 +37,9 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   public progress: number = 0;
   public storageTask?: AnalysisTask | null = null;
   public poolTaskSubscription!: Subscription;
+
+  public statusCheckInterval: any;
+  public statusCheckTimeLeft: number = 30;
 
   //#region FILES
   ////////////////////////////////////////////
@@ -126,6 +134,22 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.startNewEmployabilityImpactAnalysis();
     }
   }
+
+  onButtonViewResultsClick() {
+    //TODO refatorar esse mock
+    if (this.selectedAnalysisType && this.storageTask) {
+      this._dialogFileRequirements.open(DialogAnaysisResultComponent, {
+        maxHeight: '90vh',
+        maxWidth: '90vw',
+        width: '100%',
+        data: {
+          analysisResult: new AnalysisResult().deserialize(analysisResultFromServer),
+          analysisTask: this.storageTask,
+          analysisType: this.selectedAnalysisType
+        } as IDialogAnalysisResultData
+      });
+    }
+  }
   ////////////////////////////////////////////
   //#endregion
 
@@ -163,11 +187,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     if (this.storageTask) {
       const timer = interval(30000);
 
+      this.startStatusCheckCountdown();
+
       this.poolTaskSubscription = timer.subscribe(() => {
+        this.stopStatusCheckCountdown();
         this.loadingPoolTask = true;
 
         this._analysisToolService
-          .getTaskResult(this.storageTask ? this.storageTask.id.toString() : '')
+          .getTaskInfo(this.storageTask ? this.storageTask.id.toString() : '')
           .subscribe(data => {
             this.loadingPoolTask = false;
             this.storageTask = data;
@@ -189,7 +216,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
             // Update status checked at
             if (this.storageTask) {
               this.storageTask.statusCheckedAt = moment();
-              this.storageTask.statusCheckCode = error.status;
+              this.storageTask.statusCheckCode = error.status || 500;
               this.storageTask.statusCheckMessage = errorMessage;
 
               if (error.status === 400) {
@@ -224,6 +251,25 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }
+
+  startStatusCheckCountdown() {
+    this.statusCheckTimeLeft = 30;
+
+    this.statusCheckInterval = setInterval(() => {
+      if (this.statusCheckTimeLeft > 0) {
+        this.statusCheckTimeLeft--;
+      } else {
+        this.statusCheckTimeLeft = 0;
+        this.stopStatusCheckCountdown();
+      }
+    }, 1000)
+  }
+
+  stopStatusCheckCountdown() {
+    if (this.statusCheckInterval) {
+      clearInterval(this.statusCheckInterval);
+    }
+  }
   ////////////////////////////////////////////
   //#endregion
 
@@ -250,6 +296,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     this.schoolFile = undefined;
     this.storageTask = null;
     this.progress = 0;
+
+    this.stopStatusCheckCountdown();
 
     if (this.poolTaskSubscription) {
       this.poolTaskSubscription.unsubscribe();

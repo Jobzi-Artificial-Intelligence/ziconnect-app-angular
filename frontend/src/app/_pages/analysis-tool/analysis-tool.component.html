@@ -104,7 +104,9 @@
           <div class="color-tp-title flex items-center f-size-14" matTooltip="Last status checked at">
             <mat-icon *ngIf="!loadingPoolTask"
               class="cursor-pointer material-icons-outlined color-tp-body">history</mat-icon>&nbsp;
-            <span *ngIf="!loadingPoolTask">{{storageTask.statusCheckedAtString}}</span>
+            <span *ngIf="!loadingPoolTask">{{storageTask.statusCheckedAtString}}</span>&nbsp;<span
+              *ngIf="!loadingPoolTask && !this.poolTaskSubscription.closed" class="color-tp-body">(Updating in
+              {{statusCheckTimeLeft}}s)</span>
             <div class="flex items-center" *ngIf="loadingPoolTask">
               <mat-spinner [diameter]="20"></mat-spinner>&nbsp;&nbsp;
               <span class="f-size-13 color-tp-body">Updating...</span>
@@ -155,12 +157,13 @@
           </div>
         </div>
         <footer>
-          <button *ngIf="storageTask.status === 'SUCCESS'" mat-raised-button>View Results</button>
+          <button *ngIf="storageTask.status === 'SUCCESS'" (click)="onButtonViewResultsClick()" mat-raised-button>View
+            Results</button>
           <button *ngIf="storageTask.status === 'FAILURE'" mat-raised-button>View Errors</button>
-          <button *ngIf="storageTask.statusCheckCode > 200" mat-raised-button
+          <button *ngIf="storageTask.statusCheckCode > 200 && this.poolTaskSubscription.closed" mat-raised-button
             (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
           <button
-            [disabled]="storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200"
+            [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200) || !this.poolTaskSubscription.closed"
             mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()"
             matTooltip="Discard and start new analysis">Discard</button>
         </footer>

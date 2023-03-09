@@ -1,6 +1,59 @@
+import { School } from "src/app/_models";
+import { schoolFromServer } from "src/test/school-mock";
 import { UtilHelper } from "./util.helper";
 
 describe('Helper: Util', () => {
+  let mockSchoolData = new School().deserialize(schoolFromServer);
+
+  describe('#exportFromObjectToCsv', () => {
+    it('should exists', () => {
+      expect(UtilHelper.exportFromObjectToCsv).toBeTruthy();
+      expect(UtilHelper.exportFromObjectToCsv).toEqual(jasmine.any(Function));
+    })
+
+    it('should throw error when schools is empty', () => {
+      expect(() => UtilHelper.exportFromObjectToCsv('fileName', new Array<School>()))
+        .toThrow(new Error('List of objects not provided!'));
+    });
+
+    it('should throw error when browser does not support download attribute', () => {
+      const schoolList = [mockSchoolData];
+
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      expect(() => UtilHelper.exportFromObjectToCsv('fileName', schoolList))
+        .toThrow(new Error('Browser does not support download attribute'));
+    });
+
+    it('should works', () => {
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { download: true, style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      // spy on document.body functions
+      spyOn(document.body, 'appendChild');
+      spyOn(document.body, 'removeChild');
+
+      const schoolList = [mockSchoolData];
+
+      UtilHelper.exportFromObjectToCsv('fileName', schoolList);
+
+      expect(document.createElement).toHaveBeenCalledTimes(1);
+      expect(document.createElement).toHaveBeenCalledWith('a');
+      expect(spyObj.click).toHaveBeenCalled();
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('href', jasmine.any(String));
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('download', 'fileName');
+      expect(spyObj.style.visibility).toEqual('hidden');
+      expect(document.body.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.body.removeChild).toHaveBeenCalledTimes(1);
+    });
+  });
 
   describe('#getBoolean', () => {
 

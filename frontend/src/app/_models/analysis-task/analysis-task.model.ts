@@ -1,12 +1,12 @@
 import * as moment from "moment";
 import { AnalysisTaskStatus } from "src/app/_helpers/enums/analysis-task-status";
+import { AnalysisResult } from "../analysis-result/analysis-result.model";
 import { Deserializable } from "../deserializable.model";
 
 
 export class AnalysisTask implements Deserializable {
   id: String;
   status: AnalysisTaskStatus;
-  result: any;
   receivedAt: any;
   startedAt: any;
   failureAt: any;
@@ -18,7 +18,6 @@ export class AnalysisTask implements Deserializable {
   constructor() {
     this.id = '';
     this.status = AnalysisTaskStatus.Pending;
-    this.result = null;
     this.statusCheckCode = 0;
     this.statusCheckMessage = '';
 
@@ -26,24 +25,23 @@ export class AnalysisTask implements Deserializable {
   }
 
   deserialize(input: any): this {
-    this.id = input.task_id;
-    this.status = input.task_status;
-    this.result = input.task_result;
+    this.id = input.taskID;
+    this.status = input.taskState;
 
     this.statusCheckedAt = moment();
 
     const inputDateFielsMap = {
-      failureAt: 'task_failure',
-      receivedAt: 'task_received',
-      startedAt: 'task_started',
-      successAt: 'task_success'
+      failureAt: 'taskFailedDate',
+      receivedAt: 'taskReceivedDate',
+      startedAt: 'taskStartedDate',
+      successAt: 'taskSucceededDate'
     } as any;
 
     // SET DATE FIEDS VALUES
     Object.keys(inputDateFielsMap).forEach((key) => {
       const inputDateField = input[inputDateFielsMap[key]];
       if (inputDateField) {
-        (this as any)[key] = moment(inputDateField);
+        (this as any)[key] = moment(moment.utc(inputDateField));
       }
     });
 
@@ -53,7 +51,6 @@ export class AnalysisTask implements Deserializable {
   fromLocalStorage(input: any): this {
     this.id = input.id;
     this.status = input.status;
-    this.result = input.result;
     this.statusCheckCode = input.statusCheckCode;
     this.statusCheckMessage = input.statusCheckMessage;
 
@@ -80,8 +77,6 @@ export class AnalysisTask implements Deserializable {
 
   toLocalStorageString() {
     let obj = Object.assign({}, this);
-
-    delete obj.result;
 
     return JSON.stringify(obj);
   }

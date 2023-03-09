@@ -9,7 +9,6 @@ describe('Model: AnalysisTask', () => {
 
     expect(analysisTask.id).toEqual('');
     expect(analysisTask.status).toEqual(AnalysisTaskStatus.Pending);
-    expect(analysisTask.result).toEqual(null);
   });
 
   describe('#deserialize', () => {
@@ -22,24 +21,20 @@ describe('Model: AnalysisTask', () => {
 
     it('should works', () => {
       const analysisTaskFromServer = {
-        task_id: 'abc-123',
-        task_status: 'PENDING',
-        task_result: {
-          message: 'success'
-        },
-        task_received: moment().format(),
-        task_started: moment().format(),
-        task_failure: null,
-        task_success: null
+        taskID: 'abc-123',
+        taskState: 'PENDING',
+        taskReceivedDate: moment().format(),
+        taskStartedDate: moment().format(),
+        taskFailedDate: null,
+        taskSucceededDate: null
       };
       const analysisTask = new AnalysisTask();
       analysisTask.deserialize(analysisTaskFromServer);
 
-      expect(analysisTask.id).toEqual(analysisTaskFromServer.task_id);
+      expect(analysisTask.id).toEqual(analysisTaskFromServer.taskID);
       expect(analysisTask.status).toEqual(AnalysisTaskStatus.Pending);
-      expect(analysisTask.result).toEqual(analysisTaskFromServer.task_result);
-      expect(analysisTask.receivedAt).toEqual(moment(analysisTaskFromServer.task_received));
-      expect(analysisTask.startedAt).toEqual(moment(analysisTaskFromServer.task_started));
+      expect(analysisTask.receivedAt).toEqual(moment.utc(analysisTaskFromServer.taskReceivedDate));
+      expect(analysisTask.startedAt).toEqual(moment.utc(analysisTaskFromServer.taskStartedDate));
     });
   });
 
@@ -55,9 +50,6 @@ describe('Model: AnalysisTask', () => {
       const analysisTaskFromStorage = {
         id: 'abc-123',
         status: 'PENDING',
-        result: {
-          message: 'success'
-        },
         receivedAt: moment().format(),
         startedAt: moment().format(),
         failureAt: null,
@@ -68,7 +60,6 @@ describe('Model: AnalysisTask', () => {
 
       expect(analysisTask.id).toEqual(analysisTaskFromStorage.id);
       expect(analysisTask.status).toEqual(AnalysisTaskStatus.Pending);
-      expect(analysisTask.result).toEqual(analysisTaskFromStorage.result);
       expect(analysisTask.receivedAt).toEqual(moment(analysisTaskFromStorage.receivedAt));
       expect(analysisTask.startedAt).toEqual(moment(analysisTaskFromStorage.startedAt));
     });

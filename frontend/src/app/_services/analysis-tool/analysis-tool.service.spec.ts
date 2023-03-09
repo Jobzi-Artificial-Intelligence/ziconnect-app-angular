@@ -11,6 +11,7 @@ describe('AnalysisToolService', () => {
   let service: AnalysisToolService;
   let httpTestingController: HttpTestingController;
 
+  let endpointGetTaskInfoUri = '';
   let endpointGetTaskResulUri = '';
   let endpointPostPredictionTaskUri = '';
   let endpointPostEmployabilityImpactTaskUri = '';
@@ -32,6 +33,8 @@ describe('AnalysisToolService', () => {
     service = TestBed.inject(AnalysisToolService);
 
     //@ts-ignore
+    endpointGetTaskInfoUri = `${environment.fastApiHost}${service._taskInfoPath}`;
+    //@ts-ignore
     endpointGetTaskResulUri = `${environment.fastApiHost}${service._taskResultPath}`;
     //@ts-ignore
     endpointPostPredictionTaskUri = `${environment.fastApiHost}${service._taskPredictionPath}`;
@@ -43,29 +46,29 @@ describe('AnalysisToolService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('#getTaskResult', () => {
+  describe('#getTaskInfo', () => {
     it('should exists', () => {
-      expect(service.getTaskResult).toBeDefined();
-      expect(service.getTaskResult).toEqual(jasmine.any(Function));
+      expect(service.getTaskInfo).toBeDefined();
+      expect(service.getTaskInfo).toEqual(jasmine.any(Function));
     });
 
     it('should use GET to retrieve data', () => {
-      service.getTaskResult(taskFromServer.task_id).subscribe();
+      service.getTaskInfo(taskFromServer.task_id).subscribe();
 
-      const testRequest = httpTestingController.expectOne(`${endpointGetTaskResulUri}/${taskFromServer.task_id}`);
+      const testRequest = httpTestingController.expectOne(`${endpointGetTaskInfoUri}/${taskFromServer.task_id}`);
       expect(testRequest.request.method).toEqual('GET');
     });
 
     it('should return expected data', (done) => {
       const expectedData: AnalysisTask = new AnalysisTask().deserialize(taskFromServer);
 
-      service.getTaskResult(taskFromServer.task_id).subscribe(data => {
+      service.getTaskInfo(taskFromServer.task_id).subscribe(data => {
         expect(data.id).toEqual(expectedData.id);
         expect(data.status).toEqual(expectedData.status);
         done();
       });
 
-      const testRequest = httpTestingController.expectOne(`${endpointGetTaskResulUri}/${taskFromServer.task_id}`);
+      const testRequest = httpTestingController.expectOne(`${endpointGetTaskInfoUri}/${taskFromServer.task_id}`);
       testRequest.flush(taskFromServer);
     });
   });

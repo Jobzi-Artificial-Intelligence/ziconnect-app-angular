@@ -65,4 +65,45 @@ export class UtilHelper {
       }
     });
   }
+
+  /**
+   * Exports array of schools data as csv semicolon separated file format
+   * @param filename exported csv file name
+   * @param objects Array<any>
+   */
+  public static exportFromObjectToCsv(filename: string, objects: any[]) {
+    if (!objects || objects.length === 0) {
+      throw new Error('List of objects not provided!');
+    }
+
+    const separator = ';'
+
+    // Get all object keys
+    const keys = new Array<string>();
+    UtilHelper.getObjectKeys(objects[0], '', keys);
+
+    const headerLine = keys.join(separator) + '\n';
+    const rows = objects.map(obj => {
+      return keys.map(k => {
+        return UtilHelper.getPropertyValueByPath(obj, k);
+      }).join(separator);
+    }).join('\n');
+
+    const csvContent = headerLine + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      throw new Error('Browser does not support download attribute');
+    }
+  }
 }

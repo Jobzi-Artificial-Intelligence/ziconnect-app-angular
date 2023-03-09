@@ -12,6 +12,7 @@ export class AnalysisToolService {
   private _taskPredictionPath = 'task/prediction';
   private _taskEmployabilityImpactPath = 'task/employability-impact';
   private _taskResultPath = 'task/result';
+  private _taskInfoPath = 'task/info';
 
   constructor(private _http: HttpClient) { }
 
@@ -54,9 +55,9 @@ export class AnalysisToolService {
    * @param taskId analysis task id
    * @returns 
    */
-  getTaskResult(taskId: string): Observable<AnalysisTask> {
+  getTaskInfo(taskId: string): Observable<AnalysisTask> {
     return this._http
-      .get<any>(`${environment.fastApiHost}${this._taskResultPath}/${taskId}`, {
+      .get<any>(`${environment.fastApiHost}${this._taskInfoPath}/${taskId}`, {
         responseType: 'json'
       })
       .pipe(

@@ -14,6 +14,7 @@ import { FileSizePipe, ShortNumberPipe } from './_pipes';
 import {
   DialogSchoolColumnSelectorComponent,
   DialogAnalysisFileRequirementsComponent,
+  DialogAnaysisResultComponent,
   LocalityLayerPopupComponent,
   NavigationBarComponent,
   PageFooterComponent,
@@ -41,6 +42,7 @@ import { FileDragAndDropDirective } from './_directives';
     ContributorsComponent,
     DataSourceReferenceComponent,
     DialogAnalysisFileRequirementsComponent,
+    DialogAnaysisResultComponent,
     DialogSchoolColumnSelectorComponent,
     FileDragAndDropDirective,
     HomeComponent,
