@@ -83,7 +83,7 @@ describe('Model: LocalityStatistics', () => {
     });
 
     it('should works', () => {
-      const result_summary = analysisResultFromServer.result_summary[0] as any;
+      const result_summary = analysisResultFromServer.taskResult.result_summary[0] as any;
 
       const localityStatistics = new LocalityStatistics().deserializeFromAnalysisResult(result_summary);
 

@@ -15,7 +15,7 @@
           Model Metrics
         </div>
         <div class="color-tp-body f-size-16" *ngIf="!loading">
-          {{data.analysisResult.modelMetrics.classifierName}}&nbsp;({{data.analysisResult.modelMetrics.numFolds}}&nbsp;folds)
+          {{analysisResult.modelMetrics.classifierName}}&nbsp;({{analysisResult.modelMetrics.numFolds}}&nbsp;folds)
         </div>
       </header>
       <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
@@ -26,24 +26,24 @@
         <div class="metrics-container f-size-14 flex-auto">
           <div>
             <span class="color-tp-title f-weight-500">test_accuracy</span>:<br>
-            {{(data.analysisResult.modelMetrics.testAccuracy
+            {{(analysisResult.modelMetrics.testAccuracy
             * 100).toFixed(2)}}%
           </div><br>
           <div>
             <span class="color-tp-title f-weight-500">mean_train_accuracy</span>:
-            <br>{{(data.analysisResult.modelMetrics.meanTrainAccuracy * 100).toFixed(2)}}%
+            <br>{{(analysisResult.modelMetrics.meanTrainAccuracy * 100).toFixed(2)}}%
           </div><br>
           <div>
             <span class="color-tp-title f-weight-500">std_train_accuracy</span>:<br>
-            {{(data.analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
+            {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
           </div><br>
           <div>
             <span class="color-tp-title f-weight-500">mean_valid_accuracy</span>:<br>
-            {{(data.analysisResult.modelMetrics.meanValidAccuracy * 100).toFixed(2)}}%
+            {{(analysisResult.modelMetrics.meanValidAccuracy * 100).toFixed(2)}}%
           </div><br>
           <div>
             <span class="color-tp-title f-weight-500">std_valid_accuracy</span>:<br>
-            {{(data.analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}%
+            {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}%
           </div>
         </div>
         <div class="line-chart-container flex-auto">
@@ -162,47 +162,47 @@
               {{element.localityMap.municipalityName || '-'}} </td>
           </ng-container>
           <!-- State count -->
-          <ng-container matColumnDef="stateCount">
-            <th mat-header-cell *matHeaderCellDef> States </th>
+          <ng-container matColumnDef="statesCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> States </th>
             <td mat-cell *matCellDef="let element">
               {{element.statesCount}} </td>
           </ng-container>
           <!-- Municipality count -->
-          <ng-container matColumnDef="municipalityCount">
-            <th mat-header-cell *matHeaderCellDef> Municipalities </th>
+          <ng-container matColumnDef="municipalitiesCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipalities </th>
             <td mat-cell *matCellDef="let element">
               {{element.municipalitiesCount}} </td>
           </ng-container>
           <!-- School Count -->
           <ng-container matColumnDef="schoolCount">
-            <th mat-header-cell *matHeaderCellDef> Schools </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Schools </th>
             <td mat-cell *matCellDef="let element">
               {{element.schoolCount}}
             </td>
           </ng-container>
           <!-- Without Data Count -->
-          <ng-container matColumnDef="withoutDataCount">
-            <th mat-header-cell *matHeaderCellDef> Count </th>
+          <ng-container matColumnDef="schoolWithoutInternetAvailabilityCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
             <td mat-cell *matCellDef="let element">
-              {{element.internetAvailabilityByValue.NA }}
+              {{element.schoolWithoutInternetAvailabilityCount }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="withoutDataPercentage">
-            <th mat-header-cell *matHeaderCellDef> % </th>
+          <ng-container matColumnDef="schoolWithoutInternetAvailabilityPercentage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
             <td mat-cell *matCellDef="let element">
               {{element.schoolWithoutInternetAvailabilityPercentage}}%
             </td>
           </ng-container>
           <!-- PredictionCount -->
-          <ng-container matColumnDef="predictionCount">
-            <th mat-header-cell *matHeaderCellDef> Count </th>
+          <ng-container matColumnDef="schoolInternetAvailabilityPredicitionCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
             <td mat-cell *matCellDef="let element">
               {{element.schoolInternetAvailabilityPredicitionCount}}
             </td>
           </ng-container>
           <!-- Prediction Percentage -->
-          <ng-container matColumnDef="predictionPercentage">
-            <th mat-header-cell *matHeaderCellDef> % </th>
+          <ng-container matColumnDef="schoolInternetAvailabilityPredicitionPercentage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
             <td mat-cell *matCellDef="let element">
               {{element.schoolInternetAvailabilityPredicitionPercentage}}%
             </td>

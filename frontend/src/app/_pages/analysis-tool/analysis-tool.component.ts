@@ -10,11 +10,7 @@ import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status'
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { AnalysisTask } from 'src/app/_models';
-import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
-
-//TODO Remover isso
-import { analysisResultFromServer } from '../../../test/analysis-result';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -136,14 +132,12 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onButtonViewResultsClick() {
-    //TODO refatorar esse mock
     if (this.selectedAnalysisType && this.storageTask) {
       this._dialogFileRequirements.open(DialogAnaysisResultComponent, {
         maxHeight: '90vh',
         maxWidth: '90vw',
         width: '100%',
         data: {
-          analysisResult: new AnalysisResult().deserialize(analysisResultFromServer),
           analysisTask: this.storageTask,
           analysisType: this.selectedAnalysisType
         } as IDialogAnalysisResultData
@@ -190,12 +184,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.startStatusCheckCountdown();
 
       this.poolTaskSubscription = timer.subscribe(() => {
-        this.stopStatusCheckCountdown();
+        this.statusCheckTimeLeft = 30;
         this.loadingPoolTask = true;
 
         this._analysisToolService
           .getTaskInfo(this.storageTask ? this.storageTask.id.toString() : '')
           .subscribe(data => {
+
+
             this.loadingPoolTask = false;
             this.storageTask = data;
             this.storageTask.statusCheckCode = 200;
@@ -205,8 +201,10 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
             if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
               this.poolTaskSubscription.unsubscribe();
+              this.stopStatusCheckCountdown();
             }
           }, error => {
+            this.stopStatusCheckCountdown();
             const errorMessage = `Something went wrong getting the analysis data: ${error.message}`;
 
             this.loadingPoolTask = false;
@@ -219,7 +217,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
               this.storageTask.statusCheckCode = error.status || 500;
               this.storageTask.statusCheckMessage = errorMessage;
 
-              if (error.status === 400) {
+              if (error.status === 404) {
                 this.storageTask.statusCheckMessage = `We were unable to locate your analysis, or its storage time has expired. You can either discard it and start a new analysis.`;
               }
 
@@ -253,16 +251,18 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   startStatusCheckCountdown() {
-    this.statusCheckTimeLeft = 30;
+    if (!this.statusCheckInterval) {
+      this.statusCheckTimeLeft = 30;
 
-    this.statusCheckInterval = setInterval(() => {
-      if (this.statusCheckTimeLeft > 0) {
-        this.statusCheckTimeLeft--;
-      } else {
-        this.statusCheckTimeLeft = 0;
-        this.stopStatusCheckCountdown();
-      }
-    }, 1000)
+      this.statusCheckInterval = setInterval(() => {
+        if (this.statusCheckTimeLeft > 0) {
+          this.statusCheckTimeLeft--;
+        } else {
+          this.statusCheckTimeLeft = 0;
+          this.stopStatusCheckCountdown();
+        }
+      }, 1000);
+    }
   }
 
   stopStatusCheckCountdown() {

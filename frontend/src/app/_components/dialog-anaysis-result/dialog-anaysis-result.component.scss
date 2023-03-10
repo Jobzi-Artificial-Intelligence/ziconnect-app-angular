@@ -41,6 +41,20 @@
       tr.mat-row {
         height: 40px;
       }
+
+      ::ng-deep .mat-sort-header-container {
+        justify-content: center !important;
+
+        .mat-sort-header-arrow {
+          display: none;
+        }
+
+        &.mat-sort-header-sorted {
+          .mat-sort-header-arrow {
+            display: inline-block;
+          }
+        }
+      }
     }
   }
 }

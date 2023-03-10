@@ -106,4 +106,11 @@ export class UtilHelper {
       throw new Error('Browser does not support download attribute');
     }
   }
+
+  public static uppercaseKeys<T extends Record<string, any>>(obj: T): { [key: string]: any } {
+    return Object.keys(obj).reduce((result, key) => {
+      result[key.toUpperCase()] = obj[key];
+      return result;
+    }, {} as { [key: string]: any });
+  }
 }

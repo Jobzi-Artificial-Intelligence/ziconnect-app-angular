@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AnalysisTask } from 'src/app/_models';
+import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -24,8 +25,8 @@ export class AnalysisToolService {
    */
   postNewPredictionAnalysis(schoolFile: File, localityFile: File) {
     const formData = new FormData();
-    formData.append('localityFile', localityFile);
-    formData.append('schoolFile', schoolFile);
+    formData.append('locality_file', localityFile);
+    formData.append('school_file', schoolFile);
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskPredictionPath}`, formData, {
       reportProgress: true,
@@ -51,7 +52,7 @@ export class AnalysisToolService {
   }
 
   /**
-   * Gets analysis task status by task id
+   * Gets analysis task info by task id
    * @param taskId analysis task id
    * @returns 
    */
@@ -63,6 +64,24 @@ export class AnalysisToolService {
       .pipe(
         map((data) => {
           return new AnalysisTask().deserialize(data);
+        })
+      );
+    ;
+  }
+
+  /**
+   * Gets analysis task result by task id
+   * @param taskId analysis task id
+   * @returns 
+   */
+  getTaskResult(taskId: string): Observable<AnalysisResult> {
+    return this._http
+      .get<any>(`${environment.fastApiHost}${this._taskResultPath}/${taskId}`, {
+        responseType: 'json'
+      })
+      .pipe(
+        map((data) => {
+          return new AnalysisResult().deserialize(data.taskResult);
         })
       );
     ;

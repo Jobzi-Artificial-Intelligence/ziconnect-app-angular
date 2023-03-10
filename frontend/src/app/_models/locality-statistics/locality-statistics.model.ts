@@ -1,3 +1,4 @@
+import { UtilHelper } from "src/app/_helpers";
 import { Deserializable } from "../deserializable.model";
 import { LocalityMap } from "../locality-map/locality-map.model";
 
@@ -184,11 +185,14 @@ export class LocalityStatistics implements Deserializable {
       NO: 0
     } as IConnectivityStats;
 
-    this.internetAvailabilityByValue = { ...connectivityStats, ...input.internet_availability_by_value as IConnectivityStats };
+    const internetAvailabilityByValue = UtilHelper.uppercaseKeys(input.internet_availability_by_value) as IConnectivityStats
+    this.internetAvailabilityByValue = { ...connectivityStats, ...internetAvailabilityByValue };
     this.internetAvailabilityBySchoolRegion = input.internet_availability_by_school_region as ISchoolRegionStats;
     this.internetAvailabilityBySchoolType = input.internet_availability_by_school_type as ISchoolTypeStats;
 
-    this.internetAvailabilityPredictionByValue = { ...connectivityStats, ...input.internet_availability_prediction_by_value as IConnectivityStats };
+
+    const internetAvailabilityPredictionByValue = UtilHelper.uppercaseKeys(input.internet_availability_prediction_by_value) as IConnectivityStats;
+    this.internetAvailabilityPredictionByValue = { ...connectivityStats, ...internetAvailabilityPredictionByValue };
     this.internetAvailabilityPredictionBySchoolRegion = input.internet_availability_prediction_by_school_region as ISchoolRegionStats;
     this.internetAvailabilityPredictionBySchoolType = input.internet_availability_prediction_by_school_type as ISchoolTypeStats;
 
@@ -199,8 +203,7 @@ export class LocalityStatistics implements Deserializable {
     this.schoolWithoutInternetAvailabilityPercentage = Math.round((this.schoolWithoutInternetAvailabilityCount / this.schoolCount) * 100);
 
     this.schoolInternetAvailabilityPredicitionCount = this.internetAvailabilityPredictionByValue.YES;
-    this.schoolInternetAvailabilityPredicitionPercentage = Math.round((this.schoolInternetAvailabilityPredicitionCount / this.schoolWithoutInternetAvailabilityCount) * 100);
-
+    this.schoolInternetAvailabilityPredicitionPercentage = this.schoolInternetAvailabilityPredicitionCount > 0 ? Math.round((this.schoolInternetAvailabilityPredicitionCount / this.schoolWithoutInternetAvailabilityCount) * 100) : 0;
     return this;
   }
 }

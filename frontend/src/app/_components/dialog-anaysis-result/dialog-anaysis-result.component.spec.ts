@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +16,7 @@ describe('DialogAnaysisResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AngularMaterialModule, BrowserAnimationsModule],
+      imports: [AngularMaterialModule, BrowserAnimationsModule, HttpClientTestingModule],
       declarations: [DialogAnaysisResultComponent],
       providers: [
         {

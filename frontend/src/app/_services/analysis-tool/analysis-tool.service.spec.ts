@@ -3,7 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { skipWhile } from 'rxjs/operators';
 import { AnalysisTask } from 'src/app/_models';
+import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { environment } from 'src/environments/environment';
+import { analysisResultFromServer } from '../../../test/analysis-result';
 
 import { AnalysisToolService } from './analysis-tool.service';
 
@@ -70,6 +72,34 @@ describe('AnalysisToolService', () => {
 
       const testRequest = httpTestingController.expectOne(`${endpointGetTaskInfoUri}/${taskFromServer.task_id}`);
       testRequest.flush(taskFromServer);
+    });
+  });
+
+  describe('#getTaskResult', () => {
+    it('should exists', () => {
+      expect(service.getTaskResult).toBeDefined();
+      expect(service.getTaskResult).toEqual(jasmine.any(Function));
+    });
+
+    it('should use GET to retrieve data', () => {
+      service.getTaskResult(taskFromServer.task_id).subscribe();
+
+      const testRequest = httpTestingController.expectOne(`${endpointGetTaskResulUri}/${taskFromServer.task_id}`);
+      expect(testRequest.request.method).toEqual('GET');
+    });
+
+    it('should return expected data', (done) => {
+      const taskResult = analysisResultFromServer.taskResult;
+      const expectedData: AnalysisResult = new AnalysisResult().deserialize(taskResult);
+
+      service.getTaskResult(taskFromServer.task_id).subscribe(data => {
+        expect(data.modelMetrics).toBeDefined();
+        expect(data.resultSummary).toBeDefined();
+        done();
+      });
+
+      const testRequest = httpTestingController.expectOne(`${endpointGetTaskResulUri}/${taskFromServer.task_id}`);
+      testRequest.flush(analysisResultFromServer);
     });
   });
 

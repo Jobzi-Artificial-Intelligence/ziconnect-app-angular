@@ -1,11 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UtilHelper } from 'src/app/_helpers';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { LocalityStatistics } from 'src/app/_models';
-import { AlertService, LocalityStatisticsService } from 'src/app/_services';
+import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
+import { AlertService, AnalysisToolService, LocalityStatisticsService } from 'src/app/_services';
 
 @Component({
   selector: 'app-dialog-anaysis-result',
@@ -13,6 +15,7 @@ import { AlertService, LocalityStatisticsService } from 'src/app/_services';
   styleUrls: ['./dialog-anaysis-result.component.scss']
 })
 export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
+  analysisResult: AnalysisResult = new AnalysisResult();
   loading: boolean = true;
   metricsChartResults: Array<any> = new Array<any>();
 
@@ -41,14 +44,28 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   //#region MAT-TABLE CONFIG
   ////////////////////////////////////////////////
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   public groupColumnsDisplayed: string[] = ['country', 'state', 'municipality', 'counts', 'withoutData', 'prediction'];
-  public columnsToDisplay: string[] = ['countryCode', 'countryName', 'stateCode', 'stateName', 'municipalityCode', 'municipalityName', 'stateCount', 'municipalityCount', 'schoolCount', 'withoutDataCount', 'withoutDataPercentage', 'predictionCount', 'predictionPercentage'];
+  public columnsToDisplay: string[] = [
+    'countryCode',
+    'countryName',
+    'stateCode',
+    'stateName',
+    'municipalityCode',
+    'municipalityName',
+    'statesCount',
+    'municipalitiesCount',
+    'schoolCount',
+    'schoolWithoutInternetAvailabilityCount',
+    'schoolWithoutInternetAvailabilityPercentage',
+    'schoolInternetAvailabilityPredicitionCount',
+    'schoolInternetAvailabilityPredicitionPercentage'];
   public tableDataSource: MatTableDataSource<LocalityStatistics>;
   //#endregion
   ////////////////////////////////////////////////
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData, private ref: ChangeDetectorRef, private _alertService: AlertService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData, private ref: ChangeDetectorRef, private _alertService: AlertService, private _analysisToolService: AnalysisToolService) {
     this.tableDataSource = new MatTableDataSource(new Array<LocalityStatistics>());
   }
 
@@ -57,7 +74,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.buildMetricsLineChart();
     this.loadAnalysisResult();
   }
 
@@ -69,7 +85,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   buildMetricsLineChart() {
     const trainAccuracySeries = {
       name: 'Training',
-      series: this.data.analysisResult.modelMetrics.trainAccuracies.map((value, index) => {
+      series: this.analysisResult.modelMetrics.trainAccuracies.map((value, index) => {
         return {
           name: `${index + 1}`,
           value: parseFloat((value * 100).toFixed(2))
@@ -79,7 +95,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
     const validAccuracySeries = {
       name: 'Validation',
-      series: this.data.analysisResult.modelMetrics.validAccuracies.map((value, index) => {
+      series: this.analysisResult.modelMetrics.validAccuracies.map((value, index) => {
         return {
           name: `${index + 1}`,
           value: parseFloat((value * 100).toFixed(2))
@@ -93,13 +109,24 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   loadAnalysisResult() {
     this.loading = true;
-    setTimeout(() => {
-      this.tableDataSource = new MatTableDataSource(this.data.analysisResult.resultSummary);
-      this.tableDataSource.paginator = this.paginator;
-      this.tableDataSource.filterPredicate = this.tableFilterPredicate;
 
-      this.loading = false;
-    }, 1000);
+    this._analysisToolService
+      .getTaskResult(this.data.analysisTask.id.toString())
+      .subscribe(data => {
+        this.analysisResult = data;
+
+        this.buildMetricsLineChart();
+
+        this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);
+        this.tableDataSource.paginator = this.paginator;
+        this.tableDataSource.filterPredicate = this.tableFilterPredicate;
+        this.tableDataSource.sort = this.sort;
+
+        this.loading = false;
+      }, error => {
+        this._alertService.showError('Something went wrong getting result: ' + error.message);
+        this.loading = false;
+      })
   }
 
   onButtonExportClick() {
@@ -128,7 +155,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   }
 
   tableFilterPredicate(data: LocalityStatistics, filter: string) {
-
     return data.localityMap.countryCode.toString().toLowerCase().includes(filter) ||
       data.localityMap.countryName.toString().toLowerCase().includes(filter) ||
       data.localityMap.stateCode.toString().toLowerCase().includes(filter) ||
