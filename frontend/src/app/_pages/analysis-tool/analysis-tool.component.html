@@ -30,16 +30,24 @@
   <div class="wrapper">
     <section id="section-about">
       <header>
-        <div class="title f-size-24 color-tp-title f-weight-500">About Analysis</div>
+        <div class="title f-size-24 color-tp-title f-weight-500">How it works</div>
       </header>
       <br>
-      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor
-        incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Our web tool provides a simple and efficient solution for users to upload their input files and receive
+        processed results. With our user-friendly interface, you can easily upload your data files and have them
+        validated and pre-processed before being used to train a model.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Once your data has been pre-processed and validated, our tool trains a model using advanced machine learning
+        algorithms. We pride ourselves on the accuracy of our models, and you can be sure that the results you receive
+        are reliable.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Our web tool not only provides users with processed results, but also gives them valuable insights into the
+        performance of their trained model. One of the key results obtained is the accuracy of the training and
+        validation of the model. With our web tool, you can trust that you will receive accurate and informative results
+        to help you make decisions.
       </p>
       <br>
       <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
@@ -55,7 +63,8 @@
       <br>
       <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
       <br>
-      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit, sed do
         eiusmod tempor
         incididunt ut labore et dolore
         magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -70,7 +79,7 @@
         <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
       </header>
       <br>
-      <div class="flex direction-column items-center justify-between" id="selection-list">
+      <div class="flex direction-column items-stretch justify-between" id="selection-list">
         <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(1)"
           [ngClass]="{'active': selectedAnalysisType === 1}">
           <mat-icon class="active-icon material-icons color-blue">check_circle</mat-icon>
@@ -89,6 +98,7 @@
           <mat-card-title>Employability Impact</mat-card-title>
           <mat-card-subtitle>Analysis</mat-card-subtitle>
           <mat-card-content>
+            <span class="badge">Coming Soon</span><br>
             <p>Lorem ipsum dolor sit amet.</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
@@ -99,13 +109,14 @@
     </section>
     <section *ngIf="storageTask">
       <div class="storage-task-card"
-        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'started': storageTask.status === 'STARTED', 'success': storageTask.status === 'SUCCESS'}">
+        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'received': storageTask.status === 'RECEIVED', 'started': storageTask.status === 'STARTED', 'success': storageTask.status === 'SUCCESS'}">
         <header class="flex items-center justify-between">
           <div class="color-tp-title flex items-center f-size-14" matTooltip="Last status checked at">
             <mat-icon *ngIf="!loadingPoolTask"
               class="cursor-pointer material-icons-outlined color-tp-body">history</mat-icon>&nbsp;
             <span *ngIf="!loadingPoolTask">{{storageTask.statusCheckedAtString}}</span>&nbsp;<span
-              *ngIf="!loadingPoolTask && !this.poolTaskSubscription.closed" class="color-tp-body">(Updating in
+              *ngIf="!loadingPoolTask && (this.poolTaskSubscription && !this.poolTaskSubscription.closed)"
+              class="color-tp-body">(Updating in
               {{statusCheckTimeLeft}}s)</span>
             <div class="flex items-center" *ngIf="loadingPoolTask">
               <mat-spinner [diameter]="20"></mat-spinner>&nbsp;&nbsp;
@@ -118,6 +129,8 @@
               *ngIf="storageTask.status === 'FAILURE'">error_outline</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
               *ngIf="storageTask.status === 'PENDING'">pending</mat-icon>
+            <mat-icon class="label-icon material-icons-outlined"
+              *ngIf="storageTask.status === 'RECEIVED'">call_received</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
               *ngIf="storageTask.status === 'STARTED'">play_arrow</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
@@ -160,17 +173,18 @@
           <button *ngIf="storageTask.status === 'SUCCESS'" (click)="onButtonViewResultsClick()" mat-raised-button>View
             Results</button>
           <button *ngIf="storageTask.status === 'FAILURE'" mat-raised-button>View Errors</button>
-          <button *ngIf="storageTask.statusCheckCode > 200 && this.poolTaskSubscription.closed" mat-raised-button
-            (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
           <button
-            [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200) || !this.poolTaskSubscription.closed"
+            *ngIf="storageTask.statusCheckCode > 200 && (this.poolTaskSubscription && this.poolTaskSubscription.closed)"
+            mat-raised-button (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
+          <button
+            [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200) || (this.poolTaskSubscription && !this.poolTaskSubscription.closed)"
             mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()"
             matTooltip="Discard and start new analysis">Discard</button>
         </footer>
       </div>
     </section>
     <section id="section-analysis-steps" *ngIf="selectedAnalysisType && !storageTask" #sectionAnalysisSteps>
-      <mat-vertical-stepper [linear]="true" #analysisStepper>
+      <mat-vertical-stepper [linear]="true" (selectionChange)="onStepSelectionChange($event)" #analysisStepper>
         <mat-step [completed]="false">
           <ng-template matStepLabel>Input Data</ng-template>
           <div class="step-inputs-list flex items-stretch">
@@ -304,9 +318,33 @@
           </div>
         </mat-step>
         <mat-step [completed]="false">
-          <ng-template matStepLabel>Data Validation</ng-template>
-          <p>Data validation summary goes here</p>
-          <button mat-raised-button color="primary" (click)="onButtonNextClick()">Next</button>
+          <ng-template matStepLabel>Initial Input Validation</ng-template>
+          <div *ngIf="selectedAnalysisType === 1">
+            <div class="input-validation-item">
+              <div class="color-tp-title f-size-16 f-weight-500">School File</div>
+              <ul class="input-validation-list">
+                <li *ngFor="let item of schoolFileValidationResult" class="flex items-center">
+                  <mat-icon class="material-icons color-green f-size-16" *ngIf="item.valid">check_circle</mat-icon>
+                  <mat-icon class="material-icons color-feat-red f-size-16" *ngIf="!item.valid">error_outline</mat-icon>
+                  <div class="color-tp-body f-size-14">{{item.message}}</div>
+                </li>
+              </ul>
+            </div>
+            <div class="input-validation-item">
+              <div class="color-tp-title f-size-16 f-weight-500">Locality File</div>
+              <ul class="input-validation-list">
+                <li *ngFor="let item of localityFileValidationResult" class="flex items-center">
+                  <mat-icon class="material-icons color-green f-size-16" *ngIf="item.valid">check_circle</mat-icon>
+                  <mat-icon class="material-icons color-feat-red f-size-16" *ngIf="!item.valid">error_outline</mat-icon>
+                  <div class="color-tp-body f-size-14">{{item.message}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 1"
+            [disabled]="!schoolFileIsValid || !localityFileIsValid">Next</button>
+          <button mat-raised-button color="primary" (click)="onButtonNextClick()"
+            *ngIf="selectedAnalysisType === 2">Next</button>
         </mat-step>
         <mat-step [completed]="false">
           <ng-template matStepLabel>Execute</ng-template>

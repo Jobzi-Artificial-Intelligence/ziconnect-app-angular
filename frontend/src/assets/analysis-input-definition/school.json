@@ -32,6 +32,14 @@
     "example": "urban"
   },
   {
+    "column": "municipality_code",
+    "dataType": "integer",
+    "required": true,
+    "primaryKey": false,
+    "description": "City/Town/Municipality/Village/District identifier.",
+    "example": "1100205"
+  },
+  {
     "column": "latitude",
     "dataType": "double",
     "required": false,
@@ -56,7 +64,7 @@
     "example": "10835"
   },
   {
-    "column": "internet_connectivity",
+    "column": "internet_availability",
     "dataType": "boolean",
     "required": false,
     "primaryKey": false,

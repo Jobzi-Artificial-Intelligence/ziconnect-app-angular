@@ -1,7 +1,7 @@
 [
   {
     "column": "id",
-    "dataType": "integer",
+    "dataType": "string",
     "required": true,
     "primaryKey": true,
     "description": "Unique location identifier",

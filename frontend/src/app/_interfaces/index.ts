@@ -1,3 +1,4 @@
+export * from './analysis-input-validation-result';
 export * from './dialog-analysis-result-data';
 export * from './map-filter';
 export * from './map-info-window-content';

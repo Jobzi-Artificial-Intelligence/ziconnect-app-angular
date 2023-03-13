@@ -1,3 +1,4 @@
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,9 +9,10 @@ import { DialogAnalysisFileRequirementsComponent, DialogAnaysisResultComponent }
 import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
-import { IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { AnalysisTask } from 'src/app/_models';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -41,16 +43,20 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   ////////////////////////////////////////////
   @ViewChild('schoolFileDropRef') schoolFileDropRef: ElementRef | undefined;
   public schoolFile: File | undefined;
+  public schoolFileIsValid: boolean = false;
+  public schoolFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
 
   @ViewChild('localityFileDropRef') localityFileDropRef: ElementRef | undefined;
   public localityFile: File | undefined;
+  public localityFileIsValid: boolean = false;
+  public localityFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
 
   @ViewChild('schoolHistoryFileDropRef') schoolHistoryFileDropRef: ElementRef | undefined;
   public schoolHistoryFile: File | undefined;
   ////////////////////////////////////////////
   //#endregion
 
-  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef, private _dialogFileRequirements: MatDialog) { }
+  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef, private _dialogFileRequirements: MatDialog, private _analysisInputValidationService: AnalysisInputValidationService) { }
 
 
   //#region Component initialization functions
@@ -94,9 +100,19 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onButtonRemoveFileClick(filePropertyName: string) {
+    this.analysisStepper?.reset();
+
     (this as any)[filePropertyName] = undefined;
     if ((this as any)[`${filePropertyName}DropRef`]) {
       (this as any)[`${filePropertyName}DropRef`].nativeElement.value = '';
+    }
+
+    if ((this as any)[`${filePropertyName}IsValid`]) {
+      (this as any)[`${filePropertyName}IsValid`] = false;
+    }
+
+    if ((this as any)[`${filePropertyName}ValidationResult`]) {
+      (this as any)[`${filePropertyName}ValidationResult`] = new Array<IAnalysisInputValidationResult>();
     }
   }
 
@@ -177,6 +193,27 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   //#region Util Functions
   ////////////////////////////////////////////
+  async onStepSelectionChange(event: StepperSelectionEvent) {
+    if (event.selectedIndex === 1 && event.previouslySelectedIndex === 0) {
+      //VALIDATE INPUTS
+      if (this.schoolFile) {
+        const result = await this._analysisInputValidationService.validateSchoolInputFile(this.schoolFile);
+        if (result.length > 0) {
+          this.schoolFileIsValid = result.every(item => item.valid);
+          this.schoolFileValidationResult = result;
+        }
+      }
+
+      if (this.localityFile) {
+        const result = await this._analysisInputValidationService.validateLocalityInputFile(this.localityFile);
+        if (result.length > 0) {
+          this.localityFileIsValid = result.every(item => item.valid);
+          this.localityFileValidationResult = result;
+        }
+      }
+    }
+  }
+
   poolStorageTask() {
     if (this.storageTask) {
       const timer = interval(30000);
@@ -276,6 +313,11 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   //#region Analysis handlers
   ////////////////////////////////////////////
   onSelectAnalysisTypeClick(type: AnalysisType) {
+    if (type === AnalysisType.EmployabilityImpact) {
+      this._alertService.showWarning('This type of analysis will be available soon.');
+      return;
+    }
+
     this.selectedAnalysisType = type;
     this.initNewAnalysis();
 
