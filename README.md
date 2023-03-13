@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project/branch/master/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/unicef-project)
+[![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/ziconnect-app-angular/branch/master/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/ziconnect-app-angular)
 
 # Predicting school connectivity and employability in Brazil #
 

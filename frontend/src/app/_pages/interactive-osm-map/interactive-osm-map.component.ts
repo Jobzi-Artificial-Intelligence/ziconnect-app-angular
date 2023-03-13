@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged, startWith, tap } from 'rxjs/operato
 import { MapViewOptionValue } from 'src/app/_helpers';
 import { IMapFilter, IMapViewOption, ILocalityLayer, IMapLocalityLayer, IMapStatsPanel, IMapInfoWindowContent } from 'src/app/_interfaces';
 import { AdministrativeLevel, City, LocalityMap, LocalityMapAutocomplete, LocalityStatistics, Region, State } from 'src/app/_models';
-import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
+import { ShortNumberPipe } from 'src/app/_pipes';
 import { AlertService, LocalityLayerPopupService, LocalityMapService, LocalityStatisticsService } from 'src/app/_services';
 
 @Component({

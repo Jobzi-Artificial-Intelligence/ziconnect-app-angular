@@ -276,14 +276,6 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/google-maps@13.3.5":
-  version "13.3.5"
-  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-13.3.5.tgz#94690b4b9e1a78c6bd4589735abd747100acfac2"
-  integrity sha512-TFRTO/Vr7uxXCpQgY4fNLhWRgNczVdDa0m1MM0DSw0NPtl6EEKGlEp78kd4YfOGEAqXosQHC9Zrx9PWlz48tNA==
-  dependencies:
-    "@types/google.maps" "^3.45.6"
-    tslib "^2.3.0"
-
 "@angular/material@14.2.7":
   version "14.2.7"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-14.2.7.tgz#678c657197268eba6814c757152f8d178ff08866"
@@ -2379,11 +2371,6 @@
   version "7946.0.10"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
   integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
-
-"@types/google.maps@^3.45.6":
-  version "3.50.0"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.50.0.tgz#48cbb7176e3403ae79b45017de5cf9816ac8b181"
-  integrity sha512-8SQJKelTTt2ah7WDNWd2DZgUrqNaZw6sAFiTxmEtFql5Mzx2qfBIUdp5XwC4JbYy/AjJQT5wEBLwtwuOjBTOYg==
 
 "@types/http-proxy@^1.17.8":
   version "1.17.9"
@@ -6604,6 +6591,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.0.0:
   version "2.0.0"

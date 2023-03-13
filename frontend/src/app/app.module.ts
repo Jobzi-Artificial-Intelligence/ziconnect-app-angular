@@ -10,14 +10,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ShortNumberPipe } from './_pipes/short-number.pipe';
+import { FileSizePipe, ShortNumberPipe } from './_pipes';
 import {
   DialogSchoolColumnSelectorComponent,
+  DialogAnalysisFileRequirementsComponent,
+  DialogAnaysisResultComponent,
   LocalityLayerPopupComponent,
   NavigationBarComponent,
+  PageFooterComponent,
   SchoolTableBottomSheetComponent
 } from './_components';
 import {
+  AnalysisToolComponent,
   CodeConductComponent,
   ContributorsComponent,
   DataSourceReferenceComponent,
@@ -26,25 +30,34 @@ import {
   LicenseComponent,
   PageNotFoundComponent
 } from './_pages';
+import { FileDragAndDropDirective } from './_directives';
 
 
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
+    AnalysisToolComponent,
     AppComponent,
     CodeConductComponent,
     ContributorsComponent,
     DataSourceReferenceComponent,
+    DialogAnalysisFileRequirementsComponent,
+    DialogAnaysisResultComponent,
     DialogSchoolColumnSelectorComponent,
+    FileDragAndDropDirective,
     HomeComponent,
     InteractiveOsmMapComponent,
     LicenseComponent,
     LocalityLayerPopupComponent,
     NavigationBarComponent,
+    PageFooterComponent,
     PageNotFoundComponent,
     SchoolTableBottomSheetComponent,
-    ShortNumberPipe,],
-  exports: [ShortNumberPipe],
+    FileSizePipe,
+    ShortNumberPipe],
+  exports: [
+    FileSizePipe,
+    ShortNumberPipe],
   imports: [
     AngularMaterialModule,
     AppRoutingModule,
