@@ -1,4 +1,5 @@
 import * as moment from "moment";
+import { UtilHelper } from "src/app/_helpers";
 import { AnalysisTaskStatus } from "src/app/_helpers/enums/analysis-task-status";
 import { AnalysisResult } from "../analysis-result/analysis-result.model";
 import { Deserializable } from "../deserializable.model";
@@ -99,5 +100,15 @@ export class AnalysisTask implements Deserializable {
 
   get successAtString() {
     return this.successAt ? this.successAt.format('L LTS') : '';
+  }
+
+  get successDurationString() {
+    if (!this.startedAt || !this.successAt) {
+      return "";
+    }
+
+    const durationMs = this.startedAt.diff(this.successAt, 'milliseconds');
+
+    return UtilHelper.formatDuration(durationMs);
   }
 }

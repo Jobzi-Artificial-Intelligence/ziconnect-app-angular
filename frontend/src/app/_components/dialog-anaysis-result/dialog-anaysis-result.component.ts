@@ -35,7 +35,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     yAxis: true,
     showYAxisLabel: true,
     showXAxisLabel: true,
-    xAxisLabel: 'Metric',
+    xAxisLabel: 'Partition',
     yAxisLabel: 'Accuracy'
   }
   //#endregion

@@ -30,47 +30,55 @@
   <div class="wrapper">
     <section id="section-about">
       <header>
+        <div class="title f-size-24 color-tp-title f-weight-500">Introduction</div>
+      </header>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Our team has developed a web tool that consists of two services to address the crucial role of Internet
+        Connectivity in schools. This application results from our partnership with UNICEF, and we are proud of the
+        outcome.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        To ensure the quality of our services, we collected extensive data from various Brazilian government sources and
+        studied their impact on the quality of the services developed. We are excited about the fruits of this
+        challenging endeavor, which we believe will make a difference.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        However, as this is the first version of our tool, we welcome everyone interested in contributing to improving
+        this project.
+      </p>
+      <br>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        The first service is an Internet Availability Predictor that aims to provide a solution for schools lacking
+        internet availability information. It helps policymakers plan and allocate resources more effectively by
+        estimating the likelihood of schools having reliable internet access using demographic and geographic data
+        provided by the user.
+      </p>
+      <br>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        The second service measures the employability impact of providing internet access by comparing data on
+        employment rates and job opportunities between municipalities where school internet access has been improved or
+        stagnated over the years. This information helps policymakers and educators understand the importance of
+        reliable internet access for students' future success.
+      </p>
+      <br>
+      <br>
+      <br>
+      <header>
         <div class="title f-size-24 color-tp-title f-weight-500">How it works</div>
       </header>
       <br>
       <p class="f-size-16 color-tp-body line-height-1-5">
-        Our web tool provides a simple and efficient solution for users to upload their input files and receive
-        processed results. With our user-friendly interface, you can easily upload your data files and have them
-        validated and pre-processed before being used to train a model.
-      </p>
-      <p class="f-size-16 color-tp-body line-height-1-5">
-        Once your data has been pre-processed and validated, our tool trains a model using advanced machine learning
-        algorithms. We pride ourselves on the accuracy of our models, and you can be sure that the results you receive
-        are reliable.
-      </p>
-      <p class="f-size-16 color-tp-body line-height-1-5">
-        Our web tool not only provides users with processed results, but also gives them valuable insights into the
-        performance of their trained model. One of the key results obtained is the accuracy of the training and
-        validation of the model. With our web tool, you can trust that you will receive accurate and informative results
-        to help you make decisions.
-      </p>
-      <br>
-      <div class="f-size-20 color-tp-title f-weight-500">Connectivity Prediction</div>
-      <br>
-      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor
-        incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-      </p>
-      <br>
-      <div class="f-size-20 color-tp-title f-weight-500">Employability Impact</div>
-      <br>
-      <p class="f-size-16 color-tp-body line-height-1-5">Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit, sed do
-        eiusmod tempor
-        incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        Our web tool offers a simple and efficient solution for users to choose the service they want and upload their
+        data. The selected service validates the data and builds a custom model to fit the user's context. The tool
+        returns an overview of the results and initial insights, which the user can download along with the raw results
+        for further examination.
       </p>
     </section>
     <section id="section-type-selection" #sectionTypeSelection>
@@ -86,23 +94,24 @@
           <mat-card-title>Connectivity Prediction</mat-card-title>
           <mat-card-subtitle>Analysis</mat-card-subtitle>
           <mat-card-content>
-            <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat.</p>
+            <p class="line-height-1-5">
+              Internet Availability Predictor that aims to provide a solution for schools lacking internet availability
+              information.
+            </p>
           </mat-card-content>
         </mat-card>
         <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(2)"
           [ngClass]="{'active': selectedAnalysisType === 2}">
           <mat-icon class="active-icon material-icons color-blue">check_circle</mat-icon>
-          <mat-card-title>Employability Impact</mat-card-title>
+          <span class="badge">Coming Soon</span>
+          <mat-card-title class="flex items-start">Employability Impact</mat-card-title>
           <mat-card-subtitle>Analysis</mat-card-subtitle>
           <mat-card-content>
-            <span class="badge">Coming Soon</span><br>
-            <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat.</p>
+            <p class="line-height-1-5">
+              Measures the employability impact of providing internet access by comparing data on employment rates and
+              job opportunities between municipalities where school internet access has been improved or stagnated over
+              the years.
+            </p>
           </mat-card-content>
         </mat-card>
       </div>

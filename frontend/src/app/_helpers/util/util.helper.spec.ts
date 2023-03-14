@@ -160,4 +160,35 @@ describe('Helper: Util', () => {
       expect(objectKeys.includes('dog.owner.name')).toBeTrue();
     });
   });
+
+  describe('#formatDuration', () => {
+
+    it('should exists', () => {
+      expect(UtilHelper.formatDuration).toBeTruthy();
+      expect(UtilHelper.formatDuration).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const expectedResults = [{
+        value: 10010,
+        result: '10 seconds'
+      }, {
+        value: 100100,
+        result: '1 minute, 40 seconds'
+      }, {
+        value: 10010010,
+        result: '2 hours, 46 minutes, 50 seconds'
+      }, {
+        value: 100100100,
+        result: '1 day, 3 hours, 48 minutes, 20 seconds'
+      }, {
+        value: -10010,
+        result: '10 seconds'
+      }];
+
+      expectedResults.forEach((expectedResult) => {
+        expect(UtilHelper.formatDuration(expectedResult.value)).toEqual(expectedResult.result);
+      })
+    });
+  });
 });
