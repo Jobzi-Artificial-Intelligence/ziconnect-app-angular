@@ -9,7 +9,45 @@
         {{data.analysisTask.id}}
       </div>
     </header>
-    <section id="section-model-metrics">
+    <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
+      <mat-spinner [diameter]="50"></mat-spinner><br>
+      <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>
+    </div>
+    <section id="section-results-description" *ngIf="!loading && analysisResult.modelMetrics">
+      <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
+      <br>
+      <p class="f-size-14 color-tp-body">
+        We trained, validated, and tested the model with your data in under <span
+          class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
+      </p>
+      <p class="f-size-14 color-tp-body">
+        With this model, you can expect an accuracy of <span
+          class="f-weight-500">{{(analysisResult.modelMetrics.testAccuracy
+          * 100).toFixed(2)}}%</span>, meaning it can correctly predict the internet
+        availability of &plusmn; {{(analysisResult.modelMetrics.testAccuracy * 100).toFixed(0)}} of every 100 schools!
+      </p>
+      <p class="f-size-14 color-tp-body">
+        If you understand primary Machine Learning methodologies, here are more detailed information and metrics:
+      </p>
+      <ul>
+        <li class="f-size-14 color-tp-body">
+          We use a <span class="f-weight-500">{{analysisResult.modelMetrics.classifierName}}</span> method to predict
+          every school's Internet availability.</li>
+        <li class="f-size-14 color-tp-body">
+          Given the data uploaded, We split it into 70% training and 30% testing sets. Using the training set, We
+          explored
+          the model's hyper-parameters space, employing a 10-Fold cross-validation.</li>
+        <li class="f-size-14 color-tp-body">
+          For the best hyper-parameters, the training set obtained an <span
+            class="f-weight-500">{{(analysisResult.modelMetrics.meanTrainAccuracy *
+            100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
+            accuracy</span>, while the validation set obtained an <span
+            class="f-weight-500">{{(analysisResult.modelMetrics.meanValidAccuracy *
+            100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}% accuracy</span>.
+        </li>
+      </ul>
+    </section>
+    <section id="section-model-metrics" *ngIf="!loading">
       <header>
         <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
           Model Metrics
@@ -18,11 +56,7 @@
           {{analysisResult.modelMetrics.classifierName}}&nbsp;({{analysisResult.modelMetrics.numFolds}}&nbsp;folds)
         </div>
       </header>
-      <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
-        <mat-spinner [diameter]="50"></mat-spinner><br>
-        <div class="color-tp-body f-size-14 text-center">Loading model metrics...</div>
-      </div>
-      <div class="charts-container flex items-stretch" *ngIf="!loading">
+      <div class="charts-container flex items-stretch">
         <div class="metrics-container f-size-14 flex-auto">
           <div>
             <span class="color-tp-title f-weight-500">test_accuracy</span>:<br>
@@ -64,17 +98,13 @@
         </div>
       </div>
     </section>
-    <section id="section-result-summary">
+    <section id="section-result-summary" [ngClass]="{'display-none': loading}">
       <header>
         <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
           Result Summary
         </div>
       </header>
-      <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
-        <mat-spinner [diameter]="50"></mat-spinner><br>
-        <div class="color-tp-body f-size-14 text-center">Loading summary...</div>
-      </div>
-      <div class="table-container" [ngClass]="{'display-none': loading}">
+      <div class="table-container">
         <header class="flex items-center">
           <!-- GENERIC FILTER -->
           <div class="filter-container flex-auto">
@@ -222,6 +252,6 @@
     </section>
   </div>
 </mat-dialog-content>
-<div mat-dialog-actions>
+<div *ngIf="!loading" mat-dialog-actions>
   <button mat-raised-button mat-dialog-close>Close</button>
 </div>

@@ -13,8 +13,8 @@
     color: $white;
     display: inline-block;
     font-size: 11px;
+    font-weight: 500;
     line-height: 18px;
-    margin-bottom: 8px;
     padding: 0 12px;
   }
 
@@ -133,6 +133,12 @@
           top: 16px;
           right: 16px;
           transition: all 0.3s ease;
+        }
+
+        .badge {
+          position: absolute;
+          right: 16px;
+          top: 16px;
         }
 
         &.active {
