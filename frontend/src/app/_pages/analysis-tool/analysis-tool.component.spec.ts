@@ -3,11 +3,16 @@ import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { AngularMaterialModule } from 'src/app/material.module';
-import { PageFooterComponent } from 'src/app/_components';
-import { AnalysisInputType } from 'src/app/_helpers';
+import { DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
+import { AnalysisInputType, AnalysisTaskStatus, AnalysisType } from 'src/app/_helpers';
 import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
 
 import { AnalysisToolComponent } from './analysis-tool.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import * as moment from 'moment';
+import { AnalysisTask } from 'src/app/_models';
+import { analysisTaskFromServer } from 'src/test/analysis-task';
+import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -20,6 +25,7 @@ describe('AnalysisToolComponent', () => {
         PageFooterComponent],
       imports: [
         AngularMaterialModule,
+        BrowserAnimationsModule,
         HttpClientTestingModule,
       ]
     }).compileComponents();
@@ -78,6 +84,34 @@ describe('AnalysisToolComponent', () => {
     });
   });
 
+  describe('#loadStorageTask', () => {
+    it('should exists', () => {
+      expect(component.loadStorageTask).toBeTruthy();
+      expect(component.loadStorageTask).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const analysisTaskFromStorage = {
+        id: 'abc-123',
+        status: 'PENDING',
+        receivedAt: moment().format(),
+        startedAt: moment().format(),
+        failureAt: null,
+        successAt: null
+      };
+      const analysisTaskFromStorageStr = JSON.stringify(analysisTaskFromStorage);
+
+      spyOn(window.localStorage, 'getItem').and.returnValue(analysisTaskFromStorageStr);
+
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+
+      component.loadStorageTask();
+
+      expect(component.storageTask).toBeDefined();
+      expect(component.storageTask?.id).toEqual(analysisTaskFromStorage.id);
+    });
+  });
+
   describe('#ngOnDestroy', () => {
     it('should exists', () => {
       expect(component.ngOnDestroy).toBeTruthy();
@@ -93,6 +127,133 @@ describe('AnalysisToolComponent', () => {
       component.ngOnDestroy();
 
       expect(component.poolTaskSubscription.unsubscribe).toHaveBeenCalled();
+    });
+  });
+
+  describe('#onButtonNextClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonNextClick).toBeTruthy();
+      expect(component.onButtonNextClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+
+      fixture.detectChanges();
+      if (component.analysisStepper && component.analysisStepper.selected) {
+        spyOn(component.analysisStepper, 'next');
+
+        component.onButtonNextClick();
+
+        expect(component.analysisStepper.selected.completed).toEqual(true);
+        expect(component.analysisStepper.next).toHaveBeenCalledWith();
+      }
+    });
+  });
+
+  describe('#onButtonRemoveFileClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonRemoveFileClick).toBeTruthy();
+      expect(component.onButtonRemoveFileClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.schoolFileIsValid = true;
+
+      fixture.detectChanges();
+      if (component.analysisStepper) {
+        spyOn(component.analysisStepper, 'reset');
+
+        component.schoolFileDropRef = {
+          nativeElement: {
+            value: 'abc-123'
+          }
+        }
+
+        component.onButtonRemoveFileClick('schoolFile');
+
+        expect(component.schoolFile).toBeUndefined();
+        if (component.schoolFileDropRef) {
+          expect(component.schoolFileDropRef?.nativeElement.value).toEqual('');
+        }
+        expect(component.schoolFileIsValid).toEqual(false);
+        expect(component.schoolFileValidationResult.length).toEqual(0);
+        expect(component.analysisStepper.reset).toHaveBeenCalledWith();
+      }
+    });
+  });
+
+  describe('#onButtonRemoveStorageValueClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonRemoveStorageValueClick).toBeTruthy();
+      expect(component.onButtonRemoveStorageValueClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'onSelectAnalysisTypeClick');
+      spyOn(window.localStorage, 'removeItem');
+
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      const analysisTypeStr = AnalysisType[component.selectedAnalysisType];
+
+      component.onButtonRemoveStorageValueClick();
+
+      expect(window.localStorage.removeItem).toHaveBeenCalledWith(`${analysisTypeStr}_task`);
+      expect(component.onSelectAnalysisTypeClick).toHaveBeenCalledWith(component.selectedAnalysisType);
+    });
+  });
+
+  describe('#onButtonStartAnalysisClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonStartAnalysisClick).toBeTruthy();
+      expect(component.onButtonStartAnalysisClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for Connectivity Prediction', () => {
+      spyOn(component, 'startNewPredictionAnalysis');
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+
+      component.onButtonStartAnalysisClick();
+
+      expect(component.startNewPredictionAnalysis).toHaveBeenCalledWith();
+    });
+
+    it('should works for Employability Impact', () => {
+      spyOn(component, 'startNewEmployabilityImpactAnalysis');
+      component.selectedAnalysisType = AnalysisType.EmployabilityImpact;
+
+      component.onButtonStartAnalysisClick();
+
+      expect(component.startNewEmployabilityImpactAnalysis).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('#onButtonViewResultsClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonViewResultsClick).toBeTruthy();
+      expect(component.onButtonViewResultsClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      //@ts-ignore
+      spyOn(component._dialogFileRequirements, 'open');
+
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+
+      component.onButtonViewResultsClick();
+
+      //@ts-ignore
+      expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
+        maxHeight: '90vh',
+        maxWidth: '90vw',
+        width: '100%',
+        data: {
+          analysisTask: component.storageTask,
+          analysisType: component.selectedAnalysisType
+        } as IDialogAnalysisResultData
+      })
     });
   });
 
@@ -113,6 +274,69 @@ describe('AnalysisToolComponent', () => {
         width: '100%',
         data: AnalysisInputType.Locality
       });
+    });
+  });
+
+  describe('#onSelectAnalysisTypeClick', () => {
+    it('should exists', () => {
+      expect(component.onSelectAnalysisTypeClick).toBeTruthy();
+      expect(component.onSelectAnalysisTypeClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works for Connectivity Prediction without storage task', () => {
+      spyOn(component, 'initNewAnalysis');
+      spyOn(component, 'loadStorageTask');
+      spyOn(component, 'scrollToSection');
+
+      component.onSelectAnalysisTypeClick(AnalysisType.ConnectivityPrediction);
+
+      expect(component.selectedAnalysisType).toEqual(AnalysisType.ConnectivityPrediction);
+      expect(component.initNewAnalysis).toHaveBeenCalled();
+      expect(component.scrollToSection).toHaveBeenCalledWith('sectionAnalysisSteps');
+    });
+
+    it('should works for Connectivity Prediction without storage task not failure or success status', () => {
+      spyOn(component, 'initNewAnalysis');
+      spyOn(component, 'loadStorageTask');
+      spyOn(component, 'poolStorageTask');
+
+      component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+      component.storageTask.status = AnalysisTaskStatus.Pending;
+
+      component.onSelectAnalysisTypeClick(AnalysisType.ConnectivityPrediction);
+
+      expect(component.selectedAnalysisType).toEqual(AnalysisType.ConnectivityPrediction);
+      expect(component.initNewAnalysis).toHaveBeenCalled();
+      expect(component.poolStorageTask).toHaveBeenCalled();
+    });
+
+    it('should works for Employability Impact', () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+
+      component.onSelectAnalysisTypeClick(AnalysisType.EmployabilityImpact);
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('This type of analysis will be available soon.');
+    });
+  });
+
+  describe('#putAnalysisTaskOnStorage', () => {
+    it('should exists', () => {
+      expect(component.putAnalysisTaskOnStorage).toBeTruthy();
+      expect(component.putAnalysisTaskOnStorage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(window.localStorage, 'setItem');
+
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+
+      const analysisTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+
+      component.putAnalysisTaskOnStorage(analysisTask);
+
+      expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[component.selectedAnalysisType]}_task`, analysisTask.toLocalStorageString());
     });
   });
 
@@ -157,6 +381,22 @@ describe('AnalysisToolComponent', () => {
 
       jasmine.clock().tick(31000);
       expect(component.stopStatusCheckCountdown).toHaveBeenCalled();
+    });
+  });
+
+  describe('#scrollToSection', () => {
+    it('should exists', () => {
+      expect(component.scrollToSection).toBeTruthy();
+      expect(component.scrollToSection).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(window, 'scrollTo');
+
+      component.scrollToSection('sectionTypeSelection');
+
+      expect(window.scrollTo).toHaveBeenCalled();
+
     });
   });
 
