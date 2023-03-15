@@ -26,9 +26,9 @@ jobs:
         run: pip install -r mkdocs/requirements.txt
 
       - name: Install dependencies
-        working-directory: docs
+        working-directory: mkdocs
         run: make install
 
       - name: Build and deploy to GitHub Pages
-        working-directory: docs
+        working-directory: mkdocs
         run: make deploy
