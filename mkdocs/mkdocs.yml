@@ -7,7 +7,10 @@ edit_uri: edit/gh-pages/mkdocs/docs
 
 theme:
   name: material
-  
+  features:
+  - navigation.tabs
+  - navigation.tabs.sticky
+
 nav:
   - Home: ABOUT.md
   - Contributing: CONTRIBUTING.md
