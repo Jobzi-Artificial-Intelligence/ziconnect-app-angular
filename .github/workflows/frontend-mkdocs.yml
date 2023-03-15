@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r mkdocs/requirements.txt
 
+      - name: Install mkdocs material
+        run: pip install mkdocs-material
+
       - name: Install dependencies
         working-directory: mkdocs
         run: make install

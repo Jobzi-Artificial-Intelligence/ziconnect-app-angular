@@ -3,10 +3,11 @@ site_description: With Unicef Innovation Fund and Giga Project our objective is 
 site_url: https://unicef.jobzi.com
 
 repo_url: https://github.com/Jobzi-Artificial-Intelligence/ziconnect-app-angular
-edit_uri: edit/master/docs/docs
+edit_uri: edit/gh-pages/mkdocs/docs
 
-theme: readthedocs
-
+theme:
+  name: material
+  
 nav:
   - Home: ABOUT.md
   - Contributing: CONTRIBUTING.md
