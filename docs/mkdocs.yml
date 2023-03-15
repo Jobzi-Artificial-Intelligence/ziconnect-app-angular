@@ -5,17 +5,13 @@ site_url: https://unicef.jobzi.com
 repo_url: https://github.com/Jobzi-Artificial-Intelligence/ziconnect-app-angular
 edit_uri: edit/master/docs/docs
 
-### Build settings ###
-
 theme: readthedocs
 
 nav:
-  - Home: index.md
-  - About MkDocs: about-mkdocs.md
-  - Tutorial:
-      - TL;DR: tutorial/tldr.md
-      - Installation: tutorial/installation.md
-      - Set up project: tutorial/setup-project.md
-      - Advanced: tutorial/advanced.md
-      - Usage: tutorial/usage.md
-      - Deploy: tutorial/deploy.md
+  - Home: ABOUT.md
+  - Contributing: CONTRIBUTING.md
+  - Project Charter: PROJECT_CHARTER.md
+  - Git Workflow: GIT_WORKFLOW.md
+  - Code of Conduct: ../CODE_OF_CONDUCT.md
+  - License: ../LICENSE.md
+  - Project setup: ../README.md
