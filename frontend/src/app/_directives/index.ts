@@ -1,0 +1,1 @@
+export * from './file-drag-and-drop/file-drag-and-drop.directive';

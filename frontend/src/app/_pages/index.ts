@@ -1,3 +1,4 @@
+export * from './analysis-tool/analysis-tool.component';
 export * from './code-conduct/code-conduct.component';
 export * from './contributors/contributors.component';
 export * from './home/home.component';

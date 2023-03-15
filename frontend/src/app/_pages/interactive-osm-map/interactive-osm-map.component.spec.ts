@@ -12,7 +12,7 @@ import * as Leaflet from 'leaflet';
 
 import { InteractiveOsmMapComponent } from './interactive-osm-map.component';
 import { municipalityLayers, regionLayers, stateLayers } from 'src/test/locality-map-layers';
-import { ShortNumberPipe } from 'src/app/_pipes/short-number.pipe';
+import { ShortNumberPipe } from 'src/app/_pipes';
 import { regionStats } from 'src/test/item-stats-mock';
 import { geoJsonCities, geoJsonRegions, geoJsonStates } from 'src/test/geo-json-mock';
 import { ILocalityLayer, IMapLocalityLayer } from 'src/app/_interfaces';

@@ -1,0 +1,64 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#dialog-analysis-result {
+  padding-bottom: 24px;
+  #section-model-metrics,
+  #section-result-summary {
+    @include border-radius(8px);
+    @include box-shadow(
+      0 5px 5px -3px #0003,
+      0 8px 10px 1px #00000024,
+      0 3px 14px 2px #0000001f
+    );
+    margin-top: 32px;
+    padding: 16px;
+
+    > header {
+      margin-bottom: 24px;
+    }
+  }
+
+  #section-model-metrics {
+    .metrics-container {
+      flex: 0 0 250px;
+    }
+  }
+
+  #section-result-summary {
+    .table-container {
+      th.mat-header-cell,
+      td.mat-cell {
+        text-align: center;
+        border: 0.1px solid #0000001f;
+        padding: 0 !important;
+      }
+
+      tr.mat-header-row {
+        height: 44px;
+      }
+      tr.mat-row {
+        height: 40px;
+      }
+
+      ::ng-deep .mat-sort-header-container {
+        justify-content: center !important;
+
+        .mat-sort-header-arrow {
+          display: none;
+        }
+
+        &.mat-sort-header-sorted {
+          .mat-sort-header-arrow {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+
+  #section-results-description {
+    margin: 40px 0;
+  }
+}
