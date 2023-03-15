@@ -12,6 +12,6 @@ nav:
   - Contributing: CONTRIBUTING.md
   - Project Charter: PROJECT_CHARTER.md
   - Git Workflow: GIT_WORKFLOW.md
-  - Code of Conduct: ../CODE_OF_CONDUCT.md
-  - License: ../LICENSE.md
-  - Project setup: ../README.md
+  - Code of Conduct: CODE_OF_CONDUCT.md
+  - License: LICENSE.md
+  - Project setup: README.md
