@@ -13,6 +13,7 @@ import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/a
 import { AnalysisTask } from 'src/app/_models';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
 import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -26,6 +27,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
 
   public analysisTypeEnum: typeof AnalysisInputType = AnalysisInputType;
+  public isProduction: boolean = environment.production;
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
@@ -150,6 +152,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   onButtonViewResultsClick() {
     if (this.selectedAnalysisType && this.storageTask) {
       this._dialogFileRequirements.open(DialogAnaysisResultComponent, {
+        autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
         width: '100%',
@@ -275,6 +278,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeAnalysisResultFromStorage() {
+    if (this.selectedAnalysisType) {
+      const analysisTypeStr = AnalysisType[this.selectedAnalysisType];
+
+      localStorage.removeItem(`${analysisTypeStr}_result`);
+    }
+  }
+
   scrollToSection(sectionElementName: string): void {
     const elementRef = (this as any)[sectionElementName] as ElementRef;
 
@@ -305,6 +316,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   stopStatusCheckCountdown() {
     if (this.statusCheckInterval) {
       clearInterval(this.statusCheckInterval);
+      this.statusCheckInterval = null;
     }
   }
   ////////////////////////////////////////////
@@ -340,6 +352,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     this.progress = 0;
 
     this.stopStatusCheckCountdown();
+    this.removeAnalysisResultFromStorage();
 
     if (this.poolTaskSubscription) {
       this.poolTaskSubscription.unsubscribe();
@@ -387,7 +400,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
         }
       }, (error: any) => {
         this.loadingStartTask = false;
-        this._alertService.showError('Something went wrong: ' + error.message);
+        this._alertService.showError('Something went wrong starting new analysis: ' + error.message);
       });
   }
 

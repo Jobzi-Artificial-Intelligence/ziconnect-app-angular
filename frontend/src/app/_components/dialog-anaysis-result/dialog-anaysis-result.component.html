@@ -47,7 +47,7 @@
         </li>
       </ul>
     </section>
-    <section id="section-model-metrics" *ngIf="!loading">
+    <section id="section-model-metrics" *ngIf="!loading && analysisResult.modelMetrics">
       <header>
         <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
           Model Metrics
@@ -98,7 +98,7 @@
         </div>
       </div>
     </section>
-    <section id="section-result-summary" [ngClass]="{'display-none': loading}">
+    <section id="section-result-summary" [ngClass]="{'display-none': loading || !analysisResult.resultSummary}">
       <header>
         <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
           Result Summary

@@ -120,5 +120,19 @@ describe('Model: AnalysisTask', () => {
     expect(analysisTask.successAtString).toEqual('');
     analysisTask.successAt = moment();
     expect(analysisTask.successAtString).toEqual(analysisTask.successAt.format('L LTS'));
+
+    // SUCCESS DURATION STRING
+    analysisTask.startedAt = null;
+    analysisTask.successAt = null;
+    expect(analysisTask.successDurationString).toEqual('');
+    analysisTask.startedAt = moment();
+    analysisTask.successAt = null;
+    expect(analysisTask.successDurationString).toEqual('');
+    analysisTask.startedAt = null;
+    analysisTask.successAt = moment();
+    expect(analysisTask.successDurationString).toEqual('');
+    analysisTask.startedAt = moment();
+    analysisTask.successAt = moment(analysisTask.startedAt).add(10, 'minutes');
+    expect(analysisTask.successDurationString).toEqual('10 minutes');
   });
 });
