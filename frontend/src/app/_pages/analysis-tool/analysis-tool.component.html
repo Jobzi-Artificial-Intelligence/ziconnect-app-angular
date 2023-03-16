@@ -87,6 +87,12 @@
         <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
       </header>
       <br>
+      <div *ngIf="!isProduction" class="homolog-alert">
+        This is a MVP, the analysis performed in it have a limited storage time, so your analysis
+        may not be available after it is executed. Be sure to download the results as soon as you receive them. If your
+        analysis is no longer available, you can start a new one.
+      </div>
+      <br>
       <div class="flex direction-column items-stretch justify-between" id="selection-list">
         <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(1)"
           [ngClass]="{'active': selectedAnalysisType === 1}">
@@ -152,6 +158,12 @@
             <span *ngIf="selectedAnalysisType === 2">Employability Impact Analysis</span>
           </div>
           <div class="f-size-16 color-tp-body">{{storageTask.id}}</div>
+          <br>
+          <div class="f-size-16 color-tp-title"
+            *ngIf="storageTask.status === 'PENDING' || storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED'">
+            Please wait while we analyse your data. This process may take a few minutes, so feel free to grab a coffee.
+            On average, files with 25,000 schools take around 15 to 20 minutes to execute.
+          </div>
           <div class="tag-list flex items-center">
             <div class="tag-item flex items-center" matTooltip="Received at" *ngIf="storageTask.receivedAt">
               <mat-icon class="tag-icon material-icons-outlined color-tp-body f-size-20">manage_history</mat-icon>

@@ -57,6 +57,26 @@ describe('DialogAnaysisResultComponent', () => {
     });
   });
 
+  describe('#buildResultsData', () => {
+    it('should exists', () => {
+      expect(component.buildResultsData).toBeTruthy();
+      expect(component.buildResultsData).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'buildMetricsLineChart');
+
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+
+      component.analysisResult = analysisResult;
+
+      component.buildResultsData();
+
+      expect(component.buildMetricsLineChart);
+      expect(component.tableDataSource.data).toBeDefined();
+    });
+  });
+
   describe('#buildMetricsLineChart', () => {
     it('should exists', () => {
       expect(component.buildMetricsLineChart).toBeTruthy();
@@ -81,7 +101,21 @@ describe('DialogAnaysisResultComponent', () => {
       expect(component.loadAnalysisResult).toEqual(jasmine.any(Function));
     });
 
+    it('should works when has local storage result', async () => {
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+      spyOn(window.localStorage, 'getItem').and.returnValue(JSON.stringify(analysisResult));
+      spyOn(component, 'buildResultsData');
+
+      component.loadAnalysisResult();
+
+      expect(window.localStorage.getItem).toHaveBeenCalled();
+      expect(component.buildResultsData).toHaveBeenCalled();
+      expect(component.loading).toEqual(false);
+    });
+
     it('should works when service return error', async () => {
+      spyOn(window.localStorage, 'getItem').and.returnValue(null);
+
       //@ts-ignore
       spyOn(component._alertService, 'showError');
 
@@ -91,6 +125,7 @@ describe('DialogAnaysisResultComponent', () => {
       component.data.analysisTask.id = 'abc-123';
       component.loadAnalysisResult();
 
+      expect(window.localStorage.getItem).toHaveBeenCalled();
       //@ts-ignore
       expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id);
       //@ts-ignore
@@ -99,15 +134,19 @@ describe('DialogAnaysisResultComponent', () => {
 
     it('should works when service return success', async () => {
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
-      spyOn(component, 'buildMetricsLineChart');
+
+      spyOn(window.localStorage, 'getItem').and.returnValue(null);
+      spyOn(component, 'buildResultsData');
+      spyOn(component, 'putAnalysisResultOnStorage');
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(of(analysisResult));
 
       component.data.analysisTask.id = 'abc-123';
       component.loadAnalysisResult();
 
-      expect(component.buildMetricsLineChart).toHaveBeenCalled();
-      expect(component.tableDataSource.data.length).toBeGreaterThan(0);
+      expect(window.localStorage.getItem).toHaveBeenCalled();
+      expect(component.buildResultsData).toHaveBeenCalled();
+      expect(component.putAnalysisResultOnStorage).toHaveBeenCalled();
       expect(component.loading).toEqual(false);
     });
   });
@@ -141,6 +180,23 @@ describe('DialogAnaysisResultComponent', () => {
 
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Error: Export error');
+    });
+  });
+
+  describe('#putAnalysisResultOnStorage', () => {
+    it('should exists', () => {
+      expect(component.putAnalysisResultOnStorage).toBeTruthy();
+      expect(component.putAnalysisResultOnStorage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(window.localStorage, 'setItem');
+
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+
+      component.putAnalysisResultOnStorage(analysisResult);
+
+      expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[component.data.analysisType]}_result`, jasmine.any(String));
     });
   });
 

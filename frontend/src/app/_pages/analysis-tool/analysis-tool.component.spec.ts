@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { AngularMaterialModule } from 'src/app/material.module';
 import { DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
 import { AnalysisInputType, AnalysisTaskStatus, AnalysisType } from 'src/app/_helpers';
@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { AnalysisTask } from 'src/app/_models';
 import { analysisTaskFromServer } from 'src/test/analysis-task';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -204,6 +205,32 @@ describe('AnalysisToolComponent', () => {
     });
   });
 
+  describe('#onButtonRetryCheckStatusClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonRetryCheckStatusClick).toBeTruthy();
+      expect(component.onButtonRetryCheckStatusClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      let analysisTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+      component.storageTask = analysisTask;
+      component.storageTask.statusCheckCode = 500;
+      component.storageTask.statusCheckMessage = 'error';
+
+      const subject = new Subject<string>();
+      component.poolTaskSubscription = subject.subscribe();
+      component.poolTaskSubscription.unsubscribe();
+
+      spyOn(component, 'poolStorageTask');
+
+      component.onButtonRetryCheckStatusClick();
+
+      expect(component.storageTask.statusCheckCode).toEqual(0);
+      expect(component.storageTask.statusCheckMessage).toEqual('');
+      expect(component.poolStorageTask).toHaveBeenCalled();
+    });
+  });
+
   describe('#onButtonStartAnalysisClick', () => {
     it('should exists', () => {
       expect(component.onButtonStartAnalysisClick).toBeTruthy();
@@ -246,6 +273,7 @@ describe('AnalysisToolComponent', () => {
 
       //@ts-ignore
       expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
+        autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
         width: '100%',
@@ -254,6 +282,78 @@ describe('AnalysisToolComponent', () => {
           analysisType: component.selectedAnalysisType
         } as IDialogAnalysisResultData
       })
+    });
+  });
+
+  describe('#onFileBrowserHandler', () => {
+    it('should exists', () => {
+      expect(component.onFileBrowserHandler).toBeTruthy();
+      expect(component.onFileBrowserHandler).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const mockFile = new File(['test'], 'test.txt', { type: 'text/plain' });
+      const mockEvent = {
+        target: {
+          files: [mockFile]
+        }
+      };
+
+      component.onFileBrowserHandler(mockEvent, 'schoolFile');
+
+      expect(component.schoolFile).toBeDefined();
+      expect(component.schoolFile).toEqual(mockFile);
+    });
+  });
+
+  describe('#onFileDropped', () => {
+    it('should exists', () => {
+      expect(component.onFileDropped).toBeTruthy();
+      expect(component.onFileDropped).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when has no file', () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+
+      component.onFileDropped({
+        length: 0
+      } as FileList, 'schoolFile');
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('Upload file not provided');
+    });
+
+    it('should works when has more than one file', () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+
+      component.onFileDropped({
+        length: 2
+      } as FileList, 'schoolFile');
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('Only one file is allowed');
+    });
+
+    it('should works when has one file', () => {
+      // Define a mock File object
+      const mockFile = new File(['test'], 'test.txt', { type: 'text/plain' });
+
+      // Create a mock FileList with one file
+      const mockFileList = {
+        0: mockFile,
+        length: 1,
+        item: () => mockFile,
+        [Symbol.iterator]: function* () {
+          yield mockFile;
+        },
+      } as FileList;
+
+      component.onFileDropped(mockFileList, 'schoolFile');
+
+      expect(component.schoolFile).toBeDefined();
+      expect(component.schoolFile).toEqual(mockFileList[0]);
     });
   });
 
@@ -321,6 +421,13 @@ describe('AnalysisToolComponent', () => {
     });
   });
 
+  describe('#onStepSelectionChange', () => {
+    it('should exists', () => {
+      expect(component.onStepSelectionChange).toBeTruthy();
+      expect(component.onStepSelectionChange).toEqual(jasmine.any(Function));
+    });
+  });
+
   describe('#putAnalysisTaskOnStorage', () => {
     it('should exists', () => {
       expect(component.putAnalysisTaskOnStorage).toBeTruthy();
@@ -337,6 +444,123 @@ describe('AnalysisToolComponent', () => {
       component.putAnalysisTaskOnStorage(analysisTask);
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[component.selectedAnalysisType]}_task`, analysisTask.toLocalStorageString());
+    });
+  });
+
+  describe('#removeAnalysisResultFromStorage', () => {
+    it('should exists', () => {
+      expect(component.removeAnalysisResultFromStorage).toBeTruthy();
+      expect(component.removeAnalysisResultFromStorage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(window.localStorage, 'removeItem');
+
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+
+      component.removeAnalysisResultFromStorage();
+
+      expect(window.localStorage.removeItem).toHaveBeenCalledWith(`${AnalysisType[component.selectedAnalysisType]}_result`);
+    });
+  });
+
+  describe('#scrollToSection', () => {
+    it('should exists', () => {
+      expect(component.scrollToSection).toBeTruthy();
+      expect(component.scrollToSection).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(window, 'scrollTo');
+
+      component.scrollToSection('sectionTypeSelection');
+
+      expect(window.scrollTo).toHaveBeenCalled();
+
+    });
+  });
+
+  describe('#startNewPredictionAnalysis', () => {
+    it('should exists', () => {
+      expect(component.startNewPredictionAnalysis).toBeTruthy();
+      expect(component.startNewPredictionAnalysis).toEqual(jasmine.any(Function));
+    });
+
+    it('should works without all input files', () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.schoolFile = undefined;
+      component.localityFile = undefined;
+
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+
+      component.startNewPredictionAnalysis();
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('One or more input file were not provided!');
+
+      component.schoolFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+
+      component.startNewPredictionAnalysis();
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('One or more input file were not provided!');
+    });
+
+    it('should works when service return error', async () => {
+      component.schoolFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+      component.localityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewPredictionAnalysis').and.returnValue(throwError({ message: 'http error' }));
+
+      component.startNewPredictionAnalysis();
+
+      //@ts-ignore
+      expect(component._analysisToolService.postNewPredictionAnalysis).toHaveBeenCalledWith(component.schoolFile, component.localityFile);
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong starting new analysis: http error');
+      expect(component.loadingStartTask).toEqual(false);
+    });
+
+    it('should works when service return upload progress event', async () => {
+      component.schoolFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+      component.localityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      const mockEvent = {
+        type: HttpEventType.UploadProgress,
+        loaded: 70,
+        total: 100
+      };
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewPredictionAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewPredictionAnalysis();
+
+      expect(component.progress).toEqual(70);
+    });
+
+    it('should works when service return http response', async () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.schoolFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+      component.localityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      const mockEvent = new HttpResponse({ body: { task_id: 123 }, status: 200, statusText: 'OK' });
+
+      spyOn(component, 'putAnalysisTaskOnStorage');
+      spyOn(component, 'poolStorageTask');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewPredictionAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewPredictionAnalysis();
+
+      expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled()
+      expect(component.poolStorageTask).toHaveBeenCalled()
     });
   });
 
@@ -381,22 +605,6 @@ describe('AnalysisToolComponent', () => {
 
       jasmine.clock().tick(31000);
       expect(component.stopStatusCheckCountdown).toHaveBeenCalled();
-    });
-  });
-
-  describe('#scrollToSection', () => {
-    it('should exists', () => {
-      expect(component.scrollToSection).toBeTruthy();
-      expect(component.scrollToSection).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      spyOn(window, 'scrollTo');
-
-      component.scrollToSection('sectionTypeSelection');
-
-      expect(window.scrollTo).toHaveBeenCalled();
-
     });
   });
 
