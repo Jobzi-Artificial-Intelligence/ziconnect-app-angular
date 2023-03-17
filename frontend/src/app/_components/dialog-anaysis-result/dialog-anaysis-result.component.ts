@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { UtilHelper } from 'src/app/_helpers';
+import { AnalysisType, UtilHelper } from 'src/app/_helpers';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
@@ -107,26 +107,42 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     this.metricsChartResults.push(validAccuracySeries);
   }
 
+  buildResultsData() {
+    if (this.analysisResult) {
+      this.buildMetricsLineChart();
+
+      this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);
+      this.tableDataSource.paginator = this.paginator;
+      this.tableDataSource.filterPredicate = this.tableFilterPredicate;
+      this.tableDataSource.sort = this.sort;
+    }
+  }
+
   loadAnalysisResult() {
     this.loading = true;
 
-    this._analysisToolService
-      .getTaskResult(this.data.analysisTask.id.toString())
-      .subscribe(data => {
-        this.analysisResult = data;
+    const analysisResultStr = localStorage.getItem(`${AnalysisType[this.data.analysisType]}_result`);
+    if (analysisResultStr) {
+      this.analysisResult = { ...JSON.parse(analysisResultStr) };
+      this.buildResultsData();
 
-        this.buildMetricsLineChart();
+      this.loading = false;
+    } else {
+      this._analysisToolService
+        .getTaskResult(this.data.analysisTask.id.toString())
+        .subscribe(data => {
+          this.analysisResult = data;
 
-        this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);
-        this.tableDataSource.paginator = this.paginator;
-        this.tableDataSource.filterPredicate = this.tableFilterPredicate;
-        this.tableDataSource.sort = this.sort;
+          this.buildResultsData();
 
-        this.loading = false;
-      }, error => {
-        this._alertService.showError('Something went wrong getting result: ' + error.message);
-        this.loading = false;
-      })
+          this.putAnalysisResultOnStorage(this.analysisResult);
+
+          this.loading = false;
+        }, error => {
+          this._alertService.showError('Something went wrong getting result: ' + error.message);
+          this.loading = false;
+        });
+    }
   }
 
   onButtonExportClick() {
@@ -151,6 +167,14 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       UtilHelper.exportFromObjectToCsv('result_summary.csv', dataToExport);
     } catch (error: any) {
       this._alertService.showError(error.toString());
+    }
+  }
+
+  putAnalysisResultOnStorage(analysisResult: AnalysisResult) {
+    if (this.data.analysisType) {
+      const analysisTypeStr = AnalysisType[this.data.analysisType];
+
+      localStorage.setItem(`${AnalysisType[this.data.analysisType]}_result`, JSON.stringify(analysisResult));
     }
   }
 
