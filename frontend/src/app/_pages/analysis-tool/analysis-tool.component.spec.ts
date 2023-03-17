@@ -12,8 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { AnalysisTask } from 'src/app/_models';
 import { analysisTaskFromServer } from 'src/test/analysis-task';
-import { IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -38,6 +39,28 @@ describe('AnalysisToolComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#getContactUsBodyErrorMessage', () => {
+    it('should exists', () => {
+      expect(component.getContactUsBodyErrorMessage).toBeTruthy();
+      expect(component.getContactUsBodyErrorMessage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      let result = '';
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+
+      result = component.getContactUsBodyErrorMessage();
+
+      expect(result).toEqual('');
+
+      component.storageTask.status = AnalysisTaskStatus.Failure;
+      result = component.getContactUsBodyErrorMessage();
+
+      expect(result.includes(component.storageTask.id.toString())).toEqual(true);
+    });
   });
 
   describe('#initNewAnalysis', () => {
@@ -426,6 +449,139 @@ describe('AnalysisToolComponent', () => {
       expect(component.onStepSelectionChange).toBeTruthy();
       expect(component.onStepSelectionChange).toEqual(jasmine.any(Function));
     });
+
+    it('should works for schoolFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateSchoolInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.schoolFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateSchoolInputFile).toHaveBeenCalled();
+      expect(component.schoolFileIsValid).toEqual(true);
+      expect(component.schoolFileValidationResult).toEqual(validationResult);
+    });
+
+    it('should works for localityFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateLocalityInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.localityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateLocalityInputFile).toHaveBeenCalled();
+      expect(component.localityFileIsValid).toEqual(true);
+      expect(component.localityFileValidationResult).toEqual(validationResult);
+    });
+  });
+
+  describe('poolStorageTask', () => {
+
+    beforeEach(() => {
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+
+      component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+    });
+
+    afterEach(() => {
+      clearInterval(component.statusCheckInterval);
+      jasmine.clock().uninstall();
+    });
+
+    it('should exists', () => {
+      expect(component.poolStorageTask).toBeTruthy();
+      expect(component.poolStorageTask).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskInfo').and.returnValue(throwError({ message: 'http error' }));
+
+      component.poolStorageTask();
+
+      jasmine.clock().tick(31000);
+
+      expect(component.loadingPoolTask).toEqual(false);
+    });
+
+    it('should works when service return error 404', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskInfo').and.returnValue(throwError({ message: 'http error', status: 404 }));
+
+      component.poolStorageTask();
+
+      jasmine.clock().tick(31000);
+
+      expect(component.loadingPoolTask).toEqual(false);
+      expect(component.storageTask?.statusCheckMessage).toEqual('We were unable to locate your analysis, or its storage time has expired. You can either discard it and start a new analysis.');
+    });
+
+    it('should works when service return task info', async () => {
+      const analysisTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+      analysisTask.status = AnalysisTaskStatus.Pending;
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+      spyOn(component, 'putAnalysisTaskOnStorage');
+      spyOn(component, 'stopStatusCheckCountdown');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskInfo').and.returnValue(of(analysisTask));
+
+      component.poolStorageTask();
+
+      jasmine.clock().tick(31000);
+
+      expect(component.loadingPoolTask).toEqual(false);
+      expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled();
+      expect(component.stopStatusCheckCountdown).not.toHaveBeenCalled();
+    });
+
+    it('should works when service return success or failure task info', async () => {
+      const analysisTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+      analysisTask.status = AnalysisTaskStatus.Failure;
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+      spyOn(component, 'putAnalysisTaskOnStorage');
+      spyOn(component, 'stopStatusCheckCountdown');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskInfo').and.returnValue(of(analysisTask));
+
+      component.poolStorageTask();
+
+      jasmine.clock().tick(31000);
+
+      expect(component.loadingPoolTask).toEqual(false);
+      expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled();
+      expect(component.stopStatusCheckCountdown).toHaveBeenCalled();
+    });
   });
 
   describe('#putAnalysisTaskOnStorage', () => {
@@ -434,14 +590,14 @@ describe('AnalysisToolComponent', () => {
       expect(component.putAnalysisTaskOnStorage).toEqual(jasmine.any(Function));
     });
 
-    it('should works', () => {
+    it('should works', async () => {
       spyOn(window.localStorage, 'setItem');
 
       component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
 
       const analysisTask = new AnalysisTask().deserialize(analysisTaskFromServer);
 
-      component.putAnalysisTaskOnStorage(analysisTask);
+      await component.putAnalysisTaskOnStorage(analysisTask);
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[component.selectedAnalysisType]}_task`, analysisTask.toLocalStorageString());
     });
@@ -477,6 +633,30 @@ describe('AnalysisToolComponent', () => {
 
       expect(window.scrollTo).toHaveBeenCalled();
 
+    });
+  });
+
+  describe('#startNewEmployabilityImpactAnalysis', () => {
+    it('should exists', () => {
+      expect(component.startNewEmployabilityImpactAnalysis).toBeTruthy();
+      expect(component.startNewEmployabilityImpactAnalysis).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+      component.schoolHistoryFile = undefined;
+      component.localityFile = undefined;
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('One or more input file were not provided!');
+
+      component.schoolHistoryFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+      component.localityFile = undefined;
+
+      component.startNewEmployabilityImpactAnalysis();
     });
   });
 
