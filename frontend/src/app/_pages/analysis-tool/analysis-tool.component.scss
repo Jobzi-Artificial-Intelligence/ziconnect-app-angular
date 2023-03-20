@@ -155,17 +155,6 @@
         }
       }
     }
-
-    .homolog-alert {
-      @include border-radius(8px);
-      background-color: #fff3cd;
-      border: 1px solid #ffeeba;
-      color: #856404;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.5;
-      padding: 12px 20px;
-    }
   }
 
   .file-upload-container {
@@ -317,6 +306,7 @@
     > footer {
       padding: 0px 12px 24px;
 
+      > a,
       > button {
         margin-right: 8px;
 

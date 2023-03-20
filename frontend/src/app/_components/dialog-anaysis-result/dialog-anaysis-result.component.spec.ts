@@ -208,10 +208,12 @@ describe('DialogAnaysisResultComponent', () => {
 
     it('should works', () => {
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
-      const localityStatistic = analysisResult.resultSummary[0];
+      if (analysisResult.resultSummary) {
+        const localityStatistic = analysisResult.resultSummary[0];
 
-      expect(component.tableFilterPredicate(localityStatistic, 'bra')).toEqual(true);
-      expect(component.tableFilterPredicate(localityStatistic, 'abcdefg')).toEqual(false);
+        expect(component.tableFilterPredicate(localityStatistic, 'bra')).toEqual(true);
+        expect(component.tableFilterPredicate(localityStatistic, 'abcdefg')).toEqual(false);
+      }
     });
   });
 });

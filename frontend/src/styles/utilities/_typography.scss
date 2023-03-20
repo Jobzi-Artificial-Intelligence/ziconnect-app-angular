@@ -136,3 +136,18 @@ h6 {
 .text-transform-uppercase {
   text-transform: uppercase;
 }
+
+// ELLIPSIS
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.lines-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
+    white-space: pre-wrap; /* let the text wrap preserving spaces */
+  }
+}

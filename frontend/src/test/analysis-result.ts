@@ -235,7 +235,7 @@ export const analysisResultFromServer = {
           "No": 27,
           "Yes": 1
         },
-        "Urban": {
+        "Urbana": {
           "NA": 0,
           "No": 2,
           "Yes": 9

@@ -87,7 +87,7 @@
         <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
       </header>
       <br>
-      <div *ngIf="!isProduction" class="homolog-alert">
+      <div class="alert alert-warning">
         This is a MVP, the analysis performed in it have a limited storage time, so your analysis
         may not be available after it is executed. Be sure to download the results as soon as you receive them. If your
         analysis is no longer available, you can start a new one.
@@ -159,11 +159,6 @@
           </div>
           <div class="f-size-16 color-tp-body">{{storageTask.id}}</div>
           <br>
-          <div class="f-size-16 color-tp-title"
-            *ngIf="storageTask.status === 'PENDING' || storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED'">
-            Please wait while we analyse your data. This process may take a few minutes, so feel free to grab a coffee.
-            On average, files with 25,000 schools take around 15 to 20 minutes to execute.
-          </div>
           <div class="tag-list flex items-center">
             <div class="tag-item flex items-center" matTooltip="Received at" *ngIf="storageTask.receivedAt">
               <mat-icon class="tag-icon material-icons-outlined color-tp-body f-size-20">manage_history</mat-icon>
@@ -185,15 +180,25 @@
             </div>
           </div>
           <br>
-          <div *ngIf="storageTask.statusCheckCode > 200 && storageTask.statusCheckMessage">
-            <div class="color-tp-title f-size-14 f-weight-500">Last status message:</div>
-            <div class="color-tp-body f-size-14 color-tp-body">{{storageTask.statusCheckMessage}}</div>
+          <div class="alert alert-sm"
+            [ngClass]="{'alert-warning': storageTask.status === 'PENDING', 'alert-danger': storageTask.status === 'FAILURE', 'alert-info': storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED', 'alert-success': storageTask.status === 'SUCCESS'}">
+            <div class="f-weight-500">Status message:</div>
+            <p>{{storageTask.statusMessage}}</p>
+            <p *ngIf="storageTask.statusCheckMessage">
+              {{storageTask.statusCheckMessage}}
+            </p>
+            <p class="ellipsis lines-3" *ngIf="storageTask.exceptionMessage">{{storageTask.exceptionMessage}}</p>
           </div>
         </div>
         <footer>
-          <button *ngIf="storageTask.status === 'SUCCESS'" (click)="onButtonViewResultsClick()" mat-raised-button>View
-            Results</button>
-          <button *ngIf="storageTask.status === 'FAILURE'" mat-raised-button>View Errors</button>
+          <button *ngIf="storageTask.status === 'SUCCESS'" (click)="onButtonViewResultsClick()" mat-raised-button>
+            Show Results
+          </button>
+          <a *ngIf="storageTask.status === 'FAILURE'"
+            href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Analysis tool error&body={{getContactUsBodyErrorMessage()}}"
+            mat-raised-button>
+            Contact Us
+          </a>
           <button
             *ngIf="storageTask.statusCheckCode > 200 && (this.poolTaskSubscription && this.poolTaskSubscription.closed)"
             mat-raised-button (click)="onButtonRetryCheckStatusClick()">Retry check status</button>

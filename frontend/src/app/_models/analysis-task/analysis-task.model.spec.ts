@@ -134,5 +134,9 @@ describe('Model: AnalysisTask', () => {
     analysisTask.startedAt = moment();
     analysisTask.successAt = moment(analysisTask.startedAt).add(10, 'minutes');
     expect(analysisTask.successDurationString).toEqual('10 minutes');
+
+    // STATUS MESSAGE
+    analysisTask.status = AnalysisTaskStatus.Pending;
+    expect(analysisTask.statusMessage).toEqual('Uploading your data...');
   });
 });

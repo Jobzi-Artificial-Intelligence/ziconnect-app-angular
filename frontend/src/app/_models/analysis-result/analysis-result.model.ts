@@ -3,21 +3,25 @@ import { Deserializable } from "../deserializable.model";
 import { LocalityStatistics } from "../locality-statistics/locality-statistics.model";
 
 export class AnalysisResult implements Deserializable {
-  modelMetrics: AnalysisResultMetrics;
-  resultSummary: Array<LocalityStatistics>;
+  modelMetrics: AnalysisResultMetrics | undefined;
+  resultSummary: Array<LocalityStatistics> | undefined;
 
   constructor() {
-    this.modelMetrics = new AnalysisResultMetrics();
-    this.resultSummary = new Array<LocalityStatistics>();
+    this.modelMetrics = undefined;
+    this.resultSummary = undefined;
   }
 
   deserialize(input: any): this {
-    this.modelMetrics = new AnalysisResultMetrics().deserialize(input.model_metrics);
+    if (input) {
+      if (input.model_metrics) {
+        this.modelMetrics = new AnalysisResultMetrics().deserialize(input.model_metrics);
+      }
 
-    if (input.result_summary && input.result_summary.length > 0) {
-      this.resultSummary = (input.result_summary as Array<any>).map((item) => {
-        return new LocalityStatistics().deserializeFromAnalysisResult(item);
-      });
+      if (input.result_summary && input.result_summary.length > 0) {
+        this.resultSummary = (input.result_summary as Array<any>).map((item) => {
+          return new LocalityStatistics().deserializeFromAnalysisResult(item);
+        });
+      }
     }
 
     return this;

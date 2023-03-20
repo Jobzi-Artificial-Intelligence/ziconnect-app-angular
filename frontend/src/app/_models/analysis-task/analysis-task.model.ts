@@ -1,9 +1,15 @@
 import * as moment from "moment";
 import { UtilHelper } from "src/app/_helpers";
 import { AnalysisTaskStatus } from "src/app/_helpers/enums/analysis-task-status";
-import { AnalysisResult } from "../analysis-result/analysis-result.model";
 import { Deserializable } from "../deserializable.model";
 
+const analysisTaskStatusMessage: any = {
+  'PENDING': 'Uploading your data...',
+  'RECEIVED': 'Your data has been received and placed in a queue to be processed.',
+  'STARTED': 'Please wait. Your data is being analyzed. This process may take a few minutes, so feel free to grab a coffee. On average, files with 25,000 schools take around 15 to 20 minutes to execute.',
+  'SUCCESS': 'Analysis completed! Please click on "Show Results" for more details',
+  'FAILURE': 'Analysis failed! Please click on "Contact Us" to send us a message with detailed information about the error.',
+}
 
 export class AnalysisTask implements Deserializable {
   id: String;
@@ -15,12 +21,14 @@ export class AnalysisTask implements Deserializable {
   statusCheckedAt: any;
   statusCheckCode: number;
   statusCheckMessage: string;
+  exceptionMessage: string;
 
   constructor() {
     this.id = '';
     this.status = AnalysisTaskStatus.Pending;
     this.statusCheckCode = 0;
     this.statusCheckMessage = '';
+    this.exceptionMessage = '';
 
     this.statusCheckedAt = moment();
   }
@@ -28,6 +36,7 @@ export class AnalysisTask implements Deserializable {
   deserialize(input: any): this {
     this.id = input.taskID;
     this.status = input.taskState;
+    this.exceptionMessage = input.taskException;
 
     this.statusCheckedAt = moment();
 
@@ -54,6 +63,7 @@ export class AnalysisTask implements Deserializable {
     this.status = input.status;
     this.statusCheckCode = input.statusCheckCode;
     this.statusCheckMessage = input.statusCheckMessage;
+    this.exceptionMessage = input.exceptionMessage;
 
     const inputDateFielsMap = [
       'failureAt',
@@ -110,5 +120,9 @@ export class AnalysisTask implements Deserializable {
     const durationMs = this.startedAt.diff(this.successAt, 'milliseconds');
 
     return UtilHelper.formatDuration(durationMs);
+  }
+
+  get statusMessage() {
+    return analysisTaskStatusMessage[this.status];
   }
 }

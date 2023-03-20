@@ -83,32 +83,34 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   }
 
   buildMetricsLineChart() {
-    const trainAccuracySeries = {
-      name: 'Training',
-      series: this.analysisResult.modelMetrics.trainAccuracies.map((value, index) => {
-        return {
-          name: `${index + 1}`,
-          value: parseFloat((value * 100).toFixed(2))
-        }
-      })
-    };
+    if (this.analysisResult.modelMetrics) {
+      const trainAccuracySeries = {
+        name: 'Training',
+        series: this.analysisResult.modelMetrics.trainAccuracies.map((value, index) => {
+          return {
+            name: `${index + 1}`,
+            value: parseFloat((value * 100).toFixed(2))
+          }
+        })
+      };
 
-    const validAccuracySeries = {
-      name: 'Validation',
-      series: this.analysisResult.modelMetrics.validAccuracies.map((value, index) => {
-        return {
-          name: `${index + 1}`,
-          value: parseFloat((value * 100).toFixed(2))
-        }
-      })
-    };
+      const validAccuracySeries = {
+        name: 'Validation',
+        series: this.analysisResult.modelMetrics.validAccuracies.map((value, index) => {
+          return {
+            name: `${index + 1}`,
+            value: parseFloat((value * 100).toFixed(2))
+          }
+        })
+      };
 
-    this.metricsChartResults.push(trainAccuracySeries);
-    this.metricsChartResults.push(validAccuracySeries);
+      this.metricsChartResults.push(trainAccuracySeries);
+      this.metricsChartResults.push(validAccuracySeries);
+    }
   }
 
   buildResultsData() {
-    if (this.analysisResult) {
+    if (this.analysisResult && (this.analysisResult.modelMetrics || this.analysisResult.resultSummary)) {
       this.buildMetricsLineChart();
 
       this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);

@@ -13,7 +13,6 @@ import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/a
 import { AnalysisTask } from 'src/app/_models';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
 import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-analysis-tool',
@@ -27,7 +26,6 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
 
   public analysisTypeEnum: typeof AnalysisInputType = AnalysisInputType;
-  public isProduction: boolean = environment.production;
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
@@ -230,8 +228,6 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
         this._analysisToolService
           .getTaskInfo(this.storageTask ? this.storageTask.id.toString() : '')
           .subscribe(data => {
-
-
             this.loadingPoolTask = false;
             this.storageTask = data;
             this.storageTask.statusCheckCode = 200;
@@ -318,6 +314,22 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       clearInterval(this.statusCheckInterval);
       this.statusCheckInterval = null;
     }
+  }
+
+  getContactUsBodyErrorMessage() {
+    let message = '';
+
+    if (this.selectedAnalysisType && this.storageTask && this.storageTask.status === AnalysisTaskStatus.Failure) {
+      message += `Analysis Type: ${AnalysisType[this.selectedAnalysisType]}`;
+      message += '%0D%0A' // Adds break line
+      message += `Analysis Task ID: ${this.storageTask.id}`;
+      message += '%0D%0A%0D%0A' // Adds break line
+      message += 'Exception Message:';
+      message += '%0D%0A%0D%0A' // Adds break line
+      message += this.storageTask.exceptionMessage;
+    }
+
+    return message;
   }
   ////////////////////////////////////////////
   //#endregion
