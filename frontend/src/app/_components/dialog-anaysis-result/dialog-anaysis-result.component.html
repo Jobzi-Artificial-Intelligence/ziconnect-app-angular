@@ -9,6 +9,10 @@
         {{data.analysisTask.id}}
       </div>
     </header>
+    <div id="alert-missing-result" class="alert alert-warning"
+      *ngIf="!loading && !analysisResult.modelMetrics && !analysisResult.resultSummary">
+      The result of your analysis is no longer available. You can discard this analysis and start a new one
+    </div>
     <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
       <mat-spinner [diameter]="50"></mat-spinner><br>
       <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>

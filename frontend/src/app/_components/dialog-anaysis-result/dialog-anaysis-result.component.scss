@@ -4,6 +4,10 @@
 
 #dialog-analysis-result {
   padding-bottom: 24px;
+  #alert-missing-result {
+    margin-top: 24px;
+  }
+
   #section-model-metrics,
   #section-result-summary {
     @include border-radius(8px);
