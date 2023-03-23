@@ -56,6 +56,14 @@
     "example": "0.64"
   },
   {
+    "column": "population_size",
+    "dataType": "int",
+    "required": true,
+    "primaryKey": false,
+    "description": "Number of inhabitants of the locality",
+    "example": "494053"
+  },
+  {
     "column": "years",
     "dataType": "int[]",
     "required": true,

@@ -1,3 +1,3 @@
-"country_code","country_name","state_code","state_name","municipality_code","municipality_name","hdi","years","employability_rate"
-"BR","Brazil","11","Rondônia","1100205","Porto Velho","0.645","[2019,2020,2021,2022]","[1080,980,1300,1450]"
-"BR","Brasil","11","Rondônia","1100015","Alta Floresta D'Oeste","[2019,2020,2021,2022]","[800,980,1020,1050]"
+"country_code","country_name","state_code","state_name","municipality_code","municipality_name","hdi","population_size","years","employability_rate"
+"BR","Brazil","11","Rondônia","1100205","Porto Velho",0.645,494013,"[2019,2020,2021,2022]","[1080,980,1300,1450]"
+"BR","Brasil","11","Rondônia","1100015","Alta Floresta D'Oeste",0.543,22945,"[2019,2020,2021,2022]","[800,980,1020,1050]"

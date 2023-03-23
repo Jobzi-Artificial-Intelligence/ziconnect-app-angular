@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AnalysisToolService {
   private _taskPredictionPath = 'task/prediction';
-  private _taskEmployabilityImpactPath = 'task/employability-impact';
+  private _taskEmployabilityImpactPath = 'task/socialimpact';
   private _taskResultPath = 'task/result';
   private _taskInfoPath = 'task/info';
 
@@ -40,10 +40,10 @@ export class AnalysisToolService {
    * @param schoolHistoryFile school history csv data file blob
    * @returns 
    */
-  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityFile: File) {
+  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File) {
     const formData = new FormData();
-    formData.append('localityFile', localityFile);
-    formData.append('schoolHistoryFile', schoolHistoryFile);
+    formData.append('locality_history', localityEmployabilityFile);
+    formData.append('school_history', schoolHistoryFile);
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskEmployabilityImpactPath}`, formData, {
       reportProgress: true,

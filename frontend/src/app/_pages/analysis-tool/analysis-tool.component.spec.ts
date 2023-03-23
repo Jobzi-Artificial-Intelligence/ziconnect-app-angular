@@ -685,7 +685,7 @@ describe('AnalysisToolComponent', () => {
       //@ts-ignore
       spyOn(component._alertService, 'showWarning');
       component.schoolHistoryFile = undefined;
-      component.localityFile = undefined;
+      component.localityEmployabilityFile = undefined;
 
       component.startNewEmployabilityImpactAnalysis();
 
@@ -693,9 +693,67 @@ describe('AnalysisToolComponent', () => {
       expect(component._alertService.showWarning).toHaveBeenCalledWith('One or more input file were not provided!');
 
       component.schoolHistoryFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
-      component.localityFile = undefined;
+      component.localityEmployabilityFile = undefined;
 
       component.startNewEmployabilityImpactAnalysis();
+    });
+
+    it('should works when service return error', async () => {
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(throwError({ message: 'http error' }));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      //@ts-ignore
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile);
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong starting new analysis: http error');
+      expect(component.loadingStartTask).toEqual(false);
+    });
+
+    it('should works when service return upload progress event', async () => {
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      const mockEvent = {
+        type: HttpEventType.UploadProgress,
+        loaded: 70,
+        total: 100
+      };
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      expect(component.progress).toEqual(70);
+    });
+
+    it('should works when service return http response', async () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      const mockEvent = new HttpResponse({ body: { task_id: 123 }, status: 200, statusText: 'OK' });
+
+      spyOn(component, 'putAnalysisTaskOnStorage');
+      spyOn(component, 'poolStorageTask');
+      spyOn(component, 'removeAnalysisResultFromStorage');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled()
+      expect(component.poolStorageTask).toHaveBeenCalled()
+      expect(component.removeAnalysisResultFromStorage).toHaveBeenCalled();
     });
   });
 

@@ -442,10 +442,37 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   startNewEmployabilityImpactAnalysis() {
-    if (!this.schoolHistoryFile || !this.localityFile) {
+    if (!this.schoolHistoryFile || !this.localityEmployabilityFile) {
       this._alertService.showWarning('One or more input file were not provided!');
       return;
     }
+
+    this.loadingStartTask = true;
+    this.progress = 0;
+
+    this._analysisToolService
+      .postNewEmployabilityImpactAnalysis(this.schoolHistoryFile, this.localityEmployabilityFile)
+      .subscribe((event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          if (event.body && event.body.task_id) {
+            let analysisTask = new AnalysisTask();
+            analysisTask.id = event.body.task_id;
+
+            if (this.selectedAnalysisType) {
+              this.removeAnalysisResultFromStorage();
+              this.putAnalysisTaskOnStorage(analysisTask);
+              this.poolStorageTask();
+            }
+
+            this.loadingStartTask = false;
+          }
+        }
+      }, (error: any) => {
+        this.loadingStartTask = false;
+        this._alertService.showError('Something went wrong starting new analysis: ' + error.message);
+      });
   }
   ////////////////////////////////////////////
   //#endregion
