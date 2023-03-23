@@ -109,7 +109,6 @@
         <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(2)"
           [ngClass]="{'active': selectedAnalysisType === 2}">
           <mat-icon class="active-icon material-icons color-blue">check_circle</mat-icon>
-          <span class="badge">Coming Soon</span>
           <mat-card-title class="flex items-start">Employability Impact</mat-card-title>
           <mat-card-subtitle>Analysis</mat-card-subtitle>
           <mat-card-content>
@@ -253,6 +252,48 @@
                 </div>
               </mat-card-content>
             </mat-card>
+            <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 1">
+              <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
+                matTooltip="View file requirements"
+                (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">help</mat-icon>
+              <mat-card-title>Locality</mat-card-title>
+              <mat-card-subtitle>input</mat-card-subtitle>
+              <mat-card-content>
+                <p class=" color-tp-body">
+                  A file containing the locality's data.
+                </p>
+                <p>
+                  Read our <span class="color-blue cursor-pointer"
+                    (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">File
+                    Requirements</span> or <a href="/assets/analysis-input-definition/locality_template.csv"
+                    target="_blank" class="color-blue text-decoration-none">download a CSV
+                    Template</a> to get started.
+                </p>
+                <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
+                  (fileDropped)="onFileDropped($event, 'localityFile')" *ngIf="selectedAnalysisType && !localityFile">
+                  <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
+                  <p class="f-size-16 color-tp-body">Drag & Drop or <span
+                      class="color-blue cursor-pointer text-decoration-none" (click)="fileDropRef.click()">browse</span>
+                  </p>
+                  <p class="f-size-13 color-tp-label">Supports: CSV</p>
+                  <input type="file" #fileDropRef id="fileDropRef"
+                    (change)="onFileBrowserHandler($event, 'localityFile')" accept=".csv" class="file-drop-input" />
+                </div>
+                <br>
+                <div class="file-selected-container flex items-center" *ngIf="localityFile">
+                  <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
+                  <div class="flex-auto">
+                    <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">
+                      {{localityFile.name}}</div>
+                    <div class="color-tp-body f-size-13">{{localityFile.size | fileSize}}</div>
+                  </div>
+                  <button mat-mini-fab color="primary" aria-label="Remove file"
+                    (click)="onButtonRemoveFileClick('localityFile')">
+                    <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
+                  </button>
+                </div>
+              </mat-card-content>
+            </mat-card>
             <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 2">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
                 matTooltip="View file requirements"
@@ -294,42 +335,46 @@
                 </div>
               </mat-card-content>
             </mat-card>
-            <mat-card class="step-input-item">
+            <mat-card class="step-input-item" *ngIf="selectedAnalysisType === 2">
               <mat-icon class="cursor-pointer help-icon material-icons color-tp-body"
                 matTooltip="View file requirements"
-                (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">help</mat-icon>
-              <mat-card-title>Locality</mat-card-title>
+                (click)="onFileRequirementsClick(analysisTypeEnum.LocalityEmployability)">help</mat-icon>
+              <mat-card-title>Locality Employability</mat-card-title>
               <mat-card-subtitle>input</mat-card-subtitle>
               <mat-card-content>
                 <p class=" color-tp-body">
-                  File containing location data of a country.
+                  A file containing the locality's employability rate over the years.
                 </p>
                 <p>
                   Read our <span class="color-blue cursor-pointer"
-                    (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">File
-                    Requirements</span> or <a href="/assets/analysis-input-definition/locality_template.csv"
-                    target="_blank" class="color-blue text-decoration-none">download a CSV
+                    (click)="onFileRequirementsClick(analysisTypeEnum.LocalityEmployability)">File
+                    Requirements</span> or <a
+                    href="/assets/analysis-input-definition/locality_employability_template.csv" target="_blank"
+                    class="color-blue text-decoration-none">download a CSV
                     Template</a> to get started.
                 </p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
-                  (fileDropped)="onFileDropped($event, 'localityFile')" *ngIf="selectedAnalysisType && !localityFile">
+                  (fileDropped)="onFileDropped($event, 'localityEmployabilityFile')"
+                  *ngIf="selectedAnalysisType && !localityEmployabilityFile">
                   <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
                   <p class="f-size-16 color-tp-body">Drag & Drop or <span
                       class="color-blue cursor-pointer text-decoration-none" (click)="fileDropRef.click()">browse</span>
                   </p>
                   <p class="f-size-13 color-tp-label">Supports: CSV</p>
                   <input type="file" #fileDropRef id="fileDropRef"
-                    (change)="onFileBrowserHandler($event, 'localityFile')" accept=".csv" class="file-drop-input" />
+                    (change)="onFileBrowserHandler($event, 'localityEmployabilityFile')" accept=".csv"
+                    class="file-drop-input" />
                 </div>
                 <br>
-                <div class="file-selected-container flex items-center" *ngIf="localityFile">
+                <div class="file-selected-container flex items-center" *ngIf="localityEmployabilityFile">
                   <mat-icon class="material-icons-outlined f-size-48 color-tp-body">description</mat-icon>
                   <div class="flex-auto">
-                    <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">{{localityFile.name}}</div>
-                    <div class="color-tp-body f-size-13">{{localityFile.size | fileSize}}</div>
+                    <div class="color-tp-title f-size-16 line-height-1-5 f-weight-500">
+                      {{localityEmployabilityFile.name}}</div>
+                    <div class="color-tp-body f-size-13">{{localityEmployabilityFile.size | fileSize}}</div>
                   </div>
                   <button mat-mini-fab color="primary" aria-label="Remove file"
-                    (click)="onButtonRemoveFileClick('localityFile')">
+                    (click)="onButtonRemoveFileClick('localityEmployabilityFile')">
                     <mat-icon class="material-icons-outlined">delete_outline</mat-icon>
                   </button>
                 </div>
@@ -360,6 +405,28 @@
               <div class="color-tp-title f-size-16 f-weight-500">Locality File</div>
               <ul class="input-validation-list">
                 <li *ngFor="let item of localityFileValidationResult" class="flex items-center">
+                  <mat-icon class="material-icons color-green f-size-16" *ngIf="item.valid">check_circle</mat-icon>
+                  <mat-icon class="material-icons color-feat-red f-size-16" *ngIf="!item.valid">error_outline</mat-icon>
+                  <div class="color-tp-body f-size-14">{{item.message}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div *ngIf="selectedAnalysisType === 2">
+            <div class="input-validation-item">
+              <div class="color-tp-title f-size-16 f-weight-500">School History File</div>
+              <ul class="input-validation-list">
+                <li *ngFor="let item of schoolHistoryFileValidationResult" class="flex items-center">
+                  <mat-icon class="material-icons color-green f-size-16" *ngIf="item.valid">check_circle</mat-icon>
+                  <mat-icon class="material-icons color-feat-red f-size-16" *ngIf="!item.valid">error_outline</mat-icon>
+                  <div class="color-tp-body f-size-14">{{item.message}}</div>
+                </li>
+              </ul>
+            </div>
+            <div class="input-validation-item">
+              <div class="color-tp-title f-size-16 f-weight-500">Locality Employability File</div>
+              <ul class="input-validation-list">
+                <li *ngFor="let item of localityEmployabilityFileValidationResult" class="flex items-center">
                   <mat-icon class="material-icons color-green f-size-16" *ngIf="item.valid">check_circle</mat-icon>
                   <mat-icon class="material-icons color-feat-red f-size-16" *ngIf="!item.valid">error_outline</mat-icon>
                   <div class="color-tp-body f-size-14">{{item.message}}</div>

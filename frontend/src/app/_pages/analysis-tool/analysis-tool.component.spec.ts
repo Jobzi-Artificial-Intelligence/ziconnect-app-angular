@@ -77,17 +77,21 @@ describe('AnalysisToolComponent', () => {
           value: 'test'
         }
       } as ElementRef;
-      component.localityFileDropRef = {
-        nativeElement: {
-          value: 'test'
-        }
-      } as ElementRef;
       component.schoolHistoryFileDropRef = {
         nativeElement: {
           value: 'test'
         }
       } as ElementRef;
-
+      component.localityFileDropRef = {
+        nativeElement: {
+          value: 'test'
+        }
+      } as ElementRef;
+      component.localityEmployabilityFileDropRef = {
+        nativeElement: {
+          value: 'test'
+        }
+      } as ElementRef;
 
       spyOn(component.poolTaskSubscription, 'unsubscribe');
       spyOn(component, 'stopStatusCheckCountdown');
@@ -100,6 +104,7 @@ describe('AnalysisToolComponent', () => {
       expect(component.storageTask).toEqual(null);
       expect(component.progress).toEqual(0);
       expect(component.localityFileDropRef.nativeElement.value).toEqual('');
+      expect(component.localityEmployabilityFileDropRef.nativeElement.value).toEqual('');
       expect(component.schoolFileDropRef.nativeElement.value).toEqual('');
       expect(component.schoolHistoryFileDropRef.nativeElement.value).toEqual('');
 
@@ -432,16 +437,6 @@ describe('AnalysisToolComponent', () => {
       expect(component.initNewAnalysis).toHaveBeenCalled();
       expect(component.poolStorageTask).toHaveBeenCalled();
     });
-
-    it('should works for Employability Impact', () => {
-      //@ts-ignore
-      spyOn(component._alertService, 'showWarning');
-
-      component.onSelectAnalysisTypeClick(AnalysisType.EmployabilityImpact);
-
-      //@ts-ignore
-      expect(component._alertService.showWarning).toHaveBeenCalledWith('This type of analysis will be available soon.');
-    });
   });
 
   describe('#onStepSelectionChange', () => {
@@ -472,6 +467,28 @@ describe('AnalysisToolComponent', () => {
       expect(component.schoolFileValidationResult).toEqual(validationResult);
     });
 
+    it('should works for schoolHistoryFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateSchoolHistoryInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.schoolHistoryFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateSchoolHistoryInputFile).toHaveBeenCalled();
+      expect(component.schoolHistoryFileIsValid).toEqual(true);
+      expect(component.schoolHistoryFileValidationResult).toEqual(validationResult);
+    });
+
     it('should works for localityFile', async () => {
       const validationResult = new Array<IAnalysisInputValidationResult>();
       validationResult.push({
@@ -492,6 +509,28 @@ describe('AnalysisToolComponent', () => {
       expect(component._analysisInputValidationService.validateLocalityInputFile).toHaveBeenCalled();
       expect(component.localityFileIsValid).toEqual(true);
       expect(component.localityFileValidationResult).toEqual(validationResult);
+    });
+
+    it('should works for localityEmployabilityFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateLocalityEmployabilityInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.localityEmployabilityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateLocalityEmployabilityInputFile).toHaveBeenCalled();
+      expect(component.localityEmployabilityFileIsValid).toEqual(true);
+      expect(component.localityEmployabilityFileValidationResult).toEqual(validationResult);
     });
   });
 

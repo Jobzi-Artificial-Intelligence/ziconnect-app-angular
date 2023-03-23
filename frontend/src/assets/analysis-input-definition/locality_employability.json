@@ -1,13 +1,5 @@
 [
   {
-    "column": "id",
-    "dataType": "string",
-    "required": true,
-    "primaryKey": true,
-    "description": "Unique location identifier",
-    "example": "\"1\""
-  },
-  {
     "column": "country_code",
     "dataType": "string",
     "required": true,
@@ -56,11 +48,27 @@
     "example": "\"Porto Velho\""
   },
   {
-    "column": "administrative_level",
-    "dataType": "string",
+    "column": "hdi",
+    "dataType": "float",
     "required": true,
     "primaryKey": false,
-    "description": "Administrative level",
-    "example": "\"Country, State, Province, Territory, Region, City, Municipality ...\""
+    "description": "Numeric value representing HDI of the municipality",
+    "example": "0.64"
+  },
+  {
+    "column": "years",
+    "dataType": "int[]",
+    "required": true,
+    "primaryKey": false,
+    "description": "List of years separated by commas, representing the employment rate of the municipality for each year.",
+    "example": "\"[2019,2020,2021,2022]\""
+  },
+  {
+    "column": "employability_rate",
+    "dataType": "int[]",
+    "required": true,
+    "primaryKey": false,
+    "description": "List of values separated by commas, representing the employment rate of the municipality for each year.",
+    "example": "\"[1080,980,1300,1450]\""
   }
 ]

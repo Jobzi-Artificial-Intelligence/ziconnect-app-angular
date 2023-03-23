@@ -53,6 +53,13 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   @ViewChild('schoolHistoryFileDropRef') schoolHistoryFileDropRef: ElementRef | undefined;
   public schoolHistoryFile: File | undefined;
+  public schoolHistoryFileIsValid: boolean = false;
+  public schoolHistoryFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
+
+  @ViewChild('localityEmployabilityFileDropRef') localityEmployabilityFileDropRef: ElementRef | undefined;
+  public localityEmployabilityFile: File | undefined;
+  public localityEmployabilityFileIsValid: boolean = false;
+  public localityEmployabilityFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
   ////////////////////////////////////////////
   //#endregion
 
@@ -205,11 +212,27 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (this.schoolHistoryFile) {
+        const result = await this._analysisInputValidationService.validateSchoolHistoryInputFile(this.schoolHistoryFile);
+        if (result.length > 0) {
+          this.schoolHistoryFileIsValid = result.every(item => item.valid);
+          this.schoolHistoryFileValidationResult = result;
+        }
+      }
+
       if (this.localityFile) {
         const result = await this._analysisInputValidationService.validateLocalityInputFile(this.localityFile);
         if (result.length > 0) {
           this.localityFileIsValid = result.every(item => item.valid);
           this.localityFileValidationResult = result;
+        }
+      }
+
+      if (this.localityEmployabilityFile) {
+        const result = await this._analysisInputValidationService.validateLocalityEmployabilityInputFile(this.localityEmployabilityFile);
+        if (result.length > 0) {
+          this.localityEmployabilityFileIsValid = result.every(item => item.valid);
+          this.localityEmployabilityFileValidationResult = result;
         }
       }
     }
@@ -337,12 +360,9 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   //#region Analysis handlers
   ////////////////////////////////////////////
   onSelectAnalysisTypeClick(type: AnalysisType) {
-    if (type === AnalysisType.EmployabilityImpact) {
-      this._alertService.showWarning('This type of analysis will be available soon.');
-      return;
-    }
-
     this.selectedAnalysisType = type;
+    this.analysisStepper?.reset();
+
     this.initNewAnalysis();
 
     this.loadStorageTask();
@@ -358,13 +378,13 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   initNewAnalysis() {
     this.localityFile = undefined;
+    this.localityEmployabilityFile = undefined;
     this.schoolHistoryFile = undefined;
     this.schoolFile = undefined;
     this.storageTask = null;
     this.progress = 0;
 
     this.stopStatusCheckCountdown();
-    this.removeAnalysisResultFromStorage();
 
     if (this.poolTaskSubscription) {
       this.poolTaskSubscription.unsubscribe();
@@ -374,12 +394,16 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.schoolFileDropRef.nativeElement.value = '';
     }
 
+    if (this.schoolHistoryFileDropRef) {
+      this.schoolHistoryFileDropRef.nativeElement.value = '';
+    }
+
     if (this.localityFileDropRef) {
       this.localityFileDropRef.nativeElement.value = '';
     }
 
-    if (this.schoolHistoryFileDropRef) {
-      this.schoolHistoryFileDropRef.nativeElement.value = '';
+    if (this.localityEmployabilityFileDropRef) {
+      this.localityEmployabilityFileDropRef.nativeElement.value = '';
     }
   }
 
@@ -403,6 +427,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
             analysisTask.id = event.body.task_id;
 
             if (this.selectedAnalysisType) {
+              this.removeAnalysisResultFromStorage();
               this.putAnalysisTaskOnStorage(analysisTask);
               this.poolStorageTask();
             }

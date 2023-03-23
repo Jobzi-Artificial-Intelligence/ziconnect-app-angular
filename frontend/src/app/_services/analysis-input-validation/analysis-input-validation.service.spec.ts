@@ -59,6 +59,40 @@ describe('AnalysisInputValidationService', () => {
     });
   });
 
+  describe('#validateLocalityEmployabilityInputFile', () => {
+    it('should exists', () => {
+      expect(service.validateLocalityEmployabilityInputFile).toBeTruthy();
+      expect(service.validateLocalityEmployabilityInputFile).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when server success', async () => {
+      //@ts-ignore
+      spyOn(service._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(of(new Array<AnalysisInputDefinition>()));
+
+      const schoolFile = new File([], 'localities.csv', { type: 'text/csv' });
+
+      const result = await service.validateLocalityEmployabilityInputFile(schoolFile);
+
+      expect(Array.isArray(result)).toBeTrue();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should works when server error', async () => {
+      const mockService = {
+        getAnalysisInputDefinition: () => Promise.reject('Erro na Promise')
+      };
+      //@ts-ignore
+      spyOn(service._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(throwError({ message: 'http error' }));
+
+      const schoolFile = new File([], 'localities.csv', { type: 'text/csv' });
+
+      const result = await service.validateLocalityEmployabilityInputFile(schoolFile).catch((error) => {
+        // Verifique se o erro foi tratado corretamente
+        expect(error).toEqual(new Array<IAnalysisInputValidationResult>());
+      });
+    });
+  });
+
   describe('#validateSchoolInputFile', () => {
     it('should exists', () => {
       expect(service.validateSchoolInputFile).toBeTruthy();
@@ -87,6 +121,40 @@ describe('AnalysisInputValidationService', () => {
       const schoolFile = new File([], 'schools.csv', { type: 'text/csv' });
 
       const result = await service.validateSchoolInputFile(schoolFile).catch((error) => {
+        // Verifique se o erro foi tratado corretamente
+        expect(error).toEqual(new Array<IAnalysisInputValidationResult>());
+      });
+    });
+  });
+
+  describe('#validateSchoolHistoryInputFile', () => {
+    it('should exists', () => {
+      expect(service.validateSchoolHistoryInputFile).toBeTruthy();
+      expect(service.validateSchoolHistoryInputFile).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when server success', async () => {
+      //@ts-ignore
+      spyOn(service._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(of(new Array<AnalysisInputDefinition>()));
+
+      const schoolFile = new File([], 'schools.csv', { type: 'text/csv' });
+
+      const result = await service.validateSchoolHistoryInputFile(schoolFile);
+
+      expect(Array.isArray(result)).toBeTrue();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should works when server error', async () => {
+      const mockService = {
+        getAnalysisInputDefinition: () => Promise.reject('Erro na Promise')
+      };
+      //@ts-ignore
+      spyOn(service._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(throwError({ message: 'http error' }));
+
+      const schoolFile = new File([], 'schools.csv', { type: 'text/csv' });
+
+      const result = await service.validateSchoolHistoryInputFile(schoolFile).catch((error) => {
         // Verifique se o erro foi tratado corretamente
         expect(error).toEqual(new Array<IAnalysisInputValidationResult>());
       });
@@ -151,6 +219,27 @@ describe('AnalysisInputValidationService', () => {
       expect(results[1].message).toEqual('The file has 2 lines');
     });
 
+    it('should works for non match row columns', async () => {
+      const schoolFile = new File(['school_code,school_name\n100253\n\n'], 'schools.csv', { type: 'text/csv' });
+      let mockSchoolFileDefinition = new Array<AnalysisInputDefinition>();
+      mockSchoolFileDefinition.push({
+        column: 'school_code'
+      } as AnalysisInputDefinition);
+      mockSchoolFileDefinition.push({
+        column: 'school_name'
+      } as AnalysisInputDefinition);
+
+      const results = await service.validateInputFile(mockSchoolFileDefinition, schoolFile) as Array<any>;
+
+      expect(Array.isArray(results)).toBeTrue();
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0]).toBeDefined();
+      expect(results[1].valid).toEqual(true);
+      expect(results[1].message).toEqual('The file has 4 lines');
+      expect(results[3].valid).toEqual(false);
+      expect(results[3].message).toEqual('has 3 rows with less or more than 2 columns. rows: [2,3,4]');
+    });
+
     it('should works missing header columns', async () => {
       const schoolFile = new File(['school_code,school_name\n100253,school name test'], 'schools.csv', { type: 'text/csv' });
       const mockFileDefinition = new Array<AnalysisInputDefinition>();
@@ -172,7 +261,7 @@ describe('AnalysisInputValidationService', () => {
       expect(results[2].valid).toEqual(false);
       expect(results[2].message).toEqual('Some columns are missing from the header row: [student_count]');
       expect(results[3].valid).toEqual(false);
-      expect(results[3].message).toEqual('has 1 rows with less or more than 3 columns.');
+      expect(results[3].message).toEqual('has 1 rows with less or more than 3 columns. rows: [2]');
     });
   });
 });

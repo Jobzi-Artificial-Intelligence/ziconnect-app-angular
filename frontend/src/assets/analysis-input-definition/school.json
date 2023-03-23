@@ -5,7 +5,7 @@
     "required": true,
     "primaryKey": true,
     "description": "Unique school identifier",
-    "example": "11000384"
+    "example": "\"11000384\""
   },
   {
     "column": "school_name",
@@ -13,7 +13,7 @@
     "required": false,
     "primaryKey": false,
     "description": "School name",
-    "example": "EEEFM 4 DE JANEIRO"
+    "example": "\"EEEFM 4 DE JANEIRO\""
   },
   {
     "column": "school_type",
@@ -21,7 +21,7 @@
     "required": false,
     "primaryKey": false,
     "description": "Responsible for the school administration: federal government, state, municipality",
-    "example": "state"
+    "example": "\"state\""
   },
   {
     "column": "school_region",
@@ -29,15 +29,15 @@
     "required": false,
     "primaryKey": false,
     "description": "School region as: urban, rural, etc",
-    "example": "urban"
+    "example": "\"urban\""
   },
   {
     "column": "municipality_code",
-    "dataType": "integer",
+    "dataType": "string",
     "required": true,
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District identifier.",
-    "example": "1100205"
+    "example": "\"1100205\""
   },
   {
     "column": "latitude",

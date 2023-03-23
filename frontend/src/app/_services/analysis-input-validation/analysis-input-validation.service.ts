@@ -8,6 +8,7 @@ import { AnalysisInputDefinitionService } from '../analysis-input-definition/ana
   providedIn: 'root'
 })
 export class AnalysisInputValidationService {
+  private _rowsSplitRegex = /(?:(?<=^|,)(?:"((?:\\.|[^\\"])*?)"|([^",\[\]]+)|\[(?:(?:"(?:\\.|[^\\"])*"|[^"\]])*)\])|(?<=^|,)(?=,|$))/g;
 
   constructor(private _analysisInputDefinitionService: AnalysisInputDefinitionService) { }
 
@@ -25,12 +26,40 @@ export class AnalysisInputValidationService {
     })
   }
 
+  validateSchoolHistoryInputFile(schoolHistoryFile: File): Promise<Array<IAnalysisInputValidationResult>> {
+    return new Promise((resolve, reject) => {
+      this._analysisInputDefinitionService
+        .getAnalysisInputDefinition(AnalysisInputType.SchoolHistory)
+        .subscribe((data) => {
+          let result = this.validateInputFile(data, schoolHistoryFile).then((data) => {
+            resolve(data as Array<IAnalysisInputValidationResult>);
+          });
+        }, (error) => {
+          reject(new Array<IAnalysisInputValidationResult>());
+        });
+    })
+  }
+
   validateLocalityInputFile(localityFile: File): Promise<Array<IAnalysisInputValidationResult>> {
     return new Promise((resolve, reject) => {
       this._analysisInputDefinitionService
         .getAnalysisInputDefinition(AnalysisInputType.Locality)
         .subscribe((data) => {
           let result = this.validateInputFile(data, localityFile).then((data) => {
+            resolve(data as Array<IAnalysisInputValidationResult>);
+          });
+        }, (error) => {
+          reject(new Array<IAnalysisInputValidationResult>());
+        });
+    })
+  }
+
+  validateLocalityEmployabilityInputFile(localityEmployabilityFile: File): Promise<Array<IAnalysisInputValidationResult>> {
+    return new Promise((resolve, reject) => {
+      this._analysisInputDefinitionService
+        .getAnalysisInputDefinition(AnalysisInputType.LocalityEmployability)
+        .subscribe((data) => {
+          let result = this.validateInputFile(data, localityEmployabilityFile).then((data) => {
             resolve(data as Array<IAnalysisInputValidationResult>);
           });
         }, (error) => {
@@ -79,7 +108,7 @@ export class AnalysisInputValidationService {
         // VALIDATE HEADER COLUMNS
         let inputDefinitionColumns = fileDefinition.map((item) => { return item.column });
         let fileHeaderLine = fileLines.shift();
-        const fileHeaderColumns = fileHeaderLine?.split(',');
+        const fileHeaderColumns = fileHeaderLine?.replace(/["]+/g, '').split(',');
         let hasAllHeaderColumns = inputDefinitionColumns.every(column => fileHeaderColumns?.includes(column));
         if (hasAllHeaderColumns) {
           result.push({
@@ -97,17 +126,19 @@ export class AnalysisInputValidationService {
 
         // VALIDATE ROW COLUMNS
         let rowsWithoutAllColumnsCount = 0;
-        fileLines.forEach((row) => {
-          const rowColumns = row.split(',');
-          if (rowColumns.length !== fileDefinition.length) {
+        let rowsWithoutAllColumns: any[] = [];
+        fileLines.forEach((row, index) => {
+          const rowMatch = row.match(this._rowsSplitRegex);
+          if (rowMatch && rowMatch.length !== fileDefinition.length) {
             rowsWithoutAllColumnsCount++;
+            rowsWithoutAllColumns.push(index + 2); // add 2 because the header is removed and the error is about line number instead of line index
           }
         });
 
         if (rowsWithoutAllColumnsCount > 0) {
           result.push({
             valid: false,
-            message: `has ${rowsWithoutAllColumnsCount} rows with less or more than ${fileDefinition.length} columns.`
+            message: `has ${rowsWithoutAllColumnsCount} rows with less or more than ${fileDefinition.length} columns. rows: [${rowsWithoutAllColumns.slice(0, 5).join(',')}${rowsWithoutAllColumns.length > 5 ? ',...' : ''}]`
           } as IAnalysisInputValidationResult);
         } else {
           result.push({
