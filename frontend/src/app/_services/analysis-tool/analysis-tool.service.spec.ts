@@ -148,9 +148,10 @@ describe('AnalysisToolService', () => {
     it('should works', (done) => {
       const localityFile = new File(['sample'], 'locality.csv', { type: 'text/csv' });
       const schoolHistoryFile = new File(['sample'], 'school.csv', { type: 'text/csv' });
+      const homogenizeColumns = ['hdi', 'population_size'];
 
       // Trigger the file upload and subscribe for results
-      service.postNewEmployabilityImpactAnalysis(schoolHistoryFile, localityFile).pipe(
+      service.postNewEmployabilityImpactAnalysis(schoolHistoryFile, localityFile, homogenizeColumns).pipe(
         // Discard the first response
         skipWhile((progress: any) => {
           return progress === 0;

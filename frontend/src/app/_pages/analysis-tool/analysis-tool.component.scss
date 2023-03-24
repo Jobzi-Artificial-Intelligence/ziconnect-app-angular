@@ -140,7 +140,7 @@
 
         &:hover {
           @include box-shadow(0 8px 8px 0 rgba(42, 48, 52, 0.1));
-          transform: translateY(-4px);
+          transform: translate(0, -4px);
         }
       }
     }
@@ -189,6 +189,12 @@
 
   // STEP CLASSES
   ////////////////////////////////////////////
+
+  .feature-list {
+    @include reset-list;
+    padding-left: 24px;
+  }
+
   .input-validation-item {
     padding: 12px 0;
     .input-validation-list {

@@ -40,10 +40,16 @@ export class AnalysisToolService {
    * @param schoolHistoryFile school history csv data file blob
    * @returns 
    */
-  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File) {
+  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File, homogenizeFeatures: Array<string>) {
     const formData = new FormData();
     formData.append('locality_history', localityEmployabilityFile);
     formData.append('school_history', schoolHistoryFile);
+
+    if (homogenizeFeatures.length > 0) {
+      homogenizeFeatures.forEach((feature) => {
+        formData.append('homogenize_columns', feature);
+      });
+    }
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskEmployabilityImpactPath}`, formData, {
       reportProgress: true,

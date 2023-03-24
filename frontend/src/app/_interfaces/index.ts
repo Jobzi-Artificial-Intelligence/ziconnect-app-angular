@@ -1,4 +1,5 @@
 export * from './analysis-input-validation-result';
+export * from './employability-homogenize-feature';
 export * from './dialog-analysis-result-data';
 export * from './map-filter';
 export * from './map-info-window-content';

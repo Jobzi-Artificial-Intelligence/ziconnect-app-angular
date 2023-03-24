@@ -5,7 +5,8 @@
     "required": true,
     "primaryKey": false,
     "description": "Country code",
-    "example": "\"BR\""
+    "example": "\"BR\"",
+    "canHomogenize": false
   },
   {
     "column": "country_name",
@@ -13,7 +14,8 @@
     "required": true,
     "primaryKey": false,
     "description": "Country name",
-    "example": "\"Brazil\""
+    "example": "\"Brazil\"",
+    "canHomogenize": false
   },
   {
     "column": "state_code",
@@ -21,7 +23,8 @@
     "required": false,
     "primaryKey": false,
     "description": "State/Province/Territory/Region identifier",
-    "example": "\"11\""
+    "example": "\"11\"",
+    "canHomogenize": true
   },
   {
     "column": "state_name",
@@ -29,7 +32,8 @@
     "required": false,
     "primaryKey": false,
     "description": "State/Province/Territory/Region name",
-    "example": "\"Rondônia\""
+    "example": "\"Rondônia\"",
+    "canHomogenize": false
   },
   {
     "column": "municipality_code",
@@ -37,7 +41,8 @@
     "required": false,
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District identifier",
-    "example": "\"1100205\""
+    "example": "\"1100205\"",
+    "canHomogenize": false
   },
   {
     "column": "municipality_name",
@@ -45,7 +50,8 @@
     "required": false,
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District name",
-    "example": "\"Porto Velho\""
+    "example": "\"Porto Velho\"",
+    "canHomogenize": false
   },
   {
     "column": "hdi",
@@ -53,7 +59,8 @@
     "required": true,
     "primaryKey": false,
     "description": "Numeric value representing HDI of the municipality",
-    "example": "0.64"
+    "example": "0.64",
+    "canHomogenize": true
   },
   {
     "column": "population_size",
@@ -61,7 +68,8 @@
     "required": true,
     "primaryKey": false,
     "description": "Number of inhabitants of the locality",
-    "example": "494053"
+    "example": "494053",
+    "canHomogenize": true
   },
   {
     "column": "years",
@@ -69,7 +77,8 @@
     "required": true,
     "primaryKey": false,
     "description": "List of years separated by commas, representing the employment rate of the municipality for each year.",
-    "example": "\"[2019,2020,2021,2022]\""
+    "example": "\"[2019,2020,2021,2022]\"",
+    "canHomogenize": false
   },
   {
     "column": "employability_rate",
@@ -77,6 +86,7 @@
     "required": true,
     "primaryKey": false,
     "description": "List of values separated by commas, representing the employment rate of the municipality for each year.",
-    "example": "\"[1080,980,1300,1450]\""
+    "example": "\"[1080,980,1300,1450]\"",
+    "canHomogenize": false
   }
 ]

@@ -183,9 +183,7 @@
             [ngClass]="{'alert-warning': storageTask.status === 'PENDING', 'alert-danger': storageTask.status === 'FAILURE', 'alert-info': storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED', 'alert-success': storageTask.status === 'SUCCESS'}">
             <div class="f-weight-500">Status message:</div>
             <p *ngIf="!storageTask.statusCheckMessage">{{storageTask.statusMessage}}</p>
-            <p *ngIf="storageTask.statusCheckMessage">
-              {{storageTask.statusCheckMessage}}
-            </p>
+            <p *ngIf="storageTask.statusCheckMessage">{{storageTask.statusCheckMessage}}</p>
             <p class="ellipsis lines-3" *ngIf="storageTask.exceptionMessage">{{storageTask.exceptionMessage}}</p>
           </div>
         </div>
@@ -436,8 +434,34 @@
           </div>
           <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 1"
             [disabled]="!schoolFileIsValid || !localityFileIsValid">Next</button>
+          <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 2"
+            [disabled]="!schoolHistoryFileIsValid || !localityEmployabilityFileIsValid">Next</button>
+        </mat-step>
+        <mat-step [completed]="false" *ngIf="selectedAnalysisType === 2">
+          <ng-template matStepLabel>Setup</ng-template>
+          <div>
+            <p class="flex items-center">Would you like to try to homogenize the sets by features?&nbsp;&nbsp;<mat-icon
+                class="active-icon material-icons color-tp-label"
+                matTooltip="Description of what it means to homogenize datasets">info</mat-icon></p>
+            <mat-slide-toggle (change)="onEmployabilityHomogenizeCheckChange($event)"
+              [(ngModel)]="isEmployabilityHomogenizeChecked">{{isEmployabilityHomogenizeChecked ? 'YES'
+              : 'NO'}}</mat-slide-toggle>
+          </div>
+          <div *ngIf="isEmployabilityHomogenizeChecked">
+            <br>
+            <br>
+            <p>Choose the features:</p>
+            <ul class="feature-list">
+              <li *ngFor="let feature of employabilityHomogenizeFeatures">
+                <mat-checkbox [(ngModel)]="feature.checked">
+                  {{feature.name | uppercase}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </div>
+          <br><br><br>
           <button mat-raised-button color="primary" (click)="onButtonNextClick()"
-            *ngIf="selectedAnalysisType === 2">Next</button>
+            [disabled]="isEmployabilityHomogenizeChecked && checkedEmployabilityFeaturesLength === 0">Next</button>
         </mat-step>
         <mat-step [completed]="false">
           <ng-template matStepLabel>Execute</ng-template>

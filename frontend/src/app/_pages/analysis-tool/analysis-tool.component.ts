@@ -2,6 +2,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
@@ -9,9 +10,9 @@ import { DialogAnalysisFileRequirementsComponent, DialogAnaysisResultComponent }
 import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
-import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabilityHomogenizeFeature } from 'src/app/_interfaces';
 import { AnalysisTask } from 'src/app/_models';
-import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { AlertService, AnalysisInputDefinitionService, AnalysisToolService } from 'src/app/_services';
 import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
+
   public selectedAnalysisType: AnalysisType | undefined = undefined;
   public selectedFile: File | undefined;
   public responseBody: any;
@@ -38,6 +40,15 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   public statusCheckInterval: any;
   public statusCheckTimeLeft: number = 30;
+
+  //#region  EMPLOYABILITY ANALYSIS CONFIG
+  ////////////////////////////////////////////
+  public isEmployabilityHomogenizeChecked: boolean = false;
+
+  public employabilityHomogenizeFeatures: Array<IEmployabilityHomogenizeFeature> = new Array<IEmployabilityHomogenizeFeature>();
+  ////////////////////////////////////////////
+  //#endregion
+
 
   //#region FILES
   ////////////////////////////////////////////
@@ -63,7 +74,12 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   ////////////////////////////////////////////
   //#endregion
 
-  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef, private _dialogFileRequirements: MatDialog, private _analysisInputValidationService: AnalysisInputValidationService) { }
+  constructor(private _alertService: AlertService,
+    private _analysisToolService: AnalysisToolService,
+    private ref: ChangeDetectorRef,
+    private _dialogFileRequirements: MatDialog,
+    private _analysisInputDefinitionService: AnalysisInputDefinitionService,
+    private _analysisInputValidationService: AnalysisInputValidationService) { }
 
 
   //#region Component initialization functions
@@ -201,6 +217,33 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   //#region Util Functions
   ////////////////////////////////////////////
+
+  loadEmployabilityHomogenizeFeatures() {
+    this._analysisInputDefinitionService
+      .getAnalysisInputDefinition(AnalysisInputType.LocalityEmployability)
+      .subscribe((data) => {
+        this.employabilityHomogenizeFeatures = data.filter(x => x.canHomogenize).map((item) => {
+          return {
+            name: item.column,
+            checked: false,
+            disabled: false
+          } as IEmployabilityHomogenizeFeature;
+        })
+      }, (error) => {
+        this._alertService.showError('Something went wrong loading features: ' + error.message);
+      });
+  }
+
+  onEmployabilityHomogenizeCheckChange(event: MatSlideToggleChange) {
+    if (event.checked && this.employabilityHomogenizeFeatures.length === 0) {
+      this.loadEmployabilityHomogenizeFeatures();
+    }
+
+    if (!event.checked) {
+      this.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
+    }
+  }
+
   async onStepSelectionChange(event: StepperSelectionEvent) {
     if (event.selectedIndex === 1 && event.previouslySelectedIndex === 0) {
       //VALIDATE INPUTS
@@ -354,6 +397,10 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
     return message;
   }
+
+  get checkedEmployabilityFeaturesLength() {
+    return this.employabilityHomogenizeFeatures.filter(x => x.checked).length;
+  }
   ////////////////////////////////////////////
   //#endregion
 
@@ -383,6 +430,9 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     this.schoolFile = undefined;
     this.storageTask = null;
     this.progress = 0;
+
+    this.isEmployabilityHomogenizeChecked = false;
+    this.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
 
     this.stopStatusCheckCountdown();
 
@@ -450,8 +500,10 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     this.loadingStartTask = true;
     this.progress = 0;
 
+    const homogenizeColumns = this.employabilityHomogenizeFeatures.filter(x => x.checked).map(x => x.name);
+
     this._analysisToolService
-      .postNewEmployabilityImpactAnalysis(this.schoolHistoryFile, this.localityEmployabilityFile)
+      .postNewEmployabilityImpactAnalysis(this.schoolHistoryFile, this.localityEmployabilityFile, homogenizeColumns)
       .subscribe((event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);

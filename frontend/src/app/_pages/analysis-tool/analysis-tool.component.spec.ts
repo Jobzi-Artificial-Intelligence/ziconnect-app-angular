@@ -12,9 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { AnalysisTask } from 'src/app/_models';
 import { analysisTaskFromServer } from 'src/test/analysis-task';
-import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabilityHomogenizeFeature } from 'src/app/_interfaces';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -39,6 +40,20 @@ describe('AnalysisToolComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#checkedEmployabilityFeaturesLength', () => {
+
+    it('should works', () => {
+      expect(component.checkedEmployabilityFeaturesLength).toEqual(0);
+
+      component.employabilityHomogenizeFeatures = [{
+        name: 'Feature I',
+        checked: true
+      } as IEmployabilityHomogenizeFeature];
+
+      expect(component.checkedEmployabilityFeaturesLength).toEqual(1);
+    });
   });
 
   describe('#getContactUsBodyErrorMessage', () => {
@@ -110,6 +125,45 @@ describe('AnalysisToolComponent', () => {
 
       expect(component.stopStatusCheckCountdown).toHaveBeenCalled();
       expect(component.poolTaskSubscription.unsubscribe).toHaveBeenCalled();
+    });
+  });
+
+  describe('#loadEmployabilityHomogenizeFeatures', () => {
+    it('should exists', () => {
+      expect(component.loadEmployabilityHomogenizeFeatures).toBeTruthy();
+      expect(component.loadEmployabilityHomogenizeFeatures).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(throwError({ message: 'http error' }));
+
+      component.loadEmployabilityHomogenizeFeatures();
+
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong loading features: http error');
+    });
+
+    it('should works when service return success', async () => {
+      const analysisInputDefinitionResponse = [{
+        "column": "id",
+        "dataType": "integer",
+        "required": true,
+        "primaryKey": true,
+        "description": "Unique location identifier",
+        "example": "1",
+        "canHomogenize": true
+      }];
+
+      //@ts-ignore
+      spyOn(component._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(of(analysisInputDefinitionResponse));
+
+      component.loadEmployabilityHomogenizeFeatures();
+
+      expect(component.employabilityHomogenizeFeatures.length).toEqual(1)
     });
   });
 
@@ -310,6 +364,37 @@ describe('AnalysisToolComponent', () => {
           analysisType: component.selectedAnalysisType
         } as IDialogAnalysisResultData
       })
+    });
+  });
+
+  describe('#onEmployabilityHomogenizeCheckChange', () => {
+    it('should exists', () => {
+      expect(component.onEmployabilityHomogenizeCheckChange).toBeTruthy();
+      expect(component.onEmployabilityHomogenizeCheckChange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when uncheck', () => {
+      const mockEvent = {
+        checked: false
+      } as MatSlideToggleChange;
+
+      component.onEmployabilityHomogenizeCheckChange(mockEvent);
+
+      expect(component.employabilityHomogenizeFeatures).toEqual(jasmine.any(Array));
+      expect(component.employabilityHomogenizeFeatures.length).toEqual(0);
+    });
+
+    it('should works when checked', () => {
+      spyOn(component, 'loadEmployabilityHomogenizeFeatures');
+      const mockEvent = {
+        checked: true
+      } as MatSlideToggleChange;
+
+      component.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
+
+      component.onEmployabilityHomogenizeCheckChange(mockEvent);
+
+      expect(component.loadEmployabilityHomogenizeFeatures).toHaveBeenCalled();
     });
   });
 
@@ -711,7 +796,7 @@ describe('AnalysisToolComponent', () => {
       component.startNewEmployabilityImpactAnalysis();
 
       //@ts-ignore
-      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile);
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, jasmine.any(Array));
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong starting new analysis: http error');
       expect(component.loadingStartTask).toEqual(false);
@@ -739,6 +824,13 @@ describe('AnalysisToolComponent', () => {
       component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
       component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
       component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+      component.employabilityHomogenizeFeatures = [{
+        name: 'feature_i',
+        checked: true,
+        disabled: false
+      } as IEmployabilityHomogenizeFeature];
+
+      const homogenizeColumns = component.employabilityHomogenizeFeatures.filter(x => x.checked).map(x => x.name);
 
       const mockEvent = new HttpResponse({ body: { task_id: 123 }, status: 200, statusText: 'OK' });
 
@@ -751,6 +843,8 @@ describe('AnalysisToolComponent', () => {
 
       component.startNewEmployabilityImpactAnalysis();
 
+      //@ts-ignore
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, homogenizeColumns);
       expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled()
       expect(component.poolStorageTask).toHaveBeenCalled()
       expect(component.removeAnalysisResultFromStorage).toHaveBeenCalled();
