@@ -1,4 +1,3 @@
-
 export class AnalysisInputDefinition {
   column: string;
   dataType: string;

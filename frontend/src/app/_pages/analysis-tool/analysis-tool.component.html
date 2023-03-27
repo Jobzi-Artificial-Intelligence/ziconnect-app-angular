@@ -199,6 +199,7 @@
           <button
             *ngIf="storageTask.statusCheckCode > 200 && (this.poolTaskSubscription && this.poolTaskSubscription.closed)"
             mat-raised-button (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
+          <button mat-raised-button (click)="onButtonViewValidationResultsClick()">View validation results</button>
           <button
             [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200) || (this.poolTaskSubscription && !this.poolTaskSubscription.closed)"
             mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()"

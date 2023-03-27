@@ -6,7 +6,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
-import { DialogAnalysisFileRequirementsComponent, DialogAnaysisResultComponent } from 'src/app/_components';
+import { DialogAnalysisFileRequirementsComponent, DialogAnalysisInputValidationResultComponent, DialogAnaysisResultComponent } from 'src/app/_components';
 import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
@@ -77,7 +77,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   constructor(private _alertService: AlertService,
     private _analysisToolService: AnalysisToolService,
     private ref: ChangeDetectorRef,
-    private _dialogFileRequirements: MatDialog,
+    private _dialogService: MatDialog,
     private _analysisInputDefinitionService: AnalysisInputDefinitionService,
     private _analysisInputValidationService: AnalysisInputValidationService) { }
 
@@ -170,9 +170,15 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     }
   }
 
+  onButtonViewValidationResultsClick() {
+    this._dialogService.open(DialogAnalysisInputValidationResultComponent, {
+      autoFocus: false
+    });
+  }
+
   onButtonViewResultsClick() {
     if (this.selectedAnalysisType && this.storageTask) {
-      this._dialogFileRequirements.open(DialogAnaysisResultComponent, {
+      this._dialogService.open(DialogAnaysisResultComponent, {
         autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
@@ -207,7 +213,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onFileRequirementsClick(analysisInputType: AnalysisInputType) {
-    this._dialogFileRequirements.open(DialogAnalysisFileRequirementsComponent, {
+    this._dialogService.open(DialogAnalysisFileRequirementsComponent, {
       width: '100%',
       data: analysisInputType
     });

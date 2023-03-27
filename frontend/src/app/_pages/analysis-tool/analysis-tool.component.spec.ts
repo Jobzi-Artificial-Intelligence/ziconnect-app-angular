@@ -3,7 +3,7 @@ import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { AngularMaterialModule } from 'src/app/material.module';
-import { DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
+import { DialogAnalysisInputValidationResultComponent, DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
 import { AnalysisInputType, AnalysisTaskStatus, AnalysisType } from 'src/app/_helpers';
 import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
 
@@ -346,7 +346,7 @@ describe('AnalysisToolComponent', () => {
 
     it('should works', () => {
       //@ts-ignore
-      spyOn(component._dialogFileRequirements, 'open');
+      spyOn(component._dialogService, 'open');
 
       component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
       component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
@@ -354,7 +354,7 @@ describe('AnalysisToolComponent', () => {
       component.onButtonViewResultsClick();
 
       //@ts-ignore
-      expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
         autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
@@ -363,6 +363,25 @@ describe('AnalysisToolComponent', () => {
           analysisTask: component.storageTask,
           analysisType: component.selectedAnalysisType
         } as IDialogAnalysisResultData
+      })
+    });
+  });
+
+  describe('#onButtonViewValidationResultsClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonViewValidationResultsClick).toBeTruthy();
+      expect(component.onButtonViewValidationResultsClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      //@ts-ignore
+      spyOn(component._dialogService, 'open');
+
+      component.onButtonViewValidationResultsClick();
+
+      //@ts-ignore
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnalysisInputValidationResultComponent, {
+        autoFocus: false
       })
     });
   });
@@ -478,12 +497,12 @@ describe('AnalysisToolComponent', () => {
 
     it('should works', () => {
       //@ts-ignore
-      spyOn(component._dialogFileRequirements, 'open');
+      spyOn(component._dialogService, 'open');
 
       component.onFileRequirementsClick(AnalysisInputType.Locality);
 
       //@ts-ignore
-      expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnalysisFileRequirementsComponent, {
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnalysisFileRequirementsComponent, {
         width: '100%',
         data: AnalysisInputType.Locality
       });
