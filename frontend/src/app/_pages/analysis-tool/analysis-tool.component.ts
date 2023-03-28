@@ -172,7 +172,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   onButtonViewValidationResultsClick() {
     this._dialogService.open(DialogAnalysisInputValidationResultComponent, {
-      autoFocus: false
+      autoFocus: false,
+      maxHeight: '90vh',
+      maxWidth: '1440px',
+      width: '100%',
+      data: {
+        analysisTask: this.storageTask,
+        analysisType: this.selectedAnalysisType
+      } as IDialogAnalysisResultData
     });
   }
 

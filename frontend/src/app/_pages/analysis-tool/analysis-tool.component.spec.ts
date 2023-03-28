@@ -381,7 +381,14 @@ describe('AnalysisToolComponent', () => {
 
       //@ts-ignore
       expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnalysisInputValidationResultComponent, {
-        autoFocus: false
+        autoFocus: false,
+        maxHeight: '90vh',
+        maxWidth: '1440px',
+        width: '100%',
+        data: {
+          analysisTask: component.storageTask,
+          analysisType: component.selectedAnalysisType
+        } as IDialogAnalysisResultData
       })
     });
   });

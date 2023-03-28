@@ -114,7 +114,6 @@ export class UtilHelper {
     }, {} as { [key: string]: any });
   }
 
-
   public static formatDuration(ms: number) {
     if (ms < 0) ms = -ms;
     const time = {

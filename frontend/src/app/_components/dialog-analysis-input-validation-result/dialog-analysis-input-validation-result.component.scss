@@ -1,0 +1,30 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#dialog-analysis-input-validation-result {
+  > header {
+    margin-bottom: 40px;
+  }
+
+  > section {
+    margin-bottom: 32px;
+
+    > header {
+      margin-bottom: 24px;
+    }
+  }
+
+  .box-loading {
+    height: 100%;
+    width: 100%;
+  }
+
+  .table-container {
+    @include box-shadow(
+      0 5px 5px -3px #0003,
+      0 8px 10px 1px #00000024,
+      0 3px 14px 2px #0000001f
+    );
+  }
+}

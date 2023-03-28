@@ -1,1 +1,256 @@
-<p>dialog-analysis-input-validation-result works!</p>
+<div id="dialog-analysis-input-validation-result">
+  <header>
+    <p class="color-tp-title f-size-24 f-weight-500">Input Data Validation: Processing Results</p>
+    <p>
+      Our web tool uses the Pandera library to validate input files. Pandera is an open-source Python library that
+      provides a lightweight and flexible way to check data types, missing values, and other data requirements. This
+      allows our tool to perform quick and accurate data validation, preventing errors and inconsistencies in downstream
+      data analysis.</p>
+    <p>
+      For more information about Pandera's data validation capabilities, including a detailed explanation of its
+      features and functionalities, please refer to the official documentation available at
+      <a target="_blank" href="https://pandera.readthedocs.io">https://pandera.readthedocs.io</a>
+    </p>
+    <p>
+      Below are the tables containing the validation results for the input files processed by our web tool using the
+      Pandera library. The tables show the validation checks performed by Pandera, including the name of the variable,
+      data type, expected data range, and the number of missing values (if any).</p>
+  </header>
+  <!-- CONNECTIVITY PREDICTION ANALYSIS -->
+  <section *ngIf="data.analysisType === 1 && !schoolFileAnalysisInputValidation.isOk">
+    <header>
+      <span class="color-tp-title f-size-20 f-weight-500">School File</span>&nbsp;
+      <span class="color-tp-body f-size-20">(failure cases)</span>
+    </header>
+    <div [ngClass]="{'display-none': loading}" class="main-container">
+      <div class="table-container">
+        <table mat-table [dataSource]="tableSchoolFileFailureCasesDataSource" #schoolFileSort="matSort" matSort>
+          <!-- Context -->
+          <ng-container matColumnDef="schemaContext">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Context </th>
+            <td mat-cell *matCellDef="let element"> {{element.schemaContext}} </td>
+          </ng-container>
+
+          <!-- Column -->
+          <ng-container matColumnDef="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Column </th>
+            <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+          </ng-container>
+
+          <!-- Check -->
+          <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check </th>
+            <td mat-cell *matCellDef="let element"> {{element.check}} </td>
+          </ng-container>
+
+          <!-- Check Number -->
+          <ng-container matColumnDef="checkNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check Number </th>
+            <td mat-cell *matCellDef="let element"> {{element.checkNumber}} </td>
+          </ng-container>
+
+          <!-- Failure Case -->
+          <ng-container matColumnDef="failureCase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Failure Case </th>
+            <td mat-cell *matCellDef="let element"> {{element.failureCase}} </td>
+          </ng-container>
+
+          <!-- Index -->
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Index </th>
+            <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 100]" #schoolFilePaginator
+          aria-label="Select page of results"></mat-paginator>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="data.analysisType === 1 && !localityFileAnalysisInputValidation.isOk">
+    <header>
+      <span class="color-tp-title f-size-20 f-weight-500">Locality File</span>&nbsp;
+      <span class="color-tp-body f-size-20">(failure cases)</span>
+    </header>
+    <div [ngClass]="{'display-none': loading}" class="main-container">
+      <div class="table-container">
+        <table mat-table [dataSource]="tableLocalityFileFailureCasesDataSource" #localityFileSort="matSort" matSort>
+          <!-- Context -->
+          <ng-container matColumnDef="schemaContext">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Context </th>
+            <td mat-cell *matCellDef="let element"> {{element.schemaContext}} </td>
+          </ng-container>
+
+          <!-- Column -->
+          <ng-container matColumnDef="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Column </th>
+            <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+          </ng-container>
+
+          <!-- Check -->
+          <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check </th>
+            <td mat-cell *matCellDef="let element"> {{element.check}} </td>
+          </ng-container>
+
+          <!-- Check Number -->
+          <ng-container matColumnDef="checkNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check Number </th>
+            <td mat-cell *matCellDef="let element"> {{element.checkNumber}} </td>
+          </ng-container>
+
+          <!-- Failure Case -->
+          <ng-container matColumnDef="failureCase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Failure Case </th>
+            <td mat-cell *matCellDef="let element"> {{element.failureCase}} </td>
+          </ng-container>
+
+          <!-- Index -->
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Index </th>
+            <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of results"
+          #localityFilePaginator></mat-paginator>
+      </div>
+    </div>
+  </section>
+  <!-- ///////////////////////////////////// -->
+  <!-- EMPLOYABILITY IMPACT ANALYSIS -->
+  <section *ngIf="data.analysisType === 2 && !schoolHistoryFileAnalysisInputValidation.isOk">
+    <header>
+      <span class="color-tp-title f-size-20 f-weight-500">School History File</span>&nbsp;
+      <span class="color-tp-body f-size-20">(failure cases)</span>
+    </header>
+    <div [ngClass]="{'display-none': loading}" class="main-container">
+      <div class="table-container">
+        <table mat-table [dataSource]="tableSchoolHistoryFileFailureCasesDataSource" #schoolHistoryFileSort="matSort"
+          matSort>
+          <!-- Context -->
+          <ng-container matColumnDef="schemaContext">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Context </th>
+            <td mat-cell *matCellDef="let element"> {{element.schemaContext}} </td>
+          </ng-container>
+
+          <!-- Column -->
+          <ng-container matColumnDef="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Column </th>
+            <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+          </ng-container>
+
+          <!-- Check -->
+          <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check </th>
+            <td mat-cell *matCellDef="let element"> {{element.check}} </td>
+          </ng-container>
+
+          <!-- Check Number -->
+          <ng-container matColumnDef="checkNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check Number </th>
+            <td mat-cell *matCellDef="let element"> {{element.checkNumber}} </td>
+          </ng-container>
+
+          <!-- Failure Case -->
+          <ng-container matColumnDef="failureCase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Failure Case </th>
+            <td mat-cell *matCellDef="let element"> {{element.failureCase}} </td>
+          </ng-container>
+
+          <!-- Index -->
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Index </th>
+            <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 100]" #schoolHistoryFilePaginator
+          aria-label="Select page of results"></mat-paginator>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="data.analysisType === 2 && !localityEmployabilityFileAnalysisInputValidation.isOk">
+    <header>
+      <span class="color-tp-title f-size-20 f-weight-500">Locality Employability File</span>&nbsp;
+      <span class="color-tp-body f-size-20">(failure cases)</span>
+    </header>
+    <div [ngClass]="{'display-none': loading}" class="main-container">
+      <div class="table-container">
+        <table mat-table [dataSource]="tableLocalityEmployabilityFileFailureCasesDataSource"
+          #localityEmployabilityFileSort="matSort" matSort>
+          <!-- Context -->
+          <ng-container matColumnDef="schemaContext">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Context </th>
+            <td mat-cell *matCellDef="let element"> {{element.schemaContext}} </td>
+          </ng-container>
+
+          <!-- Column -->
+          <ng-container matColumnDef="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Column </th>
+            <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+          </ng-container>
+
+          <!-- Check -->
+          <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check </th>
+            <td mat-cell *matCellDef="let element"> {{element.check}} </td>
+          </ng-container>
+
+          <!-- Check Number -->
+          <ng-container matColumnDef="checkNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Check Number </th>
+            <td mat-cell *matCellDef="let element"> {{element.checkNumber}} </td>
+          </ng-container>
+
+          <!-- Failure Case -->
+          <ng-container matColumnDef="failureCase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Failure Case </th>
+            <td mat-cell *matCellDef="let element"> {{element.failureCase}} </td>
+          </ng-container>
+
+          <!-- Index -->
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Index </th>
+            <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of results"
+          #localityEmployabilityFilePaginator></mat-paginator>
+      </div>
+    </div>
+  </section>
+  <!-- ///////////////////////////////////// -->
+  <div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>Close</button>
+  </div>
+</div>

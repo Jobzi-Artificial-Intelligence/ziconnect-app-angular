@@ -87,11 +87,29 @@
         <div class="subtitle f-size-16 color-tp-body">Choose the type of analysis</div>
       </header>
       <br>
-      <div class="alert alert-warning">
-        This is a MVP, the analysis performed in it have a limited storage time, so your analysis
-        may not be available after it is executed. Be sure to download the results as soon as you receive them. If your
-        analysis is no longer available, you can start a new one.
-      </div>
+      <mat-accordion>
+        <mat-expansion-panel id="disclaimer-alert">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="disclaimer-alert-title">
+              <mat-icon class="material-icons-outlined">warning_amber</mat-icon>
+              <span class="title">Disclaimers</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ol>
+            <li>
+              <p class="f-size-16">This is a MVP, the analysis performed in it have a limited storage time, so your
+                analysis
+                may not be available after it is executed. Be sure to download the results as soon as you receive them.
+                If your analysis is no longer available, you can start a new one.</p>
+            </li>
+            <li>
+              <p class="f-size-16">For avoiding throwing too many errors, we automatically handle small inconsistencies
+                by trying to
+                estimate columns values (if possible) or removing corrupted schools / locations</p>
+            </li>
+          </ol>
+        </mat-expansion-panel>
+      </mat-accordion>
       <br>
       <div class="flex direction-column items-stretch justify-between" id="selection-list">
         <mat-card class="selection-item" (click)="onSelectAnalysisTypeClick(1)"
@@ -443,7 +461,10 @@
           <div>
             <p class="flex items-center">Would you like to try to homogenize the sets by features?&nbsp;&nbsp;<mat-icon
                 class="active-icon material-icons color-tp-label"
-                matTooltip="Description of what it means to homogenize datasets">info</mat-icon></p>
+                matTooltip="Homogenizing two data sets (cities A and B) with respect to a set of attributes means trying to ensure that the distribution of these attributes in both sets is not too different. 
+                The goal of this homogenization is to reduce the impact of these attributes when analyzing the effect of a control variable (connectivity) on employability, that is, when one wants to understand how 
+                connectivity affects employability without other attributes interfering with the analysis.">info</mat-icon>
+            </p>
             <mat-slide-toggle (change)="onEmployabilityHomogenizeCheckChange($event)"
               [(ngModel)]="isEmployabilityHomogenizeChecked">{{isEmployabilityHomogenizeChecked ? 'YES'
               : 'NO'}}</mat-slide-toggle>

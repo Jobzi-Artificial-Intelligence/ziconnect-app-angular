@@ -46,9 +46,7 @@ export class AnalysisToolService {
     formData.append('school_history', schoolHistoryFile);
 
     if (homogenizeFeatures.length > 0) {
-      homogenizeFeatures.forEach((feature) => {
-        formData.append('homogenize_columns', feature);
-      });
+      formData.append('homogenize_columns', homogenizeFeatures.join(','));
     }
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskEmployabilityImpactPath}`, formData, {
