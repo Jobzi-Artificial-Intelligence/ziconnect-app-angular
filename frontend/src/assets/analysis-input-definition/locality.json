@@ -1,13 +1,5 @@
 [
   {
-    "column": "id",
-    "dataType": "string",
-    "required": true,
-    "primaryKey": true,
-    "description": "Unique location identifier",
-    "example": "\"1\""
-  },
-  {
     "column": "country_code",
     "dataType": "string",
     "required": true,
@@ -54,13 +46,5 @@
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District name",
     "example": "\"Porto Velho\""
-  },
-  {
-    "column": "administrative_level",
-    "dataType": "string",
-    "required": true,
-    "primaryKey": false,
-    "description": "Administrative level",
-    "example": "\"Country, State, Province, Territory, Region, City, Municipality ...\""
   }
 ]

@@ -141,7 +141,7 @@
     </section>
     <section *ngIf="storageTask">
       <div class="storage-task-card"
-        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'received': storageTask.status === 'RECEIVED', 'started': storageTask.status === 'STARTED', 'success': storageTask.status === 'SUCCESS'}">
+        [ngClass]="{'pending': storageTask.status === 'PENDING', 'fail': storageTask.status === 'FAILURE', 'rejected': storageTask.status === 'REJECTED', 'received': storageTask.status === 'RECEIVED', 'started': storageTask.status === 'STARTED', 'success': storageTask.status === 'SUCCESS'}">
         <header class="flex items-center justify-between">
           <div class="color-tp-title flex items-center f-size-14" matTooltip="Last status checked at">
             <mat-icon *ngIf="!loadingPoolTask"
@@ -163,6 +163,8 @@
               *ngIf="storageTask.status === 'PENDING'">pending</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
               *ngIf="storageTask.status === 'RECEIVED'">call_received</mat-icon>
+            <mat-icon class="label-icon material-icons-outlined"
+              *ngIf="storageTask.status === 'REJECTED'">thumb_down_alt</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
               *ngIf="storageTask.status === 'STARTED'">play_arrow</mat-icon>
             <mat-icon class="label-icon material-icons-outlined"
@@ -198,7 +200,7 @@
           </div>
           <br>
           <div class="alert alert-sm"
-            [ngClass]="{'alert-warning': storageTask.status === 'PENDING', 'alert-danger': storageTask.status === 'FAILURE', 'alert-info': storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED', 'alert-success': storageTask.status === 'SUCCESS'}">
+            [ngClass]="{'alert-warning': storageTask.status === 'PENDING', 'alert-danger': storageTask.status === 'FAILURE' || storageTask.status === 'REJECTED', 'alert-info': storageTask.status === 'RECEIVED' || storageTask.status === 'STARTED', 'alert-success': storageTask.status === 'SUCCESS'}">
             <div class="f-weight-500">Status message:</div>
             <p *ngIf="!storageTask.statusCheckMessage">{{storageTask.statusMessage}}</p>
             <p *ngIf="storageTask.statusCheckMessage">{{storageTask.statusCheckMessage}}</p>
@@ -217,9 +219,10 @@
           <button
             *ngIf="storageTask.statusCheckCode > 200 && (this.poolTaskSubscription && this.poolTaskSubscription.closed)"
             mat-raised-button (click)="onButtonRetryCheckStatusClick()">Retry check status</button>
-          <button mat-raised-button (click)="onButtonViewValidationResultsClick()">View validation results</button>
+          <button *ngIf="storageTask.status === 'REJECTED'" mat-raised-button
+            (click)="onButtonViewValidationResultsClick()">Show validation results</button>
           <button
-            [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.statusCheckCode <= 200) || (this.poolTaskSubscription && !this.poolTaskSubscription.closed)"
+            [disabled]="(storageTask.status !== 'SUCCESS' && storageTask.status !== 'FAILURE' && storageTask.status !== 'REJECTED' && storageTask.statusCheckCode <= 200) || (this.poolTaskSubscription && !this.poolTaskSubscription.closed)"
             mat-raised-button color="warn" (click)="onButtonRemoveStorageValueClick()"
             matTooltip="Discard and start new analysis">Discard</button>
         </footer>

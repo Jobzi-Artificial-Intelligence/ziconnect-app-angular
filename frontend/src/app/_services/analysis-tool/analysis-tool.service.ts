@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AnalysisType } from 'src/app/_helpers';
 import { AnalysisTask } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { environment } from 'src/environments/environment';
@@ -89,5 +90,28 @@ export class AnalysisToolService {
         })
       );
     ;
+  }
+
+  /**
+   * Get analysis task result from local storage
+   * @param analysisType task analysis type enum value
+   * @returns AnalysisResult object or null value
+   */
+  getTaskResultFromStorage(analysisType: AnalysisType): AnalysisResult | null {
+    const analysisResultStr = localStorage.getItem(`${AnalysisType[analysisType]}_result`);
+    if (analysisResultStr) {
+      return { ...JSON.parse(analysisResultStr) } as AnalysisResult;
+    }
+
+    return null;
+  }
+
+  /**
+   * Put task result from server into local storage
+   * @param analysisType task analysis type enum value
+   * @param analysisResult task analysis result object
+   */
+  putTaskResultOnStorage(analysisType: AnalysisType, analysisResult: AnalysisResult) {
+    localStorage.setItem(`${AnalysisType[analysisType]}_result`, JSON.stringify(analysisResult));
   }
 }

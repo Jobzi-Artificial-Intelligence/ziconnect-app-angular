@@ -6,6 +6,7 @@ import { Deserializable } from "../deserializable.model";
 const analysisTaskStatusMessage: any = {
   'PENDING': 'Uploading your data...',
   'RECEIVED': 'Your data has been received and placed in a queue to be processed.',
+  'REJECTED': 'Analysis rejected! Inconsistencies have been detected in the input files. Please click on "Show validation results" for more details.',
   'STARTED': 'Please wait. Your data is being analyzed. This process may take a few minutes, so feel free to grab a coffee. On average, files with 25,000 schools take around 15 to 20 minutes to execute.',
   'SUCCESS': 'Analysis completed! Please click on "Show Results" for more details',
   'FAILURE': 'Analysis failed! Please click on "Contact Us" to send us a message with detailed information about the error.',

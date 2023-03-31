@@ -364,6 +364,15 @@
         color: $feat-red;
       }
     }
+
+    &.rejected {
+      border-color: #e9967a;
+
+      .status-label {
+        background-color: rgba($color: #e9967a, $alpha: 0.2);
+        color: #e9967a;
+      }
+    }
   }
   ////////////////////////////////////////////
 }

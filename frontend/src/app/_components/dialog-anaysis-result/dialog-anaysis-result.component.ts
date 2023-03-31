@@ -71,6 +71,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.tableDataSource.paginator = this.paginator;
+    this.tableDataSource.filterPredicate = this.tableFilterPredicate;
+    this.tableDataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
@@ -113,19 +115,21 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     if (this.analysisResult && (this.analysisResult.modelMetrics || this.analysisResult.resultSummary)) {
       this.buildMetricsLineChart();
 
-      this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);
-      this.tableDataSource.paginator = this.paginator;
-      this.tableDataSource.filterPredicate = this.tableFilterPredicate;
-      this.tableDataSource.sort = this.sort;
+      if (this.analysisResult.resultSummary) {
+        this.tableDataSource = new MatTableDataSource(this.analysisResult.resultSummary);
+        this.tableDataSource.paginator = this.paginator;
+        this.tableDataSource.filterPredicate = this.tableFilterPredicate;
+        this.tableDataSource.sort = this.sort;
+      }
     }
   }
 
   loadAnalysisResult() {
     this.loading = true;
 
-    const analysisResultStr = localStorage.getItem(`${AnalysisType[this.data.analysisType]}_result`);
-    if (analysisResultStr) {
-      this.analysisResult = { ...JSON.parse(analysisResultStr) };
+    const taskResult = this._analysisToolService.getTaskResultFromStorage(this.data.analysisType);
+    if (taskResult) {
+      this.analysisResult = taskResult;
       this.buildResultsData();
 
       this.loading = false;
@@ -137,7 +141,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
           this.buildResultsData();
 
-          this.putAnalysisResultOnStorage(this.analysisResult);
+          this._analysisToolService.putTaskResultOnStorage(this.data.analysisType, this.analysisResult);
 
           this.loading = false;
         }, error => {
@@ -169,14 +173,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       UtilHelper.exportFromObjectToCsv('result_summary.csv', dataToExport);
     } catch (error: any) {
       this._alertService.showError(error.toString());
-    }
-  }
-
-  putAnalysisResultOnStorage(analysisResult: AnalysisResult) {
-    if (this.data.analysisType) {
-      const analysisTypeStr = AnalysisType[this.data.analysisType];
-
-      localStorage.setItem(`${AnalysisType[this.data.analysisType]}_result`, JSON.stringify(analysisResult));
     }
   }
 

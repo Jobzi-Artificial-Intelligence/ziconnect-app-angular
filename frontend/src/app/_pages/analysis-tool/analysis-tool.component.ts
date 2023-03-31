@@ -431,7 +431,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
 
       this.scrollToSection('sectionAnalysisSteps');
-    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.status)) {
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.Rejected].includes(this.storageTask.status)) {
       this.poolStorageTask();
     }
   }

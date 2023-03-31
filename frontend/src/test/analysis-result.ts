@@ -1,3 +1,5 @@
+import { analysisInputValidationResultFromServer } from './analysis-input-validation-result';
+
 export const analysisResultFromServer = {
   "taskResult": {
     "model_metrics": {
@@ -32,7 +34,8 @@ export const analysisResultFromServer = {
       "mean_valid_accuracy": 0.8495104895104895,
       "std_valid_accuracy": 0.012609925477522946,
       "test_accuracy": 0.859846630771741
-    }, "result_summary": [{
+    },
+    "result_summary": [{
       "country_name": "Brasil",
       "country_code": "BR",
       "state_count": 7,
@@ -381,6 +384,9 @@ export const analysisResultFromServer = {
       "state_code": 12.0,
       "municipality_name": "Capixaba",
       "municipality_code": 1200179.0
-    }]
+    }],
+    "table_schemas": {
+      'schools': analysisInputValidationResultFromServer
+    }
   }
 }

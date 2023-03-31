@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from 'src/app/material.module';
 import { AnalysisType, UtilHelper } from 'src/app/_helpers';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
-import { AnalysisTask } from 'src/app/_models';
+import { AnalysisTask, LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { of, throwError } from "rxjs";
 
@@ -103,29 +103,32 @@ describe('DialogAnaysisResultComponent', () => {
 
     it('should works when has local storage result', async () => {
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
-      spyOn(window.localStorage, 'getItem').and.returnValue(JSON.stringify(analysisResult));
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(analysisResult);
       spyOn(component, 'buildResultsData');
 
       component.loadAnalysisResult();
 
-      expect(window.localStorage.getItem).toHaveBeenCalled();
+      //@ts-ignore
+      expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
       expect(component.buildResultsData).toHaveBeenCalled();
       expect(component.loading).toEqual(false);
     });
 
     it('should works when service return error', async () => {
-      spyOn(window.localStorage, 'getItem').and.returnValue(null);
-
       //@ts-ignore
       spyOn(component._alertService, 'showError');
 
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(null);
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(throwError({ message: 'http error' }));
 
       component.data.analysisTask.id = 'abc-123';
       component.loadAnalysisResult();
 
-      expect(window.localStorage.getItem).toHaveBeenCalled();
+      //@ts-ignore
+      expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
       //@ts-ignore
       expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id);
       //@ts-ignore
@@ -135,19 +138,24 @@ describe('DialogAnaysisResultComponent', () => {
     it('should works when service return success', async () => {
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
 
-      spyOn(window.localStorage, 'getItem').and.returnValue(null);
       spyOn(component, 'buildResultsData');
-      spyOn(component, 'putAnalysisResultOnStorage');
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(null);
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'putTaskResultOnStorage').and.returnValue(null);
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(of(analysisResult));
 
       component.data.analysisTask.id = 'abc-123';
       component.loadAnalysisResult();
 
-      expect(window.localStorage.getItem).toHaveBeenCalled();
       expect(component.buildResultsData).toHaveBeenCalled();
-      expect(component.putAnalysisResultOnStorage).toHaveBeenCalled();
       expect(component.loading).toEqual(false);
+
+      //@ts-ignore
+      expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
+      //@ts-ignore
+      expect(component._analysisToolService.putTaskResultOnStorage).toHaveBeenCalledWith(component.data.analysisType, jasmine.any(Object));
     });
   });
 
@@ -161,7 +169,7 @@ describe('DialogAnaysisResultComponent', () => {
       spyOn(UtilHelper, 'exportFromObjectToCsv')
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
 
-      component.tableDataSource = new MatTableDataSource(analysisResult.resultSummary);
+      component.tableDataSource = new MatTableDataSource(analysisResult.resultSummary || new Array<LocalityStatistics>());
 
       component.onButtonExportClick();
 
@@ -174,29 +182,12 @@ describe('DialogAnaysisResultComponent', () => {
       spyOn(component._alertService, 'showError');
       const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
 
-      component.tableDataSource = new MatTableDataSource(analysisResult.resultSummary);
+      component.tableDataSource = new MatTableDataSource(analysisResult.resultSummary || new Array<LocalityStatistics>());
 
       component.onButtonExportClick();
 
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Error: Export error');
-    });
-  });
-
-  describe('#putAnalysisResultOnStorage', () => {
-    it('should exists', () => {
-      expect(component.putAnalysisResultOnStorage).toBeTruthy();
-      expect(component.putAnalysisResultOnStorage).toEqual(jasmine.any(Function));
-    });
-
-    it('should works', () => {
-      spyOn(window.localStorage, 'setItem');
-
-      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
-
-      component.putAnalysisResultOnStorage(analysisResult);
-
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[component.data.analysisType]}_result`, jasmine.any(String));
     });
   });
 

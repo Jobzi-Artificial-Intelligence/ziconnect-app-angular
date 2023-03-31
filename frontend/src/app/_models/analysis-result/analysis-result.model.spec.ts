@@ -6,8 +6,9 @@ describe('Model: AnalysisResult', () => {
   it('should initialize all properties correctly', () => {
     const analysisResult = new AnalysisResult();
 
-    expect(analysisResult.modelMetrics).toBeUndefined();
-    expect(analysisResult.resultSummary).toBeUndefined();
+    expect(analysisResult.modelMetrics).toEqual(null);
+    expect(analysisResult.resultSummary).toEqual(null);
+    expect(analysisResult.schemaError).toEqual(null);
   });
 
   describe('#deserialize', () => {
@@ -31,6 +32,11 @@ describe('Model: AnalysisResult', () => {
         expect(analysisResult.modelMetrics.stdValidAccuracy).toEqual(taskResult.model_metrics.std_valid_accuracy);
         expect(analysisResult.modelMetrics.trainAccuracies).toEqual(taskResult.model_metrics.train_accuracies);
         expect(analysisResult.modelMetrics.validAccuracies).toEqual(taskResult.model_metrics.valid_accuracies);
+      }
+
+      if (analysisResult.schemaError) {
+        expect(analysisResult.schemaError['schools']).toBeDefined();
+        expect(analysisResult.schemaError['schools'].isOk).toEqual(false);
       }
     });
   });
