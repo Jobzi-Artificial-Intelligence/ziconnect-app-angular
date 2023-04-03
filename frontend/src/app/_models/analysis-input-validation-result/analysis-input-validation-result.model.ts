@@ -15,9 +15,12 @@ export class AnalysisInputValidationResult implements Deserializable {
 
   deserialize(input: any): this {
     this.isOk = input.is_ok;
-    this.failureCases = input.failure_cases.map((failureCase: any) => {
-      return new AnalysisInputValidationFailureCase().deserialize(failureCase);
-    });
+    if (input.failure_cases) {
+      this.failureCases = input.failure_cases.map((failureCase: any) => {
+        return new AnalysisInputValidationFailureCase().deserialize(failureCase);
+      });
+    }
+
     this.failureRows = input.failure_rows;
 
     return this;

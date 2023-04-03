@@ -314,7 +314,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
             this.putAnalysisTaskOnStorage(this.storageTask);
 
-            if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
+            if ([AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.SchemaError].includes(this.storageTask.status)) {
               this.poolTaskSubscription.unsubscribe();
               this.stopStatusCheckCountdown();
             }
@@ -405,7 +405,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       message += '%0D%0A%0D%0A' // Adds break line
       message += 'Exception Message:';
       message += '%0D%0A%0D%0A' // Adds break line
-      message += this.storageTask.exceptionMessage;
+      message += this.storageTask.exception ? this.storageTask.exception.exceptionMessage : 'Task execution general error!';
     }
 
     return message;
@@ -431,7 +431,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
 
       this.scrollToSection('sectionAnalysisSteps');
-    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.Rejected].includes(this.storageTask.status)) {
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.SchemaError].includes(this.storageTask.status)) {
       this.poolStorageTask();
     }
   }

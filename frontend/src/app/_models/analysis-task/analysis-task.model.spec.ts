@@ -36,6 +36,28 @@ describe('Model: AnalysisTask', () => {
       expect(analysisTask.receivedAt).toEqual(moment.utc(analysisTaskFromServer.taskReceivedDate));
       expect(analysisTask.startedAt).toEqual(moment.utc(analysisTaskFromServer.taskStartedDate));
     });
+
+    it('should works with exception', () => {
+      const analysisTaskFromServer = {
+        taskID: 'abc-123',
+        taskState: 'PENDING',
+        taskReceivedDate: moment().format(),
+        taskStartedDate: moment().format(),
+        taskFailedDate: null,
+        taskSucceededDate: null,
+        taskException: {
+          exc_type: 'TableSchemaError'
+        }
+      };
+      const analysisTask = new AnalysisTask();
+      analysisTask.deserialize(analysisTaskFromServer);
+
+      expect(analysisTask.id).toEqual(analysisTaskFromServer.taskID);
+      expect(analysisTask.status).toEqual(AnalysisTaskStatus.SchemaError);
+      expect(analysisTask.receivedAt).toEqual(moment.utc(analysisTaskFromServer.taskReceivedDate));
+      expect(analysisTask.startedAt).toEqual(moment.utc(analysisTaskFromServer.taskStartedDate));
+      expect(analysisTask.exception).toBeDefined();
+    });
   });
 
   describe('#fromLocalStorage', () => {

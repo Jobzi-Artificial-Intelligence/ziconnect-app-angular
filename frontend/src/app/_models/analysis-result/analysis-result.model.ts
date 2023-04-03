@@ -15,22 +15,28 @@ export class AnalysisResult implements Deserializable {
   }
 
   deserialize(input: any): this {
-    if (input) {
-      if (input.model_metrics) {
+    let inputControl = input;
+
+    if (input.exc_type && input.exc_type === 'TableSchemaError') {
+      inputControl = input.exc_message;
+    }
+
+    if (inputControl) {
+      if (inputControl.model_metrics) {
         this.modelMetrics = new AnalysisResultMetrics().deserialize(input.model_metrics);
       }
 
-      if (input.result_summary && input.result_summary.length > 0) {
-        this.resultSummary = (input.result_summary as Array<any>).map((item) => {
+      if (inputControl.result_summary && inputControl.result_summary.length > 0) {
+        this.resultSummary = (inputControl.result_summary as Array<any>).map((item) => {
           return new LocalityStatistics().deserializeFromAnalysisResult(item);
         });
       }
 
-      if (input.table_schemas) {
+      if (inputControl.table_schemas) {
         this.schemaError = {};
-        Object.keys(input.table_schemas).forEach((key) => {
+        Object.keys(inputControl.table_schemas).forEach((key) => {
           if (this.schemaError) {
-            this.schemaError[key] = new AnalysisInputValidationResult().deserialize(input.table_schemas[key]);
+            this.schemaError[key] = new AnalysisInputValidationResult().deserialize(inputControl.table_schemas[key]);
           }
         });
       }

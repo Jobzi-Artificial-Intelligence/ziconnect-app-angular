@@ -2,6 +2,8 @@ import { analysisInputValidationResultFromServer } from './analysis-input-valida
 
 export const analysisResultFromServer = {
   "taskResult": {
+    "exc_type": null,
+    "exc_message": null,
     "model_metrics": {
       "classifier_name": "random_forest",
       "num_folds": 10,
@@ -386,7 +388,8 @@ export const analysisResultFromServer = {
       "municipality_code": 1200179.0
     }],
     "table_schemas": {
-      'schools': analysisInputValidationResultFromServer
+      'school': analysisInputValidationResultFromServer,
+      'locality': analysisInputValidationResultFromServer
     }
   }
 }

@@ -2,11 +2,12 @@ import * as moment from "moment";
 import { UtilHelper } from "src/app/_helpers";
 import { AnalysisTaskStatus } from "src/app/_helpers/enums/analysis-task-status";
 import { Deserializable } from "../deserializable.model";
+import { AnalysisTaskException } from "../analysis-task-exception/analysis-task-exception.model";
 
 const analysisTaskStatusMessage: any = {
   'PENDING': 'Uploading your data...',
   'RECEIVED': 'Your data has been received and placed in a queue to be processed.',
-  'REJECTED': 'Analysis rejected! Inconsistencies have been detected in the input files. Please click on "Show validation results" for more details.',
+  'SCHEMA_ERROR': 'Inconsistencies have been detected in the input files. Please click on "Show validation results" for more details.',
   'STARTED': 'Please wait. Your data is being analyzed. This process may take a few minutes, so feel free to grab a coffee. On average, files with 25,000 schools take around 15 to 20 minutes to execute.',
   'SUCCESS': 'Analysis completed! Please click on "Show Results" for more details',
   'FAILURE': 'Analysis failed! Please click on "Contact Us" to send us a message with detailed information about the error.',
@@ -22,14 +23,14 @@ export class AnalysisTask implements Deserializable {
   statusCheckedAt: any;
   statusCheckCode: number;
   statusCheckMessage: string;
-  exceptionMessage: string;
+  exception: AnalysisTaskException | null;
 
   constructor() {
     this.id = '';
     this.status = AnalysisTaskStatus.Pending;
     this.statusCheckCode = 0;
     this.statusCheckMessage = '';
-    this.exceptionMessage = '';
+    this.exception = null;
 
     this.statusCheckedAt = moment();
   }
@@ -37,7 +38,14 @@ export class AnalysisTask implements Deserializable {
   deserialize(input: any): this {
     this.id = input.taskID;
     this.status = input.taskState;
-    this.exceptionMessage = input.taskException;
+
+    if (input.taskException) {
+      this.exception = new AnalysisTaskException().deserialize(input.taskException);
+
+      if (this.exception && this.exception.exceptionType === 'TableSchemaError') {
+        this.status = AnalysisTaskStatus.SchemaError;
+      }
+    }
 
     this.statusCheckedAt = moment();
 
@@ -64,7 +72,7 @@ export class AnalysisTask implements Deserializable {
     this.status = input.status;
     this.statusCheckCode = input.statusCheckCode;
     this.statusCheckMessage = input.statusCheckMessage;
-    this.exceptionMessage = input.exceptionMessage;
+    this.exception = input.exception;
 
     const inputDateFielsMap = [
       'failureAt',

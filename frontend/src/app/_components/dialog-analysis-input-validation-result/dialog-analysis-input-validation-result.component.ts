@@ -7,6 +7,8 @@ import { AnalysisType } from 'src/app/_helpers';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { AnalysisInputValidationFailureCase } from 'src/app/_models/analysis-input-validation-failure-case/analysis-input-validation-failure-case.model';
 import { AnalysisInputValidationResult } from 'src/app/_models/analysis-input-validation-result/analysis-input-validation-result.model';
+import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
+import { AlertService, AnalysisToolService } from 'src/app/_services';
 
 @Component({
   selector: 'app-dialog-analysis-input-validation-result',
@@ -16,72 +18,11 @@ import { AnalysisInputValidationResult } from 'src/app/_models/analysis-input-va
 export class DialogAnalysisInputValidationResultComponent implements OnInit, AfterViewInit {
   public loading: boolean = false;
 
-  private _analysisInputValidationResultFromServer = {
-    "is_ok": false,
-    "failure_cases": [{
-      "schema_context": "Column",
-      "column": "municipality_code",
-      "check": "isin",
-      "check_number": 0,
-      "failure_case": "1302603",
-      "index": 268
-    },
-    {
-      "schema_context": "Column",
-      "column": "municipality_code",
-      "check": "isin",
-      "check_number": 0,
-      "failure_case": "1302603",
-      "index": 18026
-    },
-    {
-      "schema_context": "Column",
-      "column": "municipality_code",
-      "check": "isin",
-      "check_number": 0,
-      "failure_case": "1302603",
-      "index": 17860
-    }],
-    "failure_rows": [
-      {
-        "school_code": "13027620",
-        "school_name": "ESCOLA ESTADUAL MARIA MADALENA SANTANA DE LIMA",
-        "school_type": "Estadual",
-        "school_region": "Urban",
-        "student_count": 687,
-        "municipality_code": "1302603",
-        "latitude": -3.0893,
-        "longitude": -59.9426,
-        "internet_availability": false
-      },
-      {
-        "school_code": "13029428",
-        "school_name": "EM ANASTACIO ASSUNCAO",
-        "school_type": "Municipal",
-        "school_region": "Urban",
-        "student_count": 591,
-        "municipality_code": "1302603",
-        "latitude": -3.1382,
-        "longitude": -59.9944,
-        "internet_availability": true
-      },
-      {
-        "school_code": "13307231",
-        "school_name": "EM DESEMBARGADOR OYAMA ITUASSU",
-        "school_type": "Municipal",
-        "school_region": "Urban",
-        "student_count": 1373,
-        "municipality_code": "1302603",
-        "latitude": -2.9918,
-        "longitude": -60.0032,
-        "internet_availability": true
-      }]
-  };
-
-  public localityEmployabilityFileAnalysisInputValidation = new AnalysisInputValidationResult().deserialize(this._analysisInputValidationResultFromServer);
-  public localityFileAnalysisInputValidation = new AnalysisInputValidationResult().deserialize(this._analysisInputValidationResultFromServer);
-  public schoolFileAnalysisInputValidation = new AnalysisInputValidationResult().deserialize(this._analysisInputValidationResultFromServer);
-  public schoolHistoryFileAnalysisInputValidation = new AnalysisInputValidationResult().deserialize(this._analysisInputValidationResultFromServer);
+  analysisResult: AnalysisResult = new AnalysisResult();
+  public localityEmployabilityFileAnalysisInputValidation: AnalysisInputValidationResult | null = null;
+  public localityFileAnalysisInputValidation: AnalysisInputValidationResult | null = null;
+  public schoolFileAnalysisInputValidation: AnalysisInputValidationResult | null = null;
+  public schoolHistoryFileAnalysisInputValidation: AnalysisInputValidationResult | null = null;
 
   //#region MAT-TABLE CONFIG
   ////////////////////////////////////////////////
@@ -105,7 +46,7 @@ export class DialogAnalysisInputValidationResultComponent implements OnInit, Aft
   //#endregion
   ////////////////////////////////////////////////
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData, private _alertService: AlertService, private _analysisToolService: AnalysisToolService) {
     this.tableLocalityFileFailureCasesDataSource = new MatTableDataSource(new Array<AnalysisInputValidationFailureCase>());
     this.tableLocalityEmployabilityFileFailureCasesDataSource = new MatTableDataSource(new Array<AnalysisInputValidationFailureCase>());
     this.tableSchoolFileFailureCasesDataSource = new MatTableDataSource(new Array<AnalysisInputValidationFailureCase>());
@@ -127,38 +68,94 @@ export class DialogAnalysisInputValidationResultComponent implements OnInit, Aft
   }
 
   ngOnInit(): void {
-    if (this.data.analysisType === AnalysisType.ConnectivityPrediction) {
-      this.loadLocalityFileFailureCases();
-      this.loadSchoolFileFailureCases();
-    }
+    this.loadAnalysisResult();
+  }
 
-    if (this.data.analysisType === AnalysisType.EmployabilityImpact) {
-      this.loadLocalityEmployabilityFileFailureCases();
-      this.loadSchoolHistoryFileFailureCases();
+  loadAnalysisResult() {
+    this.loading = true;
+
+    const taskResult = this._analysisToolService.getTaskResultFromStorage(this.data.analysisType);
+    if (taskResult) {
+      this.analysisResult = taskResult;
+
+      if (this.data.analysisType === AnalysisType.ConnectivityPrediction) {
+        this.loadLocalityFileFailureCases();
+        this.loadSchoolFileFailureCases();
+      }
+
+      if (this.data.analysisType === AnalysisType.EmployabilityImpact) {
+        this.loadLocalityEmployabilityFileFailureCases();
+        this.loadSchoolHistoryFileFailureCases();
+      }
+
+      this.loading = false;
+    } else {
+      this._analysisToolService
+        .getTaskResult(this.data.analysisTask.id.toString())
+        .subscribe(data => {
+          this.analysisResult = data;
+
+          this._analysisToolService.putTaskResultOnStorage(this.data.analysisType, this.analysisResult);
+
+          if (this.data.analysisType === AnalysisType.ConnectivityPrediction) {
+            this.loadLocalityFileFailureCases();
+            this.loadSchoolFileFailureCases();
+          }
+
+          if (this.data.analysisType === AnalysisType.EmployabilityImpact) {
+            this.loadLocalityEmployabilityFileFailureCases();
+            this.loadSchoolHistoryFileFailureCases();
+          }
+
+          this.loading = false;
+        }, error => {
+          this._alertService.showError('Something went wrong getting result: ' + error.message);
+          this.loading = false;
+        });
     }
   }
 
   loadLocalityEmployabilityFileFailureCases() {
-    this.tableLocalityEmployabilityFileFailureCasesDataSource = new MatTableDataSource(this.localityEmployabilityFileAnalysisInputValidation.failureCases);
-    this.tableLocalityEmployabilityFileFailureCasesDataSource.paginator = this.localityEmployabilityFilePaginator;
-    this.tableLocalityEmployabilityFileFailureCasesDataSource.sort = this.localityEmployabilityFileSort;
+    if (this.analysisResult && this.analysisResult.schemaError && this.analysisResult.schemaError['locality']) {
+      this.localityEmployabilityFileAnalysisInputValidation = this.analysisResult.schemaError['locality'];
+      if (!this.localityEmployabilityFileAnalysisInputValidation.isOk) {
+        this.tableLocalityEmployabilityFileFailureCasesDataSource = new MatTableDataSource(this.analysisResult.schemaError['locality'].failureCases);
+        this.tableLocalityEmployabilityFileFailureCasesDataSource.paginator = this.localityEmployabilityFilePaginator;
+        this.tableLocalityEmployabilityFileFailureCasesDataSource.sort = this.localityEmployabilityFileSort;
+      }
+    }
   }
 
   loadLocalityFileFailureCases() {
-    this.tableLocalityFileFailureCasesDataSource = new MatTableDataSource(this.localityFileAnalysisInputValidation.failureCases);
-    this.tableLocalityFileFailureCasesDataSource.paginator = this.localityFilePaginator;
-    this.tableLocalityFileFailureCasesDataSource.sort = this.localityFileSort;
+    if (this.analysisResult && this.analysisResult.schemaError && this.analysisResult.schemaError['locality']) {
+      this.localityFileAnalysisInputValidation = this.analysisResult.schemaError['locality'];
+      if (!this.localityFileAnalysisInputValidation.isOk) {
+        this.tableLocalityFileFailureCasesDataSource = new MatTableDataSource(this.analysisResult.schemaError['locality'].failureCases);
+        this.tableLocalityFileFailureCasesDataSource.paginator = this.localityFilePaginator;
+        this.tableLocalityFileFailureCasesDataSource.sort = this.localityFileSort;
+      }
+    }
   }
 
   loadSchoolFileFailureCases() {
-    this.tableSchoolFileFailureCasesDataSource = new MatTableDataSource(this.schoolFileAnalysisInputValidation.failureCases);
-    this.tableSchoolFileFailureCasesDataSource.paginator = this.schoolFilePaginator;
-    this.tableSchoolFileFailureCasesDataSource.sort = this.schoolFileSort;
+    if (this.analysisResult && this.analysisResult.schemaError && this.analysisResult.schemaError['school']) {
+      this.schoolFileAnalysisInputValidation = this.analysisResult.schemaError['school'];
+      if (!this.schoolFileAnalysisInputValidation.isOk) {
+        this.tableSchoolFileFailureCasesDataSource = new MatTableDataSource(this.analysisResult.schemaError['school'].failureCases);
+        this.tableSchoolFileFailureCasesDataSource.paginator = this.schoolFilePaginator;
+        this.tableSchoolFileFailureCasesDataSource.sort = this.schoolFileSort;
+      }
+    }
   }
 
   loadSchoolHistoryFileFailureCases() {
-    this.tableSchoolHistoryFileFailureCasesDataSource = new MatTableDataSource(this.schoolHistoryFileAnalysisInputValidation.failureCases);
-    this.tableSchoolHistoryFileFailureCasesDataSource.paginator = this.schoolHistoryFilePaginator;
-    this.tableSchoolHistoryFileFailureCasesDataSource.sort = this.schoolHistoryFileSort;
+    if (this.analysisResult && this.analysisResult.schemaError && this.analysisResult.schemaError['school']) {
+      this.schoolHistoryFileAnalysisInputValidation = this.analysisResult.schemaError['school'];
+      if (!this.schoolHistoryFileAnalysisInputValidation.isOk) {
+        this.tableSchoolHistoryFileFailureCasesDataSource = new MatTableDataSource(this.analysisResult.schemaError['school'].failureCases);
+        this.tableSchoolHistoryFileFailureCasesDataSource.paginator = this.schoolHistoryFilePaginator;
+        this.tableSchoolHistoryFileFailureCasesDataSource.sort = this.schoolHistoryFileSort;
+      }
+    }
   }
 }

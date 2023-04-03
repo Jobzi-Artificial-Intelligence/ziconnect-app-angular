@@ -16,13 +16,18 @@
       Pandera library. The tables show the validation checks performed by Pandera, including the name of the variable,
       data type, expected data range, and the number of missing values (if any).</p>
   </header>
+  <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner><br>
+    <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>
+  </div>
   <!-- CONNECTIVITY PREDICTION ANALYSIS -->
-  <section *ngIf="data.analysisType === 1 && !schoolFileAnalysisInputValidation.isOk">
+  <section
+    [ngClass]="{'display-none': loading || data.analysisType !== 1 || !schoolFileAnalysisInputValidation || schoolFileAnalysisInputValidation.isOk}">
     <header>
       <span class="color-tp-title f-size-20 f-weight-500">School File</span>&nbsp;
       <span class="color-tp-body f-size-20">(failure cases)</span>
     </header>
-    <div [ngClass]="{'display-none': loading}" class="main-container">
+    <div class="main-container">
       <div class="table-container">
         <table mat-table [dataSource]="tableSchoolFileFailureCasesDataSource" #schoolFileSort="matSort" matSort>
           <!-- Context -->
@@ -74,7 +79,8 @@
       </div>
     </div>
   </section>
-  <section *ngIf="data.analysisType === 1 && !localityFileAnalysisInputValidation.isOk">
+  <section
+    *ngIf="data.analysisType === 1 && localityFileAnalysisInputValidation && !localityFileAnalysisInputValidation?.isOk">
     <header>
       <span class="color-tp-title f-size-20 f-weight-500">Locality File</span>&nbsp;
       <span class="color-tp-body f-size-20">(failure cases)</span>
@@ -133,7 +139,8 @@
   </section>
   <!-- ///////////////////////////////////// -->
   <!-- EMPLOYABILITY IMPACT ANALYSIS -->
-  <section *ngIf="data.analysisType === 2 && !schoolHistoryFileAnalysisInputValidation.isOk">
+  <section
+    *ngIf="data.analysisType === 2 && schoolHistoryFileAnalysisInputValidation && !schoolHistoryFileAnalysisInputValidation?.isOk">
     <header>
       <span class="color-tp-title f-size-20 f-weight-500">School History File</span>&nbsp;
       <span class="color-tp-body f-size-20">(failure cases)</span>
@@ -191,7 +198,8 @@
       </div>
     </div>
   </section>
-  <section *ngIf="data.analysisType === 2 && !localityEmployabilityFileAnalysisInputValidation.isOk">
+  <section
+    *ngIf="data.analysisType === 2 && localityEmployabilityFileAnalysisInputValidation && !localityEmployabilityFileAnalysisInputValidation?.isOk">
     <header>
       <span class="color-tp-title f-size-20 f-weight-500">Locality Employability File</span>&nbsp;
       <span class="color-tp-body f-size-20">(failure cases)</span>

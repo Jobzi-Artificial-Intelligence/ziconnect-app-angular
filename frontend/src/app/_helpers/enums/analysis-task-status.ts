@@ -3,7 +3,7 @@ export enum AnalysisTaskStatus {
   Pending = 'PENDING',
   Retry = 'RETRY',
   Received = 'RECEIVED',
-  Rejected = 'REJECTED',
+  SchemaError = 'SCHEMA_ERROR',
   Revoked = 'REVOKED',
   Started = 'STARTED',
   Success = 'SUCCESS',
