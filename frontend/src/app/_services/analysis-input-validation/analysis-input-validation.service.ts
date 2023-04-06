@@ -75,7 +75,7 @@ export class AnalysisInputValidationService {
       reader.readAsText(file);
 
       reader.onload = () => {
-        let fileContent = reader.result as string;
+        let fileContent = reader.result as String;
         if (fileContent.length === 0) {
           result.push({
             valid: false,
@@ -90,7 +90,7 @@ export class AnalysisInputValidationService {
           } as IAnalysisInputValidationResult);
         }
 
-        let fileLines = fileContent.split('\n');
+        let fileLines = fileContent.trim().split('\n');
         if (fileLines.length <= 1) {
           result.push({
             valid: false,
@@ -110,6 +110,7 @@ export class AnalysisInputValidationService {
         let fileHeaderLine = fileLines.shift();
         const fileHeaderColumns = fileHeaderLine?.replace(/["]+/g, '').split(',');
         let hasAllHeaderColumns = inputDefinitionColumns.every(column => fileHeaderColumns?.includes(column));
+
         if (hasAllHeaderColumns) {
           result.push({
             valid: true,
@@ -129,7 +130,7 @@ export class AnalysisInputValidationService {
         let rowsWithoutAllColumns: any[] = [];
         fileLines.forEach((row, index) => {
           const rowMatch = row.match(this._rowsSplitRegex);
-          if (rowMatch && rowMatch.length !== fileDefinition.length) {
+          if (rowMatch && rowMatch.length !== fileHeaderColumns?.length) {
             rowsWithoutAllColumnsCount++;
             rowsWithoutAllColumns.push(index + 2); // add 2 because the header is removed and the error is about line number instead of line index
           }
@@ -138,7 +139,7 @@ export class AnalysisInputValidationService {
         if (rowsWithoutAllColumnsCount > 0) {
           result.push({
             valid: false,
-            message: `has ${rowsWithoutAllColumnsCount} rows with less or more than ${fileDefinition.length} columns. rows: [${rowsWithoutAllColumns.slice(0, 5).join(',')}${rowsWithoutAllColumns.length > 5 ? ',...' : ''}]`
+            message: `has ${rowsWithoutAllColumnsCount} rows with less or more than ${fileHeaderColumns?.length} columns. rows: [${rowsWithoutAllColumns.slice(0, 5).join(',')}${rowsWithoutAllColumns.length > 5 ? ',...' : ''}]`
           } as IAnalysisInputValidationResult);
         } else {
           result.push({

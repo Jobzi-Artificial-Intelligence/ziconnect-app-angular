@@ -13,6 +13,7 @@ import { of, throwError } from "rxjs";
 import { analysisResultFromServer } from '../../../test/analysis-result';
 
 import { DialogAnaysisResultComponent } from './dialog-anaysis-result.component';
+import { MatSliderChange } from '@angular/material/slider';
 
 describe('DialogAnaysisResultComponent', () => {
   let component: DialogAnaysisResultComponent;
@@ -75,6 +76,20 @@ describe('DialogAnaysisResultComponent', () => {
       expect(component.buildMetricsLineChart);
       expect(component.tableDataSource.data).toBeDefined();
     });
+
+    it('should works for EmployabilityImpact analysis', () => {
+      spyOn(component, 'buildDistributionChart');
+
+      component.data.analysisType = AnalysisType.EmployabilityImpact;
+
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+
+      component.analysisResult = analysisResult;
+
+      component.buildResultsData();
+
+      expect(component.buildDistributionChart).toHaveBeenCalled();
+    });
   });
 
   describe('#buildMetricsLineChart', () => {
@@ -92,6 +107,33 @@ describe('DialogAnaysisResultComponent', () => {
 
       expect(component.metricsChartResults).toBeDefined();
       expect(component.metricsChartResults.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('#getDistributionValueRange', () => {
+    it('should exists', () => {
+      expect(component.getDistributionValueRange).toBeTruthy();
+      expect(component.getDistributionValueRange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const arrayValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      const result = component.getDistributionValueRange(arrayValues, 3);
+
+      expect(result).toBeDefined();
+      expect(result).toEqual(jasmine.any(Array));
+      expect(result.length).toEqual(3);
+    });
+
+    it('should works for negative values', () => {
+      const arrayValues = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      const result = component.getDistributionValueRange(arrayValues, 3);
+
+      expect(result).toBeDefined();
+      expect(result).toEqual(jasmine.any(Array));
+      expect(result.length).toEqual(3);
     });
   });
 
@@ -188,6 +230,25 @@ describe('DialogAnaysisResultComponent', () => {
 
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Error: Export error');
+    });
+  });
+
+  describe('#onIntervalSliderValueChange', () => {
+    it('should exists', () => {
+      expect(component.onIntervalSliderValueChange).toBeTruthy();
+      expect(component.onIntervalSliderValueChange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component, 'buildDistributionChart');
+
+      const event = {
+        value: 1
+      } as MatSliderChange;
+
+      component.onIntervalSliderValueChange(event);
+
+      expect(component.buildDistributionChart).toHaveBeenCalled();
     });
   });
 

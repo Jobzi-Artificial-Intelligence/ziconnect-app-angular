@@ -7,11 +7,13 @@ export class AnalysisResult implements Deserializable {
   modelMetrics: AnalysisResultMetrics | null;
   resultSummary: Array<LocalityStatistics> | null;
   schemaError: { [key: string]: AnalysisInputValidationResult } | null;
+  scenarioDistribution: { [key: string]: Array<number> } | null;
 
   constructor() {
     this.modelMetrics = null;
     this.resultSummary = null;
     this.schemaError = null;
+    this.scenarioDistribution = null;
   }
 
   deserialize(input: any): this {
@@ -39,6 +41,10 @@ export class AnalysisResult implements Deserializable {
             this.schemaError[key] = new AnalysisInputValidationResult().deserialize(inputControl.table_schemas[key]);
           }
         });
+      }
+
+      if (inputControl.scenario_distribution) {
+        this.scenarioDistribution = input.scenario_distribution;
       }
     }
 

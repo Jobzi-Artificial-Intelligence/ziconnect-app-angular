@@ -220,7 +220,7 @@ describe('AnalysisInputValidationService', () => {
     });
 
     it('should works for non match row columns', async () => {
-      const schoolFile = new File(['school_code,school_name\n100253\n\n'], 'schools.csv', { type: 'text/csv' });
+      const schoolFile = new File(['school_code,school_name\n100253\n100253\n100253\n100253\n100253\n100253'], 'schools.csv', { type: 'text/csv' });
       let mockSchoolFileDefinition = new Array<AnalysisInputDefinition>();
       mockSchoolFileDefinition.push({
         column: 'school_code'
@@ -235,13 +235,13 @@ describe('AnalysisInputValidationService', () => {
       expect(results.length).toBeGreaterThan(0);
       expect(results[0]).toBeDefined();
       expect(results[1].valid).toEqual(true);
-      expect(results[1].message).toEqual('The file has 4 lines');
+      expect(results[1].message).toEqual('The file has 7 lines');
       expect(results[3].valid).toEqual(false);
-      expect(results[3].message).toEqual('has 3 rows with less or more than 2 columns. rows: [2,3,4]');
+      expect(results[3].message).toEqual('has 6 rows with less or more than 2 columns. rows: [2,3,4,5,6,...]');
     });
 
     it('should works missing header columns', async () => {
-      const schoolFile = new File(['school_code,school_name\n100253,school name test'], 'schools.csv', { type: 'text/csv' });
+      const schoolFile = new File(['school_code,school_name\n100253,school name test\n100253'], 'schools.csv', { type: 'text/csv' });
       const mockFileDefinition = new Array<AnalysisInputDefinition>();
       mockFileDefinition.push({
         column: 'school_code'
@@ -261,7 +261,7 @@ describe('AnalysisInputValidationService', () => {
       expect(results[2].valid).toEqual(false);
       expect(results[2].message).toEqual('Some columns are missing from the header row: [student_count]');
       expect(results[3].valid).toEqual(false);
-      expect(results[3].message).toEqual('has 1 rows with less or more than 3 columns. rows: [2]');
+      expect(results[3].message).toEqual('has 1 rows with less or more than 2 columns. rows: [3]');
     });
   });
 });

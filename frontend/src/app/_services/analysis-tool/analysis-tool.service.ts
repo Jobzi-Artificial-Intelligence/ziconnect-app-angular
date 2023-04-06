@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AnalysisToolService {
   private _taskPredictionPath = 'task/prediction';
-  private _taskEmployabilityImpactPath = 'task/socialimpact';
+  private _taskEmployabilityImpactPath = 'task/employability-impact';
   private _taskResultPath = 'task/result';
   private _taskInfoPath = 'task/info';
 
@@ -43,8 +43,8 @@ export class AnalysisToolService {
    */
   postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File, homogenizeFeatures: Array<string>) {
     const formData = new FormData();
-    formData.append('locality_history', localityEmployabilityFile);
-    formData.append('school_history', schoolHistoryFile);
+    formData.append('employability_history_file', localityEmployabilityFile);
+    formData.append('school_history_file', schoolHistoryFile);
 
     if (homogenizeFeatures.length > 0) {
       formData.append('homogenize_columns', homogenizeFeatures.join(','));
