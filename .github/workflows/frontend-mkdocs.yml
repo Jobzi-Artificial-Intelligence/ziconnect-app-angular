@@ -1,4 +1,4 @@
-name: ZiConnect deploy mkdocs
+name: ZiConnect FrontEnd Deploy mkdocs
 
 on:
   push:
@@ -23,15 +23,19 @@ jobs:
           python-version: '3.10'
       
       - name: Install dependencies
-        run: pip install -r mkdocs/requirements.txt
+        run: pip install -r requirements-mkdocs.txt
 
       - name: Install mkdocs material
         run: pip install mkdocs-material
 
-      - name: Install dependencies
-        working-directory: mkdocs
+      - name: Install mkdocs-same-dir
+        run: pip install mkdocs-same-dir
+
+      - name: Install markdown-plugin
+        run: pip install mkdocs-include-markdown-plugin
+      
+      - name: Create mkdocs 
         run: make install
 
       - name: Build and deploy to GitHub Pages
-        working-directory: mkdocs
         run: make deploy
