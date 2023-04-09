@@ -19,7 +19,7 @@ theme:
 nav:
   - Home: docs/ABOUT.md
   - Contributing: docs/CONTRIBUTING.md
-  - Project Charter: docs/OJECT_CHARTER.md
+  - Project Charter: docs/PROJECT_CHARTER.md
   - Code of Conduct: CODE_OF_CONDUCT.md
   - License: LICENSE.md
   - Angular Setup: docs/ANGULAR_SETUP.md
