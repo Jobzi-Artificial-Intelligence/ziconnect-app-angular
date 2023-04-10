@@ -271,27 +271,43 @@
             Average Distribution of Scenarios
           </div>
         </header>
-        <mat-expansion-panel id="disclaimer-alert">
+        <mat-expansion-panel id="employability-settings-container">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon class="material-icons-outlined">settings</mat-icon>&nbsp;
               <span class="title">Settings</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div class="distribution-chart-intervals-selector">
-            <div class="flex items-center justify-between">
-              <div class="color-tp-title f-weight-500">Bins</div>
-              <div class="color-tp-title f-weight-500">{{distributionBarSliderConfig.value}}</div>
+          <div class="distribution-chart-setting-items">
+            <div class="setting-item">
+              <div class="color-tp-title f-weight-500">Select chart type:</div><br>
+              <mat-form-field appearance="fill">
+                <mat-label>Chart type</mat-label>
+                <mat-select [(ngModel)]="distributionChartType" name="chartType">
+                  <mat-option *ngFor="let chartType of distributionChartTypes" [value]="chartType">
+                    {{chartType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
-            <mat-slider color="primary" [max]="distributionBarSliderConfig.max" [min]="distributionBarSliderConfig.min"
-              [step]="distributionBarSliderConfig.step" [tickInterval]="distributionBarSliderConfig.step"
-              [(ngModel)]="distributionBarSliderConfig.value" (change)="onIntervalSliderValueChange($event)">
-            </mat-slider>
+            <br>
+            <div class="setting-item">
+              <div class="flex items-center justify-between">
+                <div class="color-tp-title f-weight-500">Bins:</div>
+                <div class="color-tp-title f-weight-500">{{distributionBarSliderConfig.value}}</div>
+              </div>
+              <mat-slider color="primary" [max]="distributionBarSliderConfig.max"
+                [min]="distributionBarSliderConfig.min" [step]="distributionBarSliderConfig.step"
+                [tickInterval]="distributionBarSliderConfig.step" [(ngModel)]="distributionBarSliderConfig.value"
+                (change)="onIntervalSliderValueChange($event)">
+              </mat-slider>
+            </div>
           </div>
         </mat-expansion-panel>
         <br><br>
         <div class="distribution-chart-container flex items-start justify-between" #distributionChartContainerRef>
-          <div class="chart-item" #distributionChartContainerRefA>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Frequency distribution'}"
+            #distributionChartContainerRefA>
             <header class="color-tp-title f-weight-500 f-size-16">Employability A</header>
             <ngx-charts-bar-vertical-2d [scheme]="distributionBarChartColorSchemeA"
               [view]="[distributionChartContainerRefA.offsetWidth, 400]"
@@ -305,7 +321,8 @@
               [barPadding]="0" [groupPadding]="0" [yScaleMax]="distributionBarChartConfig.yScaleMax"
               [roundDomains]="true"></ngx-charts-bar-vertical-2d>
           </div>
-          <div class="chart-item" #distributionChartContainerRefB>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Frequency distribution'}"
+            #distributionChartContainerRefB>
             <header class="color-tp-title f-weight-500 f-size-16">Employability B</header>
             <ngx-charts-bar-vertical-2d [scheme]="distributionBarChartColorSchemeB"
               [view]="[distributionChartContainerRefB.offsetWidth, 400]"
@@ -318,6 +335,20 @@
               [xAxisLabel]="distributionBarChartConfig.xAxisLabel" [yAxisLabel]="distributionBarChartConfig.yAxisLabel"
               [barPadding]="0" [groupPadding]="0" [yScaleMax]="distributionBarChartConfig.yScaleMax"
               [roundDomains]="true"></ngx-charts-bar-vertical-2d>
+          </div>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Distribution differences'}"
+            #distributionDiffChartContainerRef>
+            <header class="color-tp-title f-weight-500 f-size-16">Employability A - B</header>
+            <ngx-charts-bar-vertical-stacked [scheme]="distributionDiffBarChartColorScheme"
+              [view]="[distributionDiffChartContainerRef.offsetWidth, 400]" [results]="distributionDiffChartResults"
+              [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis"
+              [legend]="distributionBarChartConfig.showLegend"
+              [legendPosition]="distributionBarChartConfig.legendPosition"
+              [showXAxisLabel]="distributionBarChartConfig.showXAxisLabel"
+              [showYAxisLabel]="distributionBarChartConfig.showYAxisLabel"
+              [xAxisLabel]="distributionBarChartConfig.xAxisLabel" [yAxisLabel]="distributionBarChartConfig.yAxisLabel"
+              [barPadding]="0" [roundDomains]="true">
+            </ngx-charts-bar-vertical-stacked>
           </div>
         </div>
         <div class="distribution-frequency-container flex items-start justify-between">

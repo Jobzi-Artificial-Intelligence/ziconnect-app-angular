@@ -10,7 +10,7 @@ import { MathHelper } from 'src/app/_helpers/util/math.helper';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
-import { AlertService, AnalysisToolService, LocalityStatisticsService } from 'src/app/_services';
+import { AlertService, AnalysisToolService } from 'src/app/_services';
 
 @Component({
   selector: 'app-dialog-anaysis-result',
@@ -22,12 +22,16 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   analysisResult: AnalysisResult = new AnalysisResult();
   loading: boolean = true;
+  distributionDiffChartResults: Array<any> = new Array<any>();
   distributionChartResultsA: Array<any> = new Array<any>();
   distributionChartResultsB: Array<any> = new Array<any>();
   metricsChartResults: Array<any> = new Array<any>();
 
   //#region CHART CONFIGURATION
   ////////////////////////////////////////////////
+  distributionChartTypes = ['Frequency distribution', 'Distribution differences'];
+  distributionChartType: string = this.distributionChartTypes[0];
+
   distributionBarChartColorSchemeA: Color = {
     name: 'DistributionBarChartColorSchemeB',
     selectable: true,
@@ -40,6 +44,13 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     selectable: true,
     group: ScaleType.Ordinal,
     domain: ['#555555']
+  };
+
+  distributionDiffBarChartColorScheme: Color = {
+    name: 'DistributionDiffBarChartColorSchemeB',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#03a0d7', '#555555']
   };
 
   distributionBarChartConfig = {
@@ -268,6 +279,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       let chartResultsA: Array<any> = new Array<any>();
       let chartResultsB: Array<any> = new Array<any>();
 
+      let diffChartResults: Array<any> = new Array<any>();
+
       let frequencyDistributionA: Array<any> = new Array<any>();
       let frequencyDistributionB: Array<any> = new Array<any>();
 
@@ -281,16 +294,16 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
         if (this.analysisResult.scenarioDistribution) {
           const itemName = `[${box.min}, ${box.max}]`;
 
-          const frequecyA = this.analysisResult.scenarioDistribution['employability_A'].filter((x) => x >= box.min && x <= box.max).length;
-          const frequecyB = this.analysisResult.scenarioDistribution['employability_B'].filter((x) => x >= box.min && x <= box.max).length;
+          const frequencyA = this.analysisResult.scenarioDistribution['employability_A'].filter((x) => x >= box.min && x <= box.max).length;
+          const frequencyB = this.analysisResult.scenarioDistribution['employability_B'].filter((x) => x >= box.min && x <= box.max).length;
 
           // SET MAX FREQUENCY VALUE
-          if (frequecyA > frequencyMaxValue) {
-            frequencyMaxValue = frequecyA;
+          if (frequencyA > frequencyMaxValue) {
+            frequencyMaxValue = frequencyA;
           }
 
-          if (frequecyB > frequencyMaxValue) {
-            frequencyMaxValue = frequecyB;
+          if (frequencyB > frequencyMaxValue) {
+            frequencyMaxValue = frequencyB;
           }
 
           let chartResultItemA = {
@@ -298,7 +311,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
             series: [
               {
                 name: 'Employability A',
-                value: frequecyA,
+                value: frequencyA,
               }
             ],
           };
@@ -308,24 +321,38 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
             series: [
               {
                 name: 'Employability B',
-                value: frequecyB,
+                value: frequencyB,
               },
             ],
           };
 
+          let diffChartResultItem = {
+            name: itemName,
+            series: [
+              {
+                name: 'Employability A',
+                value: frequencyA >= frequencyB ? frequencyA - frequencyB : 0,
+              }, {
+                name: 'Employability B',
+                value: frequencyB > frequencyA ? frequencyA - frequencyB : 0,
+              }
+            ],
+          }
+
           chartResultsA.push(chartResultItemA);
           chartResultsB.push(chartResultItemB);
+          diffChartResults.push(diffChartResultItem);
 
           frequencyDistributionA.push({
             bin: itemName,
-            count: frequecyA,
-            isGreater: frequecyA > frequecyB
+            count: frequencyA,
+            isGreater: frequencyA > frequencyB
           });
 
           frequencyDistributionB.push({
             bin: itemName,
-            count: frequecyB,
-            isGreater: frequecyB > frequecyA
+            count: frequencyB,
+            isGreater: frequencyB > frequencyA
           });
         }
       });
@@ -334,6 +361,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
       this.distributionChartResultsA = chartResultsA;
       this.distributionChartResultsB = chartResultsB;
+      this.distributionDiffChartResults = diffChartResults;
 
       this.tableDistributionMetricsA = new MatTableDataSource(distributionMetricsA);
       this.tableDistributionMetricsB = new MatTableDataSource(distributionMetricsB);

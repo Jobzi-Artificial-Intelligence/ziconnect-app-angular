@@ -83,13 +83,14 @@
     }
   }
 
-  .distribution-chart-intervals-selector {
-    max-width: 950px;
-    width: 100%;
+  .distribution-chart-setting-items {
+    .setting-item {
+      width: 50%;
 
-    ::ng-deep .mat-slider {
-      width: 100%;
-      padding: 0;
+      ::ng-deep mat-slider {
+        padding: 0;
+        width: 100%;
+      }
     }
   }
 
