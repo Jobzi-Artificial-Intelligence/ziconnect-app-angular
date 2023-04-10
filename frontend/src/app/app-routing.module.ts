@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
+  AnalysisToolComponent,
   CodeConductComponent,
   ContributorsComponent,
   DataSourceReferenceComponent,
@@ -21,6 +22,20 @@ const routes: Routes = [{
         { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
         { property: 'og:title', content: 'Jobzi | Schools Connectivity' },
         { property: 'og:description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' }
+      ]
+    }
+  }
+}, {
+  path: 'analysis-tool',
+  component: AnalysisToolComponent,
+  data: {
+    seo: {
+      title: 'ZiConnect | Analysis Tool',
+      metaTags: [
+        { name: 'description', content: 'Make your own analysis, use our models, visualize the results and also download them.' },
+        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'Jobzi | Page Not Found' },
+        { property: 'og:description', content: 'Make your own analysis, use our models, visualize the results and also download them.' }
       ]
     }
   }

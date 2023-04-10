@@ -1,6 +1,7 @@
 import { LocalityMap } from '../locality-map/locality-map.model';
 import { LocalityStatistics } from './locality-statistics.model';
 import { localityStatisticsFromServer } from '../../../test/locality-statistics-mock';
+import { analysisResultFromServer } from '../../../test/analysis-result';
 
 describe('Model: LocalityStatistics', () => {
   it('should initialize all properties correctly', () => {
@@ -62,6 +63,38 @@ describe('Model: LocalityStatistics', () => {
       expect(localityStatistics.schoolInternetAvailabilityPredicitionPercentage).toEqual(Math.round(localityStatisticsItemFromServer.internet_availability_prediction_percentage));
       expect(localityStatistics.schoolWithoutInternetAvailabilityCount).toEqual(localityStatisticsItemFromServer.internet_availability_null_count);
       expect(localityStatistics.schoolWithoutInternetAvailabilityPercentage).toEqual(Math.round(localityStatisticsItemFromServer.internet_availability_null_percentage));
+
+      expect(localityStatistics.internetAvailabilityByValue).toBeDefined();
+      expect(localityStatistics.internetAvailabilityBySchoolRegion).toBeDefined();
+      expect(localityStatistics.internetAvailabilityBySchoolType).toBeDefined();
+
+      expect(localityStatistics.internetAvailabilityPredictionByValue).toBeDefined();
+      expect(localityStatistics.internetAvailabilityPredictionBySchoolRegion).toBeDefined();
+      expect(localityStatistics.internetAvailabilityPredictionBySchoolType).toBeDefined();
+    });
+  });
+
+  describe('#deserializeFromAnalysisResult', () => {
+    it('should exists', () => {
+      const localityStatistics = new LocalityStatistics();
+
+      expect(localityStatistics.deserializeFromAnalysisResult).toBeTruthy();
+      expect(localityStatistics.deserializeFromAnalysisResult).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const result_summary = analysisResultFromServer.taskResult.result_summary[0] as any;
+
+      const localityStatistics = new LocalityStatistics().deserializeFromAnalysisResult(result_summary);
+
+      expect(localityStatistics.id).toBeUndefined();
+      expect(localityStatistics.localityMap).toBeDefined();
+
+      expect(localityStatistics.municipalitiesCount).toEqual(result_summary.municipality_count);
+      expect(localityStatistics.regionsCount).toBeUndefined();
+      expect(localityStatistics.statesCount).toEqual(result_summary.state_count);
+      expect(localityStatistics.schoolCount).toEqual(result_summary.school_count);
+      expect(localityStatistics.studentCount).toEqual(result_summary.student_count);
 
       expect(localityStatistics.internetAvailabilityByValue).toBeDefined();
       expect(localityStatistics.internetAvailabilityBySchoolRegion).toBeDefined();

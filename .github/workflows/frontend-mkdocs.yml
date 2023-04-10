@@ -1,0 +1,41 @@
+name: ZiConnect FrontEnd Deploy mkdocs
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+      - development
+
+jobs:
+  build-deploy:
+    name: Build and deploy docs
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install -r requirements-mkdocs.txt
+
+      - name: Install mkdocs material
+        run: pip install mkdocs-material
+
+      - name: Install mkdocs-same-dir
+        run: pip install mkdocs-same-dir
+
+      - name: Install markdown-plugin
+        run: pip install mkdocs-include-markdown-plugin
+      
+      - name: Create mkdocs 
+        run: make install
+
+      - name: Build and deploy to GitHub Pages
+        run: make deploy

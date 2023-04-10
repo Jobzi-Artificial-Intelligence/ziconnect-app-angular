@@ -1,0 +1,357 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#page-analysis-tool {
+  line-height: 1;
+  margin-top: -16px;
+  padding-bottom: 80px;
+
+  .badge {
+    @include border-radius(9px);
+    background-color: rgba($color: #000000, $alpha: 0.8);
+    color: $white;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 18px;
+    padding: 0 12px;
+  }
+
+  .page-title {
+    background-color: #fafafa;
+    height: auto;
+    margin-top: -16px;
+    position: relative;
+
+    @include breakpoint($min: 768px) {
+      flex-direction: row;
+      height: 500px;
+    }
+
+    .hero-container {
+      flex-direction: column;
+      height: 100%;
+      padding: 48px 0;
+
+      @include breakpoint($min: 768px) {
+        flex-direction: row;
+        padding: 0;
+      }
+
+      .description {
+        flex: auto;
+
+        @include breakpoint($min: 768px) {
+          max-width: 40%;
+        }
+
+        .title-header {
+          color: #1a2e35;
+        }
+
+        .title {
+          color: #ff4f5a;
+          font-size: 48px;
+          font-weight: 500;
+          line-height: 1;
+          margin-bottom: 24px !important;
+          margin-top: 8px !important;
+        }
+
+        .subtitle {
+          color: #385a64;
+        }
+
+        .btn-cta {
+          margin-top: 24px;
+
+          &.mat-raised-button {
+            background-color: #ff4f5a;
+          }
+        }
+      }
+
+      .hero-image {
+        flex: auto;
+        text-align: center;
+
+        @include breakpoint($min: 425px) {
+          flex: 0 0 60%;
+        }
+
+        @include breakpoint($min: 1024px) {
+          flex: auto;
+          text-align: right;
+        }
+
+        img {
+          height: auto;
+          max-width: 650px;
+          width: 100%;
+
+          @include breakpoint($min: 1024px) {
+            width: 650px;
+          }
+        }
+      }
+    }
+  }
+
+  #section-about,
+  #section-type-selection {
+    padding: 40px 0;
+
+    header {
+      border-bottom: 3px solid $tp-title;
+      padding: 8px 0;
+
+      .title {
+        margin-bottom: 6px;
+      }
+    }
+  }
+
+  #section-type-selection {
+    #selection-list {
+      @include breakpoint($min: 768px) {
+        flex-direction: row;
+      }
+
+      .selection-item {
+        @include box-sizing(border-box);
+        border: 2px solid transparent;
+        cursor: pointer;
+        flex: 0 0 calc(50% - 16px);
+        margin-top: 24px;
+        position: relative;
+        transition: all 0.3s ease;
+
+        .active-icon {
+          opacity: 0;
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          transition: all 0.3s ease;
+        }
+
+        .badge {
+          position: absolute;
+          right: 16px;
+          top: 16px;
+        }
+
+        &.active {
+          border-color: $blue;
+
+          .active-icon {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          @include box-shadow(0 8px 8px 0 rgba(42, 48, 52, 0.1));
+          transform: translateY(-4px);
+        }
+      }
+    }
+  }
+
+  .file-upload-container {
+    @include border-radius(8px);
+    @include box-sizing(border-box);
+    border: 2px dashed $border-color;
+    padding: 24px 0;
+    position: relative;
+
+    &.file-over {
+      border-color: $blue;
+    }
+
+    ::ng-deep .mat-icon {
+      height: 48px;
+      margin-bottom: 24px;
+      width: 48px;
+    }
+
+    > p {
+      margin-bottom: 16px;
+    }
+
+    .file-drop-input {
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+  }
+
+  .file-selected-container {
+    @include border-radius(8px);
+    @include box-sizing(border-box);
+    border: 2px dashed $border-color;
+    padding: 8px;
+
+    > ::ng-deep .mat-icon {
+      height: 48px;
+      margin-right: 8px;
+      width: 48px;
+    }
+  }
+
+  // STEP CLASSES
+  ////////////////////////////////////////////
+  .input-validation-item {
+    padding: 12px 0;
+    .input-validation-list {
+      @include reset-list;
+
+      li {
+        margin-top: 8px;
+
+        ::ng-deep .mat-icon {
+          height: 16px;
+          margin-right: 8px;
+          width: 16px;
+        }
+      }
+    }
+  }
+
+  .step-inputs-list {
+    .step-input-item {
+      flex: 1;
+      margin-right: 16px;
+      position: relative;
+
+      .help-icon {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .step-action-container {
+    border-top: 1px solid $border-color;
+    margin-top: 32px;
+    padding: 16px 0;
+  }
+
+  .upload-file-progrees {
+    margin-top: 24px;
+
+    > p {
+      margin-bottom: 12px;
+    }
+  }
+  ////////////////////////////////////////////
+
+  // STORAGE TASK CARD
+  ////////////////////////////////////////////
+  .storage-task-card {
+    @include border-radius(8px);
+    @include box-shadow(rgba(0, 0, 0, 0.24) 0px 3px 8px);
+    background-color: $white;
+    border-top: 10px solid #000;
+
+    > header {
+      border-bottom: 1px solid $border-color-light;
+      padding: 8px 12px;
+
+      .status-label {
+        @include border-radius(16px);
+        font-size: 13px;
+        line-height: 32px;
+        padding: 0 12px;
+
+        .label-text {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    > .content {
+      padding: 32px 12px;
+
+      .tag-list {
+        .tag-item {
+          @include border-radius(16px);
+          @include box-shadow(
+            rgb(60 64 67 / 30%) 0px 1px 2px 0px,
+            rgb(60 64 67 / 15%) 0px 2px 6px 2px
+          );
+          background-color: $white;
+          line-height: 32px;
+          margin-right: 8px;
+          margin-top: 18px;
+          padding: 0 8px;
+
+          .tag-icon {
+            height: 20px;
+            margin-right: 4px;
+            width: 20px;
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    > footer {
+      padding: 0px 12px 24px;
+
+      > a,
+      > button {
+        margin-right: 8px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    &.pending {
+      border-color: $feat-orange;
+
+      .status-label {
+        background-color: rgba($color: $feat-orange, $alpha: 0.2);
+        color: $feat-orange;
+      }
+    }
+
+    &.received,
+    &.started {
+      border-color: $blue;
+
+      .status-label {
+        background-color: rgba($color: $blue, $alpha: 0.2);
+        color: $blue;
+      }
+    }
+
+    &.success {
+      border-color: $green-light;
+
+      .status-label {
+        background-color: rgba($color: $green-light, $alpha: 0.2);
+        color: $green-light;
+      }
+    }
+
+    &.fail {
+      border-color: $feat-red;
+
+      .status-label {
+        background-color: rgba($color: $feat-red, $alpha: 0.2);
+        color: $feat-red;
+      }
+    }
+  }
+  ////////////////////////////////////////////
+}

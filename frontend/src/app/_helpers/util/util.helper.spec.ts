@@ -1,6 +1,59 @@
+import { School } from "src/app/_models";
+import { schoolFromServer } from "src/test/school-mock";
 import { UtilHelper } from "./util.helper";
 
 describe('Helper: Util', () => {
+  let mockSchoolData = new School().deserialize(schoolFromServer);
+
+  describe('#exportFromObjectToCsv', () => {
+    it('should exists', () => {
+      expect(UtilHelper.exportFromObjectToCsv).toBeTruthy();
+      expect(UtilHelper.exportFromObjectToCsv).toEqual(jasmine.any(Function));
+    })
+
+    it('should throw error when schools is empty', () => {
+      expect(() => UtilHelper.exportFromObjectToCsv('fileName', new Array<School>()))
+        .toThrow(new Error('List of objects not provided!'));
+    });
+
+    it('should throw error when browser does not support download attribute', () => {
+      const schoolList = [mockSchoolData];
+
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      expect(() => UtilHelper.exportFromObjectToCsv('fileName', schoolList))
+        .toThrow(new Error('Browser does not support download attribute'));
+    });
+
+    it('should works', () => {
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { download: true, style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      // spy on document.body functions
+      spyOn(document.body, 'appendChild');
+      spyOn(document.body, 'removeChild');
+
+      const schoolList = [mockSchoolData];
+
+      UtilHelper.exportFromObjectToCsv('fileName', schoolList);
+
+      expect(document.createElement).toHaveBeenCalledTimes(1);
+      expect(document.createElement).toHaveBeenCalledWith('a');
+      expect(spyObj.click).toHaveBeenCalled();
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('href', jasmine.any(String));
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('download', 'fileName');
+      expect(spyObj.style.visibility).toEqual('hidden');
+      expect(document.body.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.body.removeChild).toHaveBeenCalledTimes(1);
+    });
+  });
 
   describe('#getBoolean', () => {
 
@@ -105,6 +158,37 @@ describe('Helper: Util', () => {
       expect(objectKeys.includes('age')).toBeTrue();
       expect(objectKeys.includes('address')).toBeTrue();
       expect(objectKeys.includes('dog.owner.name')).toBeTrue();
+    });
+  });
+
+  describe('#formatDuration', () => {
+
+    it('should exists', () => {
+      expect(UtilHelper.formatDuration).toBeTruthy();
+      expect(UtilHelper.formatDuration).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const expectedResults = [{
+        value: 10010,
+        result: '10 seconds'
+      }, {
+        value: 100100,
+        result: '1 minute, 40 seconds'
+      }, {
+        value: 10010010,
+        result: '2 hours, 46 minutes, 50 seconds'
+      }, {
+        value: 100100100,
+        result: '1 day, 3 hours, 48 minutes, 20 seconds'
+      }, {
+        value: -10010,
+        result: '10 seconds'
+      }];
+
+      expectedResults.forEach((expectedResult) => {
+        expect(UtilHelper.formatDuration(expectedResult.value)).toEqual(expectedResult.result);
+      })
     });
   });
 });
