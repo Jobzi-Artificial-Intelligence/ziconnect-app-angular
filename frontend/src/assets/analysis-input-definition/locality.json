@@ -1,19 +1,11 @@
 [
   {
-    "column": "id",
-    "dataType": "string",
-    "required": true,
-    "primaryKey": true,
-    "description": "Unique location identifier",
-    "example": "1"
-  },
-  {
     "column": "country_code",
     "dataType": "string",
     "required": true,
     "primaryKey": false,
     "description": "Country code",
-    "example": "BR"
+    "example": "\"BR\""
   },
   {
     "column": "country_name",
@@ -21,7 +13,7 @@
     "required": true,
     "primaryKey": false,
     "description": "Country name",
-    "example": "Brazil"
+    "example": "\"Brazil\""
   },
   {
     "column": "state_code",
@@ -29,7 +21,7 @@
     "required": false,
     "primaryKey": false,
     "description": "State/Province/Territory/Region identifier",
-    "example": "11"
+    "example": "\"11\""
   },
   {
     "column": "state_name",
@@ -37,7 +29,7 @@
     "required": false,
     "primaryKey": false,
     "description": "State/Province/Territory/Region name",
-    "example": "Rondônia"
+    "example": "\"Rondônia\""
   },
   {
     "column": "municipality_code",
@@ -45,7 +37,7 @@
     "required": false,
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District identifier",
-    "example": "1100205"
+    "example": "\"1100205\""
   },
   {
     "column": "municipality_name",
@@ -53,14 +45,6 @@
     "required": false,
     "primaryKey": false,
     "description": "City/Town/Municipality/Village/District name",
-    "example": "Porto Velho"
-  },
-  {
-    "column": "administrative_level",
-    "dataType": "string",
-    "required": true,
-    "primaryKey": false,
-    "description": "Administrative level",
-    "example": "Country, State, Province, Territory, Region, City, Municipality ..."
+    "example": "\"Porto Velho\""
   }
 ]

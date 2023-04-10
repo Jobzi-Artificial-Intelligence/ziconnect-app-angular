@@ -2,16 +2,17 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
-import { DialogAnalysisFileRequirementsComponent, DialogAnaysisResultComponent } from 'src/app/_components';
+import { DialogAnalysisFileRequirementsComponent, DialogAnalysisInputValidationResultComponent, DialogAnaysisResultComponent } from 'src/app/_components';
 import { AnalysisInputType } from 'src/app/_helpers';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
-import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabilityHomogenizeFeature } from 'src/app/_interfaces';
 import { AnalysisTask } from 'src/app/_models';
-import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { AlertService, AnalysisInputDefinitionService, AnalysisToolService } from 'src/app/_services';
 import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
+
   public selectedAnalysisType: AnalysisType | undefined = undefined;
   public selectedFile: File | undefined;
   public responseBody: any;
@@ -38,6 +40,15 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   public statusCheckInterval: any;
   public statusCheckTimeLeft: number = 30;
+
+  //#region  EMPLOYABILITY ANALYSIS CONFIG
+  ////////////////////////////////////////////
+  public isEmployabilityHomogenizeChecked: boolean = false;
+
+  public employabilityHomogenizeFeatures: Array<IEmployabilityHomogenizeFeature> = new Array<IEmployabilityHomogenizeFeature>();
+  ////////////////////////////////////////////
+  //#endregion
+
 
   //#region FILES
   ////////////////////////////////////////////
@@ -53,10 +64,22 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   @ViewChild('schoolHistoryFileDropRef') schoolHistoryFileDropRef: ElementRef | undefined;
   public schoolHistoryFile: File | undefined;
+  public schoolHistoryFileIsValid: boolean = false;
+  public schoolHistoryFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
+
+  @ViewChild('localityEmployabilityFileDropRef') localityEmployabilityFileDropRef: ElementRef | undefined;
+  public localityEmployabilityFile: File | undefined;
+  public localityEmployabilityFileIsValid: boolean = false;
+  public localityEmployabilityFileValidationResult: Array<IAnalysisInputValidationResult> = new Array<IAnalysisInputValidationResult>();
   ////////////////////////////////////////////
   //#endregion
 
-  constructor(private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private ref: ChangeDetectorRef, private _dialogFileRequirements: MatDialog, private _analysisInputValidationService: AnalysisInputValidationService) { }
+  constructor(private _alertService: AlertService,
+    private _analysisToolService: AnalysisToolService,
+    private ref: ChangeDetectorRef,
+    private _dialogService: MatDialog,
+    private _analysisInputDefinitionService: AnalysisInputDefinitionService,
+    private _analysisInputValidationService: AnalysisInputValidationService) { }
 
 
   //#region Component initialization functions
@@ -147,9 +170,22 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     }
   }
 
+  onButtonViewValidationResultsClick() {
+    this._dialogService.open(DialogAnalysisInputValidationResultComponent, {
+      autoFocus: false,
+      maxHeight: '90vh',
+      maxWidth: '1440px',
+      width: '100%',
+      data: {
+        analysisTask: this.storageTask,
+        analysisType: this.selectedAnalysisType
+      } as IDialogAnalysisResultData
+    });
+  }
+
   onButtonViewResultsClick() {
     if (this.selectedAnalysisType && this.storageTask) {
-      this._dialogFileRequirements.open(DialogAnaysisResultComponent, {
+      this._dialogService.open(DialogAnaysisResultComponent, {
         autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
@@ -184,7 +220,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   onFileRequirementsClick(analysisInputType: AnalysisInputType) {
-    this._dialogFileRequirements.open(DialogAnalysisFileRequirementsComponent, {
+    this._dialogService.open(DialogAnalysisFileRequirementsComponent, {
       width: '100%',
       data: analysisInputType
     });
@@ -194,6 +230,33 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   //#region Util Functions
   ////////////////////////////////////////////
+
+  loadEmployabilityHomogenizeFeatures() {
+    this._analysisInputDefinitionService
+      .getAnalysisInputDefinition(AnalysisInputType.LocalityEmployability)
+      .subscribe((data) => {
+        this.employabilityHomogenizeFeatures = data.filter(x => x.canHomogenize).map((item) => {
+          return {
+            name: item.column,
+            checked: false,
+            disabled: false
+          } as IEmployabilityHomogenizeFeature;
+        })
+      }, (error) => {
+        this._alertService.showError('Something went wrong loading features: ' + error.message);
+      });
+  }
+
+  onEmployabilityHomogenizeCheckChange(event: MatSlideToggleChange) {
+    if (event.checked && this.employabilityHomogenizeFeatures.length === 0) {
+      this.loadEmployabilityHomogenizeFeatures();
+    }
+
+    if (!event.checked) {
+      this.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
+    }
+  }
+
   async onStepSelectionChange(event: StepperSelectionEvent) {
     if (event.selectedIndex === 1 && event.previouslySelectedIndex === 0) {
       //VALIDATE INPUTS
@@ -205,11 +268,27 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (this.schoolHistoryFile) {
+        const result = await this._analysisInputValidationService.validateSchoolHistoryInputFile(this.schoolHistoryFile);
+        if (result.length > 0) {
+          this.schoolHistoryFileIsValid = result.every(item => item.valid);
+          this.schoolHistoryFileValidationResult = result;
+        }
+      }
+
       if (this.localityFile) {
         const result = await this._analysisInputValidationService.validateLocalityInputFile(this.localityFile);
         if (result.length > 0) {
           this.localityFileIsValid = result.every(item => item.valid);
           this.localityFileValidationResult = result;
+        }
+      }
+
+      if (this.localityEmployabilityFile) {
+        const result = await this._analysisInputValidationService.validateLocalityEmployabilityInputFile(this.localityEmployabilityFile);
+        if (result.length > 0) {
+          this.localityEmployabilityFileIsValid = result.every(item => item.valid);
+          this.localityEmployabilityFileValidationResult = result;
         }
       }
     }
@@ -235,7 +314,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
             this.putAnalysisTaskOnStorage(this.storageTask);
 
-            if (this.storageTask.status === AnalysisTaskStatus.Failure || this.storageTask.status === AnalysisTaskStatus.Success) {
+            if ([AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.SchemaError].includes(this.storageTask.status)) {
               this.poolTaskSubscription.unsubscribe();
               this.stopStatusCheckCountdown();
             }
@@ -326,10 +405,14 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       message += '%0D%0A%0D%0A' // Adds break line
       message += 'Exception Message:';
       message += '%0D%0A%0D%0A' // Adds break line
-      message += this.storageTask.exceptionMessage;
+      message += this.storageTask.exception ? this.storageTask.exception.exceptionMessage : 'Task execution general error!';
     }
 
     return message;
+  }
+
+  get checkedEmployabilityFeaturesLength() {
+    return this.employabilityHomogenizeFeatures.filter(x => x.checked).length;
   }
   ////////////////////////////////////////////
   //#endregion
@@ -337,12 +420,9 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   //#region Analysis handlers
   ////////////////////////////////////////////
   onSelectAnalysisTypeClick(type: AnalysisType) {
-    if (type === AnalysisType.EmployabilityImpact) {
-      this._alertService.showWarning('This type of analysis will be available soon.');
-      return;
-    }
-
     this.selectedAnalysisType = type;
+    this.analysisStepper?.reset();
+
     this.initNewAnalysis();
 
     this.loadStorageTask();
@@ -351,20 +431,23 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
 
       this.scrollToSection('sectionAnalysisSteps');
-    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure].includes(this.storageTask.status)) {
+    } else if (![AnalysisTaskStatus.Success, AnalysisTaskStatus.Failure, AnalysisTaskStatus.SchemaError].includes(this.storageTask.status)) {
       this.poolStorageTask();
     }
   }
 
   initNewAnalysis() {
     this.localityFile = undefined;
+    this.localityEmployabilityFile = undefined;
     this.schoolHistoryFile = undefined;
     this.schoolFile = undefined;
     this.storageTask = null;
     this.progress = 0;
 
+    this.isEmployabilityHomogenizeChecked = false;
+    this.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
+
     this.stopStatusCheckCountdown();
-    this.removeAnalysisResultFromStorage();
 
     if (this.poolTaskSubscription) {
       this.poolTaskSubscription.unsubscribe();
@@ -374,12 +457,16 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       this.schoolFileDropRef.nativeElement.value = '';
     }
 
+    if (this.schoolHistoryFileDropRef) {
+      this.schoolHistoryFileDropRef.nativeElement.value = '';
+    }
+
     if (this.localityFileDropRef) {
       this.localityFileDropRef.nativeElement.value = '';
     }
 
-    if (this.schoolHistoryFileDropRef) {
-      this.schoolHistoryFileDropRef.nativeElement.value = '';
+    if (this.localityEmployabilityFileDropRef) {
+      this.localityEmployabilityFileDropRef.nativeElement.value = '';
     }
   }
 
@@ -403,6 +490,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
             analysisTask.id = event.body.task_id;
 
             if (this.selectedAnalysisType) {
+              this.removeAnalysisResultFromStorage();
               this.putAnalysisTaskOnStorage(analysisTask);
               this.poolStorageTask();
             }
@@ -417,10 +505,39 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   }
 
   startNewEmployabilityImpactAnalysis() {
-    if (!this.schoolHistoryFile || !this.localityFile) {
+    if (!this.schoolHistoryFile || !this.localityEmployabilityFile) {
       this._alertService.showWarning('One or more input file were not provided!');
       return;
     }
+
+    this.loadingStartTask = true;
+    this.progress = 0;
+
+    const homogenizeColumns = this.employabilityHomogenizeFeatures.filter(x => x.checked).map(x => x.name);
+
+    this._analysisToolService
+      .postNewEmployabilityImpactAnalysis(this.schoolHistoryFile, this.localityEmployabilityFile, homogenizeColumns)
+      .subscribe((event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          if (event.body && event.body.task_id) {
+            let analysisTask = new AnalysisTask();
+            analysisTask.id = event.body.task_id;
+
+            if (this.selectedAnalysisType) {
+              this.removeAnalysisResultFromStorage();
+              this.putAnalysisTaskOnStorage(analysisTask);
+              this.poolStorageTask();
+            }
+
+            this.loadingStartTask = false;
+          }
+        }
+      }, (error: any) => {
+        this.loadingStartTask = false;
+        this._alertService.showError('Something went wrong starting new analysis: ' + error.message);
+      });
   }
   ////////////////////////////////////////////
   //#endregion

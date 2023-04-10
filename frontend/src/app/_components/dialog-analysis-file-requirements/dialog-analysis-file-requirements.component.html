@@ -9,6 +9,8 @@
   <li>The CSV file should be in UTF-8 format.</li>
   <li>Make sure to include a header with the column names in the first line of the file.</li>
   <li>For Yes/No fields you can use this binary value: True/False.</li>
+  <li>For string columns, the value must be enclosed in double quotes.</li>
+  <li>For array[] columns, the value must be enclosed in double quotes and square brackets.</li>
 </ul>
 <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
   <mat-spinner [diameter]="50"></mat-spinner><br>

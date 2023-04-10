@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from "@angular/material/sort";
@@ -47,6 +48,7 @@ const materialModules = [
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatSliderModule,
   MatSnackBarModule,
   MatSortModule,
   MatStepperModule,

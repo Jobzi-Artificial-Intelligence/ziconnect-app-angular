@@ -2,6 +2,7 @@ import { HttpEventType } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { skipWhile } from 'rxjs/operators';
+import { AnalysisType } from 'src/app/_helpers';
 import { AnalysisTask } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { environment } from 'src/environments/environment';
@@ -103,6 +104,26 @@ describe('AnalysisToolService', () => {
     });
   });
 
+  describe('#getTaskResultFromStorage', () => {
+    it('should exists', () => {
+      expect(service.getTaskResultFromStorage).toBeDefined();
+      expect(service.getTaskResultFromStorage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const taskResult = analysisResultFromServer.taskResult;
+      const analysisResult: AnalysisResult = new AnalysisResult().deserialize(taskResult);
+
+      spyOn(window.localStorage, 'getItem').and.returnValue(JSON.stringify(analysisResult));
+
+      const result = service.getTaskResultFromStorage(AnalysisType.ConnectivityPrediction);
+
+      expect(window.localStorage.getItem).toHaveBeenCalledWith(`${AnalysisType[AnalysisType.ConnectivityPrediction]}_result`);
+      expect(result).toBeDefined();
+      expect(result).toEqual(jasmine.any(Object));
+    });
+  });
+
   describe('#postNewPredictionAnalysis', () => {
     it('should exists', () => {
       expect(service.postNewPredictionAnalysis).toBeDefined();
@@ -148,9 +169,10 @@ describe('AnalysisToolService', () => {
     it('should works', (done) => {
       const localityFile = new File(['sample'], 'locality.csv', { type: 'text/csv' });
       const schoolHistoryFile = new File(['sample'], 'school.csv', { type: 'text/csv' });
+      const homogenizeColumns = ['hdi', 'population_size'];
 
       // Trigger the file upload and subscribe for results
-      service.postNewEmployabilityImpactAnalysis(schoolHistoryFile, localityFile).pipe(
+      service.postNewEmployabilityImpactAnalysis(schoolHistoryFile, localityFile, homogenizeColumns).pipe(
         // Discard the first response
         skipWhile((progress: any) => {
           return progress === 0;
@@ -172,6 +194,24 @@ describe('AnalysisToolService', () => {
       expect(req.request.method).toEqual('POST');
       // Respond with a mocked UploadProgress HttpEvent
       req.event({ type: HttpEventType.UploadProgress, loaded: 7, total: 10 });
+    });
+  });
+
+  describe('#putTaskResultOnStorage', () => {
+    it('should exists', () => {
+      expect(service.putTaskResultOnStorage).toBeDefined();
+      expect(service.putTaskResultOnStorage).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const taskResult = analysisResultFromServer.taskResult;
+      const analysisResult: AnalysisResult = new AnalysisResult().deserialize(taskResult);
+
+      spyOn(window.localStorage, 'setItem');
+
+      service.putTaskResultOnStorage(AnalysisType.ConnectivityPrediction, analysisResult);
+
+      expect(window.localStorage.setItem).toHaveBeenCalledWith(`${AnalysisType[AnalysisType.ConnectivityPrediction]}_result`, JSON.stringify(analysisResult))
     });
   });
 });

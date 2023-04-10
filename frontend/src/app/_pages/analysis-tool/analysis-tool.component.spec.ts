@@ -3,7 +3,7 @@ import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { AngularMaterialModule } from 'src/app/material.module';
-import { DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
+import { DialogAnalysisInputValidationResultComponent, DialogAnaysisResultComponent, PageFooterComponent } from 'src/app/_components';
 import { AnalysisInputType, AnalysisTaskStatus, AnalysisType } from 'src/app/_helpers';
 import { DialogAnalysisFileRequirementsComponent } from 'src/app/_components';
 
@@ -12,9 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { AnalysisTask } from 'src/app/_models';
 import { analysisTaskFromServer } from 'src/test/analysis-task';
-import { IAnalysisInputValidationResult, IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabilityHomogenizeFeature } from 'src/app/_interfaces';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -39,6 +40,20 @@ describe('AnalysisToolComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#checkedEmployabilityFeaturesLength', () => {
+
+    it('should works', () => {
+      expect(component.checkedEmployabilityFeaturesLength).toEqual(0);
+
+      component.employabilityHomogenizeFeatures = [{
+        name: 'Feature I',
+        checked: true
+      } as IEmployabilityHomogenizeFeature];
+
+      expect(component.checkedEmployabilityFeaturesLength).toEqual(1);
+    });
   });
 
   describe('#getContactUsBodyErrorMessage', () => {
@@ -77,17 +92,21 @@ describe('AnalysisToolComponent', () => {
           value: 'test'
         }
       } as ElementRef;
-      component.localityFileDropRef = {
-        nativeElement: {
-          value: 'test'
-        }
-      } as ElementRef;
       component.schoolHistoryFileDropRef = {
         nativeElement: {
           value: 'test'
         }
       } as ElementRef;
-
+      component.localityFileDropRef = {
+        nativeElement: {
+          value: 'test'
+        }
+      } as ElementRef;
+      component.localityEmployabilityFileDropRef = {
+        nativeElement: {
+          value: 'test'
+        }
+      } as ElementRef;
 
       spyOn(component.poolTaskSubscription, 'unsubscribe');
       spyOn(component, 'stopStatusCheckCountdown');
@@ -100,11 +119,51 @@ describe('AnalysisToolComponent', () => {
       expect(component.storageTask).toEqual(null);
       expect(component.progress).toEqual(0);
       expect(component.localityFileDropRef.nativeElement.value).toEqual('');
+      expect(component.localityEmployabilityFileDropRef.nativeElement.value).toEqual('');
       expect(component.schoolFileDropRef.nativeElement.value).toEqual('');
       expect(component.schoolHistoryFileDropRef.nativeElement.value).toEqual('');
 
       expect(component.stopStatusCheckCountdown).toHaveBeenCalled();
       expect(component.poolTaskSubscription.unsubscribe).toHaveBeenCalled();
+    });
+  });
+
+  describe('#loadEmployabilityHomogenizeFeatures', () => {
+    it('should exists', () => {
+      expect(component.loadEmployabilityHomogenizeFeatures).toBeTruthy();
+      expect(component.loadEmployabilityHomogenizeFeatures).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when service return error', async () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(throwError({ message: 'http error' }));
+
+      component.loadEmployabilityHomogenizeFeatures();
+
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong loading features: http error');
+    });
+
+    it('should works when service return success', async () => {
+      const analysisInputDefinitionResponse = [{
+        "column": "id",
+        "dataType": "integer",
+        "required": true,
+        "primaryKey": true,
+        "description": "Unique location identifier",
+        "example": "1",
+        "canHomogenize": true
+      }];
+
+      //@ts-ignore
+      spyOn(component._analysisInputDefinitionService, 'getAnalysisInputDefinition').and.returnValue(of(analysisInputDefinitionResponse));
+
+      component.loadEmployabilityHomogenizeFeatures();
+
+      expect(component.employabilityHomogenizeFeatures.length).toEqual(1)
     });
   });
 
@@ -287,7 +346,7 @@ describe('AnalysisToolComponent', () => {
 
     it('should works', () => {
       //@ts-ignore
-      spyOn(component._dialogFileRequirements, 'open');
+      spyOn(component._dialogService, 'open');
 
       component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
       component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
@@ -295,7 +354,7 @@ describe('AnalysisToolComponent', () => {
       component.onButtonViewResultsClick();
 
       //@ts-ignore
-      expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnaysisResultComponent, {
         autoFocus: false,
         maxHeight: '90vh',
         maxWidth: '90vw',
@@ -305,6 +364,63 @@ describe('AnalysisToolComponent', () => {
           analysisType: component.selectedAnalysisType
         } as IDialogAnalysisResultData
       })
+    });
+  });
+
+  describe('#onButtonViewValidationResultsClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonViewValidationResultsClick).toBeTruthy();
+      expect(component.onButtonViewValidationResultsClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      //@ts-ignore
+      spyOn(component._dialogService, 'open');
+
+      component.onButtonViewValidationResultsClick();
+
+      //@ts-ignore
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnalysisInputValidationResultComponent, {
+        autoFocus: false,
+        maxHeight: '90vh',
+        maxWidth: '1440px',
+        width: '100%',
+        data: {
+          analysisTask: component.storageTask,
+          analysisType: component.selectedAnalysisType
+        } as IDialogAnalysisResultData
+      })
+    });
+  });
+
+  describe('#onEmployabilityHomogenizeCheckChange', () => {
+    it('should exists', () => {
+      expect(component.onEmployabilityHomogenizeCheckChange).toBeTruthy();
+      expect(component.onEmployabilityHomogenizeCheckChange).toEqual(jasmine.any(Function));
+    });
+
+    it('should works when uncheck', () => {
+      const mockEvent = {
+        checked: false
+      } as MatSlideToggleChange;
+
+      component.onEmployabilityHomogenizeCheckChange(mockEvent);
+
+      expect(component.employabilityHomogenizeFeatures).toEqual(jasmine.any(Array));
+      expect(component.employabilityHomogenizeFeatures.length).toEqual(0);
+    });
+
+    it('should works when checked', () => {
+      spyOn(component, 'loadEmployabilityHomogenizeFeatures');
+      const mockEvent = {
+        checked: true
+      } as MatSlideToggleChange;
+
+      component.employabilityHomogenizeFeatures = new Array<IEmployabilityHomogenizeFeature>();
+
+      component.onEmployabilityHomogenizeCheckChange(mockEvent);
+
+      expect(component.loadEmployabilityHomogenizeFeatures).toHaveBeenCalled();
     });
   });
 
@@ -388,12 +504,12 @@ describe('AnalysisToolComponent', () => {
 
     it('should works', () => {
       //@ts-ignore
-      spyOn(component._dialogFileRequirements, 'open');
+      spyOn(component._dialogService, 'open');
 
       component.onFileRequirementsClick(AnalysisInputType.Locality);
 
       //@ts-ignore
-      expect(component._dialogFileRequirements.open).toHaveBeenCalledWith(DialogAnalysisFileRequirementsComponent, {
+      expect(component._dialogService.open).toHaveBeenCalledWith(DialogAnalysisFileRequirementsComponent, {
         width: '100%',
         data: AnalysisInputType.Locality
       });
@@ -432,16 +548,6 @@ describe('AnalysisToolComponent', () => {
       expect(component.initNewAnalysis).toHaveBeenCalled();
       expect(component.poolStorageTask).toHaveBeenCalled();
     });
-
-    it('should works for Employability Impact', () => {
-      //@ts-ignore
-      spyOn(component._alertService, 'showWarning');
-
-      component.onSelectAnalysisTypeClick(AnalysisType.EmployabilityImpact);
-
-      //@ts-ignore
-      expect(component._alertService.showWarning).toHaveBeenCalledWith('This type of analysis will be available soon.');
-    });
   });
 
   describe('#onStepSelectionChange', () => {
@@ -472,6 +578,28 @@ describe('AnalysisToolComponent', () => {
       expect(component.schoolFileValidationResult).toEqual(validationResult);
     });
 
+    it('should works for schoolHistoryFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateSchoolHistoryInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.schoolHistoryFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateSchoolHistoryInputFile).toHaveBeenCalled();
+      expect(component.schoolHistoryFileIsValid).toEqual(true);
+      expect(component.schoolHistoryFileValidationResult).toEqual(validationResult);
+    });
+
     it('should works for localityFile', async () => {
       const validationResult = new Array<IAnalysisInputValidationResult>();
       validationResult.push({
@@ -492,6 +620,28 @@ describe('AnalysisToolComponent', () => {
       expect(component._analysisInputValidationService.validateLocalityInputFile).toHaveBeenCalled();
       expect(component.localityFileIsValid).toEqual(true);
       expect(component.localityFileValidationResult).toEqual(validationResult);
+    });
+
+    it('should works for localityEmployabilityFile', async () => {
+      const validationResult = new Array<IAnalysisInputValidationResult>();
+      validationResult.push({
+        valid: true,
+        message: 'Success validation!'
+      } as IAnalysisInputValidationResult)
+
+      //@ts-ignore
+      spyOn(component._analysisInputValidationService, 'validateLocalityEmployabilityInputFile').and.returnValue(Promise.resolve(validationResult));
+
+      const mockEvent = { selectedIndex: 1, previouslySelectedIndex: 0 } as StepperSelectionEvent;
+
+      component.localityEmployabilityFile = new File(['localities'], 'localities.csv', { type: 'application/csv' });
+
+      await component.onStepSelectionChange(mockEvent);
+
+      //@ts-ignore
+      expect(component._analysisInputValidationService.validateLocalityEmployabilityInputFile).toHaveBeenCalled();
+      expect(component.localityEmployabilityFileIsValid).toEqual(true);
+      expect(component.localityEmployabilityFileValidationResult).toEqual(validationResult);
     });
   });
 
@@ -646,7 +796,7 @@ describe('AnalysisToolComponent', () => {
       //@ts-ignore
       spyOn(component._alertService, 'showWarning');
       component.schoolHistoryFile = undefined;
-      component.localityFile = undefined;
+      component.localityEmployabilityFile = undefined;
 
       component.startNewEmployabilityImpactAnalysis();
 
@@ -654,9 +804,76 @@ describe('AnalysisToolComponent', () => {
       expect(component._alertService.showWarning).toHaveBeenCalledWith('One or more input file were not provided!');
 
       component.schoolHistoryFile = new File(['schools'], 'schools.csv', { type: 'application/csv' });
-      component.localityFile = undefined;
+      component.localityEmployabilityFile = undefined;
 
       component.startNewEmployabilityImpactAnalysis();
+    });
+
+    it('should works when service return error', async () => {
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(throwError({ message: 'http error' }));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      //@ts-ignore
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, jasmine.any(Array));
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong starting new analysis: http error');
+      expect(component.loadingStartTask).toEqual(false);
+    });
+
+    it('should works when service return upload progress event', async () => {
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      const mockEvent = {
+        type: HttpEventType.UploadProgress,
+        loaded: 70,
+        total: 100
+      };
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      expect(component.progress).toEqual(70);
+    });
+
+    it('should works when service return http response', async () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+      component.employabilityHomogenizeFeatures = [{
+        name: 'feature_i',
+        checked: true,
+        disabled: false
+      } as IEmployabilityHomogenizeFeature];
+
+      const homogenizeColumns = component.employabilityHomogenizeFeatures.filter(x => x.checked).map(x => x.name);
+
+      const mockEvent = new HttpResponse({ body: { task_id: 123 }, status: 200, statusText: 'OK' });
+
+      spyOn(component, 'putAnalysisTaskOnStorage');
+      spyOn(component, 'poolStorageTask');
+      spyOn(component, 'removeAnalysisResultFromStorage');
+
+      //@ts-ignore
+      spyOn(component._analysisToolService, 'postNewEmployabilityImpactAnalysis').and.returnValue(of(mockEvent));
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      //@ts-ignore
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, homogenizeColumns);
+      expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled()
+      expect(component.poolStorageTask).toHaveBeenCalled()
+      expect(component.removeAnalysisResultFromStorage).toHaveBeenCalled();
     });
   });
 

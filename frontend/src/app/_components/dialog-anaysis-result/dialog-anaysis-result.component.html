@@ -2,258 +2,461 @@
   <div id="dialog-analysis-result">
     <header>
       <div class="color-tp-title f-size-24 f-weight-500 line-height-1-5">
-        <span *ngIf="data.analysisType === 1">Connectivity Prediction</span>
-        <span *ngIf="data.analysisType === 2">Employability Impact</span> Result
+        <span *ngIf="data.analysisType === analysisTypeEnum.ConnectivityPrediction">Connectivity Prediction</span>
+        <span *ngIf="data.analysisType === analysisTypeEnum.EmployabilityImpact">Employability Impact</span> Result
       </div>
       <div class="color-tp-body f-size-16">
         {{data.analysisTask.id}}
       </div>
     </header>
-    <div id="alert-missing-result" class="alert alert-warning"
-      *ngIf="!loading && !analysisResult.modelMetrics && !analysisResult.resultSummary">
-      The result of your analysis is no longer available. You can discard this analysis and start a new one
-    </div>
     <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
       <mat-spinner [diameter]="50"></mat-spinner><br>
       <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>
     </div>
-    <section id="section-results-description" *ngIf="!loading && analysisResult.modelMetrics">
-      <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
-      <br>
-      <p class="f-size-14 color-tp-body">
-        We trained, validated, and tested the model with your data in under <span
-          class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
-      </p>
-      <p class="f-size-14 color-tp-body">
-        With this model, you can expect an accuracy of <span
-          class="f-weight-500">{{(analysisResult.modelMetrics.testAccuracy
-          * 100).toFixed(2)}}%</span>, meaning it can correctly predict the internet
-        availability of &plusmn; {{(analysisResult.modelMetrics.testAccuracy * 100).toFixed(0)}} of every 100 schools!
-      </p>
-      <p class="f-size-14 color-tp-body">
-        If you understand primary Machine Learning methodologies, here are more detailed information and metrics:
-      </p>
-      <ul>
-        <li class="f-size-14 color-tp-body">
-          We use a <span class="f-weight-500">{{analysisResult.modelMetrics.classifierName}}</span> method to predict
-          every school's Internet availability.</li>
-        <li class="f-size-14 color-tp-body">
-          Given the data uploaded, We split it into 70% training and 30% testing sets. Using the training set, We
-          explored
-          the model's hyper-parameters space, employing a 10-Fold cross-validation.</li>
-        <li class="f-size-14 color-tp-body">
-          For the best hyper-parameters, the training set obtained an <span
-            class="f-weight-500">{{(analysisResult.modelMetrics.meanTrainAccuracy *
-            100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
-            accuracy</span>, while the validation set obtained an <span
-            class="f-weight-500">{{(analysisResult.modelMetrics.meanValidAccuracy *
-            100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}% accuracy</span>.
-        </li>
-      </ul>
-    </section>
-    <section id="section-model-metrics" *ngIf="!loading && analysisResult.modelMetrics">
-      <header>
-        <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
-          Model Metrics
-        </div>
-        <div class="color-tp-body f-size-16" *ngIf="!loading">
-          {{analysisResult.modelMetrics.classifierName}}&nbsp;({{analysisResult.modelMetrics.numFolds}}&nbsp;folds)
-        </div>
-      </header>
-      <div class="charts-container flex items-stretch">
-        <div class="metrics-container f-size-14 flex-auto">
-          <div>
-            <span class="color-tp-title f-weight-500">test_accuracy</span>:<br>
-            {{(analysisResult.modelMetrics.testAccuracy
-            * 100).toFixed(2)}}%
-          </div><br>
-          <div>
-            <span class="color-tp-title f-weight-500">mean_train_accuracy</span>:
-            <br>{{(analysisResult.modelMetrics.meanTrainAccuracy * 100).toFixed(2)}}%
-          </div><br>
-          <div>
-            <span class="color-tp-title f-weight-500">std_train_accuracy</span>:<br>
-            {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
-          </div><br>
-          <div>
-            <span class="color-tp-title f-weight-500">mean_valid_accuracy</span>:<br>
-            {{(analysisResult.modelMetrics.meanValidAccuracy * 100).toFixed(2)}}%
-          </div><br>
-          <div>
-            <span class="color-tp-title f-weight-500">std_valid_accuracy</span>:<br>
-            {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}%
-          </div>
-        </div>
-        <div class="line-chart-container flex-auto">
-          <ngx-charts-line-chart scheme="cool" [results]="metricsChartResults"
-            [showXAxisLabel]="metricsLineChartConfig.showXAxisLabel"
-            [showYAxisLabel]="metricsLineChartConfig.showYAxisLabel" [xAxis]="metricsLineChartConfig.xAxis"
-            [yAxis]="metricsLineChartConfig.yAxis" [xAxisLabel]="metricsLineChartConfig.xAxisLabel"
-            [yAxisLabel]="metricsLineChartConfig.yAxisLabel" [roundDomains]="true" [autoScale]="true">
-          </ngx-charts-line-chart>
-        </div>
-        <div class="box-chart-container flex-auto">
-          <ngx-charts-box-chart scheme="cool" [results]="metricsChartResults"
-            [showXAxisLabel]="metricsBoxChartConfig.showXAxisLabel"
-            [showYAxisLabel]="metricsBoxChartConfig.showYAxisLabel" [xAxis]="metricsBoxChartConfig.xAxis"
-            [yAxis]="metricsBoxChartConfig.yAxis" [xAxisLabel]="metricsBoxChartConfig.xAxisLabel"
-            [yAxisLabel]="metricsBoxChartConfig.yAxisLabel">
-          </ngx-charts-box-chart>
-        </div>
+    <div id="connectivity-container" *ngIf="data.analysisType === analysisTypeEnum.ConnectivityPrediction">
+      <div id="alert-missing-result" class="alert alert-warning"
+        *ngIf="!loading && !analysisResult.modelMetrics && !analysisResult.resultSummary">
+        The result of your analysis is no longer available. You can discard this analysis and start a new one
       </div>
-    </section>
-    <section id="section-result-summary" [ngClass]="{'display-none': loading || !analysisResult.resultSummary}">
-      <header>
-        <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
-          Result Summary
-        </div>
-      </header>
-      <div class="table-container">
-        <header class="flex items-center">
-          <!-- GENERIC FILTER -->
-          <div class="filter-container flex-auto">
-            <mat-form-field appearance="standard" style="display: block;">
-              <mat-label>Filter</mat-label>
-              <input matInput (keyup)="applyFilter($event)" placeholder="Ex. esc" #input>
-            </mat-form-field>
+      <section id="section-results-description" *ngIf="!loading && analysisResult.modelMetrics">
+        <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
+        <br>
+        <p class="f-size-14 color-tp-body">
+          We trained, validated, and tested the model with your data in under <span
+            class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
+        </p>
+        <p class="f-size-14 color-tp-body">
+          With this model, you can expect an accuracy of <span
+            class="f-weight-500">{{(analysisResult.modelMetrics.testAccuracy
+            * 100).toFixed(2)}}%</span>, meaning it can correctly predict the internet
+          availability of &plusmn; {{(analysisResult.modelMetrics.testAccuracy * 100).toFixed(0)}} of every 100 schools!
+        </p>
+        <p class="f-size-14 color-tp-body">
+          If you understand primary Machine Learning methodologies, here are more detailed information and metrics:
+        </p>
+        <ul>
+          <li class="f-size-14 color-tp-body">
+            We use a <span class="f-weight-500">{{analysisResult.modelMetrics.classifierName}}</span> method to predict
+            every school's Internet availability.</li>
+          <li class="f-size-14 color-tp-body">
+            Given the data uploaded, We split it into 70% training and 30% testing sets. Using the training set, We
+            explored
+            the model's hyper-parameters space, employing a 10-Fold cross-validation.</li>
+          <li class="f-size-14 color-tp-body">
+            For the best hyper-parameters, the training set obtained an <span
+              class="f-weight-500">{{(analysisResult.modelMetrics.meanTrainAccuracy *
+              100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
+              accuracy</span>, while the validation set obtained an <span
+              class="f-weight-500">{{(analysisResult.modelMetrics.meanValidAccuracy *
+              100).toFixed(2)}}% ± {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}% accuracy</span>.
+          </li>
+        </ul>
+      </section>
+      <section id="section-model-metrics" *ngIf="!loading && analysisResult.modelMetrics">
+        <header>
+          <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
+            Model Metrics
           </div>
-          <!-- ACTION BUTTONS -->
-          <div class="buttons flex items-center justify-between">
-            <div class="button-container">
-              <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download as csv"
-                (click)="onButtonExportClick()">
-                <mat-icon class="material-icons-outlined">file_download</mat-icon>
-              </button>
-            </div>
+          <div class="color-tp-body f-size-16" *ngIf="!loading">
+            {{analysisResult.modelMetrics.classifierName}}&nbsp;({{analysisResult.modelMetrics.numFolds}}&nbsp;folds)
           </div>
         </header>
-        <table mat-table [dataSource]="tableDataSource" matSort>
-          <!-- GROUP COLUMNS -->
-          <!-- Country -->
-          <ng-container matColumnDef="country">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"> Country </th>
-          </ng-container>
-          <ng-container matColumnDef="state">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
-              matTooltip="State/Province/Territory/Region" matTooltipPosition="above">
-              State
-            </th>
-          </ng-container>
-          <ng-container matColumnDef="municipality">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
-              matTooltip="City/Town/Municipality/Village/District" matTooltipPosition="above"> Municipality</th>
-          </ng-container>
-          <ng-container matColumnDef="counts">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;"> Counts </th>
-          </ng-container>
-          <ng-container matColumnDef="withoutData">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"> Without Connectivity
-              Data </th>
-          </ng-container>
-          <ng-container matColumnDef="prediction">
-            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
-              matTooltip="Connectivity prediction for schools where there is no information on internet availability."
-              matTooltipPosition="above">
-              Connectivity Prediction
-            </th>
-          </ng-container>
+        <div class="charts-container flex items-stretch">
+          <div class="metrics-container f-size-14 flex-auto">
+            <div>
+              <span class="color-tp-title f-weight-500">test_accuracy</span>:<br>
+              {{(analysisResult.modelMetrics.testAccuracy
+              * 100).toFixed(2)}}%
+            </div><br>
+            <div>
+              <span class="color-tp-title f-weight-500">mean_train_accuracy</span>:
+              <br>{{(analysisResult.modelMetrics.meanTrainAccuracy * 100).toFixed(2)}}%
+            </div><br>
+            <div>
+              <span class="color-tp-title f-weight-500">std_train_accuracy</span>:<br>
+              {{(analysisResult.modelMetrics.stdTrainAccuracy * 100).toFixed(2)}}%
+            </div><br>
+            <div>
+              <span class="color-tp-title f-weight-500">mean_valid_accuracy</span>:<br>
+              {{(analysisResult.modelMetrics.meanValidAccuracy * 100).toFixed(2)}}%
+            </div><br>
+            <div>
+              <span class="color-tp-title f-weight-500">std_valid_accuracy</span>:<br>
+              {{(analysisResult.modelMetrics.stdValidAccuracy * 100).toFixed(2)}}%
+            </div>
+          </div>
+          <div class="line-chart-container flex-auto">
+            <ngx-charts-line-chart scheme="cool" [results]="metricsChartResults"
+              [showXAxisLabel]="metricsLineChartConfig.showXAxisLabel"
+              [showYAxisLabel]="metricsLineChartConfig.showYAxisLabel" [xAxis]="metricsLineChartConfig.xAxis"
+              [yAxis]="metricsLineChartConfig.yAxis" [xAxisLabel]="metricsLineChartConfig.xAxisLabel"
+              [yAxisLabel]="metricsLineChartConfig.yAxisLabel" [roundDomains]="true" [autoScale]="true">
+            </ngx-charts-line-chart>
+          </div>
+          <div class="box-chart-container flex-auto">
+            <ngx-charts-box-chart scheme="cool" [results]="metricsChartResults"
+              [showXAxisLabel]="metricsBoxChartConfig.showXAxisLabel"
+              [showYAxisLabel]="metricsBoxChartConfig.showYAxisLabel" [xAxis]="metricsBoxChartConfig.xAxis"
+              [yAxis]="metricsBoxChartConfig.yAxis" [xAxisLabel]="metricsBoxChartConfig.xAxisLabel"
+              [yAxisLabel]="metricsBoxChartConfig.yAxisLabel">
+            </ngx-charts-box-chart>
+          </div>
+        </div>
+      </section>
+      <section id="section-result-summary" [ngClass]="{'display-none': loading || !analysisResult.resultSummary}">
+        <header>
+          <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
+            Result Summary
+          </div>
+        </header>
+        <div class="table-container">
+          <header class="flex items-center">
+            <!-- GENERIC FILTER -->
+            <div class="filter-container flex-auto">
+              <mat-form-field appearance="standard" style="display: block;">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. esc" #input>
+              </mat-form-field>
+            </div>
+            <!-- ACTION BUTTONS -->
+            <div class="buttons flex items-center justify-between">
+              <div class="button-container">
+                <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download as csv"
+                  (click)="onButtonExportClick()">
+                  <mat-icon class="material-icons-outlined">file_download</mat-icon>
+                </button>
+              </div>
+            </div>
+          </header>
+          <table mat-table [dataSource]="tableDataSource" matSort>
+            <!-- GROUP COLUMNS -->
+            <!-- Country -->
+            <ng-container matColumnDef="country">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"> Country </th>
+            </ng-container>
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
+                matTooltip="State/Province/Territory/Region" matTooltipPosition="above">
+                State
+              </th>
+            </ng-container>
+            <ng-container matColumnDef="municipality">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
+                matTooltip="City/Town/Municipality/Village/District" matTooltipPosition="above"> Municipality</th>
+            </ng-container>
+            <ng-container matColumnDef="counts">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;"> Counts </th>
+            </ng-container>
+            <ng-container matColumnDef="withoutData">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"> Without Connectivity
+                Data </th>
+            </ng-container>
+            <ng-container matColumnDef="prediction">
+              <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;"
+                matTooltip="Connectivity prediction for schools where there is no information on internet availability."
+                matTooltipPosition="above">
+                Connectivity Prediction
+              </th>
+            </ng-container>
 
-          <!-- INDIVIDUAL COLUMNS -->
-          <!-- Country code -->
-          <ng-container matColumnDef="countryCode">
-            <th mat-header-cell *matHeaderCellDef> Code </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.countryCode}} </td>
-          </ng-container>
-          <!-- Country name -->
-          <ng-container matColumnDef="countryName">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.countryName}} </td>
-          </ng-container>
-          <!-- State code -->
-          <ng-container matColumnDef="stateCode">
-            <th mat-header-cell *matHeaderCellDef> Code </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.stateCode || '-'}} </td>
-          </ng-container>
-          <!-- State name -->
-          <ng-container matColumnDef="stateName">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.stateName || '-'}} </td>
-          </ng-container>
-          <!-- Municipality code -->
-          <ng-container matColumnDef="municipalityCode">
-            <th mat-header-cell *matHeaderCellDef> Code </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.municipalityCode || '-'}} </td>
-          </ng-container>
-          <!-- Municipality name -->
-          <ng-container matColumnDef="municipalityName">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.localityMap.municipalityName || '-'}} </td>
-          </ng-container>
-          <!-- State count -->
-          <ng-container matColumnDef="statesCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> States </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.statesCount}} </td>
-          </ng-container>
-          <!-- Municipality count -->
-          <ng-container matColumnDef="municipalitiesCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipalities </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.municipalitiesCount}} </td>
-          </ng-container>
-          <!-- School Count -->
-          <ng-container matColumnDef="schoolCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Schools </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.schoolCount}}
-            </td>
-          </ng-container>
-          <!-- Without Data Count -->
-          <ng-container matColumnDef="schoolWithoutInternetAvailabilityCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.schoolWithoutInternetAvailabilityCount }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="schoolWithoutInternetAvailabilityPercentage">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.schoolWithoutInternetAvailabilityPercentage}}%
-            </td>
-          </ng-container>
-          <!-- PredictionCount -->
-          <ng-container matColumnDef="schoolInternetAvailabilityPredicitionCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.schoolInternetAvailabilityPredicitionCount}}
-            </td>
-          </ng-container>
-          <!-- Prediction Percentage -->
-          <ng-container matColumnDef="schoolInternetAvailabilityPredicitionPercentage">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
-            <td mat-cell *matCellDef="let element">
-              {{element.schoolInternetAvailabilityPredicitionPercentage}}%
-            </td>
-          </ng-container>
+            <!-- INDIVIDUAL COLUMNS -->
+            <!-- Country code -->
+            <ng-container matColumnDef="countryCode">
+              <th mat-header-cell *matHeaderCellDef> Code </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.countryCode}} </td>
+            </ng-container>
+            <!-- Country name -->
+            <ng-container matColumnDef="countryName">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.countryName}} </td>
+            </ng-container>
+            <!-- State code -->
+            <ng-container matColumnDef="stateCode">
+              <th mat-header-cell *matHeaderCellDef> Code </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.stateCode || '-'}} </td>
+            </ng-container>
+            <!-- State name -->
+            <ng-container matColumnDef="stateName">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.stateName || '-'}} </td>
+            </ng-container>
+            <!-- Municipality code -->
+            <ng-container matColumnDef="municipalityCode">
+              <th mat-header-cell *matHeaderCellDef> Code </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.municipalityCode || '-'}} </td>
+            </ng-container>
+            <!-- Municipality name -->
+            <ng-container matColumnDef="municipalityName">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.localityMap.municipalityName || '-'}} </td>
+            </ng-container>
+            <!-- State count -->
+            <ng-container matColumnDef="statesCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> States </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.statesCount}} </td>
+            </ng-container>
+            <!-- Municipality count -->
+            <ng-container matColumnDef="municipalitiesCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipalities </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.municipalitiesCount}} </td>
+            </ng-container>
+            <!-- School Count -->
+            <ng-container matColumnDef="schoolCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Schools </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.schoolCount}}
+              </td>
+            </ng-container>
+            <!-- Without Data Count -->
+            <ng-container matColumnDef="schoolWithoutInternetAvailabilityCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.schoolWithoutInternetAvailabilityCount }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="schoolWithoutInternetAvailabilityPercentage">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.schoolWithoutInternetAvailabilityPercentage}}%
+              </td>
+            </ng-container>
+            <!-- PredictionCount -->
+            <ng-container matColumnDef="schoolInternetAvailabilityPredicitionCount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.schoolInternetAvailabilityPredicitionCount}}
+              </td>
+            </ng-container>
+            <!-- Prediction Percentage -->
+            <ng-container matColumnDef="schoolInternetAvailabilityPredicitionPercentage">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> % </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.schoolInternetAvailabilityPredicitionPercentage}}%
+              </td>
+            </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="groupColumnsDisplayed"></tr>
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+            <tr mat-header-row *matHeaderRowDef="groupColumnsDisplayed"></tr>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
 
-          <!-- Row shown when there is no matching data. -->
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
-          </tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of results"></mat-paginator>
-      </div>
-    </section>
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">No data</td>
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of results"></mat-paginator>
+        </div>
+      </section>
+    </div>
+    <div id="employability-container" *ngIf="data.analysisType === analysisTypeEnum.EmployabilityImpact">
+      <section id="section-results-description" *ngIf="!loading">
+        <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
+        <br>
+        <p class="f-size-14 color-tp-body">
+          We trained, validated, and tested the model with your data in under <span
+            class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
+        </p>
+      </section>
+      <section id="section-dataset-distribution" *ngIf="!loading">
+        <header class="flex items-center justify-between">
+          <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
+            Average Distribution of Scenarios
+          </div>
+        </header>
+        <mat-expansion-panel id="employability-settings-container">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="material-icons-outlined">settings</mat-icon>&nbsp;
+              <span class="title">Settings</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="distribution-chart-setting-items">
+            <div class="setting-item">
+              <div class="color-tp-title f-weight-500">Select chart type:</div><br>
+              <mat-form-field appearance="fill">
+                <mat-label>Chart type</mat-label>
+                <mat-select [(ngModel)]="distributionChartType" name="chartType">
+                  <mat-option *ngFor="let chartType of distributionChartTypes" [value]="chartType">
+                    {{chartType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <br>
+            <div class="setting-item">
+              <div class="flex items-center justify-between">
+                <div class="color-tp-title f-weight-500">Bins:</div>
+                <div class="color-tp-title f-weight-500">{{distributionBarSliderConfig.value}}</div>
+              </div>
+              <mat-slider color="primary" [max]="distributionBarSliderConfig.max"
+                [min]="distributionBarSliderConfig.min" [step]="distributionBarSliderConfig.step"
+                [tickInterval]="distributionBarSliderConfig.step" [(ngModel)]="distributionBarSliderConfig.value"
+                (change)="onIntervalSliderValueChange($event)">
+              </mat-slider>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <br><br>
+        <div class="distribution-chart-container flex items-start justify-between" #distributionChartContainerRef>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Frequency distribution'}"
+            #distributionChartContainerRefA>
+            <header class="color-tp-title f-weight-500 f-size-16">Employability A</header>
+            <ngx-charts-bar-vertical-2d [scheme]="distributionBarChartColorSchemeA"
+              [view]="[distributionChartContainerRefA.offsetWidth, 400]"
+              [roundEdges]="distributionBarChartConfig.roundEdges" [results]="distributionChartResultsA"
+              [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis"
+              [legend]="distributionBarChartConfig.showLegend"
+              [legendPosition]="distributionBarChartConfig.legendPosition"
+              [showXAxisLabel]="distributionBarChartConfig.showXAxisLabel"
+              [showYAxisLabel]="distributionBarChartConfig.showYAxisLabel"
+              [xAxisLabel]="distributionBarChartConfig.xAxisLabel" [yAxisLabel]="distributionBarChartConfig.yAxisLabel"
+              [barPadding]="0" [groupPadding]="0" [yScaleMax]="distributionBarChartConfig.yScaleMax"
+              [roundDomains]="true"></ngx-charts-bar-vertical-2d>
+          </div>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Frequency distribution'}"
+            #distributionChartContainerRefB>
+            <header class="color-tp-title f-weight-500 f-size-16">Employability B</header>
+            <ngx-charts-bar-vertical-2d [scheme]="distributionBarChartColorSchemeB"
+              [view]="[distributionChartContainerRefB.offsetWidth, 400]"
+              [roundEdges]="distributionBarChartConfig.roundEdges" [results]="distributionChartResultsB"
+              [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis"
+              [legend]="distributionBarChartConfig.showLegend"
+              [legendPosition]="distributionBarChartConfig.legendPosition"
+              [showXAxisLabel]="distributionBarChartConfig.showXAxisLabel"
+              [showYAxisLabel]="distributionBarChartConfig.showYAxisLabel"
+              [xAxisLabel]="distributionBarChartConfig.xAxisLabel" [yAxisLabel]="distributionBarChartConfig.yAxisLabel"
+              [barPadding]="0" [groupPadding]="0" [yScaleMax]="distributionBarChartConfig.yScaleMax"
+              [roundDomains]="true"></ngx-charts-bar-vertical-2d>
+          </div>
+          <div class="chart-item" [ngClass]="{'display-none': distributionChartType !== 'Distribution differences'}"
+            #distributionDiffChartContainerRef>
+            <header class="color-tp-title f-weight-500 f-size-16">Employability A - B</header>
+            <ngx-charts-bar-vertical-stacked [scheme]="distributionDiffBarChartColorScheme"
+              [view]="[distributionDiffChartContainerRef.offsetWidth, 400]" [results]="distributionDiffChartResults"
+              [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis"
+              [legend]="distributionBarChartConfig.showLegend"
+              [legendPosition]="distributionBarChartConfig.legendPosition"
+              [showXAxisLabel]="distributionBarChartConfig.showXAxisLabel"
+              [showYAxisLabel]="distributionBarChartConfig.showYAxisLabel"
+              [xAxisLabel]="distributionBarChartConfig.xAxisLabel" [yAxisLabel]="distributionBarChartConfig.yAxisLabel"
+              [barPadding]="0" [roundDomains]="true">
+            </ngx-charts-bar-vertical-stacked>
+          </div>
+        </div>
+        <div class="distribution-frequency-container flex items-start justify-between">
+          <div class="table-container">
+            <header class="color-tp-title f-weight-500 f-size-16">Frequency Distribution A</header>
+            <table mat-table [dataSource]="tableFrequencyDistributionA">
+              <!-- Bin -->
+              <ng-container matColumnDef="bin">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Bin </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.bin}} </td>
+              </ng-container>
+              <!-- Count -->
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Count </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.count}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsFrequencyDistributionToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsFrequencyDistributionToDisplay;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="columnsFrequencyDistributionToDisplay.length">No data</td>
+              </tr>
+            </table>
+          </div>
+          <div class="table-container">
+            <header class="color-tp-title f-weight-500 f-size-16">Frequency Distribution B</header>
+            <table mat-table [dataSource]="tableFrequencyDistributionB">
+              <!-- Bin -->
+              <ng-container matColumnDef="bin">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Bin </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.bin}} </td>
+              </ng-container>
+              <!-- Count -->
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Count </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.count}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsFrequencyDistributionToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsFrequencyDistributionToDisplay;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="columnsFrequencyDistributionToDisplay.length">No data</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of results"
+          #frequencyDistributionPaginator></mat-paginator>
+        <div class="distribution-metrics-container flex items-start justify-between">
+          <div class="table-container">
+            <header class="color-tp-title f-weight-500 f-size-16">Distribution Metrics A</header>
+            <table mat-table [dataSource]="tableDistributionMetricsA">
+              <!-- Metric -->
+              <ng-container matColumnDef="metric">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Metric </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">{{element.metric}} </td>
+              </ng-container>
+              <!-- Count -->
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Value </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">{{element.value}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsDistributionMetricsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsDistributionMetricsToDisplay;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="columnsDistributionMetricsToDisplay.length">No data</td>
+              </tr>
+            </table>
+          </div>
+          <div class="table-container">
+            <header class="color-tp-title f-weight-500 f-size-16">Distribution Metrics B</header>
+            <table mat-table [dataSource]="tableDistributionMetricsB">
+              <!-- Metric -->
+              <ng-container matColumnDef="metric">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Metric </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.metric}} </td>
+              </ng-container>
+              <!-- Count -->
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef class="color-tp-title"> Value </th>
+                <td mat-cell *matCellDef="let element" class="color-tp-body">
+                  {{element.value}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsDistributionMetricsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsDistributionMetricsToDisplay;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="columnsDistributionMetricsToDisplay.length">No data</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </mat-dialog-content>
 <div *ngIf="!loading" mat-dialog-actions>

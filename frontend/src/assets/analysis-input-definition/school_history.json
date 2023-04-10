@@ -1,0 +1,42 @@
+[
+  {
+    "column": "school_code",
+    "dataType": "string",
+    "required": true,
+    "primaryKey": true,
+    "description": "Unique school identifier",
+    "example": "\"11000384\""
+  },
+  {
+    "column": "school_name",
+    "dataType": "string",
+    "required": false,
+    "primaryKey": false,
+    "description": "School name",
+    "example": "\"EEEFM 4 DE JANEIRO\""
+  },
+  {
+    "column": "municipality_code",
+    "dataType": "string",
+    "required": true,
+    "primaryKey": false,
+    "description": "City/Town/Municipality/Village/District identifier.",
+    "example": "\"1100205\""
+  },
+  {
+    "column": "years",
+    "dataType": "int[]",
+    "required": false,
+    "primaryKey": false,
+    "description": "List of years separated by commas, representing the availability of internet in schools for each year",
+    "example": "\"[2019,2020,2021,2022]\""
+  },
+  {
+    "column": "internet_availability",
+    "dataType": "boolean[]",
+    "required": false,
+    "primaryKey": false,
+    "description": "List of boolean values separated by commas, representing the availability of internet in schools for each year",
+    "example": "\"[false,false,true,true]\""
+  }
+]
