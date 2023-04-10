@@ -392,8 +392,8 @@ export const analysisResultFromServer = {
       'locality': analysisInputValidationResultFromServer
     },
     "scenario_distribution": {
-      "A": [1, 2, 3, 4, 5, 6],
-      "B": [4, 5, 6, 7, 8, 9]
+      "employability_A": [1, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 6],
+      "employability_B": [1, 1, 1, 4, 5, 6, 7, 8, 9]
     }
   }
 }

@@ -256,8 +256,9 @@
         </div>
       </section>
     </div>
-    <div id="employability-container" *ngIf="data.analysisType === analysisTypeEnum.EmployabilityImpact">
-      <section id="section-results-description" *ngIf="!loading">
+    <div id="employability-container"
+      [ngClass]="{'display-none': data.analysisType !== analysisTypeEnum.EmployabilityImpact || loading}">
+      <section id="section-results-description">
         <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
         <br>
         <p class="f-size-14 color-tp-body">
@@ -265,7 +266,7 @@
             class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
         </p>
       </section>
-      <section id="section-dataset-distribution" *ngIf="!loading">
+      <section id="section-dataset-distribution">
         <header class="flex items-center justify-between">
           <div class="color-tp-title f-size-20 f-weight-500 line-height-1-5">
             Average Distribution of Scenarios

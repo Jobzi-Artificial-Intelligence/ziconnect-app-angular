@@ -58,6 +58,31 @@ describe('DialogAnaysisResultComponent', () => {
     });
   });
 
+  describe('#buildDistributionChart', () => {
+    it('should exists', () => {
+      expect(component.buildDistributionChart).toBeTruthy();
+      expect(component.buildDistributionChart).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+
+      component.analysisResult = analysisResult;
+
+      component.buildDistributionChart();
+
+      expect(component.tableDistributionMetricsA).toBeDefined();
+      expect(component.tableDistributionMetricsA.data.length).toBeGreaterThan(0);
+      expect(component.tableDistributionMetricsB).toBeDefined();
+      expect(component.tableDistributionMetricsB.data.length).toBeGreaterThan(0);
+
+      expect(component.tableFrequencyDistributionA).toBeDefined();
+      expect(component.tableFrequencyDistributionA.data.length).toBeGreaterThan(0);
+      expect(component.tableFrequencyDistributionB).toBeDefined();
+      expect(component.tableFrequencyDistributionB.data.length).toBeGreaterThan(0);
+    });
+  });
+
   describe('#buildResultsData', () => {
     it('should exists', () => {
       expect(component.buildResultsData).toBeTruthy();
@@ -107,6 +132,37 @@ describe('DialogAnaysisResultComponent', () => {
 
       expect(component.metricsChartResults).toBeDefined();
       expect(component.metricsChartResults.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('#getDistributionMetrics', () => {
+    it('should exists', () => {
+      expect(component.getDistributionMetrics).toBeTruthy();
+      expect(component.getDistributionMetrics).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      const numbers = [5, 7, 6, 9, 6];
+
+      const expectedValues = {
+        'Mean': '6.60',
+        'Median': '6.00',
+        'Min': 5,
+        'Max': 9,
+        'Range': 4,
+        '# of Values': 5,
+        '# of Unique Values': 4,
+      } as any;
+
+      const result = component.getDistributionMetrics(numbers);
+
+      expect(result).toBeDefined();
+      expect(result).toEqual(jasmine.any(Array));
+      expect(result.length).toEqual(7);
+
+      result.forEach((item) => {
+        expect(item.value).toEqual(expectedValues[item.metric])
+      });
     });
   });
 
