@@ -14,6 +14,9 @@ import { analysisResultFromServer } from '../../../test/analysis-result';
 
 import { DialogAnaysisResultComponent } from './dialog-anaysis-result.component';
 import { MatSliderChange } from '@angular/material/slider';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 describe('DialogAnaysisResultComponent', () => {
   let component: DialogAnaysisResultComponent;
@@ -21,7 +24,13 @@ describe('DialogAnaysisResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AngularMaterialModule, BrowserAnimationsModule, HttpClientTestingModule],
+      imports: [
+        AngularMaterialModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        FormsModule,
+        HttpClientTestingModule,
+        NgxChartsModule],
       declarations: [DialogAnaysisResultComponent],
       providers: [
         {
@@ -58,10 +67,10 @@ describe('DialogAnaysisResultComponent', () => {
     });
   });
 
-  describe('#buildDistributionChart', () => {
+  describe('#buildScenarioDistributionData', () => {
     it('should exists', () => {
-      expect(component.buildDistributionChart).toBeTruthy();
-      expect(component.buildDistributionChart).toEqual(jasmine.any(Function));
+      expect(component.buildScenarioDistributionData).toBeTruthy();
+      expect(component.buildScenarioDistributionData).toEqual(jasmine.any(Function));
     });
 
     it('should works', () => {
@@ -69,7 +78,7 @@ describe('DialogAnaysisResultComponent', () => {
 
       component.analysisResult = analysisResult;
 
-      component.buildDistributionChart();
+      component.buildScenarioDistributionData();
 
       expect(component.tableDistributionMetricsA).toBeDefined();
       expect(component.tableDistributionMetricsA.data.length).toBeGreaterThan(0);
@@ -103,7 +112,7 @@ describe('DialogAnaysisResultComponent', () => {
     });
 
     it('should works for EmployabilityImpact analysis', () => {
-      spyOn(component, 'buildDistributionChart');
+      spyOn(component, 'buildScenarioDistributionData');
 
       component.data.analysisType = AnalysisType.EmployabilityImpact;
 
@@ -113,7 +122,7 @@ describe('DialogAnaysisResultComponent', () => {
 
       component.buildResultsData();
 
-      expect(component.buildDistributionChart).toHaveBeenCalled();
+      expect(component.buildScenarioDistributionData).toHaveBeenCalled();
     });
   });
 
@@ -296,7 +305,7 @@ describe('DialogAnaysisResultComponent', () => {
     });
 
     it('should works', () => {
-      spyOn(component, 'buildDistributionChart');
+      spyOn(component, 'buildScenarioDistributionData');
 
       const event = {
         value: 1
@@ -304,7 +313,7 @@ describe('DialogAnaysisResultComponent', () => {
 
       component.onIntervalSliderValueChange(event);
 
-      expect(component.buildDistributionChart).toHaveBeenCalled();
+      expect(component.buildScenarioDistributionData).toHaveBeenCalled();
     });
   });
 
