@@ -398,7 +398,7 @@ export const analysisResultFromServer = {
       "connectivity_thresholds_A": [2.0, 1.0],
       "connectivity_thresholds_B": [1.5, 0.8],
       "employability_rate": {
-        "mean_by_scenario": {
+        "mean_by_valid_scenario": {
           "A": [1, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 6],
           "B": [1, 1, 1, 4, 5, 6, 7, 8, 9]
         },

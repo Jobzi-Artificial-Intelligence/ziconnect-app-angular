@@ -1,6 +1,7 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatStepper } from '@angular/material/stepper';
@@ -27,6 +28,7 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
 
   public analysisTypeEnum: typeof AnalysisInputType = AnalysisInputType;
+  public loadingInputValidation: boolean = false;
   public loadingPoolTask: boolean = false;
   public loadingStartTask: boolean = false;
 
@@ -46,9 +48,18 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   public isEmployabilityHomogenizeChecked: boolean = false;
 
   public employabilityHomogenizeFeatures: Array<IEmployabilityHomogenizeFeature> = new Array<IEmployabilityHomogenizeFeature>();
+
+  public connectivityVariationThresholdsA: Array<number> = [2.0, 1.8, 1.6];
+  public connectivityVariationThresholdA: number = 2.0;
+
+  public connectivityVariationThresholdsB: Array<number> = [1.0, 1.1, 1.15];
+  public connectivityVariationThresholdB: number = 1.0;
+
+  public employbilitySetupFormGroup: FormGroup = new FormGroup({
+    municipalitiesThreshold: new FormControl(3, [Validators.required, Validators.min(0.1), Validators.max(100)])
+  });
   ////////////////////////////////////////////
   //#endregion
-
 
   //#region FILES
   ////////////////////////////////////////////
@@ -231,6 +242,10 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
   //#region Util Functions
   ////////////////////////////////////////////
 
+  checkFormErrors(formGroup: FormGroup, controlName: string, errorName: string) {
+    return formGroup.controls[controlName].hasError(errorName);
+  }
+
   loadEmployabilityHomogenizeFeatures() {
     this._analysisInputDefinitionService
       .getAnalysisInputDefinition(AnalysisInputType.LocalityEmployability)
@@ -259,6 +274,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
 
   async onStepSelectionChange(event: StepperSelectionEvent) {
     if (event.selectedIndex === 1 && event.previouslySelectedIndex === 0) {
+      this.loadingInputValidation = true;
+
       //VALIDATE INPUTS
       if (this.schoolFile) {
         const result = await this._analysisInputValidationService.validateSchoolInputFile(this.schoolFile);
@@ -291,6 +308,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
           this.localityEmployabilityFileValidationResult = result;
         }
       }
+
+      this.loadingInputValidation = false;
     }
   }
 
@@ -510,13 +529,25 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.employbilitySetupFormGroup.valid) {
+      this._alertService.showWarning('Some setup values are invalid!');
+      return;
+    }
+
     this.loadingStartTask = true;
     this.progress = 0;
 
     const homogenizeColumns = this.employabilityHomogenizeFeatures.filter(x => x.checked).map(x => x.name);
+    const numMunicipalitiesThreshold = this.employbilitySetupFormGroup.controls.municipalitiesThreshold.value / 100 as number;
 
     this._analysisToolService
-      .postNewEmployabilityImpactAnalysis(this.schoolHistoryFile, this.localityEmployabilityFile, homogenizeColumns)
+      .postNewEmployabilityImpactAnalysis(
+        this.schoolHistoryFile,
+        this.localityEmployabilityFile,
+        homogenizeColumns,
+        this.connectivityVariationThresholdA,
+        this.connectivityVariationThresholdB,
+        numMunicipalitiesThreshold)
       .subscribe((event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(100 * event.loaded / event.total);

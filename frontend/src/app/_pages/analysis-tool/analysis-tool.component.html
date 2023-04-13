@@ -237,6 +237,9 @@
     </section>
     <section id="section-analysis-steps" *ngIf="selectedAnalysisType && !storageTask" #sectionAnalysisSteps>
       <mat-vertical-stepper [linear]="true" (selectionChange)="onStepSelectionChange($event)" #analysisStepper>
+        <!-- /////////////////////////// -->
+        <!-- **   UPLOAD FILES STEP   ** -->
+        <!-- /////////////////////////// -->
         <mat-step [completed]="false">
           <ng-template matStepLabel>Input Data</ng-template>
           <div class="step-inputs-list flex items-stretch">
@@ -415,9 +418,16 @@
               [disabled]="!localityFile && !schoolHistoryFile" *ngIf="selectedAnalysisType === 2">Next</button>
           </div>
         </mat-step>
+        <!-- /////////////////////////// -->
+        <!-- ** INPUT VALIDATION STEP ** -->
+        <!-- /////////////////////////// -->
         <mat-step [completed]="false">
           <ng-template matStepLabel>Initial Input Validation</ng-template>
-          <div *ngIf="selectedAnalysisType === 1">
+          <div class="box-loading flex items-center justify-center direction-column" *ngIf="loadingInputValidation">
+            <mat-spinner [diameter]="50"></mat-spinner><br>
+            <div class="color-tp-body f-size-14 text-center">Validating files...</div>
+          </div>
+          <div *ngIf="selectedAnalysisType === 1 && !loadingInputValidation">
             <div class="input-validation-item">
               <div class="color-tp-title f-size-16 f-weight-500">School File</div>
               <ul class="input-validation-list">
@@ -439,7 +449,7 @@
               </ul>
             </div>
           </div>
-          <div *ngIf="selectedAnalysisType === 2">
+          <div *ngIf="selectedAnalysisType === 2 && !loadingInputValidation">
             <div class="input-validation-item">
               <div class="color-tp-title f-size-16 f-weight-500">School History File</div>
               <ul class="input-validation-list">
@@ -461,14 +471,19 @@
               </ul>
             </div>
           </div>
-          <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 1"
-            [disabled]="!schoolFileIsValid || !localityFileIsValid">Next</button>
-          <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 2"
-            [disabled]="!schoolHistoryFileIsValid || !localityEmployabilityFileIsValid">Next</button>
+          <div class="step-action-container" *ngIf="!loadingInputValidation">
+            <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 1"
+              [disabled]="!schoolFileIsValid || !localityFileIsValid">Next</button>
+            <button mat-raised-button color="primary" (click)="onButtonNextClick()" *ngIf="selectedAnalysisType === 2"
+              [disabled]="!schoolHistoryFileIsValid || !localityEmployabilityFileIsValid">Next</button>
+          </div>
         </mat-step>
+        <!-- /////////////////////////// -->
+        <!-- **       SETUP STEP      ** -->
+        <!-- /////////////////////////// -->
         <mat-step [completed]="false" *ngIf="selectedAnalysisType === 2">
           <ng-template matStepLabel>Setup</ng-template>
-          <div>
+          <!-- <div>
             <p class="flex items-center">Would you like to try to homogenize the sets by features?&nbsp;&nbsp;<mat-icon
                 class="active-icon material-icons color-tp-label"
                 matTooltip="Homogenizing two data sets (cities A and B) with respect to a set of attributes means trying to ensure that the distribution of these attributes in both sets is not too different. 
@@ -490,13 +505,82 @@
                 </mat-checkbox>
               </li>
             </ul>
+          </div> -->
+          <div class="setup-step-container">
+            <div>
+              <div class="color-tp-title f-weight-500 flex items-center">Connectivity variation threshold
+                A:&nbsp;&nbsp;<mat-icon class="active-icon material-icons color-tp-label"
+                  matTooltip="Minimum percentage difference of connectivity between two years to be part of group A">info</mat-icon>
+              </div><br>
+              <mat-form-field appearance="fill">
+                <mat-label>Select threshold</mat-label>
+                <mat-select [(ngModel)]="connectivityVariationThresholdA" name="thresholdA">
+                  <mat-option *ngFor="let threshold of connectivityVariationThresholdsA" [value]="threshold">
+                    {{(threshold * 100) - 100 | number}}%
+                  </mat-option>
+                </mat-select>
+                <mat-hint>
+                  There has been an increase of at least {{(connectivityVariationThresholdA * 100) - 100 | number}}% in
+                  connectivity.
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <br><br>
+            <div>
+              <div class="color-tp-title f-weight-500 flex items-center">Connectivity variation threshold B:
+                &nbsp;&nbsp;<mat-icon class="active-icon material-icons color-tp-label"
+                  matTooltip="Maximum connectivity percentage difference between two years of time to be part of group B">info</mat-icon>
+              </div><br>
+              <mat-form-field appearance="fill">
+                <mat-label>Select threshold</mat-label>
+                <mat-select [(ngModel)]="connectivityVariationThresholdB" name="thresholdB">
+                  <mat-option *ngFor="let threshold of connectivityVariationThresholdsB" [value]="threshold">
+                    {{(threshold * 100) - 100 | number}}%
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="connectivityVariationThresholdB === 1">
+                  There was no increase in connectivity.
+                </mat-hint>
+                <mat-hint *ngIf="connectivityVariationThresholdB > 1">
+                  There has been an increase of up to {{(connectivityVariationThresholdB * 100) - 100 | number}}% in
+                  connectivity.
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <br><br>
+            <div class="color-tp-title f-weight-500 flex items-center">Municipalities threshold (%):
+              &nbsp;&nbsp;<mat-icon class="active-icon material-icons color-tp-label"
+                matTooltip="Number of municipalities (in % total) present in each group A/B">info</mat-icon>
+            </div>
+            <br>
+            <form [formGroup]="employbilitySetupFormGroup">
+              <div>
+                <mat-form-field>
+                  <mat-label>Percentage</mat-label>
+                  <input matInput placeholder="0" formControlName="municipalitiesThreshold" type="number" step="0.01"
+                    max="100" min="0.01" />
+                  <mat-error
+                    *ngIf="checkFormErrors(employbilitySetupFormGroup, 'municipalitiesThreshold', 'min') || checkFormErrors(employbilitySetupFormGroup, 'municipalitiesThreshold', 'max')">
+                    Number between 0.1 and 100
+                  </mat-error>
+                  <mat-error *ngIf="checkFormErrors(employbilitySetupFormGroup, 'municipalitiesThreshold', 'required')">
+                    Required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="step-action-container">
+                <button mat-raised-button color="primary" (click)="onButtonNextClick()"
+                  [disabled]="!employbilitySetupFormGroup.valid">Next</button>
+              </div>
+            </form>
           </div>
-          <br><br><br>
-          <button mat-raised-button color="primary" (click)="onButtonNextClick()"
-            [disabled]="isEmployabilityHomogenizeChecked && checkedEmployabilityFeaturesLength === 0">Next</button>
         </mat-step>
+        <!-- /////////////////////////// -->
+        <!-- **  START ANALYSIS STEP  ** -->
+        <!-- /////////////////////////// -->
         <mat-step [completed]="false">
           <ng-template matStepLabel>Execute</ng-template>
+          <br>
           <div>
             <p>If you are ready, click the button below to start analysis processing</p>
             <button mat-raised-button color="warn" (click)="onButtonStartAnalysisClick()"

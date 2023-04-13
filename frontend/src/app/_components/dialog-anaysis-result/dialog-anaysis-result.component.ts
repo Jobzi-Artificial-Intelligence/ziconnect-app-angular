@@ -279,8 +279,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   buildScenarioDistributionData() {
     if (this.analysisResult.allScenarios) {
       // GET EMPLOYABILITY RATE
-      const employabilityRateA = this.analysisResult.allScenarios['employability_rate']['mean_by_scenario']['A'] as number[];
-      const employabilityRateB = this.analysisResult.allScenarios['employability_rate']['mean_by_scenario']['B'] as number[];
+      const employabilityRateA = this.analysisResult.allScenarios['employability_rate']['mean_by_valid_scenario']['A'] as number[];
+      const employabilityRateB = this.analysisResult.allScenarios['employability_rate']['mean_by_valid_scenario']['B'] as number[];
 
       // CONCAT ARRAY
       const values = [

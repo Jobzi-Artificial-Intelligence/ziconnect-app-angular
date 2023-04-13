@@ -16,6 +16,7 @@ import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabili
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { AnalysisTaskException } from 'src/app/_models/analysis-task-exception/analysis-task-exception.model';
 
 describe('AnalysisToolComponent', () => {
   let component: AnalysisToolComponent;
@@ -40,6 +41,21 @@ describe('AnalysisToolComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#checkFormErrors', () => {
+    it('should exists', () => {
+      expect(component.checkFormErrors).toBeTruthy();
+      expect(component.checkFormErrors).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(component.employbilitySetupFormGroup.controls.municipalitiesThreshold, 'hasError').and.returnValue(true);
+
+      const result = component.checkFormErrors(component.employbilitySetupFormGroup, 'municipalitiesThreshold', 'required');
+
+      expect(result).toEqual(true);
+    });
   });
 
   describe('#checkedEmployabilityFeaturesLength', () => {
@@ -75,6 +91,20 @@ describe('AnalysisToolComponent', () => {
       result = component.getContactUsBodyErrorMessage();
 
       expect(result.includes(component.storageTask.id.toString())).toEqual(true);
+    });
+
+    it('should works with task exception message', () => {
+      component.selectedAnalysisType = AnalysisType.ConnectivityPrediction;
+      component.storageTask = new AnalysisTask().deserialize(analysisTaskFromServer);
+      component.storageTask.status = AnalysisTaskStatus.Failure;
+      component.storageTask.exception = {
+        exceptionType: 'Internal server error',
+        exceptionMessage: 'Internal server errror'
+      } as AnalysisTaskException;
+
+      const result = component.getContactUsBodyErrorMessage();
+
+      expect(result.includes(component.storageTask.exception.exceptionMessage)).toEqual(true);
     });
   });
 
@@ -809,6 +839,20 @@ describe('AnalysisToolComponent', () => {
       component.startNewEmployabilityImpactAnalysis();
     });
 
+    it('should works when setup form is invalid', () => {
+      //@ts-ignore
+      spyOn(component._alertService, 'showWarning');
+      component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
+      component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
+
+      component.employbilitySetupFormGroup.controls.municipalitiesThreshold.setValue(120);
+
+      component.startNewEmployabilityImpactAnalysis();
+
+      //@ts-ignore
+      expect(component._alertService.showWarning).toHaveBeenCalledWith('Some setup values are invalid!');
+    });
+
     it('should works when service return error', async () => {
       component.schoolHistoryFile = new File(['schools'], 'schools_history.csv', { type: 'application/csv' });
       component.localityEmployabilityFile = new File(['localities'], 'locality_employability.csv', { type: 'application/csv' });
@@ -821,8 +865,11 @@ describe('AnalysisToolComponent', () => {
 
       component.startNewEmployabilityImpactAnalysis();
 
+      const municipalitiesThreshold = component.employbilitySetupFormGroup.controls.municipalitiesThreshold.value / 100 as number;
+
       //@ts-ignore
-      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, jasmine.any(Array));
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile,
+        jasmine.any(Array), component.connectivityVariationThresholdA, component.connectivityVariationThresholdB, municipalitiesThreshold);
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong starting new analysis: http error');
       expect(component.loadingStartTask).toEqual(false);
@@ -869,8 +916,11 @@ describe('AnalysisToolComponent', () => {
 
       component.startNewEmployabilityImpactAnalysis();
 
+      const municipalitiesThreshold = component.employbilitySetupFormGroup.controls.municipalitiesThreshold.value / 100 as number;
+
       //@ts-ignore
-      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile, homogenizeColumns);
+      expect(component._analysisToolService.postNewEmployabilityImpactAnalysis).toHaveBeenCalledWith(component.schoolHistoryFile, component.localityEmployabilityFile,
+        homogenizeColumns, component.connectivityVariationThresholdA, component.connectivityVariationThresholdB, municipalitiesThreshold);
       expect(component.putAnalysisTaskOnStorage).toHaveBeenCalled()
       expect(component.poolStorageTask).toHaveBeenCalled()
       expect(component.removeAnalysisResultFromStorage).toHaveBeenCalled();
