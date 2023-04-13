@@ -170,27 +170,43 @@ describe('AnalysisToolService', () => {
       const localityFile = new File(['sample'], 'locality.csv', { type: 'text/csv' });
       const schoolHistoryFile = new File(['sample'], 'school.csv', { type: 'text/csv' });
       const homogenizeColumns = ['hdi', 'population_size'];
+      const connectivityThresholdA = 2;
+      const connectivityThresholdB = 1;
+      const municipalitiesThreshold = 0.03;
 
       // Trigger the file upload and subscribe for results
-      service.postNewEmployabilityImpactAnalysis(schoolHistoryFile, localityFile, homogenizeColumns).pipe(
-        // Discard the first response
-        skipWhile((progress: any) => {
-          return progress === 0;
-        })
-      ).subscribe(
-        (event: any) => {
-          // Define what we expect after receiving the progress response
-          //expect(progress).toEqual(70);
-          if (event.type === HttpEventType.UploadProgress) {
-            const progress = Math.round(100 * event.loaded / event.total);
-            expect(progress).toEqual(70);
+      service
+        .postNewEmployabilityImpactAnalysis(
+          schoolHistoryFile,
+          localityFile,
+          homogenizeColumns,
+          connectivityThresholdA,
+          connectivityThresholdB,
+          municipalitiesThreshold)
+        .pipe(
+          // Discard the first response
+          skipWhile((progress: any) => {
+            return progress === 0;
+          })
+        ).subscribe(
+          (event: any) => {
+            // Define what we expect after receiving the progress response
+            //expect(progress).toEqual(70);
+            if (event.type === HttpEventType.UploadProgress) {
+              const progress = Math.round(100 * event.loaded / event.total);
+              expect(progress).toEqual(70);
+            }
+            done();
           }
-          done();
-        }
-      );
+        );
+
+      let expectedPath = endpointPostEmployabilityImpactTaskUri;
+      expectedPath += `?connectivity_threshold_A=${connectivityThresholdA}`;
+      expectedPath += `&connectivity_threshold_B=${connectivityThresholdB}`;
+      expectedPath += `&municipalities_threshold=${municipalitiesThreshold}`;
 
       // Match a request to service.url
-      const req = httpTestingController.expectOne(endpointPostEmployabilityImpactTaskUri);
+      const req = httpTestingController.expectOne(expectedPath);
       expect(req.request.method).toEqual('POST');
       // Respond with a mocked UploadProgress HttpEvent
       req.event({ type: HttpEventType.UploadProgress, loaded: 7, total: 10 });

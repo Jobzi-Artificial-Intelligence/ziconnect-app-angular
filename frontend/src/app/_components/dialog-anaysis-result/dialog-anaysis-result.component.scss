@@ -8,7 +8,6 @@
     margin-top: 24px;
   }
 
-  #section-dataset-distribution,
   #section-model-metrics,
   #section-result-summary {
     @include border-radius(8px);
@@ -65,6 +64,21 @@
 
   #section-results-description {
     margin: 40px 0;
+  }
+
+  .best-scenario-box-chart-container {
+    height: 400px;
+
+    .box-chart-item {
+      flex: 0 0 calc(33% - 16px);
+      height: 100%;
+
+      > header {
+        border-bottom: 1px solid $border-color;
+        padding: 0 0 8px;
+        margin-bottom: 16px;
+      }
+    }
   }
 
   .distribution-chart-container {

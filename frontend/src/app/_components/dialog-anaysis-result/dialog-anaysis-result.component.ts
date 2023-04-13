@@ -27,8 +27,21 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   distributionChartResultsB: Array<any> = new Array<any>();
   metricsChartResults: Array<any> = new Array<any>();
 
+  bestScenarioEmployabilityPlotResult: Array<any> = new Array<any>();
+  bestScenarioHdiPlotResult: Array<any> = new Array<any>();
+  bestScenarioPopulationPlotResult: Array<any> = new Array<any>();
+
   //#region CHART CONFIGURATION
   ////////////////////////////////////////////////
+  bestScenarioBoxChartConfig = {
+    xAxis: true,
+    yAxis: true,
+    showYAxisLabel: true,
+    showXAxisLabel: true,
+    xAxisLabel: 'Scenario',
+    yAxisLabel: 'Value'
+  }
+
   distributionChartTypes = ['Frequency distribution', 'Distribution differences'];
   distributionChartType: string = this.distributionChartTypes[0];
 
@@ -159,7 +172,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
 
     if (this.data.analysisType === AnalysisType.EmployabilityImpact && this.analysisResult) {
-      this.buildDistributionChart();
+      this.buildBestScenarioDistributionData();
+      this.buildScenarioDistributionData();
     }
   }
 
@@ -262,12 +276,16 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   //#region EMPLOYABILITY IMPACT
   ////////////////////////////////////////////
-  buildDistributionChart() {
-    if (this.analysisResult.scenarioDistribution) {
+  buildScenarioDistributionData() {
+    if (this.analysisResult.allScenarios) {
+      // GET EMPLOYABILITY RATE
+      const employabilityRateA = this.analysisResult.allScenarios['employability_rate']['mean_by_valid_scenario']['A'] as number[];
+      const employabilityRateB = this.analysisResult.allScenarios['employability_rate']['mean_by_valid_scenario']['B'] as number[];
+
       // CONCAT ARRAY
       const values = [
-        ...this.analysisResult.scenarioDistribution['employability_A'],
-        ...this.analysisResult.scenarioDistribution['employability_B'],
+        ...employabilityRateA,
+        ...employabilityRateB,
       ];
 
       // GET UNIQUE VALUES
@@ -284,18 +302,18 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       let frequencyDistributionA: Array<any> = new Array<any>();
       let frequencyDistributionB: Array<any> = new Array<any>();
 
-      let distributionMetricsA = this.getDistributionMetrics(this.analysisResult.scenarioDistribution['employability_A']);
-      let distributionMetricsB = this.getDistributionMetrics(this.analysisResult.scenarioDistribution['employability_B']);;
+      let distributionMetricsA = this.getDistributionMetrics(employabilityRateA);
+      let distributionMetricsB = this.getDistributionMetrics(employabilityRateB);
 
       let frequencyMaxValue: number = Number.MIN_VALUE;
 
       // GENERATE CHART DATA
       boxes.forEach((box) => {
-        if (this.analysisResult.scenarioDistribution) {
+        if (this.analysisResult.allScenarios) {
           const itemName = `[${box.min}, ${box.max}]`;
 
-          const frequencyA = this.analysisResult.scenarioDistribution['employability_A'].filter((x) => x >= box.min && x <= box.max).length;
-          const frequencyB = this.analysisResult.scenarioDistribution['employability_B'].filter((x) => x >= box.min && x <= box.max).length;
+          const frequencyA = employabilityRateA.filter((x) => x >= box.min && x <= box.max).length;
+          const frequencyB = employabilityRateB.filter((x) => x >= box.min && x <= box.max).length;
 
           // SET MAX FREQUENCY VALUE
           if (frequencyA > frequencyMaxValue) {
@@ -373,6 +391,53 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
   }
 
+  buildBestScenarioDistributionData() {
+    if (this.analysisResult.bestScenario) {
+      let employabilityPlotResult: any[] = [];
+      let hdiPlotResult: any[] = [];
+      let populationPlotResult: any[] = [];
+
+      ['A', 'B'].forEach(scenario => {
+        // EMPLOYABILITY RATE BOX PLOT
+        employabilityPlotResult.push({
+          name: `Employability ${scenario}`,
+          series: this.analysisResult.bestScenario[scenario]['employability_rate'].map((x: any, index: number) => {
+            return {
+              name: index,
+              value: x
+            };
+          })
+        });
+
+        // HDI RATE BOX PLOT
+        hdiPlotResult.push({
+          name: `Hdi ${scenario}`,
+          series: this.analysisResult.bestScenario[scenario]['hdi'].map((x: any, index: number) => {
+            return {
+              name: index,
+              value: x
+            };
+          })
+        });
+
+        // POPULATION RATE BOX PLOT
+        populationPlotResult.push({
+          name: `Population ${scenario}`,
+          series: this.analysisResult.bestScenario[scenario]['population_size'].map((x: any, index: number) => {
+            return {
+              name: index,
+              value: x
+            };
+          })
+        });
+      });
+
+      this.bestScenarioEmployabilityPlotResult = employabilityPlotResult;
+      this.bestScenarioHdiPlotResult = hdiPlotResult;
+      this.bestScenarioPopulationPlotResult = populationPlotResult;
+    }
+  }
+
   getDistributionMetrics(arr: Array<number>) {
     let metrics = new Array<any>();
 
@@ -427,7 +492,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   }
 
   onIntervalSliderValueChange(event: MatSliderChange) {
-    this.buildDistributionChart();
+    this.buildScenarioDistributionData();
   }
   //#endregion
   ////////////////////////////////////////////

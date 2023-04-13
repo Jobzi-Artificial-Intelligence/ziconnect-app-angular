@@ -229,6 +229,13 @@
     }
   }
 
+  .setup-step-container {
+    ::ng-deep mat-form-field {
+      max-width: 250px;
+      width: 100%;
+    }
+  }
+
   .step-inputs-list {
     .step-input-item {
       flex: 1;

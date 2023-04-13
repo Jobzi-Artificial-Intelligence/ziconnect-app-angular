@@ -391,9 +391,48 @@ export const analysisResultFromServer = {
       'school': analysisInputValidationResultFromServer,
       'locality': analysisInputValidationResultFromServer
     },
-    "scenario_distribution": {
-      "A": [1, 2, 3, 4, 5, 6],
-      "B": [4, 5, 6, 7, 8, 9]
+    "all_scenarios": {
+      "num_scenarios": 650,
+      "connectivity_range": [2008, 2016],
+      "employability_range": [2015, 2020],
+      "connectivity_thresholds_A": [2.0, 1.0],
+      "connectivity_thresholds_B": [1.5, 0.8],
+      "employability_rate": {
+        "mean_by_valid_scenario": {
+          "A": [1, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 6],
+          "B": [1, 1, 1, 4, 5, 6, 7, 8, 9]
+        },
+        "is_A_greater_than_B_by_scenario": {
+          "yes": 41,
+          "equal": 365,
+          "no": 13,
+          "not_computed": 231
+        }
+      }
+    },
+    "best_scenario": {
+      "connectivity_range": [2013, 2016],
+      "employability_range": [2016, 2020],
+      "A": {
+        "connectivity_threshold": 2.0,
+        "num_municipalities": 2,
+        "municipality_name": ["Buriti", "Acará"],
+        "state_name": ["Maranhão", "Pará"],
+        "hdi": [0.548, 0.506],
+        "population_size": [28916, 55744],
+        "connectivity_rate": [175.0, 166.6667],
+        "employability_rate": [13.0793, 23.1464]
+      },
+      "B": {
+        "connectivity_threshold": 1.0,
+        "num_municipalities": 3,
+        "municipality_name": ["Água Azul do Norte", "Almeirim", "Anapu"],
+        "state_name": ["Pará", "Pará", "Pará"],
+        "hdi": [0.564, 0.642, 0.548],
+        "population_size": [27797, 34044, 29312],
+        "connectivity_rate": [0.0, -14.2857, 0.0],
+        "employability_rate": [3.7323, -5.7756, 33.5821]
+      }
     }
   }
 }

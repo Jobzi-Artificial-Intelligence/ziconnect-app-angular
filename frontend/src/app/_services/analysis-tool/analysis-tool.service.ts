@@ -41,18 +41,23 @@ export class AnalysisToolService {
    * @param schoolHistoryFile school history csv data file blob
    * @returns 
    */
-  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File, homogenizeFeatures: Array<string>) {
+  postNewEmployabilityImpactAnalysis(schoolHistoryFile: File, localityEmployabilityFile: File, homogenizeFeatures: Array<string>, connectivityThresholdA: number, connectivityThresholdB: number, numMunicipalitiesThreshold: number) {
     const formData = new FormData();
     formData.append('employability_history_file', localityEmployabilityFile);
     formData.append('school_history_file', schoolHistoryFile);
 
-    if (homogenizeFeatures.length > 0) {
-      formData.append('homogenize_columns', homogenizeFeatures.join(','));
-    }
+    // if (homogenizeFeatures.length > 0) {
+    //   formData.append('homogenize_columns', homogenizeFeatures.join(','));
+    // }
 
     return this._http.post<any>(`${environment.fastApiHost}${this._taskEmployabilityImpactPath}`, formData, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
+      params: {
+        'connectivity_threshold_A': connectivityThresholdA,
+        'connectivity_threshold_B': connectivityThresholdB,
+        'municipalities_threshold': numMunicipalitiesThreshold
+      }
     });
   }
 
