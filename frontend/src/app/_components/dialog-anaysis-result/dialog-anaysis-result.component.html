@@ -9,6 +9,13 @@
         {{data.analysisTask.id}}
       </div>
     </header>
+    <div class="download-button-container"
+      *ngIf="data.analysisType === analysisTypeEnum.EmployabilityImpact && (analysisResult.allScenarios || analysisResult.bestScenario)">
+      <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download results as json"
+        (click)="onButtonExportJsonClick()">
+        <mat-icon class="material-icons-outlined">file_download</mat-icon>
+      </button>
+    </div>
     <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
       <mat-spinner [diameter]="50"></mat-spinner><br>
       <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>

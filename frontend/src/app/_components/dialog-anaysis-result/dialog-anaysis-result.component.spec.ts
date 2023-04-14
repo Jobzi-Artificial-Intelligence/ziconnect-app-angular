@@ -298,6 +298,36 @@ describe('DialogAnaysisResultComponent', () => {
     });
   });
 
+  describe('#onButtonExportJsonClick', () => {
+    it('should exists', () => {
+      expect(component.onButtonExportJsonClick).toBeTruthy();
+      expect(component.onButtonExportJsonClick).toEqual(jasmine.any(Function));
+    });
+
+    it('should works', () => {
+      spyOn(UtilHelper, 'exportFromObjectToJson')
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+      component.analysisResult = analysisResult;
+
+      component.onButtonExportJsonClick();
+
+      expect(UtilHelper.exportFromObjectToJson).toHaveBeenCalledWith('employability_impact_result.json', jasmine.any(Object));
+    });
+
+    it('should works when throw error', () => {
+      spyOn(UtilHelper, 'exportFromObjectToJson').and.throwError('Export error');
+      //@ts-ignore
+      spyOn(component._alertService, 'showError');
+      const analysisResult = new AnalysisResult().deserialize(analysisResultFromServer.taskResult);
+      component.analysisResult = analysisResult;
+
+      component.onButtonExportJsonClick();
+
+      //@ts-ignore
+      expect(component._alertService.showError).toHaveBeenCalledWith('Error: Export error');
+    });
+  });
+
   describe('#onIntervalSliderValueChange', () => {
     it('should exists', () => {
       expect(component.onIntervalSliderValueChange).toBeTruthy();

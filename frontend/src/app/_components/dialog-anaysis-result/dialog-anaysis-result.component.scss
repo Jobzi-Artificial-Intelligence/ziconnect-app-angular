@@ -4,6 +4,8 @@
 
 #dialog-analysis-result {
   padding-bottom: 24px;
+  position: relative;
+
   #alert-missing-result {
     margin-top: 24px;
   }
@@ -130,5 +132,11 @@
         margin-bottom: 16px;
       }
     }
+  }
+
+  .download-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

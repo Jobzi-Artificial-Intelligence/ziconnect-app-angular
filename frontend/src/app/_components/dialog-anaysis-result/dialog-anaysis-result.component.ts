@@ -263,6 +263,20 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onButtonExportJsonClick() {
+    try {
+      if (this.analysisResult) {
+        const dataToExport = {
+          allScenarios: this.analysisResult.allScenarios,
+          bestScenario: this.analysisResult.bestScenario,
+        };
+        UtilHelper.exportFromObjectToJson('employability_impact_result.json', dataToExport);
+      }
+    } catch (error: any) {
+      this._alertService.showError(error.toString());
+    }
+  }
+
   tableFilterPredicate(data: LocalityStatistics, filter: string) {
     return data.localityMap.countryCode.toString().toLowerCase().includes(filter) ||
       data.localityMap.countryName.toString().toLowerCase().includes(filter) ||
