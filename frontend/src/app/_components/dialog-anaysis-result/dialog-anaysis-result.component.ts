@@ -68,7 +68,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   distributionBarChartConfig = {
     showLegend: false,
-    legendPosition: LegendPosition.Below,
+    legendPosition: LegendPosition.Right,
     xAxis: true,
     yAxis: true,
     showYAxisLabel: true,
@@ -297,8 +297,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       let chartResultsA: Array<any> = new Array<any>();
       let chartResultsB: Array<any> = new Array<any>();
 
-      let diffChartResults: Array<any> = new Array<any>();
-
       let frequencyDistributionA: Array<any> = new Array<any>();
       let frequencyDistributionB: Array<any> = new Array<any>();
 
@@ -344,22 +342,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
             ],
           };
 
-          let diffChartResultItem = {
-            name: itemName,
-            series: [
-              {
-                name: 'Employability A',
-                value: frequencyA >= frequencyB ? frequencyA - frequencyB : 0,
-              }, {
-                name: 'Employability B',
-                value: frequencyB > frequencyA ? frequencyA - frequencyB : 0,
-              }
-            ],
-          }
-
           chartResultsA.push(chartResultItemA);
           chartResultsB.push(chartResultItemB);
-          diffChartResults.push(diffChartResultItem);
 
           frequencyDistributionA.push({
             bin: itemName,
@@ -379,7 +363,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
       this.distributionChartResultsA = chartResultsA;
       this.distributionChartResultsB = chartResultsB;
-      this.distributionDiffChartResults = diffChartResults;
 
       this.tableDistributionMetricsA = new MatTableDataSource(distributionMetricsA);
       this.tableDistributionMetricsB = new MatTableDataSource(distributionMetricsB);
@@ -388,6 +371,50 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       this.tableFrequencyDistributionA.paginator = this.frequencyDistributionPaginator;
       this.tableFrequencyDistributionB = new MatTableDataSource(frequencyDistributionB);
       this.tableFrequencyDistributionB.paginator = this.frequencyDistributionPaginator;
+
+      // GENERATE DIFF DISTRIBUTION CHART
+      let diffChartResults: Array<any> = new Array<any>();
+
+      const diffValues = employabilityRateA.map((value, index) => {
+        return value - employabilityRateB[index];
+      });
+
+      const diffUniqueValues = [...new Set(diffValues)];
+
+      const diffBoxes = this.getDistributionValueRange(diffUniqueValues, this.distributionBarSliderConfig.value);
+
+      diffBoxes.forEach((box) => {
+        const itemName = `[${box.min}, ${box.max}]`;
+
+        let frequencyGreaterThanZero = 0;
+        let frequencyLessThanEqualZero = 0;
+
+        if (box.min > 0 || box.max > 0) {
+          frequencyGreaterThanZero = diffValues.filter(x => x >= box.min && x <= box.max && x > 0).length;
+        }
+
+        if (box.min <= 0 || box.max <= 0) {
+          frequencyLessThanEqualZero = diffValues.filter(x => x >= box.min && x <= box.max && x <= 0).length;
+        }
+
+        let diffChartResultItem = {
+          name: itemName,
+          series: [
+            {
+              name: 'A is better',
+              value: frequencyGreaterThanZero,
+            },
+            {
+              name: 'B is better',
+              value: frequencyLessThanEqualZero,
+            }
+          ],
+        };
+
+        diffChartResults.push(diffChartResultItem);
+      });
+
+      this.distributionDiffChartResults = diffChartResults;
     }
   }
 

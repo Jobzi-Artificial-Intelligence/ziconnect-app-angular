@@ -400,7 +400,7 @@ export const analysisResultFromServer = {
       "employability_rate": {
         "mean_by_valid_scenario": {
           "A": [1, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 6],
-          "B": [1, 1, 1, 4, 5, 6, 7, 8, 9]
+          "B": [1, 1, 1, 4, 5, 6, 7, 8, 9, 3, 2, 1]
         },
         "is_A_greater_than_B_by_scenario": {
           "yes": 41,

@@ -22,7 +22,7 @@ export class AnalysisResult implements Deserializable {
   deserialize(input: any): this {
     let inputControl = input;
 
-    if (input.exc_type && input.exc_type === 'TableSchemaError') {
+    if (input && input.exc_type && input.exc_type === 'TableSchemaError') {
       inputControl = input.exc_message;
     }
 
