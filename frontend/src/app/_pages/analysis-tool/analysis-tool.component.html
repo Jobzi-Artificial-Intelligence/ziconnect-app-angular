@@ -82,6 +82,26 @@
       </p>
       <br>
       <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Connectivity prediction analysis</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        To estimate the internet availability in schools where this information is unavailable, we built a Machine
+        Learning model to predict whether a school has Internet access based on schools where we have this information
+        available.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Relying on the standard machine learning training approach, we implement a Tree-based binary predictor. The
+        Training dataset composes all schools with data about access to the Internet, while the Test dataset consists of
+        the schools we want to estimate this value. To generate the best predictor possible, we employ a
+        cross-validation strategy to try different model hyperparameters.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Our service takes as input data from schools and the geographic localities in which they are located, trains our
+        connectivity prediction model, and returns the accuracy of the generated model as well as the predictions made
+        by it for all schools.
+      </p>
+      <br>
+      <br>
       <div class="f-size-20 color-tp-title f-weight-500">Employability impact analysis</div>
       <br>
       <p class="f-size-16 color-tp-body line-height-1-5">To verify the causality between internet availability in

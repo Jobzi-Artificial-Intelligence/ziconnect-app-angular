@@ -11,6 +11,7 @@ import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dialog-anaysis-result',
@@ -19,6 +20,7 @@ import { AlertService, AnalysisToolService } from 'src/app/_services';
 })
 export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   public analysisTypeEnum: typeof AnalysisType = AnalysisType;
+  public connectivityPredictionDownloadPath: string = '';
 
   analysisResult: AnalysisResult = new AnalysisResult();
   loading: boolean = true;
@@ -144,6 +146,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     this.tableFrequencyDistributionB = new MatTableDataSource(new Array<any>());
     this.tableDistributionMetricsA = new MatTableDataSource(new Array<any>());
     this.tableDistributionMetricsB = new MatTableDataSource(new Array<any>());
+
+    this.connectivityPredictionDownloadPath = `${this._analysisToolService.taskPredictionDownloadResultPath}${this.data.analysisTask.id}`;
   }
 
   ngAfterViewInit(): void {

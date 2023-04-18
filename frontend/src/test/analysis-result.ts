@@ -421,7 +421,8 @@ export const analysisResultFromServer = {
         "hdi": [0.548, 0.506],
         "population_size": [28916, 55744],
         "connectivity_rate": [175.0, 166.6667],
-        "employability_rate": [13.0793, 23.1464]
+        "employability_rate": [13.0793, 23.1464],
+        "school_count": [1500, 2000],
       },
       "B": {
         "connectivity_threshold": 1.0,
@@ -431,7 +432,8 @@ export const analysisResultFromServer = {
         "hdi": [0.564, 0.642, 0.548],
         "population_size": [27797, 34044, 29312],
         "connectivity_rate": [0.0, -14.2857, 0.0],
-        "employability_rate": [3.7323, -5.7756, 33.5821]
+        "employability_rate": [3.7323, -5.7756, 33.5821],
+        "school_count": [800, 1300]
       }
     }
   }

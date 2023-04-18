@@ -1,3 +1,4 @@
+import { MathHelper } from "src/app/_helpers/util/math.helper";
 import { AnalysisInputValidationResult } from "../analysis-input-validation-result/analysis-input-validation-result.model";
 import { AnalysisResultMetrics } from "../analysis-result-metrics/analysis-result-metrics.model";
 import { Deserializable } from "../deserializable.model";
@@ -69,6 +70,24 @@ export class AnalysisResult implements Deserializable {
 
       if (inputControl.best_scenario) {
         this.bestScenario = input.best_scenario;
+
+        // BUILD BEST SCENARIO STATISTICS
+        this.bestScenario.evaluationStatistics = {} as any;
+
+        this.bestScenario.evaluationStatistics.numMunicipalitiesA = this.bestScenario['A'].num_municipalities;
+        this.bestScenario.evaluationStatistics.numMunicipalitiesB = this.bestScenario['B'].num_municipalities;
+
+        this.bestScenario.evaluationStatistics.sumSchoolCountA = this.bestScenario['A'].school_count && Array.isArray(this.bestScenario['A'].school_count)
+          ? this.bestScenario['A'].school_count.reduce((sum: number, current: number) => sum + current, 0)
+          : 0;
+        this.bestScenario.evaluationStatistics.sumSchoolCountB = this.bestScenario['A'].school_count && Array.isArray(this.bestScenario['B'].school_count)
+          ? this.bestScenario['B'].school_count.reduce((sum: number, current: number) => sum + current, 0)
+          : 0;
+
+        this.bestScenario.evaluationStatistics.averageEmployabilityRateA = MathHelper.mean(this.bestScenario['A'].employability_rate);
+        this.bestScenario.evaluationStatistics.averageEmployabilityRateB = MathHelper.mean(this.bestScenario['B'].employability_rate);
+
+        this.bestScenario.evaluationStatistics.averageGrownA = this.bestScenario.evaluationStatistics.averageEmployabilityRateA / this.bestScenario.evaluationStatistics.averageEmployabilityRateB;
       }
     }
 
