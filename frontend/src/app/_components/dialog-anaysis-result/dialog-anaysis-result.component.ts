@@ -11,6 +11,7 @@ import { IDialogAnalysisResultData } from 'src/app/_interfaces';
 import { LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
 import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dialog-anaysis-result',
@@ -19,6 +20,7 @@ import { AlertService, AnalysisToolService } from 'src/app/_services';
 })
 export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   public analysisTypeEnum: typeof AnalysisType = AnalysisType;
+  public connectivityPredictionDownloadPath: string = '';
 
   analysisResult: AnalysisResult = new AnalysisResult();
   loading: boolean = true;
@@ -68,7 +70,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
   distributionBarChartConfig = {
     showLegend: false,
-    legendPosition: LegendPosition.Below,
+    legendPosition: LegendPosition.Right,
     xAxis: true,
     yAxis: true,
     showYAxisLabel: true,
@@ -144,6 +146,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     this.tableFrequencyDistributionB = new MatTableDataSource(new Array<any>());
     this.tableDistributionMetricsA = new MatTableDataSource(new Array<any>());
     this.tableDistributionMetricsB = new MatTableDataSource(new Array<any>());
+
+    this.connectivityPredictionDownloadPath = `${this._analysisToolService.taskPredictionDownloadResultPath}${this.data.analysisTask.id}`;
   }
 
   ngAfterViewInit(): void {
@@ -263,6 +267,20 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onButtonExportJsonClick() {
+    try {
+      if (this.analysisResult) {
+        const dataToExport = {
+          allScenarios: this.analysisResult.allScenarios,
+          bestScenario: this.analysisResult.bestScenario,
+        };
+        UtilHelper.exportFromObjectToJson('employability_impact_result.json', dataToExport);
+      }
+    } catch (error: any) {
+      this._alertService.showError(error.toString());
+    }
+  }
+
   tableFilterPredicate(data: LocalityStatistics, filter: string) {
     return data.localityMap.countryCode.toString().toLowerCase().includes(filter) ||
       data.localityMap.countryName.toString().toLowerCase().includes(filter) ||
@@ -296,8 +314,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
       let chartResultsA: Array<any> = new Array<any>();
       let chartResultsB: Array<any> = new Array<any>();
-
-      let diffChartResults: Array<any> = new Array<any>();
 
       let frequencyDistributionA: Array<any> = new Array<any>();
       let frequencyDistributionB: Array<any> = new Array<any>();
@@ -344,22 +360,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
             ],
           };
 
-          let diffChartResultItem = {
-            name: itemName,
-            series: [
-              {
-                name: 'Employability A',
-                value: frequencyA >= frequencyB ? frequencyA - frequencyB : 0,
-              }, {
-                name: 'Employability B',
-                value: frequencyB > frequencyA ? frequencyA - frequencyB : 0,
-              }
-            ],
-          }
-
           chartResultsA.push(chartResultItemA);
           chartResultsB.push(chartResultItemB);
-          diffChartResults.push(diffChartResultItem);
 
           frequencyDistributionA.push({
             bin: itemName,
@@ -379,7 +381,6 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
       this.distributionChartResultsA = chartResultsA;
       this.distributionChartResultsB = chartResultsB;
-      this.distributionDiffChartResults = diffChartResults;
 
       this.tableDistributionMetricsA = new MatTableDataSource(distributionMetricsA);
       this.tableDistributionMetricsB = new MatTableDataSource(distributionMetricsB);
@@ -388,6 +389,50 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       this.tableFrequencyDistributionA.paginator = this.frequencyDistributionPaginator;
       this.tableFrequencyDistributionB = new MatTableDataSource(frequencyDistributionB);
       this.tableFrequencyDistributionB.paginator = this.frequencyDistributionPaginator;
+
+      // GENERATE DIFF DISTRIBUTION CHART
+      let diffChartResults: Array<any> = new Array<any>();
+
+      const diffValues = employabilityRateA.map((value, index) => {
+        return value - employabilityRateB[index];
+      });
+
+      const diffUniqueValues = [...new Set(diffValues)];
+
+      const diffBoxes = this.getDistributionValueRange(diffUniqueValues, this.distributionBarSliderConfig.value);
+
+      diffBoxes.forEach((box) => {
+        const itemName = `[${box.min}, ${box.max}]`;
+
+        let frequencyGreaterThanZero = 0;
+        let frequencyLessThanEqualZero = 0;
+
+        if (box.min > 0 || box.max > 0) {
+          frequencyGreaterThanZero = diffValues.filter(x => x >= box.min && x <= box.max && x > 0).length;
+        }
+
+        if (box.min <= 0 || box.max <= 0) {
+          frequencyLessThanEqualZero = diffValues.filter(x => x >= box.min && x <= box.max && x <= 0).length;
+        }
+
+        let diffChartResultItem = {
+          name: itemName,
+          series: [
+            {
+              name: 'A is better',
+              value: frequencyGreaterThanZero,
+            },
+            {
+              name: 'B is better',
+              value: frequencyLessThanEqualZero,
+            }
+          ],
+        };
+
+        diffChartResults.push(diffChartResultItem);
+      });
+
+      this.distributionDiffChartResults = diffChartResults;
     }
   }
 

@@ -16,6 +16,8 @@ export class AnalysisToolService {
   private _taskResultPath = 'task/result';
   private _taskInfoPath = 'task/info';
 
+  public taskPredictionDownloadResultPath = `${environment.fastApiHost}task/prediction/result/`;
+
   constructor(private _http: HttpClient) { }
 
   /**

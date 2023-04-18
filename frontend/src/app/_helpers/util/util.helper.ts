@@ -107,6 +107,34 @@ export class UtilHelper {
     }
   }
 
+  /**
+   * Export any object as json file
+   * @param filename exported csv file name
+   * @param object any object
+   */
+  public static exportFromObjectToJson(filename: string, object: any) {
+    if (!object) {
+      throw new Error('Object not provided!');
+    }
+
+    const jsonContent = JSON.stringify(object);
+    const blob = new Blob([jsonContent], { type: 'data:text/json;charset=utf-8;' });
+    const link = document.createElement('a');
+
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      throw new Error('Browser does not support download attribute');
+    }
+  }
+
   public static uppercaseKeys<T extends Record<string, any>>(obj: T): { [key: string]: any } {
     return Object.keys(obj).reduce((result, key) => {
       result[key.toUpperCase()] = obj[key];

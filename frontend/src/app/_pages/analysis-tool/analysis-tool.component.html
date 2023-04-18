@@ -80,6 +80,42 @@
         returns an overview of the results and initial insights, which the user can download along with the raw results
         for further examination.
       </p>
+      <br>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Connectivity prediction analysis</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        To estimate the internet availability in schools where this information is unavailable, we built a Machine
+        Learning model to predict whether a school has Internet access based on schools where we have this information
+        available.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Relying on the standard machine learning training approach, we implement a Tree-based binary predictor. The
+        Training dataset composes all schools with data about access to the Internet, while the Test dataset consists of
+        the schools we want to estimate this value. To generate the best predictor possible, we employ a
+        cross-validation strategy to try different model hyperparameters.
+      </p>
+      <p class="f-size-16 color-tp-body line-height-1-5">
+        Our service takes as input data from schools and the geographic localities in which they are located, trains our
+        connectivity prediction model, and returns the accuracy of the generated model as well as the predictions made
+        by it for all schools.
+      </p>
+      <br>
+      <br>
+      <div class="f-size-20 color-tp-title f-weight-500">Employability impact analysis</div>
+      <br>
+      <p class="f-size-16 color-tp-body line-height-1-5">To verify the causality between internet availability in
+        schools and employability, we designed an experiment to
+        analyze how these indicators were related over the years.</p>
+      <p class="f-size-16 color-tp-body line-height-1-5">Relying on a standard experimental approach, we define control
+        and treatment groups to represent cities with minor
+        and expressive connectivity variations, respectively, given a date range. From there, the idea is to analyze how
+        the average relative employability in each group was modified over the subsequent years.</p>
+      <p class="f-size-16 color-tp-body line-height-1-5">Our service takes as input the historical data of employability
+        and school connectivity, analyzes all date range
+        variations for these indicators, and returns an overall and best-case analysis of how employability impacts.</p>
+      <p class="f-size-16 color-tp-body line-height-1-5">For simplicity, we named the treatment and control groups as A
+        and B, respectively.</p>
     </section>
     <section id="section-type-selection" #sectionTypeSelection>
       <header>
@@ -97,15 +133,24 @@
           </mat-expansion-panel-header>
           <ol>
             <li>
-              <p class="f-size-16">This is a MVP, the analysis performed in it have a limited storage time, so your
-                analysis
-                may not be available after it is executed. Be sure to download the results as soon as you receive them.
-                If your analysis is no longer available, you can start a new one.</p>
+              <p class="f-size-16">
+                This is a MVP, the analysis performed in it have a limited storage time, so your
+                analysis may not be available after it is executed. Be sure to download the results as soon as you
+                receive them. If your analysis is no longer available, you can start a new one.
+              </p>
             </li>
             <li>
-              <p class="f-size-16">For avoiding throwing too many errors, we automatically handle small inconsistencies
-                by trying to
-                estimate columns values (if possible) or removing corrupted schools / locations</p>
+              <p class="f-size-16">
+                For avoiding throwing too many errors, we automatically handle small inconsistencies
+                by trying to estimate columns values (if possible) or removing corrupted schools / locations
+              </p>
+            </li>
+            <li>
+              <p class="f-size-16">
+                Both services were developed using school connectivity and employability data
+                available in Brazil. Therefore, it is important to emphasize that the resultant analyses may not be
+                suitable for other countries.
+              </p>
             </li>
           </ol>
         </mat-expansion-panel>
@@ -253,11 +298,15 @@
                 <p class="color-tp-body">
                   File containing connectivity data in schools of a country.
                 </p>
-                <p>Read our <span class="color-blue cursor-pointer"
+                <p class="line-height-1-5">Read our <span class="color-blue cursor-pointer"
                     (click)="onFileRequirementsClick(analysisTypeEnum.School)">File
-                    Requirements</span> or <a href="/assets/analysis-input-definition/school_template.csv"
-                    target="_blank" class="color-blue text-decoration-none">download a CSV
-                    Template</a> to get started.</p>
+                    Requirements</span>, <a href="/assets/analysis-input-definition/school_template.csv" target="_blank"
+                    class="color-blue text-decoration-none">download a CSV
+                    Template</a> and build your own file or <a
+                    href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi/tree/staging/fastapi/resources/internetConnectivity"
+                    target="_blank" class="color-blue text-decoration-none">Click Here</a> to download our sample files
+                  and get started.
+                </p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'schoolFile')" *ngIf="selectedAnalysisType && !schoolFile">
                   <mat-icon class="material-icons-outlined f-size-48 color-tp-body">file_upload</mat-icon>
@@ -292,12 +341,15 @@
                 <p class=" color-tp-body">
                   A file containing the locality's data.
                 </p>
-                <p>
+                <p class="line-height-1-5">
                   Read our <span class="color-blue cursor-pointer"
                     (click)="onFileRequirementsClick(analysisTypeEnum.Locality)">File
-                    Requirements</span> or <a href="/assets/analysis-input-definition/locality_template.csv"
+                    Requirements</span>, <a href="/assets/analysis-input-definition/locality_template.csv"
                     target="_blank" class="color-blue text-decoration-none">download a CSV
-                    Template</a> to get started.
+                    Template</a> and build your own file or <a
+                    href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi/tree/staging/fastapi/resources/internetConnectivity"
+                    target="_blank" class="color-blue text-decoration-none">Click Here</a> to download our sample files
+                  and get started.
                 </p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'localityFile')" *ngIf="selectedAnalysisType && !localityFile">
@@ -334,11 +386,14 @@
                 <p class=" color-tp-body">
                   File containing historical connectivity data in schools of a country.
                 </p>
-                <p>Read our <span class="color-blue cursor-pointer"
+                <p class="line-height-1-5">Read our <span class="color-blue cursor-pointer"
                     (click)="onFileRequirementsClick(analysisTypeEnum.SchoolHistory)">File
-                    Requirements</span> or <a href="/assets/analysis-input-definition/school_history_template.csv"
+                    Requirements</span>, <a href="/assets/analysis-input-definition/school_history_template.csv"
                     target="_blank" class="color-blue text-decoration-none">download a CSV
-                    Template</a> to get started.</p>
+                    Template</a> and build your own file or <a
+                    href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi/tree/staging/fastapi/resources/employabilityImpact"
+                    target="_blank" class="color-blue text-decoration-none">Click Here</a> to download our sample files
+                  and get started.</p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'schoolHistoryFile')"
                   *ngIf="selectedAnalysisType && !schoolHistoryFile">
@@ -375,13 +430,15 @@
                 <p class=" color-tp-body">
                   A file containing the locality's employability rate over the years.
                 </p>
-                <p>
+                <p class="line-height-1-5">
                   Read our <span class="color-blue cursor-pointer"
                     (click)="onFileRequirementsClick(analysisTypeEnum.LocalityEmployability)">File
-                    Requirements</span> or <a
-                    href="/assets/analysis-input-definition/locality_employability_template.csv" target="_blank"
-                    class="color-blue text-decoration-none">download a CSV
-                    Template</a> to get started.
+                    Requirements</span>, <a href="/assets/analysis-input-definition/locality_employability_template.csv"
+                    target="_blank" class="color-blue text-decoration-none">download a CSV
+                    Template</a> and build your own file or <a
+                    href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi/tree/staging/fastapi/resources/employabilityImpact"
+                    target="_blank" class="color-blue text-decoration-none">Click Here</a> to download our sample files
+                  and get started.
                 </p>
                 <div class="file-upload-container direction-column flex items-center" appFileDragAndDrop
                   (fileDropped)="onFileDropped($event, 'localityEmployabilityFile')"

@@ -9,6 +9,13 @@
         {{data.analysisTask.id}}
       </div>
     </header>
+    <div class="download-button-container"
+      *ngIf="data.analysisType === analysisTypeEnum.EmployabilityImpact && (analysisResult.allScenarios || analysisResult.bestScenario)">
+      <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download results as json"
+        (click)="onButtonExportJsonClick()">
+        <mat-icon class="material-icons-outlined">file_download</mat-icon>
+      </button>
+    </div>
     <div class="box-loading flex items-center justify-center direction-column" *ngIf="loading">
       <mat-spinner [diameter]="50"></mat-spinner><br>
       <div class="color-tp-body f-size-14 text-center">Loading analysis result...</div>
@@ -120,11 +127,17 @@
             </div>
             <!-- ACTION BUTTONS -->
             <div class="buttons flex items-center justify-between">
-              <div class="button-container">
-                <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download as csv"
+              <!-- <div class="button-container">
+                <button mat-mini-fab color="primary" aria-label="Download data" matTooltip="Download table data as csv"
                   (click)="onButtonExportClick()">
                   <mat-icon class="material-icons-outlined">file_download</mat-icon>
                 </button>
+              </div>&nbsp; -->
+              <div class="button-container">
+                <a href="{{connectivityPredictionDownloadPath}}" color="primary" mat-mini-fab aria-label="Download data"
+                  matTooltip="Download results as csv">
+                  <mat-icon class="material-icons-outlined">file_download</mat-icon>
+                </a>
               </div>
             </div>
           </header>
@@ -275,6 +288,32 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <section id="section-dataset-distribution">
+            <p class="f-size-14 color-tp-body line-height-1-5">
+              With the files received, we generated {{analysisResult.allScenarios?.num_scenarios}} scenarios varying the
+              connectivity rate range from {{analysisResult.allScenarios?.connectivity_range[0]}} to
+              {{analysisResult.allScenarios?.connectivity_range[1]}} and the employability rate range from
+              {{analysisResult.allScenarios?.employability_range[0]}} to
+              {{analysisResult.allScenarios?.employability_range[1]}}.
+            </p>
+            <p class="f-size-14 color-tp-body line-height-1-5">
+              We discarded {{analysisResult.allScenarios?.evaluationStatistics.notComputedScenarios}} scenarios that
+              generated groups with few
+              cities. For the remaining {{analysisResult.allScenarios?.evaluationStatistics.notComputedScenarios}}
+              scenarios,
+              when we statistically compare the relative employability gains of each group, group A had gains greater
+              than B in {{analysisResult.allScenarios?.evaluationStatistics.greaterCount}}
+              ({{analysisResult.allScenarios?.evaluationStatistics.greaterPercentage}}%), equal in
+              {{analysisResult.allScenarios?.evaluationStatistics.equalCount}}
+              ({{analysisResult.allScenarios?.evaluationStatistics.equalPercentage}}%), and smaller in
+              {{analysisResult.allScenarios?.evaluationStatistics.lessCount}}
+              ({{analysisResult.allScenarios?.evaluationStatistics.lessPercentage}}%) scenarios.
+            </p>
+            <p class="f-size-14 color-tp-body line-height-1-5">
+              Below is the average relative employability gain distribution for groups A and B in each scenario. You can
+              freely alter the number of bins in the plot for better visualization. You can also check the difference in
+              relative employability gain distribution between A and B for all scenarios.
+            </p>
+            <br>
             <mat-expansion-panel id="employability-settings-container">
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -345,8 +384,7 @@
                 <header class="color-tp-title f-weight-500 f-size-16">Employability A - B</header>
                 <ngx-charts-bar-vertical-stacked [scheme]="distributionDiffBarChartColorScheme"
                   [view]="[distributionDiffChartContainerRef.offsetWidth, 400]" [results]="distributionDiffChartResults"
-                  [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis"
-                  [legend]="distributionBarChartConfig.showLegend"
+                  [xAxis]="distributionBarChartConfig.xAxis" [yAxis]="distributionBarChartConfig.yAxis" [legend]="true"
                   [legendPosition]="distributionBarChartConfig.legendPosition"
                   [showXAxisLabel]="distributionBarChartConfig.showXAxisLabel"
                   [showYAxisLabel]="distributionBarChartConfig.showYAxisLabel"
@@ -468,13 +506,34 @@
               <span class="title">Best Scenario</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p
+          <p class="f-size-14 color-tp-body line-height-1-5"
             *ngIf="analysisResult.bestScenario && analysisResult.bestScenario.connectivity_range && analysisResult.bestScenario.employability_range">
-            The best scenario was obtained by analyzing the intervals of connectivity between
-            {{analysisResult.bestScenario.connectivity_range[0]}} and
-            {{analysisResult.bestScenario.connectivity_range[1]}}, followed by
-            an increase in employability between {{analysisResult.bestScenario.employability_range[0]}} and
-            {{analysisResult.bestScenario.employability_range[1]}}.
+            For the given configuration, the most significant difference in employability between groups A and B was
+            detected when analyzing the school connectivity rates between
+            {{analysisResult.bestScenario?.connectivity_range[0]}} and
+            {{analysisResult.bestScenario?.connectivity_range[1]}} and the employability rates
+            between {{analysisResult.bestScenario?.employability_range[0]}} and
+            {{analysisResult.bestScenario?.employability_range[1]}}.
+          </p>
+          <p class="f-size-14 color-tp-body line-height-1-5">
+            In this scenario, group A consists of
+            {{analysisResult.bestScenario?.evaluationStatistics.numMunicipalitiesA}} cities and
+            {{analysisResult.bestScenario?.evaluationStatistics.sumSchoolCountA}} schools
+            with an average relative employability gain of
+            {{analysisResult.bestScenario?.evaluationStatistics.averageEmployabilityRateA | number}}%,
+            while group B consists
+            of {{analysisResult.bestScenario?.evaluationStatistics.numMunicipalitiesB}} cities and
+            {{analysisResult.bestScenario?.evaluationStatistics.sumSchoolCountB}} schools with an average relative
+            employability gain of {{analysisResult.bestScenario?.evaluationStatistics.averageEmployabilityRateB |
+            number}}%
+            difference. Thus, group A
+            has grown
+            {{analysisResult.bestScenario?.evaluationStatistics.averageGrownA | number}}% more percentage-wise than
+            B.
+          </p>
+          <p class="f-size-14 color-tp-body line-height-1-5">
+            As a first examination, we display below the relative employability gain, HDI, and population size
+            distributions for groups A and B. For further analysis, please download the data.
           </p>
           <br><br>
           <div class="best-scenario-box-chart-container flex items-center justify-between">
