@@ -64,7 +64,7 @@ export class AnalysisResult implements Deserializable {
           this.allScenarios.evaluationStatistics.equalCount = this.allScenarios.employability_rate.is_A_greater_than_B_by_scenario.equal;
           this.allScenarios.evaluationStatistics.equalPercentage = Math.round((this.allScenarios.evaluationStatistics.equalCount / this.allScenarios.evaluationStatistics.computedScenarios) * 10000) / 100;
           this.allScenarios.evaluationStatistics.lessCount = this.allScenarios.employability_rate.is_A_greater_than_B_by_scenario.no;
-          this.allScenarios.evaluationStatistics.lessPercentage = Math.round((this.allScenarios.evaluationStatistics.lessCount / this.allScenarios.evaluationStatistics.computedScenarios) * 10000) / 100;
+          this.allScenarios.evaluationStatistics.lessPercentage = 100 - (this.allScenarios.evaluationStatistics.greaterPercentage + this.allScenarios.evaluationStatistics.equalPercentage);
         }
       }
 
@@ -74,8 +74,8 @@ export class AnalysisResult implements Deserializable {
         // BUILD BEST SCENARIO STATISTICS
         this.bestScenario.evaluationStatistics = {} as any;
 
-        this.bestScenario.evaluationStatistics.numMunicipalitiesA = this.bestScenario['A'].num_municipalities;
-        this.bestScenario.evaluationStatistics.numMunicipalitiesB = this.bestScenario['B'].num_municipalities;
+        this.bestScenario.evaluationStatistics.numMunicipalitiesA = this.bestScenario['A'].num_municipalities ?? 0;
+        this.bestScenario.evaluationStatistics.numMunicipalitiesB = this.bestScenario['B'].num_municipalities ?? 0;
 
         this.bestScenario.evaluationStatistics.sumSchoolCountA = this.bestScenario['A'].school_count && Array.isArray(this.bestScenario['A'].school_count)
           ? this.bestScenario['A'].school_count.reduce((sum: number, current: number) => sum + current, 0)
@@ -87,7 +87,7 @@ export class AnalysisResult implements Deserializable {
         this.bestScenario.evaluationStatistics.averageEmployabilityRateA = MathHelper.mean(this.bestScenario['A'].employability_rate);
         this.bestScenario.evaluationStatistics.averageEmployabilityRateB = MathHelper.mean(this.bestScenario['B'].employability_rate);
 
-        this.bestScenario.evaluationStatistics.averageGrownA = this.bestScenario.evaluationStatistics.averageEmployabilityRateA / this.bestScenario.evaluationStatistics.averageEmployabilityRateB;
+        this.bestScenario.evaluationStatistics.averageGrownA = ((this.bestScenario.evaluationStatistics.averageEmployabilityRateA / this.bestScenario.evaluationStatistics.averageEmployabilityRateB) - 1) * 100;
       }
     }
 
