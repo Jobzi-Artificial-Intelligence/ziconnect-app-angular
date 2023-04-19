@@ -271,16 +271,22 @@
     </div>
     <div id="employability-container"
       [ngClass]="{'display-none': data.analysisType !== analysisTypeEnum.EmployabilityImpact || loading}">
-      <section id="section-results-description">
+      <div id="alert-missing-result" class="alert alert-warning"
+        *ngIf="!loading && !analysisResult.allScenarios && !analysisResult.bestScenario">
+        The result of your analysis is no longer available. You can discard this analysis and start a new one
+      </div>
+      <section id="section-results-description"
+        *ngIf="!loading && (analysisResult.allScenarios || analysisResult.bestScenario)">
         <div class="f-size-16 color-tp-title f-weight-500">Hello! Task completed!</div>
         <br>
         <p class="f-size-14 color-tp-body">
-          We trained, validated, and tested the model with your data in under <span
+          We generated and analyzed all possible scenarios within your data in under <span
             class="f-weight-500">{{data.analysisTask.successDurationString}}</span>.
         </p>
       </section>
-      <mat-accordion>
-        <mat-expansion-panel id="employability-settings-container">
+      <mat-accordion [ngClass]="{'display-none': !analysisResult.allScenarios && !analysisResult.bestScenario}">
+        <mat-expansion-panel id="employability-all-scenarios-container"
+          [ngClass]="{'display-none': !analysisResult.allScenarios}">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon class="material-icons-outlined">percent</mat-icon>&nbsp;
@@ -298,15 +304,15 @@
             <p class="f-size-14 color-tp-body line-height-1-5">
               We discarded {{analysisResult.allScenarios?.evaluationStatistics.notComputedScenarios}} scenarios that
               generated groups with few
-              cities. For the remaining {{analysisResult.allScenarios?.evaluationStatistics.notComputedScenarios}}
+              cities. For the remaining {{analysisResult.allScenarios?.evaluationStatistics.computedScenarios}}
               scenarios,
               when we statistically compare the relative employability gains of each group, group A had gains greater
               than B in {{analysisResult.allScenarios?.evaluationStatistics.greaterCount}}
-              ({{analysisResult.allScenarios?.evaluationStatistics.greaterPercentage}}%), equal in
+              ({{analysisResult.allScenarios?.evaluationStatistics.greaterPercentage | number:'1.0-2'}}%), equal in
               {{analysisResult.allScenarios?.evaluationStatistics.equalCount}}
-              ({{analysisResult.allScenarios?.evaluationStatistics.equalPercentage}}%), and smaller in
+              ({{analysisResult.allScenarios?.evaluationStatistics.equalPercentage | number:'1.0-2'}}%), and smaller in
               {{analysisResult.allScenarios?.evaluationStatistics.lessCount}}
-              ({{analysisResult.allScenarios?.evaluationStatistics.lessPercentage}}%) scenarios.
+              ({{analysisResult.allScenarios?.evaluationStatistics.lessPercentage | number:'1.0-2'}}%) scenarios.
             </p>
             <p class="f-size-14 color-tp-body line-height-1-5">
               Below is the average relative employability gain distribution for groups A and B in each scenario. You can
@@ -499,7 +505,8 @@
             </div>
           </section>
         </mat-expansion-panel>
-        <mat-expansion-panel id="employability-settings-container">
+        <mat-expansion-panel id="employability-best-scenario-container"
+          [ngClass]="{'display-none': !analysisResult.bestScenario}">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon class="material-icons-outlined">star_border</mat-icon>&nbsp;
@@ -520,15 +527,16 @@
             {{analysisResult.bestScenario?.evaluationStatistics.numMunicipalitiesA}} cities and
             {{analysisResult.bestScenario?.evaluationStatistics.sumSchoolCountA}} schools
             with an average relative employability gain of
-            {{analysisResult.bestScenario?.evaluationStatistics.averageEmployabilityRateA | number}}%,
+            {{analysisResult.bestScenario?.evaluationStatistics.averageEmployabilityRateA | number:'1.0-2'}}%,
             while group B consists
             of {{analysisResult.bestScenario?.evaluationStatistics.numMunicipalitiesB}} cities and
             {{analysisResult.bestScenario?.evaluationStatistics.sumSchoolCountB}} schools with an average relative
             employability gain of {{analysisResult.bestScenario?.evaluationStatistics.averageEmployabilityRateB |
-            number}}%
+            number:'1.0-2'}}%
             difference. Thus, group A
             has grown
-            {{analysisResult.bestScenario?.evaluationStatistics.averageGrownA | number}}% more percentage-wise than
+            {{analysisResult.bestScenario?.evaluationStatistics.averageGrownA | number:'1.0-2'}}% more percentage-wise
+            than
             B.
           </p>
           <p class="f-size-14 color-tp-body line-height-1-5">
@@ -549,7 +557,7 @@
               </ngx-charts-box-chart>
             </div>
             <div class="box-chart-item flex-auto" #bestScenarioHdiBoxRef>
-              <header class="color-tp-title f-weight-500 f-size-16">Hdi</header>
+              <header class="color-tp-title f-weight-500 f-size-16">HDI</header>
               <ngx-charts-box-chart [scheme]="distributionDiffBarChartColorScheme" [results]="bestScenarioHdiPlotResult"
                 [view]="[bestScenarioHdiBoxRef.offsetWidth, 350]"
                 [showXAxisLabel]="bestScenarioBoxChartConfig.showXAxisLabel"
