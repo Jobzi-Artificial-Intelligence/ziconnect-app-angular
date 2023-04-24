@@ -91,11 +91,9 @@ export class DialogAnalysisInputValidationResultComponent implements OnInit, Aft
       this.loading = false;
     } else {
       this._analysisToolService
-        .getTaskResult(this.data.analysisTask.id.toString())
+        .getTaskResult(this.data.analysisTask.id.toString(), this.data.analysisType)
         .subscribe(data => {
           this.analysisResult = data;
-
-          this._analysisToolService.putTaskResultOnStorage(this.data.analysisType, this.analysisResult);
 
           if (this.data.analysisType === AnalysisType.ConnectivityPrediction) {
             this.loadLocalityFileFailureCases();

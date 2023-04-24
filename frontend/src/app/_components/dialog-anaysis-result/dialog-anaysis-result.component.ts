@@ -5,6 +5,7 @@ import { MatSliderChange } from '@angular/material/slider';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import * as moment from 'moment';
 import { AnalysisType, UtilHelper } from 'src/app/_helpers';
 import { MathHelper } from 'src/app/_helpers/util/math.helper';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
@@ -181,8 +182,10 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadAnalysisResult() {
+  async loadAnalysisResult() {
     this.loading = true;
+
+    this.ref.detectChanges();
 
     const taskResult = this._analysisToolService.getTaskResultFromStorage(this.data.analysisType);
     if (taskResult) {
@@ -192,13 +195,11 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       this.loading = false;
     } else {
       this._analysisToolService
-        .getTaskResult(this.data.analysisTask.id.toString())
+        .getTaskResult(this.data.analysisTask.id.toString(), this.data.analysisType)
         .subscribe(data => {
           this.analysisResult = data;
 
           this.buildResultsData();
-
-          this._analysisToolService.putTaskResultOnStorage(this.data.analysisType, this.analysisResult);
 
           this.loading = false;
         }, error => {
