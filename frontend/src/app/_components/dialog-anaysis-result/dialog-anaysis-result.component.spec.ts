@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from 'src/app/material.module';
 import { AnalysisType, UtilHelper } from 'src/app/_helpers';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
@@ -26,7 +26,7 @@ describe('DialogAnaysisResultComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         AngularMaterialModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
         CommonModule,
         FormsModule,
         HttpClientTestingModule,
@@ -237,7 +237,7 @@ describe('DialogAnaysisResultComponent', () => {
       //@ts-ignore
       expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
       //@ts-ignore
-      expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id);
+      expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id, component.data.analysisType);
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong getting result: http error');
     });
@@ -249,8 +249,6 @@ describe('DialogAnaysisResultComponent', () => {
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(null);
       //@ts-ignore
-      spyOn(component._analysisToolService, 'putTaskResultOnStorage').and.returnValue(null);
-      //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(of(analysisResult));
 
       component.data.analysisTask.id = 'abc-123';
@@ -261,8 +259,6 @@ describe('DialogAnaysisResultComponent', () => {
 
       //@ts-ignore
       expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
-      //@ts-ignore
-      expect(component._analysisToolService.putTaskResultOnStorage).toHaveBeenCalledWith(component.data.analysisType, jasmine.any(Object));
     });
   });
 

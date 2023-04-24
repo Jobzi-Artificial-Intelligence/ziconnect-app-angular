@@ -86,13 +86,14 @@ export class AnalysisToolService {
    * @param taskId analysis task id
    * @returns 
    */
-  getTaskResult(taskId: string): Observable<AnalysisResult> {
+  getTaskResult(taskId: string, analysisType: AnalysisType): Observable<AnalysisResult> {
     return this._http
       .get<any>(`${environment.fastApiHost}${this._taskResultPath}/${taskId}`, {
         responseType: 'json'
       })
       .pipe(
         map((data) => {
+          this.putTaskResultOnStorage(analysisType, data.taskResult);
           return new AnalysisResult().deserialize(data.taskResult);
         })
       );
@@ -107,7 +108,7 @@ export class AnalysisToolService {
   getTaskResultFromStorage(analysisType: AnalysisType): AnalysisResult | null {
     const analysisResultStr = localStorage.getItem(`${AnalysisType[analysisType]}_result`);
     if (analysisResultStr) {
-      return { ...JSON.parse(analysisResultStr) } as AnalysisResult;
+      return new AnalysisResult().deserialize(JSON.parse(analysisResultStr));
     }
 
     return null;
@@ -118,7 +119,7 @@ export class AnalysisToolService {
    * @param analysisType task analysis type enum value
    * @param analysisResult task analysis result object
    */
-  putTaskResultOnStorage(analysisType: AnalysisType, analysisResult: AnalysisResult) {
+  putTaskResultOnStorage(analysisType: AnalysisType, analysisResult: any) {
     localStorage.setItem(`${AnalysisType[analysisType]}_result`, JSON.stringify(analysisResult));
   }
 }

@@ -83,7 +83,7 @@ describe('AnalysisToolService', () => {
     });
 
     it('should use GET to retrieve data', () => {
-      service.getTaskResult(taskFromServer.task_id).subscribe();
+      service.getTaskResult(taskFromServer.task_id, AnalysisType.ConnectivityPrediction).subscribe();
 
       const testRequest = httpTestingController.expectOne(`${endpointGetTaskResulUri}/${taskFromServer.task_id}`);
       expect(testRequest.request.method).toEqual('GET');
@@ -93,7 +93,7 @@ describe('AnalysisToolService', () => {
       const taskResult = analysisResultFromServer.taskResult;
       const expectedData: AnalysisResult = new AnalysisResult().deserialize(taskResult);
 
-      service.getTaskResult(taskFromServer.task_id).subscribe(data => {
+      service.getTaskResult(taskFromServer.task_id, AnalysisType.ConnectivityPrediction).subscribe(data => {
         expect(data.modelMetrics).toBeDefined();
         expect(data.resultSummary).toBeDefined();
         done();
@@ -121,6 +121,17 @@ describe('AnalysisToolService', () => {
       expect(window.localStorage.getItem).toHaveBeenCalledWith(`${AnalysisType[AnalysisType.ConnectivityPrediction]}_result`);
       expect(result).toBeDefined();
       expect(result).toEqual(jasmine.any(Object));
+    });
+
+    it('should works when storage is empty', () => {
+      const taskResult = analysisResultFromServer.taskResult;
+
+      spyOn(window.localStorage, 'getItem').and.returnValue(null);
+
+      const result = service.getTaskResultFromStorage(AnalysisType.ConnectivityPrediction);
+
+      expect(window.localStorage.getItem).toHaveBeenCalledWith(`${AnalysisType[AnalysisType.ConnectivityPrediction]}_result`);
+      expect(result).toEqual(null);
     });
   });
 

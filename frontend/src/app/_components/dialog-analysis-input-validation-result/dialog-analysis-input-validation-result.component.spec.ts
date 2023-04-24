@@ -5,7 +5,7 @@ import { of, throwError } from "rxjs";
 
 import { DialogAnalysisInputValidationResultComponent } from './dialog-analysis-input-validation-result.component';
 import { AngularMaterialModule } from 'src/app/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AnalysisType } from 'src/app/_helpers';
 import { AnalysisTask } from 'src/app/_models';
@@ -18,7 +18,7 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AngularMaterialModule, BrowserAnimationsModule, HttpClientTestingModule],
+      imports: [AngularMaterialModule, NoopAnimationsModule, HttpClientTestingModule],
       declarations: [DialogAnalysisInputValidationResultComponent],
       providers: [
         {
@@ -96,7 +96,7 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
       //@ts-ignore
       expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
       //@ts-ignore
-      expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id);
+      expect(component._analysisToolService.getTaskResult).toHaveBeenCalledWith(component.data.analysisTask.id, component.data.analysisType);
       //@ts-ignore
       expect(component._alertService.showError).toHaveBeenCalledWith('Something went wrong getting result: http error');
     });
@@ -107,8 +107,6 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
 
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(null);
-      //@ts-ignore
-      spyOn(component._analysisToolService, 'putTaskResultOnStorage').and.returnValue(null);
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(of(analysisResult));
       spyOn(component, 'loadLocalityFileFailureCases');
@@ -121,8 +119,6 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
 
       //@ts-ignore
       expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
-      //@ts-ignore
-      expect(component._analysisToolService.putTaskResultOnStorage).toHaveBeenCalledWith(component.data.analysisType, jasmine.any(Object));
       expect(component.loadLocalityFileFailureCases).toHaveBeenCalled();
       expect(component.loadSchoolFileFailureCases).toHaveBeenCalled();
     });
@@ -135,8 +131,6 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
       //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResultFromStorage').and.returnValue(null);
       //@ts-ignore
-      spyOn(component._analysisToolService, 'putTaskResultOnStorage').and.returnValue(null);
-      //@ts-ignore
       spyOn(component._analysisToolService, 'getTaskResult').and.returnValue(of(analysisResult));
       spyOn(component, 'loadLocalityEmployabilityFileFailureCases');
       spyOn(component, 'loadSchoolHistoryFileFailureCases');
@@ -148,8 +142,6 @@ describe('DialogAnalysisInputValidationResultComponent', () => {
 
       //@ts-ignore
       expect(component._analysisToolService.getTaskResultFromStorage).toHaveBeenCalledWith(component.data.analysisType);
-      //@ts-ignore
-      expect(component._analysisToolService.putTaskResultOnStorage).toHaveBeenCalledWith(component.data.analysisType, jasmine.any(Object));
       expect(component.loadLocalityEmployabilityFileFailureCases).toHaveBeenCalled();
       expect(component.loadSchoolHistoryFileFailureCases).toHaveBeenCalled();
     });
