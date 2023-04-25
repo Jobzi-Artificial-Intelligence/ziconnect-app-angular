@@ -38,7 +38,7 @@ describe('Component: NavigationBar', () => {
 
     //single menu items
     const singleMenuItems = fixture.debugElement.queryAll(By.css('.inner-container .menu .menu-item>a'));
-    expect(singleMenuItems.length).toEqual(4);
+    expect(singleMenuItems.length).toEqual(3);
 
     const singleMenuText = singleMenuItems.map((x) => x.nativeElement.textContent) as Array<string>;
     expect(singleMenuText.includes('Data Sources')).toBeTrue();

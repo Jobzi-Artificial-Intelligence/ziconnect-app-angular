@@ -1,4 +1,3 @@
-
 export class AnalysisInputDefinition {
   column: string;
   dataType: string;
@@ -6,6 +5,7 @@ export class AnalysisInputDefinition {
   primaryKey: boolean;
   description: string;
   example: string;
+  canHomogenize: boolean;
 
 
   constructor() {
@@ -13,6 +13,7 @@ export class AnalysisInputDefinition {
     this.dataType = '';
     this.required = false;
     this.primaryKey = false;
+    this.canHomogenize = false;
     this.description = '';
     this.example = '';
   }

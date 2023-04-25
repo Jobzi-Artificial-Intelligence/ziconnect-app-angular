@@ -55,6 +55,60 @@ describe('Helper: Util', () => {
     });
   });
 
+  describe('#exportFromObjectToJson', () => {
+    it('should exists', () => {
+      expect(UtilHelper.exportFromObjectToJson).toBeTruthy();
+      expect(UtilHelper.exportFromObjectToJson).toEqual(jasmine.any(Function));
+    })
+
+    it('should throw error when schools is empty', () => {
+      expect(() => UtilHelper.exportFromObjectToJson('fileName', null))
+        .toThrow(new Error('Object not provided!'));
+    });
+
+    it('should throw error when browser does not support download attribute', () => {
+      const school = {
+        id: 'abc-123'
+      };
+
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      expect(() => UtilHelper.exportFromObjectToJson('fileName', school))
+        .toThrow(new Error('Browser does not support download attribute'));
+    });
+
+    it('should works', () => {
+      // create spy object with a click() method
+      const spyObj = jasmine.createSpyObj('a', ['click', 'setAttribute'], { download: true, style: {} });
+
+      // spy on document.createElement() and return the spy object
+      spyOn(document, 'createElement').and.returnValue(spyObj);
+
+      // spy on document.body functions
+      spyOn(document.body, 'appendChild');
+      spyOn(document.body, 'removeChild');
+
+      const school = {
+        id: 'abc-123'
+      };
+
+      UtilHelper.exportFromObjectToJson('fileName', school);
+
+      expect(document.createElement).toHaveBeenCalledTimes(1);
+      expect(document.createElement).toHaveBeenCalledWith('a');
+      expect(spyObj.click).toHaveBeenCalled();
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('href', jasmine.any(String));
+      expect(spyObj.setAttribute).toHaveBeenCalledWith('download', 'fileName');
+      expect(spyObj.style.visibility).toEqual('hidden');
+      expect(document.body.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.body.removeChild).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('#getBoolean', () => {
 
     it('should exists', () => {

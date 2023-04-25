@@ -43,10 +43,10 @@
         href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Schools Connectivity">Contact</a>
     </div>
     <div class="menu-item flex items-center">
-      <a mat-mini-fab color="primary" aria-label="GitHub" matTooltip="GitHub"
-        href="https://github.com/Jobzi-Artificial-Intelligence/unicef-project" target="_blank">
+      <button mat-mini-fab color="primary" aria-label="GitHub" matTooltip="GitHub"
+        (click)="toggleSubmenuContainer('github', null)">
         <mat-icon svgIcon="github"></mat-icon>
-      </a>
+      </button>
     </div>
   </div>
   <div class="mobile-toggle">
@@ -77,10 +77,10 @@
         <mat-icon class="material-icons-outlined">email</mat-icon>
         <span>Contact</span>
       </a>
-      <a href="https://github.com/Jobzi-Artificial-Intelligence/unicef-project" target="_blank" mat-menu-item>
+      <div (click)="toggleSubmenuContainer('github', null)" mat-menu-item>
         <mat-icon svgIcon="github"></mat-icon>
         <span>GitHub</span>
-      </a>
+      </div>
     </mat-menu>
   </div>
 </div>
@@ -173,6 +173,46 @@
             <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
               Allows users to download our data, execute our models, visualize the results/analysis
               and also download them.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <ul id="submenu-list" *ngIf="selectedMenuItem === 'github'" class="flex">
+      <li class="submenu-item">
+        <a href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi" target="_blank"
+          class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center black">
+            <mat-icon svgIcon="github"></mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">ziconnect-app-angular</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              Front-End side for Internet availability prediction model in Brazilian schools using geographical data
+              and information on employability for the schools.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+
+        </a>
+      <li class="submenu-item">
+        <a href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-app-angular" target="_blank"
+          class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center black">
+            <mat-icon svgIcon="github"></mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title flex f-size-18 items-center line-height-1-5">ziconnect-backend-fastapi</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              Back-End side for Internet availability prediction model in Brazilian schools using geographical data
+              and information on employability for the schools.
             </div>
             <br>
             <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">

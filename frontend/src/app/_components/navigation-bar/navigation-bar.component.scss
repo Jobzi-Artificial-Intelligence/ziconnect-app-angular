@@ -158,6 +158,10 @@
           margin-right: 12px;
           width: 48px;
 
+          &.black {
+            background-color: $tp-title;
+          }
+
           &.blue {
             background-color: #0099ff;
           }

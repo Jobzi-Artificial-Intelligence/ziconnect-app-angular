@@ -1,5 +1,6 @@
 export enum AnalysisInputType {
   School = 'school',
   SchoolHistory = 'school_history',
-  Locality = 'locality'
+  Locality = 'locality',
+  LocalityEmployability = 'locality_employability'
 }
