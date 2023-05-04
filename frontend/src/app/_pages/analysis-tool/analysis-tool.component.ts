@@ -9,11 +9,13 @@ import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
 import { DialogAnalysisFileRequirementsComponent, DialogAnalysisInputValidationResultComponent, DialogAnaysisResultComponent } from 'src/app/_components';
 import { AnalysisInputType } from 'src/app/_helpers';
+import { AnalysisGaEventName } from 'src/app/_helpers/enums/analysis-event-name';
 import { AnalysisTaskStatus } from 'src/app/_helpers/enums/analysis-task-status';
 import { AnalysisType } from 'src/app/_helpers/enums/analysis-type';
 import { IAnalysisInputValidationResult, IDialogAnalysisResultData, IEmployabilityHomogenizeFeature } from 'src/app/_interfaces';
+import { IAnalysisEventTrackParams } from 'src/app/_interfaces/analysis-event-track-params';
 import { AnalysisTask } from 'src/app/_models';
-import { AlertService, AnalysisInputDefinitionService, AnalysisToolService } from 'src/app/_services';
+import { AlertService, AnalysisInputDefinitionService, AnalysisToolService, SeoService } from 'src/app/_services';
 import { AnalysisInputValidationService } from 'src/app/_services/analysis-input-validation/analysis-input-validation.service';
 
 @Component({
@@ -90,7 +92,8 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private _dialogService: MatDialog,
     private _analysisInputDefinitionService: AnalysisInputDefinitionService,
-    private _analysisInputValidationService: AnalysisInputValidationService) { }
+    private _analysisInputValidationService: AnalysisInputValidationService,
+    private _seoService: SeoService) { }
 
 
   //#region Component initialization functions
@@ -509,6 +512,13 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
             analysisTask.id = event.body.task_id;
 
             if (this.selectedAnalysisType) {
+              // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+              this._seoService.gaAnalysisEventTrack({
+                eventName: AnalysisGaEventName.AnalisysStartNew,
+                analysisType: this.selectedAnalysisType,
+                analysisTaskId: analysisTask.id
+              } as IAnalysisEventTrackParams);
+
               this.removeAnalysisResultFromStorage();
               this.putAnalysisTaskOnStorage(analysisTask);
               this.poolStorageTask();
@@ -520,6 +530,13 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       }, (error: any) => {
         this.loadingStartTask = false;
         this._alertService.showError('Something went wrong starting new analysis: ' + error.message);
+
+        // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+        this._seoService.gaAnalysisEventTrack({
+          eventName: AnalysisGaEventName.AnalisysStartNewError,
+          analysisType: this.selectedAnalysisType,
+          analysisTaskId: null
+        } as IAnalysisEventTrackParams);
       });
   }
 
@@ -557,6 +574,16 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
             analysisTask.id = event.body.task_id;
 
             if (this.selectedAnalysisType) {
+              // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+              this._seoService.gaAnalysisEventTrack({
+                eventName: AnalysisGaEventName.AnalisysStartNew,
+                analysisType: this.selectedAnalysisType,
+                analysisTaskId: analysisTask.id,
+                analysisConnectivityThresholdA: this.connectivityVariationThresholdA,
+                analysisConnectivityThresholdB: this.connectivityVariationThresholdB,
+                analysisMunicipalitiesThreshold: numMunicipalitiesThreshold
+              } as IAnalysisEventTrackParams);
+
               this.removeAnalysisResultFromStorage();
               this.putAnalysisTaskOnStorage(analysisTask);
               this.poolStorageTask();
@@ -568,6 +595,16 @@ export class AnalysisToolComponent implements OnInit, OnDestroy {
       }, (error: any) => {
         this.loadingStartTask = false;
         this._alertService.showError('Something went wrong starting new analysis: ' + error.message);
+
+        // SEND GOOGLE  ANALYTICS ANALYSIS EVENT TRACKING
+        this._seoService.gaAnalysisEventTrack({
+          eventName: AnalysisGaEventName.AnalisysStartNewError,
+          analysisType: this.selectedAnalysisType,
+          analysisTaskId: null,
+          analysisConnectivityThresholdA: this.connectivityVariationThresholdA,
+          analysisConnectivityThresholdB: this.connectivityVariationThresholdB,
+          analysisMunicipalitiesThreshold: numMunicipalitiesThreshold
+        } as IAnalysisEventTrackParams);
       });
   }
   ////////////////////////////////////////////

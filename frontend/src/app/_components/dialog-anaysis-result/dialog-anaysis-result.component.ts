@@ -7,11 +7,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 import * as moment from 'moment';
 import { AnalysisType, UtilHelper } from 'src/app/_helpers';
+import { AnalysisGaEventName } from 'src/app/_helpers/enums/analysis-event-name';
 import { MathHelper } from 'src/app/_helpers/util/math.helper';
 import { IDialogAnalysisResultData } from 'src/app/_interfaces';
+import { IAnalysisEventTrackParams } from 'src/app/_interfaces/analysis-event-track-params';
 import { LocalityStatistics } from 'src/app/_models';
 import { AnalysisResult } from 'src/app/_models/analysis-result/analysis-result.model';
-import { AlertService, AnalysisToolService } from 'src/app/_services';
+import { AlertService, AnalysisToolService, SeoService } from 'src/app/_services';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -141,7 +143,7 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
   //#endregion
   ////////////////////////////////////////////////
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData, private ref: ChangeDetectorRef, private _alertService: AlertService, private _analysisToolService: AnalysisToolService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IDialogAnalysisResultData, private ref: ChangeDetectorRef, private _alertService: AlertService, private _analysisToolService: AnalysisToolService, private _seoService: SeoService) {
     this.tableDataSource = new MatTableDataSource(new Array<LocalityStatistics>());
     this.tableFrequencyDistributionA = new MatTableDataSource(new Array<any>());
     this.tableFrequencyDistributionB = new MatTableDataSource(new Array<any>());
@@ -189,6 +191,13 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
 
     const taskResult = this._analysisToolService.getTaskResultFromStorage(this.data.analysisType);
     if (taskResult) {
+      // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+      this._seoService.gaAnalysisEventTrack({
+        eventName: AnalysisGaEventName.AnalisysResultsView,
+        analysisType: this.data.analysisType,
+        analysisTaskId: this.data.analysisTask.id
+      } as IAnalysisEventTrackParams);
+
       this.analysisResult = taskResult;
       this.buildResultsData();
 
@@ -197,6 +206,13 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
       this._analysisToolService
         .getTaskResult(this.data.analysisTask.id.toString(), this.data.analysisType)
         .subscribe(data => {
+          // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+          this._seoService.gaAnalysisEventTrack({
+            eventName: AnalysisGaEventName.AnalisysResultsView,
+            analysisType: this.data.analysisType,
+            analysisTaskId: this.data.analysisTask.id
+          } as IAnalysisEventTrackParams);
+
           this.analysisResult = data;
 
           this.buildResultsData();
@@ -205,8 +221,24 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
         }, error => {
           this._alertService.showError('Something went wrong getting result: ' + error.message);
           this.loading = false;
+
+          // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+          this._seoService.gaAnalysisEventTrack({
+            eventName: AnalysisGaEventName.AnalisysResultsViewError,
+            analysisType: this.data.analysisType,
+            analysisTaskId: this.data.analysisTask.id
+          } as IAnalysisEventTrackParams);
         });
     }
+  }
+
+  sendAnalysisResultDownloadGaEvent() {
+    // SEND GOOGLE ANALYTICS ANALYSIS EVENT TRACKING
+    this._seoService.gaAnalysisEventTrack({
+      eventName: AnalysisGaEventName.AnalisysResultsDownload,
+      analysisType: this.data.analysisType,
+      analysisTaskId: this.data.analysisTask.id
+    } as IAnalysisEventTrackParams);
   }
 
   //#region CONNECTIVITY PREDICTION
@@ -263,20 +295,8 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
         }
       })
       UtilHelper.exportFromObjectToCsv('result_summary.csv', dataToExport);
-    } catch (error: any) {
-      this._alertService.showError(error.toString());
-    }
-  }
 
-  onButtonExportJsonClick() {
-    try {
-      if (this.analysisResult) {
-        const dataToExport = {
-          allScenarios: this.analysisResult.allScenarios,
-          bestScenario: this.analysisResult.bestScenario,
-        };
-        UtilHelper.exportFromObjectToJson('employability_impact_result.json', dataToExport);
-      }
+      this.sendAnalysisResultDownloadGaEvent();
     } catch (error: any) {
       this._alertService.showError(error.toString());
     }
@@ -535,6 +555,22 @@ export class DialogAnaysisResultComponent implements OnInit, AfterViewInit {
     }
 
     return rangeList;
+  }
+
+  onButtonExportJsonClick() {
+    try {
+      if (this.analysisResult) {
+        const dataToExport = {
+          allScenarios: this.analysisResult.allScenarios,
+          bestScenario: this.analysisResult.bestScenario,
+        };
+        UtilHelper.exportFromObjectToJson('employability_impact_result.json', dataToExport);
+
+        this.sendAnalysisResultDownloadGaEvent();
+      }
+    } catch (error: any) {
+      this._alertService.showError(error.toString());
+    }
   }
 
   onIntervalSliderValueChange(event: MatSliderChange) {
