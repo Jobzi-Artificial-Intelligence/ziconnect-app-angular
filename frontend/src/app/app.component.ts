@@ -15,7 +15,12 @@ import * as moment from 'moment';
 export class AppComponent implements OnInit {
   title = 'Jobzi - Schools Connectivity';
 
-  constructor(@Inject(APP_BASE_HREF) public baseHref: string, private router: Router, private activatedRoute: ActivatedRoute, private seoService: SeoService, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+  constructor(@Inject(APP_BASE_HREF) public baseHref: string,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private seoService: SeoService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
     this.registerCustomSvgIcons();
   }
 
@@ -29,6 +34,7 @@ export class AppComponent implements OnInit {
           let seoData = data['seo'];
           this.seoService.updateTitle(seoData['title']);
           this.seoService.updateMetaTags(seoData['metaTags']);
+          this.seoService.gaEventTrack('page_view', null);
         }
       });
     });

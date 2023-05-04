@@ -19,4 +19,10 @@ export class SeoService {
       });
     }
   }
+
+  gaEventTrack(eventName: string, eventParameters: any) {
+    if ((<any>window).gtag) {
+      (<any>window).gtag('event', eventName, eventParameters ?? {});
+    }
+  }
 }

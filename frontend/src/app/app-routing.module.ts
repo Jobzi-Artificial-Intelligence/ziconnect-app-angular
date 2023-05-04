@@ -16,11 +16,11 @@ const routes: Routes = [{
   component: HomeComponent,
   data: {
     seo: {
-      title: 'Jobzi | Schools Connectivity',
+      title: 'ZiConnect | AI for education towards employability',
       metaTags: [
         { name: 'description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Schools Connectivity' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'ZiConnect | AI for education towards employability' },
         { property: 'og:description', content: 'With Unicef Innovation Fund and Giga Project our objective is to leverage the inclusion of young people to better education and more opportunities through internet connectivity, as the world is facing a learning crisis' }
       ]
     }
@@ -33,8 +33,8 @@ const routes: Routes = [{
       title: 'ZiConnect | Analysis Tool',
       metaTags: [
         { name: 'description', content: 'Make your own analysis, use our models, visualize the results and also download them.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Page Not Found' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'ZiConnect | Analysis Tool' },
         { property: 'og:description', content: 'Make your own analysis, use our models, visualize the results and also download them.' }
       ]
     }
@@ -44,11 +44,11 @@ const routes: Routes = [{
   component: InteractiveOsmMapComponent,
   data: {
     seo: {
-      title: 'Jobzi | Connectivity Map',
+      title: 'ZiConnect | Connectivity Map',
       metaTags: [
         { name: 'description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Connectivity Map' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'ZiConnect | Connectivity Map' },
         { property: 'og:description', content: 'Search and filter locations to view connectivity statistics, internet availability prediction and its impact on employability' }
       ]
     }
@@ -58,11 +58,11 @@ const routes: Routes = [{
   component: DataSourceReferenceComponent,
   data: {
     seo: {
-      title: 'Jobzi | Data Source',
+      title: 'ZiConnect | Data Source',
       metaTags: [
         { name: 'description', content: 'How We Got the Map Data' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI, data source' },
-        { property: 'og:title', content: 'Jobzi | Data Source' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI, data source' },
+        { property: 'og:title', content: 'ZiConnect | Data Source' },
         { property: 'og:description', content: 'How We Got the Map Data' }
       ]
     }
@@ -72,11 +72,11 @@ const routes: Routes = [{
   component: CodeConductComponent,
   data: {
     seo: {
-      title: 'Jobzi | Code of Conduct',
+      title: 'ZiConnect | Code of Conduct',
       metaTags: [
         { name: 'description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI, conduct, code, tools' },
-        { property: 'og:title', content: 'Jobzi | Code of Conduct' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI, conduct, code, tools' },
+        { property: 'og:title', content: 'ZiConnect | Code of Conduct' },
         { property: 'og:description', content: 'Jobzi | Unicef - Connectivity tools code of conduct.' }
       ]
     }
@@ -86,11 +86,11 @@ const routes: Routes = [{
   component: ContributorsComponent,
   data: {
     seo: {
-      title: 'Jobzi | Contributors',
+      title: 'ZiConnect | Contributors',
       metaTags: [
         { name: 'description', content: 'Jobzi | Unicef - Contribution Guidelines.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI, contribution, code, tools' },
-        { property: 'og:title', content: 'Jobzi | Contributiors' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI, contribution, code, tools' },
+        { property: 'og:title', content: 'ZiConnect | Contributiors' },
         { property: 'og:description', content: 'Jobzi | Unicef - Contribution Guidelines.' }
       ]
     }
@@ -100,11 +100,11 @@ const routes: Routes = [{
   component: LicenseComponent,
   data: {
     seo: {
-      title: 'Jobzi | License',
+      title: 'ZiConnect | License',
       metaTags: [
         { name: 'description', content: 'Jobzi | Unicef - License.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI, license, code, tools' },
-        { property: 'og:title', content: 'Jobzi | License' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI, license, code, tools' },
+        { property: 'og:title', content: 'ZiConnect | License' },
         { property: 'og:description', content: 'Jobzi | Unicef - License.' }
       ]
     }
@@ -114,11 +114,11 @@ const routes: Routes = [{
   component: PageNotFoundComponent,
   data: {
     seo: {
-      title: 'Jobzi | Page Not Found',
+      title: 'ZiConnect | Page Not Found',
       metaTags: [
         { name: 'description', content: 'Sorry, the page you are looking for could not be found.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Page Not Found' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'ZiConnect | Page Not Found' },
         { property: 'og:description', content: 'Sorry, the page you are looking for could not be found.' }
       ]
     }
@@ -129,11 +129,11 @@ const routes: Routes = [{
   component: PageNotFoundComponent,
   data: {
     seo: {
-      title: 'Jobzi | Page Not Found',
+      title: 'ZiConnect | Page Not Found',
       metaTags: [
         { name: 'description', content: 'Sorry, the page you are looking for could not be found.' },
-        { name: 'keywords', content: 'Jobzi, Unicef, schools, employability, connectivity, machine learning, AI' },
-        { property: 'og:title', content: 'Jobzi | Page Not Found' },
+        { name: 'keywords', content: 'Jobzi, Unicef, ZiConnect, schools, employability, connectivity, machine learning, AI' },
+        { property: 'og:title', content: 'ZiConnect | Page Not Found' },
         { property: 'og:description', content: 'Sorry, the page you are looking for could not be found.' }
       ]
     }
