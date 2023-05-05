@@ -135,7 +135,7 @@
               </div>&nbsp; -->
               <div class="button-container">
                 <a href="{{connectivityPredictionDownloadPath}}" color="primary" mat-mini-fab aria-label="Download data"
-                  matTooltip="Download results as csv">
+                  matTooltip="Download results as csv" (click)="sendAnalysisResultDownloadGaEvent()">
                   <mat-icon class="material-icons-outlined">file_download</mat-icon>
                 </a>
               </div>

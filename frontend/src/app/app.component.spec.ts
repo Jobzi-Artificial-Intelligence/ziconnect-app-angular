@@ -24,7 +24,7 @@ describe('Component: AppComponent', () => {
     url: 'test/url'
   };
 
-  const mockSeoService = jasmine.createSpyObj('SeoService', ['updateTitle', 'updateMetaTags']);
+  const mockSeoService = jasmine.createSpyObj('SeoService', ['updateTitle', 'updateMetaTags', 'gaEventTrack']);
 
   function createComponent(seoData?: any) {
     let seoDataParam = seoData ?? {

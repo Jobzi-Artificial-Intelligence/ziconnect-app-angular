@@ -33,7 +33,7 @@ describe('SeoService', () => {
 
   describe('Testing Functions', () => {
 
-    it('updateTitle should works', () => {
+    it('#updateTitle should works', () => {
       const title = 'Updated Title';
 
       service.updateTitle(title);
@@ -42,7 +42,7 @@ describe('SeoService', () => {
       expect(service.title.setTitle).toHaveBeenCalledWith(title);
     });
 
-    it('updateMetaTags should works', (done: DoneFn) => {
+    it('#updateMetaTags should works', (done: DoneFn) => {
       const metaTags = new Array<MetaDefinition>();
 
       metaTags.push({
@@ -54,6 +54,21 @@ describe('SeoService', () => {
 
       //@ts-ignore
       expect(service.meta.updateTag).toHaveBeenCalledWith(metaTags[0]);
+      done();
+    });
+
+    it('#gaEventTrack should works', (done: DoneFn) => {
+      service.gaEventTrack('page_view', {
+        page_location: 'https://localhost'
+      });
+
+      expect((<any>window)['gtag']).toHaveBeenCalledWith('event', 'page_view', {
+        page_location: 'https://localhost'
+      });
+
+      service.gaEventTrack('page_view', null);
+
+      expect((<any>window)['gtag']).toHaveBeenCalledWith('event', 'page_view', {});
       done();
     });
   });
