@@ -1,3 +1,4 @@
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Jobzi-Artificial-Intelligence/ziconnectapp-angular/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/Jobzi-Artificial-Intelligence/ziconnect-app-angular/branch/master/graph/badge.svg)](https://codecov.io/gh/Jobzi-Artificial-Intelligence/ziconnect-app-angular)
 
 # Predicting school connectivity and employability in Brazil #
