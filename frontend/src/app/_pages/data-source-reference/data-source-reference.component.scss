@@ -176,4 +176,47 @@
       }
     }
   }
+
+  #section-gdpr {
+    background-color: #fafafa;
+    padding: 60px 0;
+    position: relative;
+
+    .gdpr-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 60px;
+
+      @include breakpoint(sm) {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 0px;
+      }
+
+      .image {
+        position: relative;
+      }
+
+      img {
+        height: auto;
+        margin: 0 auto;
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .gdpr-description {
+        @include breakpoint(sm) {
+          max-width: 450px;
+          padding-left: 80px;
+        }
+
+        .title {
+          color: #0e036e;
+        }
+
+        .subtitle {
+          color: #ff7062;
+        }
+      }
+    }
+  }
 }
