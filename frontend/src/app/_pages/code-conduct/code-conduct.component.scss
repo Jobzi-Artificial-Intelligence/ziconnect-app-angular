@@ -1,0 +1,93 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.page-title {
+  background-color: #eaf3fc;
+  height: auto;
+  margin-top: -16px;
+  position: relative;
+
+  @include breakpoint($min: 768px) {
+    flex-direction: row;
+    height: 500px;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    height: 100%;
+    padding: 48px 0;
+
+    @include breakpoint($min: 768px) {
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .description {
+      flex: auto;
+
+      @include breakpoint($min: 768px) {
+        max-width: 40%;
+      }
+
+      .title-header {
+        color: #f58f4f;
+      }
+
+      .title {
+        color: #2c478c;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 24px !important;
+        margin-top: 8px !important;
+      }
+
+      .subtitle {
+        color: #697fe4;
+      }
+    }
+
+    .hero-image {
+      flex: auto;
+      text-align: center;
+
+      @include breakpoint($min: 425px) {
+        flex: 0 0 60%;
+      }
+
+      @include breakpoint($min: 1024px) {
+        flex: auto;
+        text-align: right;
+      }
+
+      img {
+        height: auto;
+        max-width: 650px;
+        width: 100%;
+
+        @include breakpoint($min: 1024px) {
+          width: 650px;
+        }
+      }
+    }
+  }
+}
+
+.page-content-container {
+  padding-bottom: 32px;
+
+  > section {
+    color: #404040;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-top: 32px;
+
+    > h3 {
+      color: $tp-title;
+      font-size: 20px;
+      margin-bottom: 8px !important;
+    }
+  }
+}

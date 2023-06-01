@@ -1,0 +1,144 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+#dialog-analysis-result {
+  padding-bottom: 24px;
+  position: relative;
+
+  #alert-missing-result {
+    margin-top: 24px;
+  }
+
+  #section-model-metrics,
+  #section-result-summary {
+    @include border-radius(8px);
+    @include box-shadow(
+      0 5px 5px -3px #0003,
+      0 8px 10px 1px #00000024,
+      0 3px 14px 2px #0000001f
+    );
+    margin-top: 32px;
+    padding: 16px;
+
+    > header {
+      margin-bottom: 24px;
+    }
+  }
+
+  #section-model-metrics {
+    .metrics-container {
+      flex: 0 0 250px;
+    }
+  }
+
+  #section-result-summary {
+    .table-container {
+      th.mat-header-cell,
+      td.mat-cell {
+        text-align: center;
+        border: 0.1px solid #0000001f;
+        padding: 0 !important;
+      }
+
+      tr.mat-header-row {
+        height: 44px;
+      }
+      tr.mat-row {
+        height: 40px;
+      }
+
+      ::ng-deep .mat-sort-header-container {
+        justify-content: center !important;
+
+        .mat-sort-header-arrow {
+          display: none;
+        }
+
+        &.mat-sort-header-sorted {
+          .mat-sort-header-arrow {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+
+  #section-results-description {
+    margin: 40px 0;
+  }
+
+  .best-scenario-box-chart-container {
+    height: 400px;
+    overflow: auto;
+
+    .box-chart-item {
+      flex: 0 0 calc(33% - 16px);
+      height: 100%;
+
+      > header {
+        border-bottom: 1px solid $border-color;
+        padding: 0 0 8px;
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .distribution-chart-container {
+    width: 100%;
+    height: 450px;
+    overflow: auto;
+
+    .chart-item {
+      flex: 0 0 calc(50% - 16px);
+      height: 100%;
+
+      ::ng-deep .legend-label {
+        color: $tp-title;
+      }
+
+      ::ng-deep .legend-title {
+        font-weight: 500;
+      }
+
+      > header {
+        border-bottom: 1px solid $border-color;
+        padding: 0 0 8px;
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .distribution-chart-setting-items {
+    .setting-item {
+      width: 50%;
+
+      ::ng-deep mat-slider {
+        padding: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  .distribution-metrics-container,
+  .distribution-frequency-container {
+    margin-top: 48px;
+    width: 100%;
+
+    .table-container {
+      flex: 0 0 calc(50% - 16px);
+
+      > header {
+        border-bottom: 1px solid $border-color;
+        padding: 0 0 8px;
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .download-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

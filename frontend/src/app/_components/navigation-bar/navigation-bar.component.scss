@@ -1,0 +1,215 @@
+@import "../../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+::ng-deep app-navigation-bar {
+  @include box-shadow(
+    0 3px 6px 0 rgb(10 31 68 / 10%),
+    0 0 1px 0 rgb(10 31 68 / 8%)
+  );
+  background-color: $white;
+  height: $navigation-bar-height-mobile;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    height: $navigation-bar-height;
+  }
+
+  .inner-container {
+    background-color: $white;
+    height: 100%;
+    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .logos {
+    .separator {
+      background: $border-color;
+      margin: 0 16px;
+      height: 48px;
+      width: 1px;
+    }
+
+    #jobzi-logo {
+      height: 32px;
+      width: auto;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        height: 38px;
+      }
+    }
+
+    #unicef-logo {
+      height: 32px;
+      width: auto;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        height: 38px;
+      }
+    }
+  }
+
+  .menu {
+    display: none;
+    height: 100%;
+
+    @include breakpoint($min: $navigation-bar-width-breakpoint) {
+      display: flex;
+    }
+
+    .menu-item {
+      cursor: pointer;
+      font-size: 16px;
+      height: 100%;
+      padding: 0 25px;
+      transition: all 0.3s ease;
+
+      a {
+        text-decoration: none;
+
+        &:not(.mat-mini-fab) {
+          color: $tp-body;
+          line-height: $navigation-bar-height-mobile;
+        }
+      }
+
+      > span {
+        color: $tp-body;
+        display: inline-block;
+        line-height: $navigation-bar-height-mobile;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      &:hover {
+        &:not(:last-child) {
+          background-color: #f1f1f1;
+
+          a,
+          span,
+          .mat-icon {
+            color: $tp-title;
+          }
+        }
+      }
+    }
+  }
+
+  .mobile-toggle {
+    display: inline-block;
+
+    @include breakpoint($navigation-bar-width-breakpoint) {
+      display: none;
+    }
+  }
+
+  .submenu-container {
+    @include box-sizing(border-box);
+    background-color: #fff;
+    border-top: 1px solid $border-color;
+    left: 0;
+    padding: 32px 0;
+    position: absolute;
+    width: 100%;
+    top: -100vh;
+    transition: all 0.3s ease;
+    z-index: 1;
+
+    @include breakpoint($navigation-bar-width-breakpoint) {
+      padding: 32px 16px;
+    }
+
+    &.open {
+      top: $navigation-bar-height-mobile;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        top: $navigation-bar-height;
+      }
+    }
+
+    #submenu-list {
+      @include reset-list;
+      flex-direction: column;
+
+      @include breakpoint($navigation-bar-width-breakpoint) {
+        flex-direction: row;
+      }
+
+      .submenu-item {
+        @include border-radius(8px);
+        flex: 1;
+        padding: 16px;
+        margin: 16px 0;
+        font-size: 16px;
+        transition: all 0.3s ease;
+
+        .icon {
+          @include border-radius(8px);
+          color: #fff;
+          flex: 0 0 48px;
+          height: 48px;
+          margin-right: 12px;
+          width: 48px;
+
+          &.black {
+            background-color: $tp-title;
+          }
+
+          &.blue {
+            background-color: #0099ff;
+          }
+
+          &.green {
+            background-color: #55bfa7;
+          }
+
+          &.purple {
+            background-color: #7c4ffc;
+          }
+
+          &.yellow {
+            background-color: #ffa300;
+          }
+        }
+
+        .badge {
+          @include border-radius(9px);
+          background-color: rgba($color: #000000, $alpha: 0.8);
+          color: $white;
+          display: inline-block;
+          font-size: 11px;
+          line-height: 18px;
+          margin-left: 6px;
+          padding: 0 12px;
+        }
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+  }
+
+  .menu-backdrop {
+    background-color: rgba($color: #000000, $alpha: 0.25);
+    display: none;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    min-height: 100vh;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+
+    &.open {
+      display: block;
+    }
+  }
+}

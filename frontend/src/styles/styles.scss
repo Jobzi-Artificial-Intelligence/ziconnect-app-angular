@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../../node_modules/compass-mixins/lib/compass/css3";
+@import "../../node_modules/compass-mixins/lib/compass/typography/text/ellipsis";
+@import "../../node_modules/leaflet/dist/leaflet.css";
+@import "mixins";
+@import "variables";
+@import "utilities/all";
+@import "ui/all";
+@import "vendor/angular-material";
+@import "vendor/leaflet";
+@import "vendor/ngx-charts";
+
+body {
+  @include box-sizing(border-box);
+  @include font-smoothing;
+  background: #fff;
+  font-family: $font-primary;
+  font-size: 14px;
+  font-weight: 300 !important;
+  font-style: normal;
+  height: 100%;
+  margin: 0;
+  min-width: 320px;
+  padding: 0;
+  padding-top: calc(#{$navigation-bar-height-mobile} + 16px);
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    padding-top: calc(#{$navigation-bar-height} + 16px);
+  }
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+}
+
+app-root {
+  display: block;
+  height: 100%;
+  min-height: calc(100vh - (#{$navigation-bar-height-mobile} + 16px));
+
+  @include breakpoint($navigation-bar-width-breakpoint) {
+    min-height: calc(100vh - (#{$navigation-bar-height} + 16px));
+  }
+}
+
+.wrapper {
+  @include box-sizing(border-box);
+  margin: 0 auto;
+  padding: 0 15px;
+  position: relative;
+  width: 100%;
+
+  @include breakpoint($wrapper-width-breakpoint) {
+    padding: 0;
+    width: $wrapper-width;
+  }
+}
+
+.alert {
+  width: 100%;
+}

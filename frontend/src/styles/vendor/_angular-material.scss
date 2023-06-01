@@ -1,0 +1,36 @@
+.mat-tab-body-wrapper {
+  flex-grow: 1;
+}
+
+.mat-tab-body-content {
+  @include box-sizing(border-box);
+  padding: 15px 0 0;
+}
+
+.mat-table {
+  width: 100%;
+
+  .column-w-150 {
+    max-width: 150px;
+  }
+}
+
+.mat-bottom-sheet-container {
+  height: 60vh;
+  width: 100vw;
+  max-width: 100vw !important;
+}
+
+.mat-mini-fab .mat-button-wrapper {
+  align-items: center;
+  display: flex !important;
+  height: 40px;
+  justify-content: center;
+  padding: 0 !important;
+  width: 40px;
+}
+
+.mat-tooltip {
+  font-size: 12px !important;
+  background-color: rgba(0,0,0,0.75);
+}

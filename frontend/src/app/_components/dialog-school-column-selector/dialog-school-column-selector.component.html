@@ -1,0 +1,34 @@
+<div class="dialog-title-container" mat-dialog-title>
+  <div>Select columns</div>
+  <div class="subtitle">Check columns individually or check group to select all columns in the group</div>
+</div>
+<div class="dialog-content-container" mat-dialog-content>
+  <mat-accordion class="accordion-headers-aligned">
+    <mat-expansion-panel *ngFor="let groupColumnItem of columnCheckItemList">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-checkbox [checked]="groupColumnItem.completed" [indeterminate]="groupColumnItem.incomplete"
+            (change)="setAll($event.checked, groupColumnItem)">
+            {{groupColumnItem.name}}
+          </mat-checkbox>
+        </mat-panel-title>
+        <mat-panel-description>
+          {{groupColumnItem.description}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="group-columns">
+        <ul>
+          <li *ngFor="let column of groupColumnItem.items">
+            <mat-checkbox [checked]="column.completed" (change)="onColumnCheckedChange($event.checked, column, groupColumnItem)">
+              {{column.name}}&nbsp;&nbsp;<span class="column-description">{{column.description}}</span>
+            </mat-checkbox>
+          </li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onButtonCancelClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onButtonConfirmClick()">Confirm</button>
+</div>

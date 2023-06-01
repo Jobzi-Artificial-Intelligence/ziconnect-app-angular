@@ -1,0 +1,227 @@
+<div class="inner-container flex items-center justify-between">
+  <div class="logos flex items-center">
+    <a href="https://jobzi.com" target="_blank" matTooltip="Jobzi">
+      <img class="cursor-pointer" src="assets/img/logo-js-md.png"
+        srcset="assets/img/logo-js-md.png 1x, assets/img/logo-js-md@2x.png 2x" alt="Jobzi Logo" width="80" height="38"
+        id="jobzi-logo" />
+    </a>
+    <div class="separator"></div>
+    <a href="https://unicef.org" target="_blank" matTooltip="UNICEF">
+      <img class="cursor-pointer" src="assets/img/logo_unicef.png" alt="Unicef Logo" width="auto" height="38"
+        id="unicef-logo" />
+    </a>
+  </div>
+  <div class="menu flex items-center">
+    <div class="menu-item flex items-center">
+      <a routerLink="" class="flex items-center" (click)="toggleSubmenuContainer(null, false)">Home</a>
+    </div>
+    <div class="menu-item flex items-center" (click)="toggleSubmenuContainer('tools', null)">
+      <span class="flex items-center">Tools</span>
+      <mat-icon class="material-icons-outlined color-tp-body" *ngIf="selectedMenuItem !== 'tools' || !submenuOpened">
+        expand_more
+      </mat-icon>
+      <mat-icon class="material-icons-outlined color-tp-body" *ngIf="selectedMenuItem === 'tools' && submenuOpened">
+        expand_less
+      </mat-icon>
+    </div>
+    <div class="menu-item flex items-center">
+      <a routerLink="/data-source-reference" class="flex items-center"
+        (click)="toggleSubmenuContainer(null, false)">Data
+        Sources</a>
+    </div>
+    <div class="menu-item flex items-center" (click)="toggleSubmenuContainer('community', null)">
+      <span class="flex items-center">Community</span>
+      <mat-icon class="material-icons-outlined color-tp-body"
+        *ngIf="selectedMenuItem !== 'community' || !submenuOpened">expand_more
+      </mat-icon>
+      <mat-icon class="material-icons-outlined color-tp-body" *ngIf="selectedMenuItem === 'community' && submenuOpened">
+        expand_less
+      </mat-icon>
+    </div>
+    <div class="menu-item flex items-center">
+      <a class="flex items-center"
+        href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Schools Connectivity">Contact</a>
+    </div>
+    <div class="menu-item flex items-center">
+      <button mat-mini-fab color="primary" aria-label="GitHub" matTooltip="GitHub"
+        (click)="toggleSubmenuContainer('github', null)">
+        <mat-icon svgIcon="github"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-toggle">
+    <button *ngIf="!submenuOpened" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon class="material-icons-outlined">menu</mat-icon>
+    </button>
+    <button *ngIf="submenuOpened" (click)="toggleSubmenuContainer(null, false)" mat-icon-button>
+      <mat-icon class="material-icons-outlined">close</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <a routerLink="" mat-menu-item>
+        <mat-icon class="material-icons-outlined">home</mat-icon>
+        <span>Home</span>
+      </a>
+      <div (click)="toggleSubmenuContainer('tools', null)" mat-menu-item>
+        <mat-icon class="material-icons-outlined">handyman</mat-icon>
+        <span>Tools</span>
+      </div>
+      <a routerLink="/data-source-reference" mat-menu-item>
+        <mat-icon class="material-icons-outlined">source</mat-icon>
+        <span>Data Sources</span>
+      </a>
+      <div (click)="toggleSubmenuContainer('community', null)" mat-menu-item>
+        <mat-icon class="material-icons-outlined">groups</mat-icon>
+        <span>Community</span>
+      </div>
+      <a href="mailto:contato@jobzi.com?subject=Jobzi | Unicef - Schools Connectivity" mat-menu-item>
+        <mat-icon class="material-icons-outlined">email</mat-icon>
+        <span>Contact</span>
+      </a>
+      <div (click)="toggleSubmenuContainer('github', null)" mat-menu-item>
+        <mat-icon svgIcon="github"></mat-icon>
+        <span>GitHub</span>
+      </div>
+    </mat-menu>
+  </div>
+</div>
+<div class="submenu-container" [ngClass]="{open: submenuOpened}">
+  <div class="wrapper">
+    <ul id="submenu-list" *ngIf="selectedMenuItem === 'community'" class="flex">
+      <li class="submenu-item">
+        <a routerLink="/code-of-conduct" class="flex text-decoration-none"
+          (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center purple">
+            <mat-icon class="material-icons-outlined">gpp_good</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">Code of Conduct</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">Jobzi Code of Conduct applies to all
+              community spaces
+              and in addition, applies when an individual is officially representing the community in public spaces.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      <li class="submenu-item">
+        <a [routerLink]="['/license']" class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center yellow">
+            <mat-icon class="material-icons-outlined">vpn_key</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">License</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">The software developed by Jobzi is open
+              source. We welcome contributions to our code base. You may use the Jobzi Connectivity Tools under the
+              terms of <i><b>GNU LGPLv3</b></i>.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
+      <li class="submenu-item">
+        <a routerLink="/contributors" class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center green">
+            <mat-icon class="material-icons-outlined">handshake</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">Contributors</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              We are driving the Open Content Community to work with 3 types of tools to support the platform with the
+              co-creations and contributions in an effective and organized way.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <ul id="submenu-list" *ngIf="selectedMenuItem === 'tools'" class="flex">
+      <li class="submenu-item">
+        <a [routerLink]="['/interactive-map']" class="flex text-decoration-none"
+          (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center blue">
+            <mat-icon class="material-icons-outlined">travel_explore</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">Connectivity Map Explorer</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">Explore schools connectivity data, schools
+              connectivity
+              prediction and educational performance given to connectivity generated by our models on an interactive
+              map.</div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+
+        </a>
+      <li class="submenu-item">
+        <a [routerLink]="['/analysis-tool']" class="flex text-decoration-none"
+          (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center purple">
+            <mat-icon class="material-icons-outlined">query_stats</mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title flex f-size-18 items-center line-height-1-5">Analysis Tool</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              Allows users to download our data, execute our models, visualize the results/analysis
+              and also download them.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <ul id="submenu-list" *ngIf="selectedMenuItem === 'github'" class="flex">
+      <li class="submenu-item">
+        <a href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-backend-fastapi" target="_blank"
+          class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center black">
+            <mat-icon svgIcon="github"></mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title f-size-18 line-height-1-5">ziconnect-app-angular</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              Front-End side for Internet availability prediction model in Brazilian schools using geographical data
+              and information on employability for the schools.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+
+        </a>
+      <li class="submenu-item">
+        <a href="https://github.com/Jobzi-Artificial-Intelligence/ziconnect-app-angular" target="_blank"
+          class="flex text-decoration-none" (click)="toggleSubmenuContainer(null, false)">
+          <div class="icon flex items-center justify-center black">
+            <mat-icon svgIcon="github"></mat-icon>
+          </div>
+          <div class="description">
+            <div class="color-tp-title flex f-size-18 items-center line-height-1-5">ziconnect-backend-fastapi</div>
+            <div class="color-tp-body f-size-16 line-height-1-5 line-clamp-2">
+              Back-End side for Internet availability prediction model in Brazilian schools using geographical data
+              and information on employability for the schools.
+            </div>
+            <br>
+            <div class="color-blue flex items-center f-size-13">See More <mat-icon class="material-icons-outlined">
+                chevron_right</mat-icon>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="menu-backdrop" [ngClass]="{open: submenuOpened}" (click)="toggleSubmenuContainer(null, false)"></div>

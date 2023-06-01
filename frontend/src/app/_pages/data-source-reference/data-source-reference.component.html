@@ -1,0 +1,100 @@
+<header class="page-title flex items-center">
+  <div class="background-overlay">
+    <img src="assets/img/page/data-source-reference/background-image.jpeg" />
+    <img src="assets/img/page/data-source-reference/background-image.jpeg" class="right" />
+  </div>
+  <div class="wrapper">
+    <div class="title color-white f-size-32 f-weight-500 text-center">
+      How We Got Data
+    </div>
+    <div class="subtitle color-white f-size-16 text-center">
+      We take data from multiples sources, normalize and structure them, to use in our models and generate the
+      visualizations.
+    </div>
+  </div>
+</header>
+<div class="page-content-container">
+  <section id="source-infographic">
+    <div class="main-container flex items-center justify-center">
+      <div class="main-circle">
+        <div class="inner flex items-center justify-center">
+          Consolidated<br>Data
+        </div>
+      </div>
+      <div class="bubble-container flex items-center justify-center"
+        [ngStyle]="{'opacity': item.opacity, 'transform': 'rotate(' + item.degrees + 'deg)'}"
+        *ngFor="let item of sourceItems">
+        <div class="pointer flex items-center justify-center">
+          <div class="arrow"></div>
+          <div class="inner" [ngStyle]="{'background': item.color}">
+          </div>
+        </div>
+        <div class="bubble flex items-center justify-center"
+          [ngStyle]="{'background': item.color, 'transform': 'rotate(-' + item.degrees + 'deg)'}"
+          [matTooltip]="item.fullName">
+          <div class="inner flex items-center justify-center">
+            <img [src]="item.image" height="64" width="64" alt="Source logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="source-descriptions">
+    <div class="wrapper">
+      <div class="sources-description-container flex items-strecth justify-between flex-wrap">
+        <div class="source-description-item flex direction-column" *ngFor="let item of sourceItems">
+          <header [ngStyle]="{color: item.color}" class="f-size-18 f-weight-500 text-transform-uppercase">
+            <a class="text-decoration-none" href="{{item.url}}" target="_blank" [ngStyle]="{color: item.color}">{{
+              item.name }}</a>
+          </header>
+          <div class="color-tp-body f-size-16 flex-auto line-height-1-5 text-justify">
+            {{ item.description }}
+            <br>
+            <ul>
+              <li *ngFor="let reference of item.references">
+                <div class="color-tp-title f-weight-500">{{reference.description}}</div>
+                <div><a href="{{reference.url}}" target="_blank">{{reference.url}}</a></div>
+              </li>
+            </ul>
+          </div>
+          <footer [ngStyle]="{background: item.color}"></footer>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="section-gdpr">
+    <div class="wrapper">
+      <div class="gdpr-container">
+        <div class="image">
+          <img src="assets/img/page/data-source-reference/img-privacy-security.png">
+          <div class="image-attribution-markup">
+            Image by <a
+              href="https://br.freepik.com/vetores-gratis/ilustracao-do-conceito-abstrato-de-seguranca-de-computacao-em-nuvem_11668583.htm#query=gdpr&position=1&from_view=search&track=sph">vectorjuice</a>
+            on <a href="https://www.freepik.com/">Freepik</a>
+          </div>
+        </div>
+        <div class="flex direction-column justify-center gdpr-description">
+          <div class="title f-size-40 f-weight-bold line-height-1">GDPR</div>
+          <div class="subtitle f-size-32 f-weight-500 line-height-1">Compliance</div>
+          <br>
+          <p class="color-tp-title f-size-16  line-height-1-5">We prioritize the privacy and data protection
+            of our users, development and data science communities. We want to assure you that
+            we are fully compliant with the General Data Protection Regulation (GDPR).</p>
+          <br>
+          <p class="color-tp-title f-size-16  line-height-1-5">All the data we use on our
+            platform is sourced from publicly available information and can be obtained from the official website of the
+            Brazilian government. By utilizing openly accessible data, we ensure that our operations adhere to the GDPR
+            guidelines while providing valuable insights to our users.</p>
+          <br>
+          <p class="color-tp-title f-size-16 line-height-1-5">For more information about the government's
+            open data initiative, you can visit the official website at
+            <a href="https://www.gov.br/governodigital/pt-br/dados-abertos"
+              target="_blank">https://www.gov.br/governodigital/pt-br/dados-abertos</a>. If you have any
+            concerns or questions regarding
+            your personal data or our GDPR compliance, please don't hesitate to contact us
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

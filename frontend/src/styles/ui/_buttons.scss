@@ -1,0 +1,21 @@
+@import "../../../node_modules/compass-mixins/lib/compass/css3";
+@import "../mixins";
+@import "../variables";
+
+.btn-cta {
+  &.mat-raised-button {
+    @include border-radius(32px);
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 32px;
+
+    @include breakpoint($max: 768px) {
+      display: block;
+    }
+
+    &.btn-lg {
+      line-height: 56px;
+      padding: 0 30px;
+    }
+  }
+}
